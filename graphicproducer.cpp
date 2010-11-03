@@ -62,6 +62,8 @@ bool GraphicProducer::parsePDF(const QString &fileName) {
 bool GraphicProducer::parseStream(const char *stream, unsigned long streamLen) {
     qDebug() << "GraphicProducer::parse";
 
+    setlocale(LC_ALL, "C");
+
     //QList<double> stack;
     double stack[200];
     int stackPosition = -1;
