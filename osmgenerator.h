@@ -25,10 +25,11 @@
 #include <QPainterPath>
 #include <QMap>
 #include <QPointF>
+#include "vectorpath.h"
 #include "graphicproducer.h"
 
 struct OSMPath {
-    QPainterPath path;
+    VectorPath path;
     QMap<QString, QString> tags;
     QList<QList<int> > points_position;
 };
@@ -44,8 +45,8 @@ public:
 signals:
 
 public slots:
-    void strikePath(const QPainterPath &path, const GraphicContext &context);
-    void fillPath(const QPainterPath &path, const GraphicContext &context, Qt::FillRule fillRule);
+    void strikePath(const VectorPath &path, const GraphicContext &context);
+    void fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule);
     void parsingDone(bool result);
     void dumpOSM(QPair<QString, QList<OSMPath> *> query);
 private:

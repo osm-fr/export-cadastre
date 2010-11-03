@@ -105,8 +105,8 @@ void Qadastre::analyze(const QString &code, const QString &name)
 
     GraphicProducer *gp = new GraphicProducer(this);
     OSMGenerator *og = new OSMGenerator(bbox, this);
-    connect(gp, SIGNAL(fillPath(QPainterPath,GraphicContext,Qt::FillRule)), og, SLOT(fillPath(QPainterPath,GraphicContext,Qt::FillRule)));
-    connect(gp, SIGNAL(strikePath(QPainterPath,GraphicContext)), og, SLOT(strikePath(QPainterPath,GraphicContext)));
+    connect(gp, SIGNAL(fillPath(VectorPath,GraphicContext,Qt::FillRule)), og, SLOT(fillPath(VectorPath,GraphicContext,Qt::FillRule)));
+    connect(gp, SIGNAL(strikePath(VectorPath,GraphicContext)), og, SLOT(strikePath(VectorPath,GraphicContext)));
     connect(gp, SIGNAL(parsingDone(bool)), og, SLOT(parsingDone(bool)));
     gp->parsePDF(pdfName);
 

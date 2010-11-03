@@ -17,38 +17,37 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef GRAPHICPRODUCER_H
-#define GRAPHICPRODUCER_H
+#ifndef VECTORPATH_H
+#define VECTORPATH_H
 
-#include <QObject>
+#include <QPointF>
 #include <QPainterPath>
-#include <QPen>
-#include <QBrush>
 #include <QPolygonF>
 #include <QList>
-#include "vectorpath.h"
 
-struct GraphicContext {
-    QBrush brush;
-    QPen pen;
-    QPainterPath clipPath;
-};
-
-class GraphicProducer : public QObject
+/**
+  This class is a bit like QPainterPath, but much simpler for our cases,
+  which includes many polygon-only paths. This allows a more efficient implementation.
+  In other cases, this class just map to a QPainterPath...
+  */
+class VectorPath
 {
-    Q_OBJECT
 public:
-    explicit GraphicProducer(QObject *parent = 0);
-
-public slots:
-    bool parseStream(const char *stream, unsigned long streamLen);
-    bool parsePDF(const QString &fileName);
-
-signals:
-    void strikePath(const VectorPath &path, const GraphicContext &context);
-    void fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule);
-    void parsingDone(bool result);
-
+    VectorPath();
+    void moveTo(qreal x, qreal y);
+    void lineTo(qreal x, qreal y);
+    void closeSubpath();
+    QList<QPolygonF> toSubpathPolygons();
+    void setFillRule(Qt::FillRule fillRule);
+    QPainterPath toPainterPath() const;
+    void quadTo(qreal cx, qreal cy, qreal endPointX, qreal endPointY);
+    void cubicTo(qreal c1X, qreal c1Y, qreal c2X, qreal c2Y, qreal endPointX, qreal endPointY);
+private:
+    void convertToPainterPath();
+    bool m_isPainterPath;
+    QPainterPath m_painterPath;
+    QList<QPolygonF> m_polygons;
+    Qt::FillRule m_fillRule;
 };
 
-#endif // GRAPHICPRODUCER_H
+#endif // VECTORPATH_H

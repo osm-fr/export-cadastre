@@ -27,7 +27,7 @@
 #include <podofo/PdfParser.h>
 #include <podofo/PdfStream.h>
 #include <podofo/PdfVecObjects.h>
-
+#include "vectorpath.h"
 #include <cstdlib>
 #include <errno.h>
 
@@ -72,7 +72,7 @@ bool GraphicProducer::parseStream(const char *stream, unsigned long streamLen) {
     currentContext.pen.setStyle(Qt::SolidLine);
     currentContext.pen.setColor(Qt::black);
 
-    QPainterPath currentPath;
+    VectorPath currentPath;
 
     QVector<double> lastArray;
 
@@ -117,7 +117,7 @@ bool GraphicProducer::parseStream(const char *stream, unsigned long streamLen) {
                 break;
             case 'W':
                 if (currentContext.clipPath.length() == 0)
-                    currentContext.clipPath = currentPath;
+                    currentContext.clipPath = currentPath.toPainterPath();
                 if (stream[previousPosition+1] == '*') {
                     currentContext.clipPath.setFillRule(Qt::OddEvenFill);
                     currentPath.setFillRule(Qt::OddEvenFill);
@@ -125,10 +125,10 @@ bool GraphicProducer::parseStream(const char *stream, unsigned long streamLen) {
                     currentContext.clipPath.setFillRule(Qt::WindingFill);
                     currentPath.setFillRule(Qt::WindingFill);
                 }
-                currentContext.clipPath = currentContext.clipPath.intersected(currentPath);
+                currentContext.clipPath = currentContext.clipPath.intersected(currentPath.toPainterPath());
                 break;
             case 'n':
-                currentPath = QPainterPath();
+                currentPath = VectorPath();
                 break;
             case 'q':
                 contexts.append(currentContext);
@@ -138,7 +138,7 @@ bool GraphicProducer::parseStream(const char *stream, unsigned long streamLen) {
                 break;
             case 'S':
                 emit strikePath(currentPath, currentContext);
-                currentPath = QPainterPath();
+                currentPath = VectorPath();
                 break;
             case 'w':
                 currentContext.pen.setWidthF(stack[stackPosition--]);
@@ -168,7 +168,7 @@ bool GraphicProducer::parseStream(const char *stream, unsigned long streamLen) {
                     emit fillPath(currentPath, currentContext, Qt::OddEvenFill);
                 else
                     emit fillPath(currentPath, currentContext, Qt::WindingFill);
-                currentPath = QPainterPath();
+                currentPath = VectorPath();
                 break;
             case 'd':
                 offset = stack[stackPosition--];

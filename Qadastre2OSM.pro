@@ -17,12 +17,14 @@ SOURCES += main.cpp \
     cadastrewrapper.cpp \
     qadastre.cpp \
     graphicproducer.cpp \
-    osmgenerator.cpp
+    osmgenerator.cpp \
+    vectorpath.cpp
 
 HEADERS += \
     cadastrewrapper.h \
     qadastre.h \
     graphicproducer.h \
-    osmgenerator.h
+    osmgenerator.h \
+    vectorpath.h
 
 LIBS += -lpodofo -lproj

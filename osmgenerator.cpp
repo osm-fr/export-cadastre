@@ -37,7 +37,7 @@ OSMGenerator::OSMGenerator(const QString &bbox, QObject *parent) :
                            QPointF(boundingBox[2].toDouble(), boundingBox[1].toDouble()));
 }
 
-void OSMGenerator::fillPath(const QPainterPath &path, const GraphicContext &context, Qt::FillRule fillRule)
+void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule)
 {
     if (context.brush.color() == QColor(255, 204, 51)) {
         OSMPath result;
@@ -61,9 +61,9 @@ void OSMGenerator::fillPath(const QPainterPath &path, const GraphicContext &cont
         result.tags["waterway"] = "riverbank";
         m_waters << result;
     } else if (context.brush.color() == Qt::white) {
-        if (path.elementCount() != 5)
+        if (path.toPainterPath().elementCount() != 5)
             qFatal("Invalid PDF bounding box found ?");
-        m_pdfBoundingBox = path.boundingRect();
+        m_pdfBoundingBox = path.toPainterPath().boundingRect();
     } else {
         if (!m_colors.contains(context.brush.color())) {
             m_colors << context.brush.color();
@@ -72,7 +72,7 @@ void OSMGenerator::fillPath(const QPainterPath &path, const GraphicContext &cont
     }
 }
 
-void OSMGenerator::strikePath(const QPainterPath &path, const GraphicContext &context)
+void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &context)
 {
     if ((context.pen.widthF() == 3.55) && (context.pen.style() == Qt::SolidLine)) {
         OSMPath result;
