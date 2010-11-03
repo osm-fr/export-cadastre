@@ -158,7 +158,6 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
 
     QList<OSMPath> nPaths;
 
-    // HOTSPOT : TO OPTIMIZE !
     foreach (OSMPath path, *paths) {
         QList<QPolygonF> sub_polygons = path.path.toSubpathPolygons();
         QList<int> sub_points;
@@ -178,7 +177,6 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
             qDebug() << "TODO : handle sub polygons in first pass !";
         }
     }
-    // END HOT SPOT
 
     qDebug()  << "Done extracting nodes";
 
@@ -263,7 +261,10 @@ QList<QPointF> OSMGenerator::convertToEPSG4326(const QList<QPointF> points)
         qFatal("Error while trasforming");
 
     QList<QPointF> result;
+    #if QT_VERSION >= 0x040700
+    // Reserve is an optimization available only with Qt 4.7...
     result.reserve(points.count());
+    #endif
     for (int i = 0 ; i < points.count() ; i++) {
         result << QPointF(pointsX[i]*RAD_TO_DEG, pointsY[i]*RAD_TO_DEG);
     }
