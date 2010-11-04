@@ -34,14 +34,17 @@ class VectorPath
 {
 public:
     VectorPath();
+    VectorPath(const QPolygonF &polygon);
     void moveTo(qreal x, qreal y);
     void lineTo(qreal x, qreal y);
     void closeSubpath();
-    QList<QPolygonF> toSubpathPolygons();
+    QList<QPolygonF> toSubpathPolygons() const;
     void setFillRule(Qt::FillRule fillRule);
     QPainterPath toPainterPath() const;
     void quadTo(qreal cx, qreal cy, qreal endPointX, qreal endPointY);
     void cubicTo(qreal c1X, qreal c1Y, qreal c2X, qreal c2Y, qreal endPointX, qreal endPointY);
+    bool isPainterPath() const;
+    int pathCount() const;
 private:
     void convertToPainterPath();
     bool m_isPainterPath;

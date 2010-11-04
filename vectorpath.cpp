@@ -24,6 +24,12 @@ VectorPath::VectorPath()
 {
 }
 
+VectorPath::VectorPath(const QPolygonF &polygon)
+    : m_isPainterPath(false)
+{
+    m_polygons << polygon;
+}
+
 void VectorPath::lineTo(qreal x, qreal y)
 {
     if (m_isPainterPath) {
@@ -46,7 +52,7 @@ void VectorPath::moveTo(qreal x, qreal y)
     }
 }
 
-QList<QPolygonF> VectorPath::toSubpathPolygons()
+QList<QPolygonF> VectorPath::toSubpathPolygons() const
 {
     if (m_isPainterPath)
         return m_painterPath.toSubpathPolygons();
@@ -116,3 +122,17 @@ void VectorPath::convertToPainterPath()
     m_painterPath = toPainterPath();
     m_isPainterPath = true;
 }
+
+bool VectorPath::isPainterPath() const
+{
+    return m_isPainterPath;
+}
+
+int VectorPath::pathCount() const
+{
+    if (m_isPainterPath)
+        return m_painterPath.toSubpathPolygons().count();
+    else
+        return m_polygons.count();
+}
+
