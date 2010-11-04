@@ -60,8 +60,13 @@ private:
     QList<OSMPath> m_houses;
     QList<OSMPath> m_waters;
     QList<OSMPath> m_rails;
+    QList<OSMPath> m_cemeteries;
     QList<QColor> m_colors;
     QList<qreal> m_widths;
+
+    // Used for cemetery detection
+    QList<QPolygonF> m_closedPolygons;
+    QList<QLineF> m_hLines, m_vLines;
 };
 
 #endif // OSMGENERATOR_H

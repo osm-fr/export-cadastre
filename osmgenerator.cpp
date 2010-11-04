@@ -25,6 +25,7 @@
 #include <QXmlStreamWriter>
 #include <QDate>
 #include <QtConcurrentMap>
+#include <QCoreApplication>
 #include <proj_api.h>
 
 OSMGenerator::OSMGenerator(const QString &bbox, QObject *parent) :
@@ -79,10 +80,25 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
         result.path = path;
         result.tags["railway"] = "rail";
         m_rails << result;
-    } else {
-        if (!m_widths.contains(context.pen.widthF())) {
-            qDebug() << context.pen.widthF();
-            m_widths << context.pen.widthF();
+    } else if ((!path.isPainterPath()) && (path.pathCount() == 1) && (context.pen.color() == Qt::black) && (context.pen.style() == Qt::SolidLine)) {
+        QPolygonF polygon = path.toSubpathPolygons()[0];
+        if (polygon.count() == 2) {
+            QLineF line(polygon[0], polygon[1]);
+            if ((context.clipPath.contains(line.p1())) && (context.clipPath.contains(line.p2()))) {
+                // This is a candidate for a cemetery !
+                if (line.dy() == 0) {
+                    m_hLines << line;
+                } else if (line.dx() == 0) {
+                    m_vLines << line;
+                }
+            }
+        }
+    }
+    if (context.pen.style() == Qt::SolidLine) {
+        if (context.pen.color() == Qt::black) {
+            QPolygonF polyPath = path.toSubpathPolygons()[0];
+            if (polyPath.isClosed())
+                m_closedPolygons.append(polyPath);
         }
     }
 }
@@ -94,6 +110,54 @@ void OSMGenerator::parsingDone(bool result)
     qDebug() << "I found " << m_waters.count() << " water";
 
     // TODO here : detect cemeteries, merge paths when they share points (or in dumpOSM when enumerating the points ?)...
+    // Detect cemeteries
+
+    qDebug() << "Ouch : " << m_vLines.count() << m_hLines.count();
+    QList<QPointF> crosses;
+    foreach (QLineF hLine, m_hLines) {
+        foreach (QLineF vLine, m_vLines) {
+            QPointF cross;
+            if (hLine.intersect(vLine, &cross)) {
+                if (qAbs(cross.x() - hLine.x1()) == qAbs(cross.x() - hLine.x2())) {
+                    if (qAbs(cross.y() - vLine.y1()) != qAbs(cross.y() - vLine.y2())) {
+                        crosses.append(cross);
+                    }
+                }
+                m_vLines.removeAll(vLine);
+                break;
+            }
+        }
+        m_hLines.removeAll(hLine);
+    }
+    qDebug() << "I found " << crosses.count() << " crosses.";
+    qDebug() << "Gonna check against " << m_closedPolygons.count() << " elements.";
+    QPainterPath candidateCemeteries;
+    foreach(QPolygonF polygon, m_closedPolygons) {
+        int countCrosses = 0;
+        foreach(QPointF cross, crosses) {
+            if ((polygon.containsPoint(cross, Qt::OddEvenFill)) || (polygon.containsPoint(cross, Qt::WindingFill))) {
+                countCrosses++;
+            }
+        }
+
+        if (countCrosses > 5) {
+            qDebug() << countCrosses << polygon;
+            candidateCemeteries.addPolygon(polygon);
+        }
+    }
+    qDebug() << "Now I've got " << candidateCemeteries.elementCount() << " candidates.";
+    qDebug() << candidateCemeteries.toSubpathPolygons().count();
+    qDebug() << candidateCemeteries.simplified().toSubpathPolygons().count();
+
+    QList<QPolygonF> cemeteries_final = candidateCemeteries.simplified().toSubpathPolygons();
+    foreach(QPolygonF cemetery, cemeteries_final) {
+        OSMPath result;
+        result.path = VectorPath(cemetery);
+        result.tags["landuse"] = "cemetery";
+        m_cemeteries << result;
+    }
+
+    qApp->exit();
 }
 
 struct OSMExecutor
@@ -114,9 +178,14 @@ struct OSMExecutor
 void OSMGenerator::dumpOSMs(const QString &baseFileName)
 {
     QList<QPair<QString, QList<OSMPath> *> > queries;
-    queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-water.osm", &m_waters);
-    queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-rails.osm", &m_rails);
-    queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-houses.osm", &m_houses);
+    if (!m_waters.isEmpty())
+        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-water.osm", &m_waters);
+    if (!m_rails.isEmpty())
+        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-rails.osm", &m_rails);
+    if (!m_houses.isEmpty())
+        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-houses.osm", &m_houses);
+    if (!m_cemeteries.isEmpty())
+        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-cemeteries.osm", &m_cemeteries);
 
     OSMExecutor executor(this);
     QFuture<void> results = QtConcurrent::map(queries, executor);
@@ -149,7 +218,6 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
     writer.writeAttribute("generator", "Qadastre");
 
     QList<QPointF> boundsLatLon = convertToEPSG4326(QList<QPointF>() << m_pdfBoundingBox.topLeft() << m_pdfBoundingBox.bottomRight());
-    qDebug() << boundsLatLon;
     writer.writeEmptyElement("bounds");
     writer.writeAttribute("minlat", QString::number(boundsLatLon[1].y(), 'f'));
     writer.writeAttribute("maxlat", QString::number(boundsLatLon[0].y(), 'f'));
@@ -174,7 +242,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
             path.points_position << sub_points;
             nPaths << path;
         } else {
-            qDebug() << "TODO : handle sub polygons in first pass !";
+            //qDebug() << "TODO : handle sub polygons in first pass !";
         }
     }
 
