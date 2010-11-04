@@ -190,9 +190,6 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
     OSMExecutor executor(this);
     QFuture<void> results = QtConcurrent::map(queries, executor);
     results.waitForFinished();
-    /*dumpOSM(baseFileName + "-water.osm", &m_waters);
-    dumpOSM(baseFileName + "-rails.osm", &m_rails);
-    dumpOSM(baseFileName + "-houses.osm", &m_houses);*/
 }
 
 void OSMGenerator::dumpOSM(QPair<QString, QList<OSMPath> *> query) {
