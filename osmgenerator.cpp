@@ -221,14 +221,15 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
     writer.writeAttribute("minlon", QString::number(boundsLatLon[0].x(), 'f'));
     writer.writeAttribute("maxlon", QString::number(boundsLatLon[1].x(), 'f'));
 
-    QList<OSMPath> nPaths;
-
+    QList<OSMPath> goodPaths;
     foreach (OSMPath path, *paths) {
         QList<QPolygonF> sub_polygons = path.path.toSubpathPolygons();
-        QList<int> sub_points;
         path.points_position.clear();
-        if (sub_polygons.count() == 1) {
-            foreach (QPointF pt, sub_polygons[0]) {
+        foreach (QPolygonF sub_polygon, sub_polygons) {
+            if (sub_polygon.isEmpty())
+                continue;
+            QList<int> sub_points;
+            foreach (QPointF pt, sub_polygon) {
                 int pos = nodes.indexOf(pt);
                 if (pos == -1) {
                     pos = nodes.length();
@@ -237,9 +238,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
                 sub_points << pos;
             }
             path.points_position << sub_points;
-            nPaths << path;
-        } else {
-            //qDebug() << "TODO : handle sub polygons in first pass !";
+            goodPaths << path;
         }
     }
 
@@ -261,12 +260,11 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
     }
 
     i = 1;
-    foreach (OSMPath path, nPaths) {
+    foreach (OSMPath path, goodPaths) {
         if (path.points_position.count() == 1) {
-
             writer.writeStartElement("way");
             writer.writeAttribute("id", QString::number(-i));
-            foreach (int pt, path.points_position[0]) {
+            foreach (int pt, path.points_position.first()) {
                 writer.writeEmptyElement("nd");
                 writer.writeAttribute("ref", QString::number(-pt - 1));
             }
@@ -289,9 +287,65 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
 
             writer.writeEndElement();
             i++;
-
         } else {
-            qDebug() << "TODO : handle sub polygons in second pass !" << path.points_position;
+            qDebug() << "We have a multipolygon" << path.points_position.count();
+            // Let's say the outer polygon is always the first one
+            bool isOuter = true;
+            QList<int> wayNumbers;
+            foreach (QList<int> nodesPositions, path.points_position) {
+                writer.writeStartElement("way");
+                writer.writeAttribute("id", QString::number(-i));
+                wayNumbers << -i;
+                foreach (int pt, nodesPositions) {
+                    writer.writeEmptyElement("nd");
+                    writer.writeAttribute("ref", QString::number(-pt - 1));
+                }
+
+                writer.writeEmptyElement("tag");
+                writer.writeAttribute("k", "source");
+                writer.writeAttribute("v", source);
+
+                if (isOuter) {
+                    QMap<QString, QString>::const_iterator tags = path.tags.constBegin();
+                    while (tags != path.tags.constEnd()) {
+                        writer.writeEmptyElement("tag");
+                        writer.writeAttribute("k", tags.key());
+                        writer.writeAttribute("v", tags.value());
+                        ++tags;
+                    }
+                    isOuter = false;
+                }
+
+                writer.writeEmptyElement("tag");
+                writer.writeAttribute("k", "note:qadastre");
+                writer.writeAttribute("v", "v0.1");
+
+                writer.writeEndElement();
+                i++;
+            }
+
+            writer.writeStartElement("relation");
+            writer.writeAttribute("id", QString::number(-i));
+
+            writer.writeEmptyElement("tag");
+            writer.writeAttribute("k", "type");
+            writer.writeAttribute("v", "multipolygon");
+
+            isOuter = true;
+            foreach(int wayId, wayNumbers) {
+                writer.writeEmptyElement("member");
+                writer.writeAttribute("type", "way");
+                writer.writeAttribute("ref", QString::number(wayId));
+                if (isOuter) {
+                    writer.writeAttribute("role", "outer");
+                    isOuter = false;
+                } else {
+                    writer.writeAttribute("role", "inner");
+                }
+            }
+
+            writer.writeEndElement();
+            i++;
         }
     }
 

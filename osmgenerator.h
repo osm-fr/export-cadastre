@@ -31,7 +31,7 @@
 struct OSMPath {
     VectorPath path;
     QMap<QString, QString> tags;
-    QList<QList<int> > points_position;
+    QList<QList<int> > points_position; // One list per polygon in the path
 };
 
 class OSMGenerator : public QObject
