@@ -53,7 +53,7 @@ public slots:
 private:
     void dumpOSM(const QString &fileName, QList<OSMPath> *paths);
 
-    QList<QPointF> convertToEPSG4326(const QList<QPointF> points);
+    QList<QPointF> convertToEPSG4326(const QList<QPointF> &points);
 
     QString m_projection;
     QRectF m_boundingBox, m_pdfBoundingBox;

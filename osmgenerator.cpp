@@ -383,7 +383,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
     writer.writeEndDocument();
 }
 
-QList<QPointF> OSMGenerator::convertToEPSG4326(const QList<QPointF> points)
+QList<QPointF> OSMGenerator::convertToEPSG4326(const QList<QPointF> &points)
 {
     double *pointsX = new double[points.count()];
     double *pointsY = new double[points.count()];
