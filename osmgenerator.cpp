@@ -87,9 +87,41 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
             if ((context.clipPath.contains(line.p1())) && (context.clipPath.contains(line.p2()))) {
                 // This is a candidate for a cemetery !
                 if (line.dy() == 0) {
-                    m_hLines << line;
+                    // This is an hLine, check it against vLines first
+               /*     bool found = false;
+                    foreach (QLineF vLine, m_vLines) {
+                        QPointF cross;
+                        if (line.intersect(vLine, &cross)) {
+                            if (qAbs(cross.x() - line.x1()) == qAbs(cross.x() - line.x2())) {
+                                if (qAbs(cross.y() - vLine.y1()) != qAbs(cross.y() - vLine.y2())) {
+                                    m_crosses.append(cross);
+                                    m_vLines.removeOne(vLine);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!found)*/
+                        m_hLines << line;
                 } else if (line.dx() == 0) {
-                    m_vLines << line;
+                    // This is a vLine, check it against hLines first
+                    /*bool found = false;
+                    foreach (QLineF hLine, m_hLines) {
+                        QPointF cross;
+                        if (hLine.intersect(line, &cross)) {
+                            if (qAbs(cross.x() - hLine.x1()) == qAbs(cross.x() - hLine.x2())) {
+                                if (qAbs(cross.y() - line.y1()) != qAbs(cross.y() - line.y2())) {
+                                    m_crosses.append(cross);
+                                    m_hLines.removeOne(hLine);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (!found)*/
+                        m_vLines << line;
                 }
             }
         }
@@ -109,18 +141,16 @@ void OSMGenerator::parsingDone(bool result)
     qDebug() << "I found " << m_rails.count() << " rails";
     qDebug() << "I found " << m_waters.count() << " water";
 
-    // TODO here : detect cemeteries, merge paths when they share points (or in dumpOSM when enumerating the points ?)...
+    // TODO here : merge paths when they share points (or in dumpOSM when enumerating the points ?)...
     // Detect cemeteries
-
     qDebug() << "Ouch : " << m_vLines.count() << m_hLines.count();
-    QList<QPointF> crosses;
     foreach (QLineF hLine, m_hLines) {
         foreach (QLineF vLine, m_vLines) {
             QPointF cross;
             if (hLine.intersect(vLine, &cross)) {
                 if (qAbs(cross.x() - hLine.x1()) == qAbs(cross.x() - hLine.x2())) {
                     if (qAbs(cross.y() - vLine.y1()) != qAbs(cross.y() - vLine.y2())) {
-                        crosses.append(cross);
+                        m_crosses.append(cross);
                     }
                 }
                 m_vLines.removeAll(vLine);
@@ -129,12 +159,12 @@ void OSMGenerator::parsingDone(bool result)
         }
         m_hLines.removeAll(hLine);
     }
-    qDebug() << "I found " << crosses.count() << " crosses.";
+    qDebug() << "I found " << m_crosses.count() << " crosses.";
     qDebug() << "Gonna check against " << m_closedPolygons.count() << " elements.";
     QPainterPath candidateCemeteries;
     foreach(QPolygonF polygon, m_closedPolygons) {
         int countCrosses = 0;
-        foreach(QPointF cross, crosses) {
+        foreach(QPointF cross, m_crosses) {
             if ((polygon.containsPoint(cross, Qt::OddEvenFill)) || (polygon.containsPoint(cross, Qt::WindingFill))) {
                 countCrosses++;
             }
@@ -160,6 +190,11 @@ void OSMGenerator::parsingDone(bool result)
     qApp->exit();
 }
 
+#if 0
+/*
+Multi thread is not possible with proj4, this is dangerous.
+We would need proj4 4.8, and it is not releaused yet (november 2010)
+*/
 struct OSMExecutor
 {
     OSMExecutor(OSMGenerator *osmGenerator)
@@ -194,6 +229,19 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
 
 void OSMGenerator::dumpOSM(QPair<QString, QList<OSMPath> *> query) {
     return dumpOSM(query.first, query.second);
+}
+#endif
+
+void OSMGenerator::dumpOSMs(const QString &baseFileName)
+{
+    if (!m_waters.isEmpty())
+        dumpOSM(baseFileName + "-water.osm", &m_waters);
+    if (!m_rails.isEmpty())
+        dumpOSM(baseFileName + "-rails.osm", &m_rails);
+    if (!m_houses.isEmpty())
+        dumpOSM(baseFileName + "-houses.osm", &m_houses);
+    if (!m_cemeteries.isEmpty())
+        dumpOSM(baseFileName + "-cemeteries.osm", &m_cemeteries);
 }
 
 void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)

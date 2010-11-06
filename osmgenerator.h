@@ -48,7 +48,8 @@ public slots:
     void strikePath(const VectorPath &path, const GraphicContext &context);
     void fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule);
     void parsingDone(bool result);
-    void dumpOSM(QPair<QString, QList<OSMPath> *> query);
+    // Unusable so far, see comment in osmgenerator.cpp
+    //void dumpOSM(QPair<QString, QList<OSMPath> *> query);
 private:
     void dumpOSM(const QString &fileName, QList<OSMPath> *paths);
 
@@ -67,6 +68,7 @@ private:
     // Used for cemetery detection
     QList<QPolygonF> m_closedPolygons;
     QList<QLineF> m_hLines, m_vLines;
+    QList<QPointF> m_crosses;
 };
 
 #endif // OSMGENERATOR_H
