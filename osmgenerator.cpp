@@ -28,6 +28,10 @@
 #include <QCoreApplication>
 #include <proj_api.h>
 
+bool OSMPath::operator ==(const OSMPath &other) const {
+    return ((other.path == this->path) && (other.points_position == this->points_position) && (other.tags == this->tags));
+}
+
 OSMGenerator::OSMGenerator(const QString &bbox, QObject *parent) :
     QObject(parent)
 {
@@ -76,6 +80,13 @@ void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &contex
 void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &context)
 {
     if ((context.pen.widthF() == 3.55) && (context.pen.style() == Qt::SolidLine)) {
+        if ((!path.isPainterPath()) && (path.pathCount() == 1)) {
+            QPolygonF firstPolygon = path.toSubpathPolygons()[0];
+            if (firstPolygon.count() == 2) {
+                m_railLines << QLineF(firstPolygon.first(), firstPolygon.last());
+                qDebug() << "Potential cross ?" << m_railLines.last();
+            }
+        }
         OSMPath result;
         result.path = path;
         result.tags["railway"] = "rail";
@@ -169,6 +180,69 @@ void OSMGenerator::parsingDone(bool result)
         result.tags["landuse"] = "cemetery";
         m_cemeteries << result;
     }
+
+    // Detect churchs
+    QList<QPointF> churches;
+    foreach (QLineF railLine, m_railLines) {
+        QList<QLineF> intersecting;
+        QList<QPointF> crosses;
+        foreach (QLineF railLine2, m_railLines) {
+            if (railLine2 == railLine)
+                continue;
+            if ((railLine.p1() == railLine2.p1()) || (railLine.p1() == railLine2.p2())) {
+                intersecting << railLine2;
+                if (!crosses.contains(railLine.p1()))
+                    crosses << railLine.p1();
+            }
+            if ((railLine.p2() == railLine2.p1()) || (railLine.p2() == railLine2.p2())) {
+                intersecting << railLine2;
+                if (!crosses.contains(railLine.p2()))
+                    crosses << railLine.p2();
+            }
+        }
+
+        if ((intersecting.length() == 3) && (crosses.count() == 1)) {
+            if (!churches.contains(crosses.first()))
+                churches << crosses.first();
+        }
+    }
+    if (!churches.isEmpty()) {
+        qDebug() << "I've got a church, find the useless rails now !";
+        int idx = 0;
+        foreach (OSMPath railPath, m_rails) {
+            if ((!railPath.path.isPainterPath()) && (railPath.path.pathCount() == 1)) {
+                QPolygonF polygon = railPath.path.toSubpathPolygons().first();
+                if (polygon.count() == 2) {
+                    if ((churches.contains(polygon.first())) || (churches.contains(polygon.last()))) {
+                        m_rails.removeAt(idx);
+                        continue;
+                    }
+                }
+            }
+            idx++;
+        }
+
+        QList<OSMPath>::iterator itHouse;
+        for (itHouse = m_houses.begin() ; itHouse != m_houses.end() ; ++itHouse) {
+            if (!(*itHouse).path.isPainterPath()) {
+                QPolygonF poly = (*itHouse).path.toSubpathPolygons().first();
+                bool found = false;
+                foreach (QPointF church, churches) {
+                    if (poly.containsPoint(church, Qt::WindingFill)) {
+                        (*itHouse).tags.insert("amenity", "place_of_worship");
+                        (*itHouse).tags.insert("denomination", "catholic");
+                        (*itHouse).tags.insert("religion", "christian");
+                        churches.removeOne(church);
+                        found = true;
+                    }
+                }
+                if (found)
+                    if (churches.count() == 0)
+                        break;
+            }
+        }
+    }
+    qDebug() << "Churches not found :" << churches;
 }
 
 #if 0

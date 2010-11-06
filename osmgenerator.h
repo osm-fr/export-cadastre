@@ -32,6 +32,8 @@ struct OSMPath {
     VectorPath path;
     QMap<QString, QString> tags;
     QList<QList<int> > points_position; // One list per polygon in the path
+
+    bool operator==(const OSMPath &other) const;
 };
 
 class OSMGenerator : public QObject
@@ -69,6 +71,9 @@ private:
     QList<QPolygonF> m_closedPolygons;
     QList<QLineF> m_hLines, m_vLines;
     QList<QPointF> m_crosses;
+
+    // Used for church detection
+    QList<QLineF> m_railLines;
 };
 
 #endif // OSMGENERATOR_H

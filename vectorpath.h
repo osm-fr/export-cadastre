@@ -45,6 +45,8 @@ public:
     void cubicTo(qreal c1X, qreal c1Y, qreal c2X, qreal c2Y, qreal endPointX, qreal endPointY);
     bool isPainterPath() const;
     int pathCount() const;
+
+    bool operator==(const VectorPath &other) const;
 private:
     void convertToPainterPath();
     bool m_isPainterPath;

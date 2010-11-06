@@ -24,6 +24,10 @@ VectorPath::VectorPath()
 {
 }
 
+bool VectorPath::operator ==(const VectorPath &other) const {
+    return (m_isPainterPath == other.m_isPainterPath) && (m_polygons == other.m_polygons) && (m_painterPath == other.m_painterPath);
+}
+
 VectorPath::VectorPath(const QPolygonF &polygon)
     : m_isPainterPath(false)
 {
