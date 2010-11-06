@@ -92,8 +92,8 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
                     foreach (QLineF vLine, m_vLines) {
                         QPointF cross;
                         if (line.intersect(vLine, &cross)) {
-                            if (qAbs(cross.x() - line.x1()) == qAbs(cross.x() - line.x2())) {
-                                if (qAbs(cross.y() - vLine.y1()) != qAbs(cross.y() - vLine.y2())) {
+                            if ((cross.x() - line.x1()) == (line.x2() - cross.x())) {
+                                if ((cross.y() - vLine.y1()) != (vLine.y2() - cross.y())) {
                                     m_crosses.append(cross);
                                     m_vLines.removeOne(vLine);
                                     found = true;
@@ -110,8 +110,8 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
                     foreach (QLineF hLine, m_hLines) {
                         QPointF cross;
                         if (hLine.intersect(line, &cross)) {
-                            if (qAbs(cross.x() - hLine.x1()) == qAbs(cross.x() - hLine.x2())) {
-                                if (qAbs(cross.y() - line.y1()) != qAbs(cross.y() - line.y2())) {
+                            if ((cross.x() - hLine.x1()) == (hLine.x2() - cross.x())) {
+                                if ((cross.y() - line.y1()) != (line.y2() - cross.y())) {
                                     m_crosses.append(cross);
                                     m_hLines.removeOne(hLine);
                                     found = true;
@@ -148,8 +148,8 @@ void OSMGenerator::parsingDone(bool result)
         foreach (QLineF vLine, m_vLines) {
             QPointF cross;
             if (hLine.intersect(vLine, &cross)) {
-                if (qAbs(cross.x() - hLine.x1()) == qAbs(cross.x() - hLine.x2())) {
-                    if (qAbs(cross.y() - vLine.y1()) != qAbs(cross.y() - vLine.y2())) {
+                if ((cross.x() - hLine.x1()) == (hLine.x2() - cross.x())) {
+                    if ((cross.y() - vLine.y1()) != (vLine.y2() - cross.y())) {
                         m_crosses.append(cross);
                     }
                 }
@@ -167,6 +167,7 @@ void OSMGenerator::parsingDone(bool result)
         foreach(QPointF cross, m_crosses) {
             if ((polygon.containsPoint(cross, Qt::OddEvenFill)) || (polygon.containsPoint(cross, Qt::WindingFill))) {
                 countCrosses++;
+                m_crosses.removeOne(cross);
             }
         }
 
@@ -176,8 +177,6 @@ void OSMGenerator::parsingDone(bool result)
         }
     }
     qDebug() << "Now I've got " << candidateCemeteries.elementCount() << " candidates.";
-    qDebug() << candidateCemeteries.toSubpathPolygons().count();
-    qDebug() << candidateCemeteries.simplified().toSubpathPolygons().count();
 
     QList<QPolygonF> cemeteries_final = candidateCemeteries.simplified().toSubpathPolygons();
     foreach(QPolygonF cemetery, cemeteries_final) {
@@ -186,8 +185,6 @@ void OSMGenerator::parsingDone(bool result)
         result.tags["landuse"] = "cemetery";
         m_cemeteries << result;
     }
-
-    qApp->exit();
 }
 
 #if 0
