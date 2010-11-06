@@ -87,26 +87,10 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
             if ((context.clipPath.contains(line.p1())) && (context.clipPath.contains(line.p2()))) {
                 // This is a candidate for a cemetery !
                 if (line.dy() == 0) {
-                    // This is an hLine, check it against vLines first
-               /*     bool found = false;
-                    foreach (QLineF vLine, m_vLines) {
-                        QPointF cross;
-                        if (line.intersect(vLine, &cross)) {
-                            if ((cross.x() - line.x1()) == (line.x2() - cross.x())) {
-                                if ((cross.y() - vLine.y1()) != (vLine.y2() - cross.y())) {
-                                    m_crosses.append(cross);
-                                    m_vLines.removeOne(vLine);
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (!found)*/
-                        m_hLines << line;
+                    m_hLines << line;
                 } else if (line.dx() == 0) {
                     // This is a vLine, check it against hLines first
-                    /*bool found = false;
+                    bool found = false;
                     foreach (QLineF hLine, m_hLines) {
                         QPointF cross;
                         if (hLine.intersect(line, &cross)) {
@@ -120,7 +104,7 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
                             }
                         }
                     }
-                    if (!found)*/
+                    if (!found)
                         m_vLines << line;
                 }
             }
@@ -143,7 +127,7 @@ void OSMGenerator::parsingDone(bool result)
 
     // TODO here : merge paths when they share points (or in dumpOSM when enumerating the points ?)...
     // Detect cemeteries
-    qDebug() << "Ouch : " << m_vLines.count() << m_hLines.count();
+    qDebug() << "Number of possible cross lines : " << m_vLines.count() << m_hLines.count();
     foreach (QLineF hLine, m_hLines) {
         foreach (QLineF vLine, m_vLines) {
             QPointF cross;
