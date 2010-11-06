@@ -38,7 +38,7 @@ public slots:
     void cityAvailable(const QString &code, const QString &name, const QString &bbox, QIODevice *data);
     void listCities(const QString &department);
     void download(const QString &dept, const QString &code, const QString &name);
-    void analyze(const QString &code, const QString &name);
+    void convert(const QString &code, const QString &name);
     void execute();
 
 private:

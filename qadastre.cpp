@@ -89,7 +89,7 @@ void Qadastre::download(const QString &dept, const QString &code, const QString 
     m_cadastre->requestPDF(dept, code, name);
 }
 
-void Qadastre::analyze(const QString &code, const QString &name)
+void Qadastre::convert(const QString &code, const QString &name)
 {
     QString pdfName = QString("%1-%2.pdf").arg(code, name);
     QString bboxName = QString("%1-%2.bbox").arg(code, name);
@@ -125,7 +125,7 @@ void Qadastre::execute()
         download(qApp->arguments()[2], qApp->arguments()[3], qApp->arguments()[4]);
     } else if ((qApp->arguments().length() == 4)  && (qApp->arguments()[1] == "--convert")) {
         m_cadastre = new CadastreWrapper(this);
-        analyze(qApp->arguments()[2], qApp->arguments()[3]);
+        convert(qApp->arguments()[2], qApp->arguments()[3]);
     } else {
         std::cout << "Usage : I don't know ?" << std::endl;
         qApp->exit(-1);
