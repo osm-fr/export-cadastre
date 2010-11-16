@@ -248,7 +248,7 @@ void OSMGenerator::parsingDone(bool result)
 #if 0
 /*
 Multi thread is not possible with proj4, this is dangerous.
-We would need proj4 4.8, and it is not releaused yet (november 2010)
+We would need proj4 4.8, and it is not released yet (november 2010)
 */
 struct OSMExecutor
 {
@@ -351,14 +351,10 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
 
     int i = 1;
     foreach (QPointF node, tNodes) {
-        writer.writeStartElement("node");
+        writer.writeEmptyElement("node");
         writer.writeAttribute("id", QString::number(-i));
         writer.writeAttribute("lat", QString::number(node.y(), 'f'));
         writer.writeAttribute("lon", QString::number(node.x(), 'f'));
-        writer.writeEmptyElement("tag");
-        writer.writeAttribute("k", "source");
-        writer.writeAttribute("v", source);
-        writer.writeEndElement();
         i++;
     }
 
