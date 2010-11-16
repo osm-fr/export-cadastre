@@ -127,7 +127,10 @@ void Qadastre::execute()
         m_cadastre = new CadastreWrapper(this);
         convert(qApp->arguments()[2], qApp->arguments()[3]);
     } else {
-        std::cout << "Usage : I don't know ?" << std::endl;
+        std::cout << "Usage : " << std::endl;
+        std::cout << qApp->argv()[0] << " --list DEPT : list the cities of a department (given its code in a three digit form)" << std::endl;
+        std::cout << qApp->argv()[0] << " --download DEPT CODE NAME : download a city" << std::endl;
+        std::cout << qApp->argv()[0] << " --convert CODE NAME : generate the .osm files for a city" << std::endl;
         qApp->exit(-1);
     }
 }
