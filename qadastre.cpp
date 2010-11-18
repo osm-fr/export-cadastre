@@ -23,6 +23,7 @@
 #include <iostream>
 #include <QDebug>
 #include <QFile>
+#include <QTimer>
 #include <QStringList>
 #include "osmgenerator.h"
 #include "graphicproducer.h"
@@ -63,7 +64,7 @@ void Qadastre::cityAvailable(const QString &code, const QString &name, const QSt
     qDebug() << code << name << bbox;
     QFile targetBBox(QString("%1-%2.bbox").arg(code, name));
     if (!targetBBox.open(QIODevice::WriteOnly)) {
-        qDebug() << "Imposible to write the bbox !";
+        qDebug() << "Impossible to write the bbox !";
         qApp->exit(-1);
     }
     targetBBox.write(bbox.toLocal8Bit());
@@ -71,7 +72,7 @@ void Qadastre::cityAvailable(const QString &code, const QString &name, const QSt
 
     QFile targetPDF(QString("%1-%2.pdf").arg(code, name));
     if (!targetPDF.open(QIODevice::WriteOnly)) {
-        qDebug() << "Imposible to write the bbox !";
+        qDebug() << "Impossible to write the pdf !";
         qApp->exit(-1);
     }
     targetPDF.write(data->readAll());
@@ -115,6 +116,12 @@ void Qadastre::convert(const QString &code, const QString &name)
     qApp->exit(0);
 }
 
+void Qadastre::timeout()
+{
+    std::cerr << "Timeout after 15 minutes...";
+    qApp->exit(-2);
+}
+
 void Qadastre::execute()
 {
     if ((qApp->arguments().length() == 3)  && (qApp->arguments()[1] == "--list")) {
@@ -123,6 +130,7 @@ void Qadastre::execute()
     } else if ((qApp->arguments().length() == 5)  && (qApp->arguments()[1] == "--download")) {
         m_cadastre = new CadastreWrapper(this);
         download(qApp->arguments()[2], qApp->arguments()[3], qApp->arguments()[4]);
+        QTimer::singleShot(15*60000, this, SLOT(timeout()));
     } else if ((qApp->arguments().length() == 4)  && (qApp->arguments()[1] == "--convert")) {
         m_cadastre = new CadastreWrapper(this);
         convert(qApp->arguments()[2], qApp->arguments()[3]);

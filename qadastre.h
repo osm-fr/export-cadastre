@@ -40,6 +40,7 @@ public slots:
     void download(const QString &dept, const QString &code, const QString &name);
     void convert(const QString &code, const QString &name);
     void execute();
+    void timeout();
 
 private:
     CadastreWrapper *m_cadastre;
