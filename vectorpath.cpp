@@ -69,8 +69,10 @@ void VectorPath::closeSubpath()
     if (m_isPainterPath) {
         m_painterPath.closeSubpath();
     } else {
-        if (!m_polygons.last().isClosed())
-            m_polygons.last() << m_polygons.last().first();
+        if (m_polygons.last().count() > 0) {
+            if (!m_polygons.last().isClosed())
+                m_polygons.last() << m_polygons.last().first();
+        }
         m_polygons << QPolygonF();  // Is that needed ?
     }
 }
