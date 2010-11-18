@@ -80,13 +80,27 @@ void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &contex
 void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &context)
 {
     if ((context.pen.widthF() == 3.55) && (context.pen.style() == Qt::SolidLine)) {
-        if ((!path.isPainterPath()) && (path.pathCount() == 1)) {
-            QPolygonF firstPolygon = path.toSubpathPolygons()[0];
-            if (firstPolygon.count() == 2) {
-                m_railLines << QLineF(firstPolygon.first(), firstPolygon.last());
-                qDebug() << "Potential cross ?" << m_railLines.last();
+        qDebug() << "Candidate for future church ?";
+        //qDebug() << path.pathCount() << path.toSubpathPolygons();
+        if (!path.isPainterPath()) {
+            if (path.pathCount() == 1) {
+                QPolygonF firstPolygon = path.toSubpathPolygons()[0];
+                if (firstPolygon.count() == 2) {
+                    m_railLines << QLineF(firstPolygon.first(), firstPolygon.last());
+                    qDebug() << "Potential cross ?" << m_railLines.last();
+                }
+            } else if (path.pathCount() == 2) {
+                QList<QPolygonF> polygons = path.toSubpathPolygons();
+                if ((polygons[0].count() <= 4) && (polygons[1].count() <= 4)) {
+                    QPointF church;
+                    if (QLineF(polygons[0].first(), polygons[0].last()).intersect(QLineF(polygons[1].first(), polygons[1].last()), &church)) {
+                        m_churches << church;
+                        return;
+                    }
+                }
             }
         }
+
         OSMPath result;
         result.path = path;
         result.tags["railway"] = "rail";
@@ -182,11 +196,12 @@ void OSMGenerator::parsingDone(bool result)
     }
 
     // Detect churchs
-    QList<QPointF> churches;
     foreach (QLineF railLine, m_railLines) {
+        qDebug() << railLine;
         QList<QLineF> intersecting;
         QList<QPointF> crosses;
         foreach (QLineF railLine2, m_railLines) {
+            qDebug() << railLine2;
             if (railLine2 == railLine)
                 continue;
             if ((railLine.p1() == railLine2.p1()) || (railLine.p1() == railLine2.p2())) {
@@ -202,18 +217,18 @@ void OSMGenerator::parsingDone(bool result)
         }
 
         if ((intersecting.length() == 3) && (crosses.count() == 1)) {
-            if (!churches.contains(crosses.first()))
-                churches << crosses.first();
+            if (!m_churches.contains(crosses.first()))
+                m_churches << crosses.first();
         }
     }
-    if (!churches.isEmpty()) {
+    if (!m_churches.isEmpty()) {
         qDebug() << "I've got a church, find the useless rails now !";
         int idx = 0;
         foreach (OSMPath railPath, m_rails) {
             if ((!railPath.path.isPainterPath()) && (railPath.path.pathCount() == 1)) {
                 QPolygonF polygon = railPath.path.toSubpathPolygons().first();
                 if (polygon.count() == 2) {
-                    if ((churches.contains(polygon.first())) || (churches.contains(polygon.last()))) {
+                    if ((m_churches.contains(polygon.first())) || (m_churches.contains(polygon.last()))) {
                         m_rails.removeAt(idx);
                         continue;
                     }
@@ -227,22 +242,22 @@ void OSMGenerator::parsingDone(bool result)
             if (!(*itHouse).path.isPainterPath()) {
                 QPolygonF poly = (*itHouse).path.toSubpathPolygons().first();
                 bool found = false;
-                foreach (QPointF church, churches) {
+                foreach (QPointF church, m_churches) {
                     if (poly.containsPoint(church, Qt::WindingFill)) {
                         (*itHouse).tags.insert("amenity", "place_of_worship");
                         (*itHouse).tags.insert("denomination", "catholic");
                         (*itHouse).tags.insert("religion", "christian");
-                        churches.removeOne(church);
+                        m_churches.removeOne(church);
                         found = true;
                     }
                 }
                 if (found)
-                    if (churches.count() == 0)
+                    if (m_churches.count() == 0)
                         break;
             }
         }
     }
-    qDebug() << "Churches not found :" << churches;
+    qDebug() << "Churches not found :" << m_churches;
 }
 
 #if 0

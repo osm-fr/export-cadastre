@@ -71,6 +71,7 @@ private:
     QList<QPolygonF> m_closedPolygons;
     QList<QLineF> m_hLines, m_vLines;
     QList<QPointF> m_crosses;
+    QList<QPointF> m_churches;
 
     // Used for church detection
     QList<QLineF> m_railLines;
