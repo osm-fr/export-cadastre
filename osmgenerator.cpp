@@ -44,6 +44,8 @@ OSMGenerator::OSMGenerator(const QString &bbox, QObject *parent) :
 
 void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule)
 {
+    if (context.pen.widthF() > 10)
+        qDebug() << "huge pen ?" << context.pen.widthF();
     if (context.brush.color() == QColor(255, 204, 51)) {
         OSMPath result;
         result.path = path;
@@ -79,6 +81,13 @@ void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &contex
 
 void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &context)
 {
+    if (context.pen.widthF() == 18) {
+        // limit element...
+        OSMPath result;
+        result.path = path;
+        result.tags["boundary"] = "administrative";
+        m_cityLimit << result;
+    }
     if ((context.pen.widthF() == 3.55) && (context.pen.style() == Qt::SolidLine)) {
         qDebug() << "Candidate for future church ?";
         //qDebug() << path.pathCount() << path.toSubpathPolygons();
@@ -312,6 +321,8 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
         dumpOSM(baseFileName + "-houses.osm", &m_houses);
     if (!m_cemeteries.isEmpty())
         dumpOSM(baseFileName + "-cemeteries.osm", &m_cemeteries);
+    if (!m_cityLimit.isEmpty())
+        dumpOSM(baseFileName + "-city-limit.osm", &m_cityLimit);
 }
 
 void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
