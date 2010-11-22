@@ -27,6 +27,7 @@
 #include <podofo/PdfParser.h>
 #include <podofo/PdfStream.h>
 #include <podofo/PdfVecObjects.h>
+#include <podofo/podofo_config.h>
 #include "vectorpath.h"
 #include <cstdlib>
 #include <errno.h>
@@ -43,7 +44,11 @@ bool GraphicProducer::parsePDF(const QString &fileName) {
     bool result = false;
     do {
         PoDoFo::PdfObject *obj = (*it);
+#if (PODOFO_VERSION_MAJOR > 0) || (PODOFO_VERSION_MINOR > 8) || (PODOFO_VERSION_PATCH >= 3)
+        if (obj->HasStream() && (obj->GetObjectLength(PoDoFo::ePdfWriteMode_Compact) > 10000)) {
+#else
         if (obj->HasStream() && (obj->GetObjectLength() > 10000)) {
+#endif
             PoDoFo::PdfStream *stream = obj->GetStream();
             char *buffer;
             PoDoFo::pdf_long bufferLen;
