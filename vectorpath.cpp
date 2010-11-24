@@ -24,14 +24,22 @@ VectorPath::VectorPath()
 {
 }
 
-bool VectorPath::operator ==(const VectorPath &other) const {
-    return (m_isPainterPath == other.m_isPainterPath) && (m_polygons == other.m_polygons) && (m_painterPath == other.m_painterPath);
+VectorPath::VectorPath(const VectorPath &other)
+{
+    m_isPainterPath = other.m_isPainterPath;
+    m_painterPath = other.m_painterPath;
+    m_polygons = other.m_polygons;
+    m_fillRule = other.m_fillRule;
 }
 
 VectorPath::VectorPath(const QPolygonF &polygon)
     : m_isPainterPath(false)
 {
     m_polygons << polygon;
+}
+
+bool VectorPath::operator ==(const VectorPath &other) const {
+    return (m_isPainterPath == other.m_isPainterPath) && (m_polygons == other.m_polygons) && (m_painterPath == other.m_painterPath);
 }
 
 void VectorPath::lineTo(qreal x, qreal y)

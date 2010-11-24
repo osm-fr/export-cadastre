@@ -18,13 +18,15 @@ SOURCES += main.cpp \
     qadastre.cpp \
     graphicproducer.cpp \
     osmgenerator.cpp \
-    vectorpath.cpp
+    vectorpath.cpp \
+    timeoutthread.cpp
 
 HEADERS += \
     cadastrewrapper.h \
     qadastre.h \
     graphicproducer.h \
     osmgenerator.h \
-    vectorpath.h
+    vectorpath.h \
+    timeoutthread.h
 
 LIBS += -lpodofo -lproj

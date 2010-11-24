@@ -17,19 +17,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include "qadastre.h"
+#ifndef TIMEOUTTHREAD_H
+#define TIMEOUTTHREAD_H
 
-#include "graphicproducer.h"
+#include <QThread>
 
-int main(int argc, char *argv[])
+class TimeoutThread : public QThread
 {
-    QCoreApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit TimeoutThread(quint32 secs, const QString &message, QObject *parent = 0);
+    void run();
+signals:
 
-    Qadastre *qadastre = new Qadastre(&a);
+public slots:
 
-    qadastre->start();
-    QObject::connect(qadastre, SIGNAL(finished()), qApp, SLOT(quit()));
+private:
+    quint32 m_secs;
+    QString m_message;
+};
 
-    return a.exec();
-}
+#endif // TIMEOUTTHREAD_H

@@ -27,9 +27,10 @@
 #include <QStringList>
 #include "osmgenerator.h"
 #include "graphicproducer.h"
+#include "timeoutthread.h"
 
 Qadastre::Qadastre(QObject *parent) :
-    QObject(parent)
+    QThread(parent)
 {
     m_cadastre = 0;
 }
@@ -92,6 +93,10 @@ void Qadastre::download(const QString &dept, const QString &code, const QString 
 
 void Qadastre::convert(const QString &code, const QString &name)
 {
+    qRegisterMetaType<VectorPath>("VectorPath");
+    qRegisterMetaType<GraphicContext>("GraphicContext");
+    qRegisterMetaType<Qt::FillRule>("Qt::FillRule");
+
     QString pdfName = QString("%1-%2.pdf").arg(code, name);
     QString bboxName = QString("%1-%2.bbox").arg(code, name);
     if ((!QFile::exists(pdfName)) || !QFile::exists(bboxName)) {
@@ -105,44 +110,32 @@ void Qadastre::convert(const QString &code, const QString &name)
     QString bbox = bboxReader.readAll();
     bboxReader.close();
 
-    GraphicProducer *gp = new GraphicProducer(this);
-    OSMGenerator *og = new OSMGenerator(bbox, this);
+    GraphicProducer *gp = new GraphicProducer();
+    OSMGenerator *og = new OSMGenerator(bbox);
     connect(gp, SIGNAL(fillPath(VectorPath,GraphicContext,Qt::FillRule)), og, SLOT(fillPath(VectorPath,GraphicContext,Qt::FillRule)));
     connect(gp, SIGNAL(strikePath(VectorPath,GraphicContext)), og, SLOT(strikePath(VectorPath,GraphicContext)));
     connect(gp, SIGNAL(parsingDone(bool)), og, SLOT(parsingDone(bool)));
     gp->parsePDF(pdfName);
+    gp->deleteLater();
 
     og->dumpOSMs(QString("%1-%2").arg(code, name));
-
-    qApp->exit(0);
+    og->deleteLater();
 }
 
-void Qadastre::timeoutDownload()
-{
-    std::cerr << "Timeout after 15 minutes...";
-    qApp->exit(-2);
-}
-
-void Qadastre::timeoutConvert()
-{
-    std::cerr << "Timeout after 2 hours...";
-    qApp->exit(-3);
-}
-
-
-void Qadastre::execute()
+void Qadastre::run()
 {
     if ((qApp->arguments().length() == 3)  && (qApp->arguments()[1] == "--list")) {
-        m_cadastre = new CadastreWrapper(this);
+        m_cadastre = new CadastreWrapper;
         listCities(qApp->arguments()[2]);
     } else if ((qApp->arguments().length() == 5)  && (qApp->arguments()[1] == "--download")) {
-        m_cadastre = new CadastreWrapper(this);
-        QTimer::singleShot(15*60000, this, SLOT(timeoutDownload()));
+        m_cadastre = new CadastreWrapper;
+        (new TimeoutThread(15*60, "Timeout on download", this))->start();
         download(qApp->arguments()[2], qApp->arguments()[3], qApp->arguments()[4]);
     } else if ((qApp->arguments().length() == 4)  && (qApp->arguments()[1] == "--convert")) {
-        m_cadastre = new CadastreWrapper(this);
-        QTimer::singleShot(120*60000, this, SLOT(timeoutConvert()));
+        m_cadastre = new CadastreWrapper;
+        (new TimeoutThread(120*60, "Timeout on convert", this))->start();
         convert(qApp->arguments()[2], qApp->arguments()[3]);
+        qApp->exit(0);
     } else {
         std::cout << "Usage : " << std::endl;
         std::cout << qApp->argv()[0] << " --list DEPT : list the cities of a department (given its code in a three digit form)" << std::endl;
@@ -150,4 +143,6 @@ void Qadastre::execute()
         std::cout << qApp->argv()[0] << " --convert CODE NAME : generate the .osm files for a city" << std::endl;
         qApp->exit(-1);
     }
+    if (m_cadastre)
+        m_cadastre->deleteLater();
 }

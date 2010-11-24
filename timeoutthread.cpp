@@ -17,19 +17,20 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
-#include "qadastre.h"
+#include "timeoutthread.h"
+#include <iostream>
+#include <QCoreApplication>
+#include <cstdlib>
 
-#include "graphicproducer.h"
-
-int main(int argc, char *argv[])
+TimeoutThread::TimeoutThread(quint32 secs, const QString &message, QObject *parent) :
+    QThread(parent), m_secs(secs), m_message(message)
 {
-    QCoreApplication a(argc, argv);
+}
 
-    Qadastre *qadastre = new Qadastre(&a);
-
-    qadastre->start();
-    QObject::connect(qadastre, SIGNAL(finished()), qApp, SLOT(quit()));
-
-    return a.exec();
+void TimeoutThread::run()
+{
+    this->sleep(m_secs);
+    std::cerr << m_message.toLocal8Bit().constData() << std::endl;
+    // Nothing too subtle here : it must stop right now, enough time waisted.
+    ::exit(-2);
 }

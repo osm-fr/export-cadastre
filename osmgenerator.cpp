@@ -190,7 +190,7 @@ void OSMGenerator::parsingDone(bool result)
         }
 
         if (countCrosses > 5) {
-            qDebug() << countCrosses << polygon;
+            qDebug() << "Cemetery area with " << countCrosses << " crosses";
             candidateCemeteries.addPolygon(polygon);
         }
     }

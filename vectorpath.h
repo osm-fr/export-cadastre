@@ -34,6 +34,7 @@ class VectorPath
 {
 public:
     VectorPath();
+    VectorPath(const VectorPath &other);
     VectorPath(const QPolygonF &polygon);
     void moveTo(qreal x, qreal y);
     void lineTo(qreal x, qreal y);

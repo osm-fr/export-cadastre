@@ -20,11 +20,11 @@
 #ifndef QADASTRE_H
 #define QADASTRE_H
 
-#include <QObject>
+#include <QThread>
 #include <QString>
 #include "cadastrewrapper.h"
 
-class Qadastre : public QObject
+class Qadastre : public QThread
 {
     Q_OBJECT
 public:
@@ -39,9 +39,7 @@ public slots:
     void listCities(const QString &department);
     void download(const QString &dept, const QString &code, const QString &name);
     void convert(const QString &code, const QString &name);
-    void execute();
-    void timeoutDownload();
-    void timeoutConvert();
+    void run();
 
 private:
     CadastreWrapper *m_cadastre;
