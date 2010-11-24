@@ -97,6 +97,7 @@ void Qadastre::convert(const QString &code, const QString &name)
     if ((!QFile::exists(pdfName)) || !QFile::exists(bboxName)) {
         std::cerr << "Download the data first" << std::endl;
         qApp->exit(-1);
+        return;
     }
 
     QFile bboxReader(bboxName);
@@ -116,11 +117,18 @@ void Qadastre::convert(const QString &code, const QString &name)
     qApp->exit(0);
 }
 
-void Qadastre::timeout()
+void Qadastre::timeoutDownload()
 {
     std::cerr << "Timeout after 15 minutes...";
     qApp->exit(-2);
 }
+
+void Qadastre::timeoutConvert()
+{
+    std::cerr << "Timeout after 2 hours...";
+    qApp->exit(-3);
+}
+
 
 void Qadastre::execute()
 {
@@ -129,10 +137,11 @@ void Qadastre::execute()
         listCities(qApp->arguments()[2]);
     } else if ((qApp->arguments().length() == 5)  && (qApp->arguments()[1] == "--download")) {
         m_cadastre = new CadastreWrapper(this);
+        QTimer::singleShot(15*60000, this, SLOT(timeoutDownload()));
         download(qApp->arguments()[2], qApp->arguments()[3], qApp->arguments()[4]);
-        QTimer::singleShot(15*60000, this, SLOT(timeout()));
     } else if ((qApp->arguments().length() == 4)  && (qApp->arguments()[1] == "--convert")) {
         m_cadastre = new CadastreWrapper(this);
+        QTimer::singleShot(120*60000, this, SLOT(timeoutConvert()));
         convert(qApp->arguments()[2], qApp->arguments()[3]);
     } else {
         std::cout << "Usage : " << std::endl;
