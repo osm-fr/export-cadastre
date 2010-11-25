@@ -124,17 +124,30 @@ void Qadastre::convert(const QString &code, const QString &name)
 
 void Qadastre::run()
 {
+    TimeoutThread *tthread;
     if ((qApp->arguments().length() == 3)  && (qApp->arguments()[1] == "--list")) {
-        (new TimeoutThread(5*60, "Timeout on list", this))->start();
+        tthread = new TimeoutThread(5*60, "Timeout on list");
+        tthread->start();
+        connect(qApp, SIGNAL(aboutToQuit()), tthread, SLOT(terminate()));
         m_cadastre = new CadastreWrapper;
         listCities(qApp->arguments()[2]);
+        QEventLoop loop;
+        connect(qApp, SIGNAL(aboutToQuit()), &loop, SLOT(quit()));
+        loop.exec();
     } else if ((qApp->arguments().length() == 5)  && (qApp->arguments()[1] == "--download")) {
         m_cadastre = new CadastreWrapper;
-        (new TimeoutThread(15*60, "Timeout on download", this))->start();
+        tthread = new TimeoutThread(15*60, "Timeout on download");
+        tthread->start();
+        connect(qApp, SIGNAL(aboutToQuit()), tthread, SLOT(terminate()));
         download(qApp->arguments()[2], qApp->arguments()[3], qApp->arguments()[4]);
+        QEventLoop loop;
+        connect(qApp, SIGNAL(aboutToQuit()), &loop, SLOT(quit()));
+        loop.exec();
     } else if ((qApp->arguments().length() == 4)  && (qApp->arguments()[1] == "--convert")) {
         m_cadastre = new CadastreWrapper;
-        (new TimeoutThread(120*60, "Timeout on convert", this))->start();
+        tthread = new TimeoutThread(120*60, "Timeout on convert");
+        tthread->start();
+        connect(qApp, SIGNAL(aboutToQuit()), tthread, SLOT(terminate()));
         convert(qApp->arguments()[2], qApp->arguments()[3]);
         qApp->exit(0);
     } else {
@@ -144,6 +157,4 @@ void Qadastre::run()
         std::cout << qApp->argv()[0] << " --convert CODE NAME : generate the .osm files for a city" << std::endl;
         qApp->exit(-1);
     }
-    if (m_cadastre)
-        m_cadastre->deleteLater();
 }
