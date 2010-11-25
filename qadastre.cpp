@@ -125,6 +125,7 @@ void Qadastre::convert(const QString &code, const QString &name)
 void Qadastre::run()
 {
     if ((qApp->arguments().length() == 3)  && (qApp->arguments()[1] == "--list")) {
+        (new TimeoutThread(5*60, "Timeout on list", this))->start();
         m_cadastre = new CadastreWrapper;
         listCities(qApp->arguments()[2]);
     } else if ((qApp->arguments().length() == 5)  && (qApp->arguments()[1] == "--download")) {
