@@ -53,7 +53,7 @@ public slots:
     // Unusable so far, see comment in osmgenerator.cpp
     //void dumpOSM(QPair<QString, QList<OSMPath> *> query);
 private:
-    void dumpOSM(const QString &fileName, QList<OSMPath> *paths);
+    void dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool merge = false);
 
     QList<QPointF> convertToEPSG4326(const QList<QPointF> &points);
 

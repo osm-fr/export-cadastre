@@ -24,6 +24,13 @@ VectorPath::VectorPath()
 {
 }
 
+VectorPath::VectorPath(const QPainterPath &painterPath)
+{
+    m_isPainterPath = true;
+    m_painterPath = painterPath;
+    m_fillRule = painterPath.fillRule();
+}
+
 VectorPath::VectorPath(const VectorPath &other)
 {
     m_isPainterPath = other.m_isPainterPath;
@@ -150,3 +157,15 @@ int VectorPath::pathCount() const
         return m_polygons.count();
 }
 
+QRectF VectorPath::boundingRect() const
+{
+    if (m_isPainterPath) {
+        return m_painterPath.boundingRect();
+    } else {
+        QRectF result;
+        foreach (QPolygonF polygon, m_polygons) {
+            result = result.united(polygon.boundingRect());
+        }
+        return result;
+    }
+}

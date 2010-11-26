@@ -36,6 +36,7 @@ public:
     VectorPath();
     VectorPath(const VectorPath &other);
     VectorPath(const QPolygonF &polygon);
+    VectorPath(const QPainterPath &painterPath);
     void moveTo(qreal x, qreal y);
     void lineTo(qreal x, qreal y);
     void closeSubpath();
@@ -46,6 +47,7 @@ public:
     void cubicTo(qreal c1X, qreal c1Y, qreal c2X, qreal c2Y, qreal endPointX, qreal endPointY);
     bool isPainterPath() const;
     int pathCount() const;
+    QRectF boundingRect() const;
 
     bool operator==(const VectorPath &other) const;
 private:

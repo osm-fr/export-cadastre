@@ -314,7 +314,7 @@ void OSMGenerator::dumpOSM(QPair<QString, QList<OSMPath> *> query) {
 void OSMGenerator::dumpOSMs(const QString &baseFileName)
 {
     if (!m_waters.isEmpty())
-        dumpOSM(baseFileName + "-water.osm", &m_waters);
+        dumpOSM(baseFileName + "-water.osm", &m_waters, true);
     if (!m_rails.isEmpty())
         dumpOSM(baseFileName + "-rails.osm", &m_rails);
     if (!m_houses.isEmpty())
@@ -325,8 +325,34 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
         dumpOSM(baseFileName + "-city-limit.osm", &m_cityLimit);
 }
 
-void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
+void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool merge)
 {
+    if (merge) {
+        QList<OSMPath> new_paths;
+        QList<QRectF> bounding_boxes;
+        foreach (OSMPath path, *paths) {
+            QRectF bounding_box = path.path.boundingRect();
+            bool found = false;
+            int i = 0;
+            foreach (QRectF bounding, bounding_boxes) {
+                if (bounding.intersects(bounding_box)) {
+                    if ((new_paths[i].path.toPainterPath().intersects(path.path.toPainterPath())) && (new_paths[i].tags == path.tags)) {
+                        new_paths[i].path = VectorPath(new_paths[i].path.toPainterPath().united(path.path.toPainterPath()));
+                        bounding_boxes[i] = bounding.united(bounding_box);
+                        found = true;
+                        break;
+                    }
+                }
+                i++;
+            }
+            if (!found) {
+                new_paths.append(path);
+                bounding_boxes.append(bounding_box);
+            }
+        }
+        *paths = new_paths;
+    }
+
     QList<QPointF> nodes;
 
     QString source = QString::fromUtf8("cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : %1").arg(QDate::currentDate().year());
@@ -408,7 +434,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths)
 
             writer.writeEmptyElement("tag");
             writer.writeAttribute("k", "note:qadastre");
-            writer.writeAttribute("v", "v0.1");
+            writer.writeAttribute("v", "v0.2");
 
             writer.writeEndElement();
             i++;
