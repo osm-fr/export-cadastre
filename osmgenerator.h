@@ -65,6 +65,7 @@ private:
     QList<OSMPath> m_rails;
     QList<OSMPath> m_cemeteries;
     QList<OSMPath> m_cityLimit;
+    QList<OSMPath> m_lands;
     QList<QColor> m_colors;
     QList<qreal> m_widths;
 

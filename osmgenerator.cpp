@@ -87,8 +87,19 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
         result.path = path;
         result.tags["boundary"] = "administrative";
         m_cityLimit << result;
-    }
-    if ((context.pen.widthF() == 3.55) && (context.pen.style() == Qt::SolidLine)) {
+    } else if (context.pen.widthF() == 0.77 && context.pen.style() == Qt::SolidLine) {
+        // Ensure poly closed
+        QList<QPolygonF> polygons = path.toSubpathPolygons();
+        bool poly = false;
+        foreach (QPolygonF polygon, polygons) {
+          poly = poly || polygon.isClosed();
+        }
+        if (poly) {
+          OSMPath result;
+          result.path = path;
+          m_lands << result;
+        }
+    } else if ((context.pen.widthF() == 3.55) && (context.pen.style() == Qt::SolidLine)) {
         qDebug() << "Candidate for future church ?";
         //qDebug() << path.pathCount() << path.toSubpathPolygons();
         if (!path.isPainterPath()) {
@@ -158,6 +169,7 @@ void OSMGenerator::parsingDone(bool result)
     qDebug() << "I found " << m_houses.count() << " houses";
     qDebug() << "I found " << m_rails.count() << " rails";
     qDebug() << "I found " << m_waters.count() << " water";
+    qDebug() << "I found " << m_lands.count() << " land";
 
     // TODO here : merge paths when they share points (or in dumpOSM when enumerating the points ?)...
     // Detect cemeteries
@@ -323,7 +335,10 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
         dumpOSM(baseFileName + "-cemeteries.osm", &m_cemeteries);
     if (!m_cityLimit.isEmpty())
         dumpOSM(baseFileName + "-city-limit.osm", &m_cityLimit);
+    if (!m_lands.isEmpty())
+        dumpOSM(baseFileName + "-lands.osm", &m_lands);
 }
+
 
 void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool merge)
 {
