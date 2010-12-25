@@ -81,7 +81,7 @@ void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &contex
 
 void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &context)
 {
-    if (context.pen.widthF() == 18) {
+    if ((context.pen.widthF() == 18 || context.pen.widthF() == 8.5) && context.pen.style() == Qt::SolidLine) {
         // limit element...
         OSMPath result;
         result.path = path;
