@@ -26,11 +26,25 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QNetworkCookieJar>
+#include <QProcessEnvironment>
+#include <QNetworkProxy>
 
 CadastreWrapper::CadastreWrapper(QObject *parent) :
     QObject(parent)
 {
     m_nam = new QNetworkAccessManager(this);
+
+    QString httpProxyEnv = QProcessEnvironment::systemEnvironment().value("http_proxy");
+    if(!httpProxyEnv.isEmpty()) {
+        QUrl url(httpProxyEnv);
+        QString userName = url.userName();
+        QString password = url.password();
+        QString hostName = url.host();
+        quint16 port = url.port();
+        QNetworkProxy proxy(QNetworkProxy::HttpProxy, hostName, port, userName, password);
+        m_nam->setProxy(proxy);
+    }
+
     m_departmentsRequest = 0;
 
     // Get a cookie
