@@ -32,8 +32,9 @@ bool OSMPath::operator ==(const OSMPath &other) const {
     return ((other.path == this->path) && (other.points_position == this->points_position) && (other.tags == this->tags));
 }
 
-OSMGenerator::OSMGenerator(const QString &bbox, QObject *parent) :
-    QObject(parent)
+OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *parent) :
+    QObject(parent),
+    generateLands(lands)
 {
     qDebug() << bbox;
     m_projection = bbox.split(":")[0];
@@ -87,7 +88,7 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
         result.path = path;
         result.tags["boundary"] = "administrative";
         m_cityLimit << result;
-    } else if (context.pen.widthF() == 0.77 && context.pen.style() == Qt::SolidLine) {
+    } else if (generateLands && context.pen.widthF() == 0.77 && context.pen.style() == Qt::SolidLine) {
         // Ensure poly closed
         QList<QPolygonF> polygons = path.toSubpathPolygons();
         bool poly = false;
@@ -169,7 +170,9 @@ void OSMGenerator::parsingDone(bool result)
     qDebug() << "I found " << m_houses.count() << " houses";
     qDebug() << "I found " << m_rails.count() << " rails";
     qDebug() << "I found " << m_waters.count() << " water";
-    qDebug() << "I found " << m_lands.count() << " land";
+    if (generateLands) {
+      qDebug() << "I found " << m_lands.count() << " land";
+    }
 
     // TODO here : merge paths when they share points (or in dumpOSM when enumerating the points ?)...
     // Detect cemeteries
@@ -335,7 +338,7 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
         dumpOSM(baseFileName + "-cemeteries.osm", &m_cemeteries);
     if (!m_cityLimit.isEmpty())
         dumpOSM(baseFileName + "-city-limit.osm", &m_cityLimit);
-    if (!m_lands.isEmpty())
+    if (generateLands && !m_lands.isEmpty())
         dumpOSM(baseFileName + "-lands.osm", &m_lands);
 }
 

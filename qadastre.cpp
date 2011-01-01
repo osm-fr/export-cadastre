@@ -91,7 +91,7 @@ void Qadastre::download(const QString &dept, const QString &code, const QString 
     m_cadastre->requestPDF(dept, code, name);
 }
 
-void Qadastre::convert(const QString &code, const QString &name)
+void Qadastre::convert(const QString &code, const QString &name, const bool lands)
 {
     qRegisterMetaType<VectorPath>("VectorPath");
     qRegisterMetaType<GraphicContext>("GraphicContext");
@@ -111,7 +111,7 @@ void Qadastre::convert(const QString &code, const QString &name)
     bboxReader.close();
 
     GraphicProducer *gp = new GraphicProducer();
-    OSMGenerator *og = new OSMGenerator(bbox);
+    OSMGenerator *og = new OSMGenerator(bbox, lands);
     connect(gp, SIGNAL(fillPath(VectorPath,GraphicContext,Qt::FillRule)), og, SLOT(fillPath(VectorPath,GraphicContext,Qt::FillRule)));
     connect(gp, SIGNAL(strikePath(VectorPath,GraphicContext)), og, SLOT(strikePath(VectorPath,GraphicContext)));
     connect(gp, SIGNAL(parsingDone(bool)), og, SLOT(parsingDone(bool)));
@@ -143,18 +143,19 @@ void Qadastre::run()
         QEventLoop loop;
         connect(qApp, SIGNAL(aboutToQuit()), &loop, SLOT(quit()));
         loop.exec();
-    } else if ((qApp->arguments().length() == 4)  && (qApp->arguments()[1] == "--convert")) {
+    } else if ((qApp->arguments().length() == 4)  && ((qApp->arguments()[1] == "--convert") || (qApp->arguments()[1] == "--convert-with-lands"))) {
         m_cadastre = new CadastreWrapper;
         tthread = new TimeoutThread(120*60, "Timeout on convert");
         tthread->start();
         connect(qApp, SIGNAL(aboutToQuit()), tthread, SLOT(terminate()));
-        convert(qApp->arguments()[2], qApp->arguments()[3]);
+        convert(qApp->arguments()[2], qApp->arguments()[3], qApp->arguments()[1] == "--convert-with-lands");
         qApp->exit(0);
     } else {
         std::cout << "Usage : " << std::endl;
         std::cout << qApp->argv()[0] << " --list DEPT : list the cities of a department (given its code in a three digit form)" << std::endl;
         std::cout << qApp->argv()[0] << " --download DEPT CODE NAME : download a city" << std::endl;
         std::cout << qApp->argv()[0] << " --convert CODE NAME : generate the .osm files for a city" << std::endl;
+        std::cout << qApp->argv()[0] << " --convert-with-lands CODE NAME : same as --convert but extract all pieces of land (parcelles)" << std::endl;
         qApp->exit(-1);
     }
 }
