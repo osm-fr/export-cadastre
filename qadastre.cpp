@@ -43,7 +43,7 @@ void Qadastre::citiesAvailable(const QString &department)
     if (cities.count() > 0) {
         QMap<QString, QString>::const_iterator i;
         for (i = cities.constBegin() ; i != cities.constEnd() ; ++i)
-            std::cout << QString("%1 - %2").arg(i.key(), i.value()).toLocal8Bit().constData() << std::endl;
+            std::cout << QString("%1 %2 \"%3\"").arg(department, i.key(), i.value().left(i.value().lastIndexOf(QChar(' ')))).toLocal8Bit().constData() << std::endl;
         qApp->exit(0);
     } else {
         std::cerr << "No city found." << std::endl;
