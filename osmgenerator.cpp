@@ -69,9 +69,12 @@ void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &contex
         result.tags["waterway"] = "riverbank";
         m_waters << result;
     } else if (context.brush.color() == Qt::white) {
-        if (path.toPainterPath().elementCount() != 5)
-            qFatal("Invalid PDF bounding box found ?");
-        m_pdfBoundingBox = path.toPainterPath().boundingRect();
+        if (path.toPainterPath().elementCount() != 5) {
+            qDebug() << "Invalid PDF bounding box found ?";
+            //qFatal("Invalid PDF bounding box found ?");
+        } else {
+            m_pdfBoundingBox = path.toPainterPath().boundingRect();
+        }
     } else {
         if (!m_colors.contains(context.brush.color())) {
             m_colors << context.brush.color();
