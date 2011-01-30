@@ -119,7 +119,7 @@ QMap<QString, QString> CadastreWrapper::listCities(const QString &department)
             }
             if (titleExtractor.indexIn(table) != -1) {
                 if (codeExtractor.indexIn(table) != -1) {
-                    m_cities[department][codeExtractor.cap(1)] = titleExtractor.cap(1);
+                    m_cities[department][codeExtractor.cap(1)] = titleExtractor.cap(1).replace("&#039;","'");
                 }
             }
         }
