@@ -40,7 +40,7 @@ class OSMGenerator : public QObject
 {
     Q_OBJECT
 public:
-    explicit OSMGenerator(const QString &bbox, QObject *parent = 0);
+    explicit OSMGenerator(const QString &bbox, const bool lands, QObject *parent = 0);
 
     void dumpOSMs(const QString &baseFileName);
 
@@ -65,6 +65,8 @@ private:
     QList<OSMPath> m_rails;
     QList<OSMPath> m_cemeteries;
     QList<OSMPath> m_cityLimit;
+    bool generateLands;
+    QList<OSMPath> m_lands;
     QList<QColor> m_colors;
     QList<qreal> m_widths;
 
