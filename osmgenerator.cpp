@@ -444,6 +444,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
         } else {
             qDebug() << "We have a multipolygon" << path.points_position.count();
             // Let's say the outer polygon is always the first one
+
             bool isOuter = true;
             QList<int> wayNumbers;
             foreach (QList<int> nodesPositions, path.points_position) {
@@ -472,7 +473,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
 
                 writer.writeEmptyElement("tag");
                 writer.writeAttribute("k", "note:qadastre");
-                writer.writeAttribute("v", "v0.1");
+                writer.writeAttribute("v", "v0.2");
 
                 writer.writeEndElement();
                 i++;
