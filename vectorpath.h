@@ -50,12 +50,16 @@ public:
     QRectF boundingRect() const;
 
     bool operator==(const VectorPath &other) const;
+    void addSubpath(const QPolygonF &polygon, bool inner);
+    int getNOuter();
+
 private:
     void convertToPainterPath();
     bool m_isPainterPath;
     QPainterPath m_painterPath;
     QList<QPolygonF> m_polygons;
     Qt::FillRule m_fillRule;
+    int nOuter;
 };
 
 #endif // VECTORPATH_H

@@ -168,6 +168,16 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
     }
 }
 
+bool polygonLess(const QPolygonF &p1, const QPolygonF &p2) {
+    if (p1.size() != p2.size()) {
+         return p1.size() < p2.size();
+    } else if (p1 == p2) {
+        return false;
+    } else {
+        return &p1 < &p2;
+    }
+}
+
 void OSMGenerator::parsingDone(bool result)
 {
     qDebug() << "I found " << m_houses.count() << " houses";
@@ -285,6 +295,56 @@ void OSMGenerator::parsingDone(bool result)
         }
     }
     qDebug() << "Churches not found :" << m_churches;
+
+    if (!m_cityLimit.empty()) {
+        VectorPath resultCityLimit;
+
+        qDebug() << "Now detect inners and outers city limits";
+
+        // Disassemble OSMPath
+        QList<QPolygonF> polygons0;
+        foreach(OSMPath osmPath, m_cityLimit) {
+            polygons0 << osmPath.path.toSubpathPolygons();
+        }
+
+        // Clean input, only one instance of each polygon
+        qSort(polygons0.begin(), polygons0.end(), polygonLess);
+        QList<QPolygonF> polygons;
+        for(QList<QPolygonF>::iterator ip = polygons0.begin(); ip != polygons0.end() ; ++ip) {
+            if(ip->size() > 0 && (polygons.empty() || polygons.back() != *ip)) {
+                polygons << *ip;
+            }
+        }
+
+        // Detect inner and outer
+        // Let say polygons never intersect other polygons
+        for(QList<QPolygonF>::iterator ip1 = polygons.begin(); ip1 != polygons.end() ; ++ip1) {
+            bool is_inner = false;
+            for(QList<QPolygonF>::iterator ip2 = polygons.begin(); ip2 != polygons.end() ; ++ip2) {
+                if(*ip1 != *ip2) {
+                    foreach(QPointF point1, *ip1) {
+                        if(ip2->containsPoint(point1, Qt::WindingFill)) {
+                            // polygon1 is inside polygon2
+                            is_inner = true;
+                            break;
+                        }
+                    }
+                    if(is_inner) {
+                        break;
+                    }
+                }
+            }
+            // Reassemble polygons on OSMPath
+            resultCityLimit.addSubpath(*ip1, is_inner);
+        }
+
+       // Replace initial city limit
+       m_cityLimit.clear();
+       OSMPath result;
+       result.path = resultCityLimit;
+       result.tags["boundary"] = "administrative";
+       m_cityLimit << result;
+    }
 }
 
 #if 0
@@ -414,8 +474,9 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                 sub_points << pos;
             }
             path.points_position << sub_points;
-            goodPaths << path;
         }
+        if (sub_polygons.size() > 0)
+                goodPaths << path;
     }
 
     qDebug()  << "Done extracting nodes";
@@ -461,9 +522,9 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
             i++;
         } else {
             qDebug() << "We have a multipolygon" << path.points_position.count();
-            // Let's say the outer polygon is always the first one
-
-            bool isOuter = true;
+            
+			// Let's say the outer polygon is always the first one
+            int nOuter = path.path.getNOuter();
             QList<int> wayNumbers;
             foreach (QList<int> nodesPositions, path.points_position) {
                 writer.writeStartElement("way");
@@ -478,7 +539,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                 writer.writeAttribute("k", "source");
                 writer.writeAttribute("v", source);
 
-                if (isOuter) {
+                if (nOuter > 0) {
                     QMap<QString, QString>::const_iterator tags = path.tags.constBegin();
                     while (tags != path.tags.constEnd()) {
                         writer.writeEmptyElement("tag");
@@ -486,7 +547,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                         writer.writeAttribute("v", tags.value());
                         ++tags;
                     }
-                    isOuter = false;
+                    nOuter--;
                 }
 
                 writer.writeEmptyElement("tag");
@@ -504,14 +565,14 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
             writer.writeAttribute("k", "type");
             writer.writeAttribute("v", "multipolygon");
 
-            isOuter = true;
+            nOuter = path.path.getNOuter();
             foreach(int wayId, wayNumbers) {
                 writer.writeEmptyElement("member");
                 writer.writeAttribute("type", "way");
                 writer.writeAttribute("ref", QString::number(wayId));
-                if (isOuter) {
+                if (nOuter > 0) {
                     writer.writeAttribute("role", "outer");
-                    isOuter = false;
+                    nOuter--;
                 } else {
                     writer.writeAttribute("role", "inner");
                 }

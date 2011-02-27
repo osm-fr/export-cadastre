@@ -20,13 +20,14 @@
 #include "vectorpath.h"
 
 VectorPath::VectorPath()
-    : m_isPainterPath(false)
+    : m_isPainterPath(false), nOuter(0)
 {
 }
 
 VectorPath::VectorPath(const QPainterPath &painterPath)
 {
     m_isPainterPath = true;
+    nOuter = 1;
     m_painterPath = painterPath;
     m_fillRule = painterPath.fillRule();
 }
@@ -36,13 +37,27 @@ VectorPath::VectorPath(const VectorPath &other)
     m_isPainterPath = other.m_isPainterPath;
     m_painterPath = other.m_painterPath;
     m_polygons = other.m_polygons;
+    nOuter = other.nOuter;
     m_fillRule = other.m_fillRule;
 }
 
 VectorPath::VectorPath(const QPolygonF &polygon)
-    : m_isPainterPath(false)
+    : m_isPainterPath(false), nOuter(1)
 {
     m_polygons << polygon;
+}
+
+int VectorPath::getNOuter() {
+    return nOuter;
+}
+
+void VectorPath::addSubpath(const QPolygonF &polygon, bool inner) {
+    if(inner) {
+        m_polygons << polygon;
+    } else {
+        nOuter++;
+        m_polygons.insert(0, polygon);
+    }
 }
 
 bool VectorPath::operator ==(const VectorPath &other) const {
@@ -90,6 +105,7 @@ void VectorPath::closeSubpath()
         }
         m_polygons << QPolygonF();  // Is that needed ?
     }
+    nOuter = (nOuter == 0) ? 1 : nOuter;
 }
 
 void VectorPath::setFillRule(Qt::FillRule fillRule)
