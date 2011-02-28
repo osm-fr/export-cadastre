@@ -38,6 +38,11 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
 {
     qDebug() << bbox;
     m_projection = bbox.split(":")[0];
+    if (m_projection == "RGFG95UTM22")
+    {
+        m_projection = "UTM22RGFG95";
+    }
+
     QStringList boundingBox = bbox.split(":")[1].split(",");
     m_boundingBox = QRectF(QPointF(boundingBox[0].toDouble(), boundingBox[3].toDouble()),
                            QPointF(boundingBox[2].toDouble(), boundingBox[1].toDouble()));
@@ -604,7 +609,7 @@ QList<QPointF> OSMGenerator::convertToEPSG4326(const QList<QPointF> &points)
     projPJ target;
 
     if (!(source = pj_init(1, argsSource)))
-        qFatal("Unable to initialize source projection");
+        qFatal(QString("Unable to initialize source projection %1").arg(m_projection).toLocal8Bit().data());
 
     if (!(target = pj_init(1, argsTarget)))
         qFatal("Unable to initialize target projection");
