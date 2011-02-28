@@ -42,6 +42,10 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
     {
         m_projection = "UTM22RGFG95";
     }
+    else if (m_projection == "RGR92UTM")
+    {
+        m_projection = "RGR92";
+    }
 
     QStringList boundingBox = bbox.split(":")[1].split(",");
     m_boundingBox = QRectF(QPointF(boundingBox[0].toDouble(), boundingBox[3].toDouble()),
