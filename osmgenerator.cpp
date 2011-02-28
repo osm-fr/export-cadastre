@@ -44,7 +44,7 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
     }
     else if (m_projection == "RGR92UTM")
     {
-        m_projection = "RGR92";
+        m_projection = "RGR92UTM40S";
     }
 
     QStringList boundingBox = bbox.split(":")[1].split(",");
