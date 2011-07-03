@@ -71,7 +71,7 @@ QMap<QString, QString> CadastreWrapper::listDepartments()
 {
     if (m_departmentsRequest && (m_departments.count() == 0)) {
         // Parse the answer
-        QRegExp optParser("<option value=\"(\\d+)\">(.*)</option>");
+        QRegExp optParser("<option value=\"(\\w+)\">(.*)</option>");
         optParser.setMinimal(true);
         QString code = QString::fromUtf8(m_departmentsRequest->readAll());
         QString options = code.split("<select name=\"codeDepartement\"")[1].split("</select>")[0];
@@ -102,7 +102,7 @@ QMap<QString, QString> CadastreWrapper::listCities(const QString &department)
     if ((m_citiesRequest.contains(department)) && (m_cities[department].count() == 0)) {
         QRegExp tableExtractor("<table.*class=\"resultat\".*>(.*)</table>");
         QRegExp titleExtractor("<strong>(.*) </strong>");
-        QRegExp codeExtractor("afficherCarteCommune.do\\?c=(.*)'");
+        QRegExp codeExtractor("ajoutArticle\\('(\\w*)',");
         tableExtractor.setMinimal(true);
         codeExtractor.setMinimal(true);
         QString code = QString::fromUtf8(m_citiesRequest[department]->readAll());
