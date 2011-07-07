@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core network gui
+QT       = core network gui sql
 
 TARGET = Qadastre2OSM
 CONFIG   += console
@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     graphicproducer.cpp \
     osmgenerator.cpp \
     vectorpath.cpp \
-    timeoutthread.cpp
+    timeoutthread.cpp \
+    qadastresql.cpp
 
 HEADERS += \
     cadastrewrapper.h \
@@ -27,6 +28,7 @@ HEADERS += \
     graphicproducer.h \
     osmgenerator.h \
     vectorpath.h \
-    timeoutthread.h
+    timeoutthread.h \
+    qadastresql.h
 
 LIBS += -lpodofo -lproj

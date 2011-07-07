@@ -17,19 +17,26 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
+#include <QStringList>
 #include "qadastre.h"
-
-#include "graphicproducer.h"
+#include "qadastresql.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    Qadastre *qadastre = new Qadastre(&a);
-
-    qadastre->start();
-    QObject::connect(qadastre, SIGNAL(finished()), qApp, SLOT(quit()));
+    if (a.arguments().contains("--sql"))
+    {
+        QadastreSQL *mainClass = new QadastreSQL(&a);
+        mainClass->run();
+    }
+    else
+    {
+        Qadastre *mainThread = new Qadastre(&a);
+        QObject::connect(mainThread, SIGNAL(finished()), qApp, SLOT(quit()));
+        mainThread->start();
+    }
 
     return a.exec();
 }
