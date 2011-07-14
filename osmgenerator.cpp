@@ -26,7 +26,6 @@
 #include <QDate>
 #include <QtConcurrentMap>
 #include <QCoreApplication>
-#include <proj_api.h>
 
 bool OSMPath::operator ==(const OSMPath &other) const {
     return ((other.path == this->path) && (other.points_position == this->points_position) && (other.tags == this->tags));
@@ -46,6 +45,16 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
     {
         m_projection = "RGR92UTM40S";
     }
+
+
+    char *argsSource[] = { QString("init=IGNF:%1").arg(m_projection).toLocal8Bit().data() };
+    char *argsTarget[] = { "init=epsg:4326" };
+
+    if (!(m_projection_source = pj_init(1, argsSource)))
+        qFatal(QString("Unable to initialize source projection %1").arg(m_projection).toLocal8Bit().data());
+
+    if (!(m_projection_target = pj_init(1, argsTarget)))
+        qFatal("Unable to initialize target projection");
 
     QStringList boundingBox = bbox.split(":")[1].split(",");
     m_boundingBox = QRectF(QPointF(boundingBox[0].toDouble(), boundingBox[3].toDouble()),
@@ -303,7 +312,7 @@ void OSMGenerator::parsingDone(bool result)
             }
         }
     }
-    qDebug() << "Churches not found :" << m_churches;
+    qDebug() << "Churches found :" << m_churches;
 
     if (!m_cityLimit.empty()) {
         VectorPath resultCityLimit;
@@ -356,50 +365,9 @@ void OSMGenerator::parsingDone(bool result)
     }
 }
 
-#if 0
-/*
-Multi thread is not possible with proj4, this is dangerous.
-We would need proj4 4.8, and it is not released yet (november 2010)
-*/
-struct OSMExecutor
-{
-    OSMExecutor(OSMGenerator *osmGenerator)
-    : m_osmGenerator(osmGenerator) { }
-
-    typedef void result_type;
-
-    void operator()(QPair<QString, QList<OSMPath> *> query)
-    {
-        return m_osmGenerator->dumpOSM(query);
-    }
-
-    OSMGenerator *m_osmGenerator;
-};
-
 void OSMGenerator::dumpOSMs(const QString &baseFileName)
 {
-    QList<QPair<QString, QList<OSMPath> *> > queries;
-    if (!m_waters.isEmpty())
-        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-water.osm", &m_waters);
-    if (!m_rails.isEmpty())
-        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-rails.osm", &m_rails);
-    if (!m_houses.isEmpty())
-        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-houses.osm", &m_houses);
-    if (!m_cemeteries.isEmpty())
-        queries << QPair<QString, QList<OSMPath> *>(baseFileName + "-cemeteries.osm", &m_cemeteries);
-
-    OSMExecutor executor(this);
-    QFuture<void> results = QtConcurrent::map(queries, executor);
-    results.waitForFinished();
-}
-
-void OSMGenerator::dumpOSM(QPair<QString, QList<OSMPath> *> query) {
-    return dumpOSM(query.first, query.second);
-}
-#endif
-
-void OSMGenerator::dumpOSMs(const QString &baseFileName)
-{
+    // Once proj 4.8 is available, one thread should be used for each category here
     if (!m_waters.isEmpty())
         dumpOSM(baseFileName + "-water.osm", &m_waters, true);
     if (!m_rails.isEmpty())
@@ -413,7 +381,6 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
     if (generateLands && !m_lands.isEmpty())
         dumpOSM(baseFileName + "-lands.osm", &m_lands);
 }
-
 
 void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool merge)
 {
@@ -522,17 +489,11 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                 writer.writeAttribute("v", tags.value());
                 ++tags;
             }
-
-            writer.writeEmptyElement("tag");
-            writer.writeAttribute("k", "note:qadastre");
-            writer.writeAttribute("v", "v0.2");
-
-            writer.writeEndElement();
             i++;
         } else {
             qDebug() << "We have a multipolygon" << path.points_position.count();
             
-			// Let's say the outer polygon is always the first one
+            // Let's say the outer polygon is always the first one
             int nOuter = path.path.getNOuter();
             QList<int> wayNumbers;
             foreach (QList<int> nodesPositions, path.points_position) {
@@ -558,12 +519,6 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                     }
                     nOuter--;
                 }
-
-                writer.writeEmptyElement("tag");
-                writer.writeAttribute("k", "note:qadastre");
-                writer.writeAttribute("v", "v0.2");
-
-                writer.writeEndElement();
                 i++;
             }
 
@@ -607,20 +562,9 @@ QList<QPointF> OSMGenerator::convertToEPSG4326(const QList<QPointF> &points)
         pointsY[i] = m_boundingBox.top() - m_boundingBox.height() * (points[i].y() / m_pdfBoundingBox.height() - 1);
     }
 
-    char *argsSource[] = { QString("init=IGNF:%1").arg(m_projection).toLocal8Bit().data() };
-    char *argsTarget[] = { "init=epsg:4326" };
-    projPJ source;
-    projPJ target;
-
-    if (!(source = pj_init(1, argsSource)))
-        qFatal(QString("Unable to initialize source projection %1").arg(m_projection).toLocal8Bit().data());
-
-    if (!(target = pj_init(1, argsTarget)))
-        qFatal("Unable to initialize target projection");
-
-    int transform = pj_transform(source, target, points.count(), 1, pointsX, pointsY, 0);
+    int transform = pj_transform(m_projection_source, m_projection_target, points.count(), 1, pointsX, pointsY, 0);
     if (transform != 0)
-        qFatal("Error while trasforming");
+        qFatal("Error while transforming");
 
     QList<QPointF> result;
     #if QT_VERSION >= 0x040700

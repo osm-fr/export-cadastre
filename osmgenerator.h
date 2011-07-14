@@ -25,6 +25,7 @@
 #include <QPainterPath>
 #include <QMap>
 #include <QPointF>
+#include <proj_api.h>
 #include "vectorpath.h"
 #include "graphicproducer.h"
 
@@ -50,14 +51,15 @@ public slots:
     void strikePath(const VectorPath &path, const GraphicContext &context);
     void fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule);
     void parsingDone(bool result);
-    // Unusable so far, see comment in osmgenerator.cpp
-    //void dumpOSM(QPair<QString, QList<OSMPath> *> query);
 private:
     void dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool merge = false);
 
     QList<QPointF> convertToEPSG4326(const QList<QPointF> &points);
 
     QString m_projection;
+    projPJ m_projection_source;
+    projPJ m_projection_target;
+
     QRectF m_boundingBox, m_pdfBoundingBox;
     QPainterPath m_border;
     QList<OSMPath> m_houses;
