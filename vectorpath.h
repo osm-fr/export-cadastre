@@ -51,7 +51,7 @@ public:
 
     bool operator==(const VectorPath &other) const;
     void addSubpath(const QPolygonF &polygon, bool inner);
-    int getNOuter();
+    int getNOuter() const;
 
 private:
     void convertToPainterPath();

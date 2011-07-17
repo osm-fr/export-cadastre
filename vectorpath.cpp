@@ -47,7 +47,7 @@ VectorPath::VectorPath(const QPolygonF &polygon)
     m_polygons << polygon;
 }
 
-int VectorPath::getNOuter() {
+int VectorPath::getNOuter() const {
     return nOuter;
 }
 

@@ -46,7 +46,6 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
         m_projection = "RGR92UTM40S";
     }
 
-
     char *argsSource[] = { QString("init=IGNF:%1").arg(m_projection).toLocal8Bit().data() };
     char *argsTarget[] = { "init=epsg:4326" };
 
@@ -63,6 +62,7 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
 
 void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule)
 {
+    Q_UNUSED(fillRule);
     if (context.pen.widthF() > 10)
         qDebug() << "huge pen ?" << context.pen.widthF();
     if (context.brush.color() == QColor(255, 204, 51)) {
@@ -113,7 +113,7 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
         // Ensure poly closed
         QList<QPolygonF> polygons = path.toSubpathPolygons();
         bool poly = false;
-        foreach (QPolygonF polygon, polygons) {
+        foreach (const QPolygonF &polygon, polygons) {
           poly = poly || polygon.isClosed();
         }
         if (poly) {
@@ -158,7 +158,7 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
                 } else if (line.dx() == 0) {
                     // This is a vLine, check it against hLines first
                     bool found = false;
-                    foreach (QLineF hLine, m_hLines) {
+                    foreach (const QLineF &hLine, m_hLines) {
                         QPointF cross;
                         if (hLine.intersect(line, &cross)) {
                             if ((cross.x() - hLine.x1()) == (hLine.x2() - cross.x())) {
@@ -198,6 +198,11 @@ bool polygonLess(const QPolygonF &p1, const QPolygonF &p2) {
 
 void OSMGenerator::parsingDone(bool result)
 {
+    if (!result)
+    {
+        qFatal("Parsing failed");
+        return;
+    }
     qDebug() << "I found " << m_houses.count() << " houses";
     qDebug() << "I found " << m_rails.count() << " rails";
     qDebug() << "I found " << m_waters.count() << " water";
@@ -208,8 +213,8 @@ void OSMGenerator::parsingDone(bool result)
     // TODO here : merge paths when they share points (or in dumpOSM when enumerating the points ?)...
     // Detect cemeteries
     qDebug() << "Number of possible cross lines : " << m_vLines.count() << m_hLines.count();
-    foreach (QLineF hLine, m_hLines) {
-        foreach (QLineF vLine, m_vLines) {
+    foreach (const QLineF &hLine, m_hLines) {
+        foreach (const QLineF &vLine, m_vLines) {
             QPointF cross;
             if (hLine.intersect(vLine, &cross)) {
                 if ((cross.x() - hLine.x1()) == (hLine.x2() - cross.x())) {
@@ -226,9 +231,9 @@ void OSMGenerator::parsingDone(bool result)
     qDebug() << "I found " << m_crosses.count() << " crosses.";
     qDebug() << "Gonna check against " << m_closedPolygons.count() << " elements.";
     QPainterPath candidateCemeteries;
-    foreach(QPolygonF polygon, m_closedPolygons) {
+    foreach(const QPolygonF &polygon, m_closedPolygons) {
         int countCrosses = 0;
-        foreach(QPointF cross, m_crosses) {
+        foreach(const QPointF &cross, m_crosses) {
             if ((polygon.containsPoint(cross, Qt::OddEvenFill)) || (polygon.containsPoint(cross, Qt::WindingFill))) {
                 countCrosses++;
                 m_crosses.removeOne(cross);
@@ -243,7 +248,7 @@ void OSMGenerator::parsingDone(bool result)
     qDebug() << "Now I've got " << candidateCemeteries.elementCount() << " candidates.";
 
     QList<QPolygonF> cemeteries_final = candidateCemeteries.simplified().toSubpathPolygons();
-    foreach(QPolygonF cemetery, cemeteries_final) {
+    foreach(const QPolygonF &cemetery, cemeteries_final) {
         OSMPath result;
         result.path = VectorPath(cemetery);
         result.tags["landuse"] = "cemetery";
@@ -251,11 +256,11 @@ void OSMGenerator::parsingDone(bool result)
     }
 
     // Detect churchs
-    foreach (QLineF railLine, m_railLines) {
+    foreach (const QLineF &railLine, m_railLines) {
         qDebug() << railLine;
         QList<QLineF> intersecting;
         QList<QPointF> crosses;
-        foreach (QLineF railLine2, m_railLines) {
+        foreach (const QLineF &railLine2, m_railLines) {
             qDebug() << railLine2;
             if (railLine2 == railLine)
                 continue;
@@ -279,7 +284,7 @@ void OSMGenerator::parsingDone(bool result)
     if (!m_churches.isEmpty()) {
         qDebug() << "I've got a church, find the useless rails now !";
         int idx = 0;
-        foreach (OSMPath railPath, m_rails) {
+        foreach (const OSMPath &railPath, m_rails) {
             if ((!railPath.path.isPainterPath()) && (railPath.path.pathCount() == 1)) {
                 QPolygonF polygon = railPath.path.toSubpathPolygons().first();
                 if (polygon.count() == 2) {
@@ -297,7 +302,7 @@ void OSMGenerator::parsingDone(bool result)
             if (!(*itHouse).path.isPainterPath()) {
                 QPolygonF poly = (*itHouse).path.toSubpathPolygons().first();
                 bool found = false;
-                foreach (QPointF church, m_churches) {
+                foreach (const QPointF &church, m_churches) {
                     if (poly.containsPoint(church, Qt::WindingFill)) {
                         (*itHouse).tags.insert("amenity", "place_of_worship");
                         (*itHouse).tags.insert("denomination", "catholic");
@@ -321,7 +326,7 @@ void OSMGenerator::parsingDone(bool result)
 
         // Disassemble OSMPath
         QList<QPolygonF> polygons0;
-        foreach(OSMPath osmPath, m_cityLimit) {
+        foreach(const OSMPath &osmPath, m_cityLimit) {
             polygons0 << osmPath.path.toSubpathPolygons();
         }
 
@@ -340,7 +345,7 @@ void OSMGenerator::parsingDone(bool result)
             bool is_inner = false;
             for(QList<QPolygonF>::iterator ip2 = polygons.begin(); ip2 != polygons.end() ; ++ip2) {
                 if(*ip1 != *ip2) {
-                    foreach(QPointF point1, *ip1) {
+                    foreach(const QPointF &point1, *ip1) {
                         if(ip2->containsPoint(point1, Qt::WindingFill)) {
                             // polygon1 is inside polygon2
                             is_inner = true;
@@ -387,11 +392,11 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
     if (merge) {
         QList<OSMPath> new_paths;
         QList<QRectF> bounding_boxes;
-        foreach (OSMPath path, *paths) {
+        foreach (const OSMPath &path, *paths) {
             QRectF bounding_box = path.path.boundingRect();
             bool found = false;
             int i = 0;
-            foreach (QRectF bounding, bounding_boxes) {
+            foreach (const QRectF &bounding, bounding_boxes) {
                 if (bounding.intersects(bounding_box)) {
                     if ((new_paths[i].path.toPainterPath().intersects(path.path.toPainterPath())) && (new_paths[i].tags == path.tags)) {
                         new_paths[i].path = VectorPath(new_paths[i].path.toPainterPath().united(path.path.toPainterPath()));
@@ -437,11 +442,11 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
     foreach (OSMPath path, *paths) {
         QList<QPolygonF> sub_polygons = path.path.toSubpathPolygons();
         path.points_position.clear();
-        foreach (QPolygonF sub_polygon, sub_polygons) {
+        foreach (const QPolygonF &sub_polygon, sub_polygons) {
             if (sub_polygon.isEmpty())
                 continue;
             QList<int> sub_points;
-            foreach (QPointF pt, sub_polygon) {
+            foreach (const QPointF &pt, sub_polygon) {
                 int pos = nodes.indexOf(pt);
                 if (pos == -1) {
                     pos = nodes.length();
@@ -460,7 +465,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
     QList<QPointF> tNodes = convertToEPSG4326(nodes);
 
     int i = 1;
-    foreach (QPointF node, tNodes) {
+    foreach (const QPointF &node, tNodes) {
         writer.writeEmptyElement("node");
         writer.writeAttribute("id", QString::number(-i));
         writer.writeAttribute("lat", QString::number(node.y(), 'f'));
@@ -469,7 +474,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
     }
 
     i = 1;
-    foreach (OSMPath path, goodPaths) {
+    foreach (const OSMPath &path, goodPaths) {
         if (path.points_position.count() == 1) {
             writer.writeStartElement("way");
             writer.writeAttribute("id", QString::number(-i));
@@ -496,7 +501,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
             // Let's say the outer polygon is always the first one
             int nOuter = path.path.getNOuter();
             QList<int> wayNumbers;
-            foreach (QList<int> nodesPositions, path.points_position) {
+            foreach (const QList<int> &nodesPositions, path.points_position) {
                 writer.writeStartElement("way");
                 writer.writeAttribute("id", QString::number(-i));
                 wayNumbers << -i;
