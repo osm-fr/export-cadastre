@@ -624,7 +624,6 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
         std::vector<geos::geom::Geometry*> geoPolygons;
 
         foreach (const QPolygonF qPoly, sub_polygons) {
-            qDebug() << "Looping";
             if (geoPolygons.size())
                 qDebug() << QString::fromStdString(geoPolygons[0]->toString());
             if (qPoly.isEmpty())
@@ -637,20 +636,21 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
                 {
                     coords->push_back(geos::geom::Coordinate(pt.x(), pt.y()));
                 }
+                if (pts.first() != pts.last())
+                    coords->push_back(geos::geom::Coordinate(pts.first().x(), pts.first().y()));
                 geos::geom::CoordinateSequence *seq = factory.getCoordinateSequenceFactory()->create(coords);
                 geos::geom::LinearRing *ring = factory.createLinearRing(seq);
                 geos::geom::Polygon *poly = factory.createPolygon(ring, 0);
                 geoPolygons.push_back(poly);
             }
         }
-        qDebug() << "Done looping";
 
         qDebug() << QString::fromStdString(geoPolygons[0]->toString());
         geos::geom::MultiPolygon *mPoly = factory.createMultiPolygon(geoPolygons);
         QString wkt = QString::fromStdString(mPoly->toString());
 
         int houseId;
-        qDebug() << "Created a multi-polygon to check : " << wkt << geoPolygons.size();
+        qDebug() << "Created a multi-polygon to check";
         if (wkt.contains("00000"))
             qFatal("I'm dead !");
         QSqlQuery qry;

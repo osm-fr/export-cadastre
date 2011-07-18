@@ -25,6 +25,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QEventLoop>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QStringList>
@@ -62,7 +63,6 @@ void QadastreSQL::importDepartments()
 
 void QadastreSQL::importDepartmentCities(const QString &department)
 {
-
     qDebug() << "Importing one department";
 
     // Import them in database
@@ -191,6 +191,8 @@ void QadastreSQL::run()
         connect(m_cadastre, SIGNAL(departmentAvailable()), this, SLOT(importDepartments()));
         connect(m_cadastre, SIGNAL(citiesAvailable(QString)), this, SLOT(importDepartmentCities(QString)));
         m_cadastre->requestDepartmentList();
+        QEventLoop loop;
+        qApp->exit(loop.exec());
     } else if ((arguments.length() == 2)  && (arguments[0] == "--convert")) {
         /*QThread *tthread = new TimeoutThread(120*60, "Timeout on convert");
         tthread->start();
