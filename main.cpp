@@ -30,13 +30,13 @@ int main(int argc, char *argv[])
     {
         QadastreSQL *mainClass = new QadastreSQL(&a);
         mainClass->run();
+        return -1;
     }
     else
     {
         Qadastre *mainThread = new Qadastre(&a);
         QObject::connect(mainThread, SIGNAL(finished()), qApp, SLOT(quit()));
         mainThread->start();
+        return a.exec();
     }
-
-    return a.exec();
 }
