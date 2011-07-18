@@ -573,8 +573,8 @@ void OSMGenerator::dumpSQLs(const QSqlDatabase &db, int cityId, int importId)
     qDebug() << "dump sqls !";
     if (!m_waters.isEmpty())
         dumpSQL(db, cityId, importId, "water", &m_waters, true);
-    if (!m_rails.isEmpty())
-        dumpSQL(db, cityId, importId, "rail", &m_rails);
+/*    if (!m_rails.isEmpty())
+        dumpSQL(db, cityId, importId, "rail", &m_rails);*/
     if (!m_houses.isEmpty())
         dumpSQL(db, cityId, importId, "house", &m_houses);
     if (!m_cemeteries.isEmpty())
@@ -585,6 +585,7 @@ void OSMGenerator::dumpSQLs(const QSqlDatabase &db, int cityId, int importId)
 
 void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, const QString &type, QList<OSMPath> *paths, bool merge)
 {
+    QString realType = type;
     if (merge) {
         QList<OSMPath> new_paths;
         QList<QRectF> bounding_boxes;
@@ -619,87 +620,93 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
     QList<int> polygonIds;
 
     foreach (const OSMPath &path, *paths) {
+        if ((path.tags.contains("amenity")) && (path.tags["amenity"] == "place_of_worship"))
+            realType = "church";
         QList<QPolygonF> sub_polygons = path.path.toSubpathPolygons();
 
         std::vector<geos::geom::Geometry*> geoPolygons;
 
         foreach (const QPolygonF qPoly, sub_polygons) {
-            if (geoPolygons.size())
-                qDebug() << QString::fromStdString(geoPolygons[0]->toString());
             if (qPoly.isEmpty())
                 continue;
+            if (!qPoly.isClosed())
+            {
+                qDebug() << "hara-kiri : " << type << realType << qPoly;
+                qFatal("Banzai");
+            }
             QList<QPointF> pts = convertToEPSG4326(qPoly.toList());
-            if (pts.size() > 0) {
+            if (pts.size() > 3) {
                 qDebug() << "Working on the points";
                 std::vector<geos::geom::Coordinate> *coords = new std::vector<geos::geom::Coordinate>;
                 foreach (const QPointF pt, pts)
                 {
                     coords->push_back(geos::geom::Coordinate(pt.x(), pt.y()));
                 }
-                if (pts.first() != pts.last())
-                    coords->push_back(geos::geom::Coordinate(pts.first().x(), pts.first().y()));
                 geos::geom::CoordinateSequence *seq = factory.getCoordinateSequenceFactory()->create(coords);
                 geos::geom::LinearRing *ring = factory.createLinearRing(seq);
                 geos::geom::Polygon *poly = factory.createPolygon(ring, 0);
                 geoPolygons.push_back(poly);
+            } else if (pts.size() > 0) {
+                qDebug() << "Really weird !!!";
+                qDebug() << type << realType << pts;
             }
         }
 
-        qDebug() << QString::fromStdString(geoPolygons[0]->toString());
-        geos::geom::MultiPolygon *mPoly = factory.createMultiPolygon(geoPolygons);
-        QString wkt = QString::fromStdString(mPoly->toString());
+        if (geoPolygons.size()) {
+            geos::geom::MultiPolygon *mPoly = factory.createMultiPolygon(geoPolygons);
+            QString wkt = QString::fromStdString(mPoly->toString());
 
-        int houseId;
-        qDebug() << "Created a multi-polygon to check";
-        if (wkt.contains("00000"))
-            qFatal("I'm dead !");
-        QSqlQuery qry;
-        qry.prepare("SELECT id FROM houses WHERE \"type\"=:t AND city=:c AND geom=setsrid(st_geomfromewkt(:g), 4326) AND substring(geom::bytea for 2048) = substring(setsrid(st_geomfromewkt(:g2), 4326)::bytea for 2048)");
-        qry.bindValue(":t", type);
-        qry.bindValue(":c", cityId);
-        qry.bindValue(":g", wkt);
-        qry.bindValue(":g2", wkt);
+            int houseId;
+            qDebug() << "Created a multi-polygon to check";
+            QSqlQuery qry;
+            qry.prepare("SELECT id FROM houses WHERE \"type\"=:t AND city=:c AND geom=setsrid(st_geomfromewkt(:g), 4326) AND substring(geom::bytea for 2048) = substring(setsrid(st_geomfromewkt(:g2), 4326)::bytea for 2048)");
+            qry.bindValue(":t", realType);
+            qry.bindValue(":c", cityId);
+            qry.bindValue(":g", wkt);
+            qry.bindValue(":g2", wkt);
 
-        if (!qry.exec()) {
-            qDebug() << "In selection :";
-            qFatal(qry.lastError().text().toLocal8Bit());
-            qApp->exit(-2);
-            return;
-        }
-
-        if (qry.next()) {
-            houseId = qry.value(0).toInt();
-        } else {
-            // Insert the polygon now
-            qDebug() << "Inserting ?";
-            QSqlQuery insertQry;
-            insertQry.prepare("INSERT INTO houses(city, \"type\", geom) VALUES (:c, :t, setsrid(st_geomfromewkt(:g)::geometry, 4326)) RETURNING id");
-            insertQry.bindValue(":t", type);
-            insertQry.bindValue(":c", cityId);
-            insertQry.bindValue(":g", wkt);
-
-            if (!insertQry.exec()) {
-                qDebug() << "In polygon insertion :";
-                qFatal(insertQry.lastError().text().toLocal8Bit());
+            if (!qry.exec()) {
+                qDebug() << "In selection :";
+                qFatal(qry.lastError().text().toLocal8Bit());
                 qApp->exit(-2);
                 return;
             }
 
-            if (insertQry.next()) {
-                houseId = insertQry.value(0).toInt();
-            }
-        }
+            if (qry.next()) {
+                houseId = qry.value(0).toInt();
+            } else {
+                // Insert the polygon now
+                qDebug() << "Inserting ?";
+                QSqlQuery insertQry;
+                insertQry.prepare("INSERT INTO houses(city, \"type\", geom) VALUES (:c, :t, setsrid(st_geomfromewkt(:g)::geometry, 4326)) RETURNING id");
+                insertQry.bindValue(":t", realType);
+                insertQry.bindValue(":c", cityId);
+                insertQry.bindValue(":g", wkt);
 
-        if (polygonIds.contains(houseId)) {
-            qWarning("Duplicate polygon");
+                if (!insertQry.exec()) {
+                    qDebug() << "In polygon insertion :";
+                    qFatal(insertQry.lastError().text().toLocal8Bit());
+                    qApp->exit(-2);
+                    return;
+                }
+
+                if (insertQry.next()) {
+                    houseId = insertQry.value(0).toInt();
+                }
+            }
+
+            if (polygonIds.contains(houseId)) {
+                qWarning("Duplicate polygon");
+            } else {
+                polygonIds << houseId;
+            }
         } else {
-            polygonIds << houseId;
+            // Nothing so far
         }
     }
 
     qDebug() << "Done inserting all polygons !";
     // Insert all there polygonIds
-    //cur.executemany('INSERT INTO import_houses (import, house) VALUES (%s, %s)', (((import_id, x) for x in final_houses)))
     QSqlQuery insertImportHouse;
     insertImportHouse.prepare("INSERT INTO import_houses (import, house) VALUES (:i, :h)");
     foreach (int polygonId, polygonIds)
