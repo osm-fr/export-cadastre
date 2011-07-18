@@ -20,12 +20,20 @@
 #include "osmgenerator.h"
 #include <QDebug>
 #include <QFile>
+#include <QVariant>
 #include <QRegExp>
 #include <QStringList>
 #include <QXmlStreamWriter>
 #include <QDate>
-#include <QtConcurrentMap>
 #include <QCoreApplication>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <geos/geom/CoordinateSequenceFactory.h>
+#include <geos/geom/GeometryFactory.h>
+#include <geos/geom/PrecisionModel.h>
+#include <geos/geom/MultiPolygon.h>
+#include <geos/geom/LinearRing.h>
+#include <geos/geom/Polygon.h>
 
 bool OSMPath::operator ==(const OSMPath &other) const {
     return ((other.path == this->path) && (other.points_position == this->points_position) && (other.tags == this->tags));
@@ -46,8 +54,10 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
         m_projection = "RGR92UTM40S";
     }
 
-    char *argsSource[] = { QString("init=IGNF:%1").arg(m_projection).toLocal8Bit().data() };
-    char *argsTarget[] = { "init=epsg:4326" };
+    char **argsSource = (char**) malloc(sizeof(char*));
+    argsSource[0] = QString("init=IGNF:%1").arg(m_projection).toLocal8Bit().data();
+    char **argsTarget = (char**) malloc(sizeof(char*));
+    argsTarget[0] = "init=epsg:4326";
 
     if (!(m_projection_source = pj_init(1, argsSource)))
         qFatal(QString("Unable to initialize source projection %1").arg(m_projection).toLocal8Bit().data());
@@ -58,6 +68,7 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
     QStringList boundingBox = bbox.split(":")[1].split(",");
     m_boundingBox = QRectF(QPointF(boundingBox[0].toDouble(), boundingBox[3].toDouble()),
                            QPointF(boundingBox[2].toDouble(), boundingBox[1].toDouble()));
+    qDebug() << "bb :" << m_boundingBox;
 }
 
 void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule)
@@ -555,6 +566,151 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
     writer.writeEndElement(); // osm
 
     writer.writeEndDocument();
+}
+
+void OSMGenerator::dumpSQLs(const QSqlDatabase &db, int cityId, int importId)
+{
+    qDebug() << "dump sqls !";
+    if (!m_waters.isEmpty())
+        dumpSQL(db, cityId, importId, "water", &m_waters, true);
+    if (!m_rails.isEmpty())
+        dumpSQL(db, cityId, importId, "rail", &m_rails);
+    if (!m_houses.isEmpty())
+        dumpSQL(db, cityId, importId, "house", &m_houses);
+    if (!m_cemeteries.isEmpty())
+        dumpSQL(db, cityId, importId, "cemetery", &m_cemeteries);
+    if (!m_cityLimit.isEmpty())
+        dumpSQL(db, cityId, importId, "city-limit", &m_cityLimit);
+}
+
+void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, const QString &type, QList<OSMPath> *paths, bool merge)
+{
+    if (merge) {
+        QList<OSMPath> new_paths;
+        QList<QRectF> bounding_boxes;
+        foreach (const OSMPath &path, *paths) {
+            QRectF bounding_box = path.path.boundingRect();
+            bool found = false;
+            int i = 0;
+            foreach (const QRectF &bounding, bounding_boxes) {
+                if (bounding.intersects(bounding_box)) {
+                    if ((new_paths[i].path.toPainterPath().intersects(path.path.toPainterPath())) && (new_paths[i].tags == path.tags)) {
+                        new_paths[i].path = VectorPath(new_paths[i].path.toPainterPath().united(path.path.toPainterPath()));
+                        bounding_boxes[i] = bounding.united(bounding_box);
+                        found = true;
+                        break;
+                    }
+                }
+                i++;
+            }
+            if (!found) {
+                new_paths.append(path);
+                bounding_boxes.append(bounding_box);
+            }
+        }
+        *paths = new_paths;
+    }
+
+    geos::geom::PrecisionModel precision;
+    geos::geom::GeometryFactory factory(&precision, 4326);
+
+    qDebug() << "Done extracting nodes";
+
+    QList<int> polygonIds;
+
+    foreach (const OSMPath &path, *paths) {
+        QList<QPolygonF> sub_polygons = path.path.toSubpathPolygons();
+
+        std::vector<geos::geom::Geometry*> geoPolygons;
+
+        foreach (const QPolygonF qPoly, sub_polygons) {
+            qDebug() << "Looping";
+            if (geoPolygons.size())
+                qDebug() << QString::fromStdString(geoPolygons[0]->toString());
+            if (qPoly.isEmpty())
+                continue;
+            QList<QPointF> pts = convertToEPSG4326(qPoly.toList());
+            if (pts.size() > 0) {
+                qDebug() << "Working on the points";
+                std::vector<geos::geom::Coordinate> *coords = new std::vector<geos::geom::Coordinate>;
+                foreach (const QPointF pt, pts)
+                {
+                    coords->push_back(geos::geom::Coordinate(pt.x(), pt.y()));
+                }
+                geos::geom::CoordinateSequence *seq = factory.getCoordinateSequenceFactory()->create(coords);
+                geos::geom::LinearRing *ring = factory.createLinearRing(seq);
+                geos::geom::Polygon *poly = factory.createPolygon(ring, 0);
+                geoPolygons.push_back(poly);
+            }
+        }
+        qDebug() << "Done looping";
+
+        qDebug() << QString::fromStdString(geoPolygons[0]->toString());
+        geos::geom::MultiPolygon *mPoly = factory.createMultiPolygon(geoPolygons);
+        QString wkt = QString::fromStdString(mPoly->toString());
+
+        int houseId;
+        qDebug() << "Created a multi-polygon to check : " << wkt << geoPolygons.size();
+        if (wkt.contains("00000"))
+            qFatal("I'm dead !");
+        QSqlQuery qry;
+        qry.prepare("SELECT id FROM houses WHERE \"type\"=:t AND city=:c AND geom=setsrid(st_geomfromewkt(:g), 4326) AND substring(geom::bytea for 2048) = substring(setsrid(st_geomfromewkt(:g2), 4326)::bytea for 2048)");
+        qry.bindValue(":t", type);
+        qry.bindValue(":c", cityId);
+        qry.bindValue(":g", wkt);
+        qry.bindValue(":g2", wkt);
+
+        if (!qry.exec()) {
+            qDebug() << "In selection :";
+            qFatal(qry.lastError().text().toLocal8Bit());
+            qApp->exit(-2);
+            return;
+        }
+
+        if (qry.next()) {
+            houseId = qry.value(0).toInt();
+        } else {
+            // Insert the polygon now
+            qDebug() << "Inserting ?";
+            QSqlQuery insertQry;
+            insertQry.prepare("INSERT INTO houses(city, \"type\", geom) VALUES (:c, :t, setsrid(st_geomfromewkt(:g)::geometry, 4326)) RETURNING id");
+            insertQry.bindValue(":t", type);
+            insertQry.bindValue(":c", cityId);
+            insertQry.bindValue(":g", wkt);
+
+            if (!insertQry.exec()) {
+                qDebug() << "In polygon insertion :";
+                qFatal(insertQry.lastError().text().toLocal8Bit());
+                qApp->exit(-2);
+                return;
+            }
+
+            if (insertQry.next()) {
+                houseId = insertQry.value(0).toInt();
+            }
+        }
+
+        if (polygonIds.contains(houseId)) {
+            qWarning("Duplicate polygon");
+        } else {
+            polygonIds << houseId;
+        }
+    }
+
+    qDebug() << "Done inserting all polygons !";
+    // Insert all there polygonIds
+    //cur.executemany('INSERT INTO import_houses (import, house) VALUES (%s, %s)', (((import_id, x) for x in final_houses)))
+    QSqlQuery insertImportHouse;
+    insertImportHouse.prepare("INSERT INTO import_houses (import, house) VALUES (:i, :h)");
+    foreach (int polygonId, polygonIds)
+    {
+        insertImportHouse.bindValue(":h", polygonId);
+        insertImportHouse.bindValue(":i", importId);
+        if (!insertImportHouse.exec()) {
+            qDebug() << "In import_house insertion :";
+            qFatal(insertImportHouse.lastError().text().toLocal8Bit());
+        }
+    }
 }
 
 QList<QPointF> OSMGenerator::convertToEPSG4326(const QList<QPointF> &points)

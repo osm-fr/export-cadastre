@@ -25,7 +25,7 @@
 #include <QSqlDatabase>
 #include "cadastrewrapper.h"
 
-class QadastreSQL : public QObject//QThread
+class QadastreSQL : public QObject
 {
     Q_OBJECT
 public:
@@ -39,6 +39,7 @@ public slots:
 private slots:
     void importDepartments();
     void importDepartmentCities(const QString &department);
+    void convert(const QString &code);
 
 private:
     CadastreWrapper *m_cadastre;

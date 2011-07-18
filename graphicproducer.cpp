@@ -22,12 +22,17 @@
 #include <QRegExp>
 #include <QDebug>
 #include <QList>
+
+#include <podofo/podofo-base.h>
+/*
+  PODOFO is *definitely* not a serious library regarding compatibility
+#include <podofo/podofo_config.h>
 #include <podofo/PdfDictionary.h>
 #include <podofo/PdfObject.h>
 #include <podofo/PdfParser.h>
 #include <podofo/PdfStream.h>
 #include <podofo/PdfVecObjects.h>
-#include <podofo/podofo_config.h>
+*/
 #include "vectorpath.h"
 #include <cstdlib>
 #include <errno.h>

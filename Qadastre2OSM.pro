@@ -31,4 +31,4 @@ HEADERS += \
     timeoutthread.h \
     qadastresql.h
 
-LIBS += -lpodofo -lproj
+LIBS += -lpodofo -lproj -lgeos

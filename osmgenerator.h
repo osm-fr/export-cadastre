@@ -25,6 +25,7 @@
 #include <QPainterPath>
 #include <QMap>
 #include <QPointF>
+#include <QSqlDatabase>
 #include <proj_api.h>
 #include "vectorpath.h"
 #include "graphicproducer.h"
@@ -44,6 +45,7 @@ public:
     explicit OSMGenerator(const QString &bbox, const bool lands, QObject *parent = 0);
 
     void dumpOSMs(const QString &baseFileName);
+    void dumpSQLs(const QSqlDatabase &db, int cityId, int importId);
 
 signals:
 
@@ -53,6 +55,7 @@ public slots:
     void parsingDone(bool result);
 private:
     void dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool merge = false);
+    void dumpSQL(const QSqlDatabase &db, int cityId, int importId, const QString &type, QList<OSMPath> *paths, bool merge = false);
 
     QList<QPointF> convertToEPSG4326(const QList<QPointF> &points);
 

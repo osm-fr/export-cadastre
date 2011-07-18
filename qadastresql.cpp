@@ -19,12 +19,17 @@
 
 #include "qadastresql.h"
 #include "cadastrewrapper.h"
+#include "osmgenerator.h"
+#include "timeoutthread.h"
+
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QStringList>
+#include <QFile>
+#include <iostream>
 
 QadastreSQL::QadastreSQL(QObject *parent) :
     QObject(parent)
@@ -63,7 +68,7 @@ void QadastreSQL::importDepartmentCities(const QString &department)
     // Import them in database
     db.transaction();
     QSqlQuery insertCity;
-    insertCity.prepare("INSERT INTO cities(department, \"code\", name) VALUES (:dept, :code, :name);");
+    insertCity.prepare("INSERT INTO cities(department, \"code\", name, post_code) VALUES (:dept, :code, :name, :post_code);");
     QMap<QString, QString> cities = m_cadastre->listCities(department);
     qDebug() << cities << "for" << department;
     QMap<QString, QString>::const_iterator cityIterator = cities.constBegin();
@@ -72,10 +77,15 @@ void QadastreSQL::importDepartmentCities(const QString &department)
         qDebug() << "Inserting one city ?";
         insertCity.bindValue(":dept", department);
         insertCity.bindValue(":code", cityIterator.key());
-        insertCity.bindValue(":name", cityIterator.value());
+        QString cityName = cityIterator.value();
+        int lastParent = cityName.lastIndexOf('(');
+        insertCity.bindValue(":name", cityName.left(lastParent - 1));
+        insertCity.bindValue(":post_code", cityName.mid(lastParent + 1, cityName.length() - lastParent - 2));
         if (!insertCity.exec())
         {
             qDebug() << "Failed !";
+            qDebug() << insertCity.lastError();
+            qFatal("SQL failure");
         }
         cityIterator++;
     }
@@ -90,6 +100,70 @@ void QadastreSQL::importDepartmentCities(const QString &department)
     {
         qApp->exit(0);
     }
+}
+
+void QadastreSQL::convert(const QString &code)
+{
+
+    db.transaction();
+
+    QSqlQuery findCity;
+    findCity.prepare("SELECT id, name FROM cities WHERE code=:code;");
+    findCity.bindValue(":code", code);
+    if ((!findCity.exec()) || (!findCity.next()))
+    {
+        qFatal("Could not get city informations");
+        return;
+    }
+    QString name = findCity.value(1).toString();
+    int cityId = findCity.value(0).toInt();
+    findCity.finish();
+
+    // Get a new import id
+    QSqlQuery insertImport;
+    insertImport.prepare("INSERT INTO imports (city) VALUES (:cityId) RETURNING id");
+    insertImport.bindValue(":cityId", cityId);
+    if ((!insertImport.exec()) || (!insertImport.next()))
+    {
+        qFatal("Could not get an import id");
+        return;
+    }
+
+    int importId = insertImport.value(0).toInt();
+
+    qRegisterMetaType<VectorPath>("VectorPath");
+    qRegisterMetaType<GraphicContext>("GraphicContext");
+    qRegisterMetaType<Qt::FillRule>("Qt::FillRule");
+
+    QString pdfName = QString("%1-%2.pdf").arg(code, name);
+    QString bboxName = QString("%1-%2.bbox").arg(code, name);
+    if ((!QFile::exists(pdfName)) || !QFile::exists(bboxName)) {
+        qDebug() << pdfName;
+        std::cerr << "Download the data first" << std::endl;
+        qApp->exit(-1);
+        qFatal("Dead");
+        return;
+    }
+
+    QFile bboxReader(bboxName);
+    bboxReader.open(QIODevice::ReadOnly);
+    QString bbox = bboxReader.readAll();
+    bboxReader.close();
+
+    GraphicProducer *gp = new GraphicProducer();
+    OSMGenerator *og = new OSMGenerator(bbox, false, this);
+    connect(gp, SIGNAL(fillPath(VectorPath,GraphicContext,Qt::FillRule)), og, SLOT(fillPath(VectorPath,GraphicContext,Qt::FillRule)));
+    connect(gp, SIGNAL(strikePath(VectorPath,GraphicContext)), og, SLOT(strikePath(VectorPath,GraphicContext)));
+    connect(gp, SIGNAL(parsingDone(bool)), og, SLOT(parsingDone(bool)));
+    gp->parsePDF(pdfName);
+    gp->deleteLater();
+
+    og->dumpSQLs(db, cityId, importId);
+    db.commit();
+
+    og->deleteLater();
+    qDebug() << "Over !";
+    qApp->exit(0);
 }
 
 void QadastreSQL::run()
@@ -110,11 +184,20 @@ void QadastreSQL::run()
     arguments.removeAll("--sql");
     arguments.removeFirst();
 
+    qDebug() << "Args : " << arguments;
     if ((arguments.length() == 1) && (arguments[0] == "--initial-import"))
     {
         qDebug() << "Launching initial import : listing all departments from qadastre, then all cities";
         connect(m_cadastre, SIGNAL(departmentAvailable()), this, SLOT(importDepartments()));
         connect(m_cadastre, SIGNAL(citiesAvailable(QString)), this, SLOT(importDepartmentCities(QString)));
         m_cadastre->requestDepartmentList();
+    } else if ((arguments.length() == 2)  && (arguments[0] == "--convert")) {
+        /*QThread *tthread = new TimeoutThread(120*60, "Timeout on convert");
+        tthread->start();
+        connect(qApp, SIGNAL(aboutToQuit()), tthread, SLOT(terminate()));*/
+        convert(arguments[1]);
+        qApp->exit(0);
+    } else {
+        qDebug() << "Ye no parlado your langue";
     }
 }
