@@ -505,6 +505,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                 writer.writeAttribute("v", tags.value());
                 ++tags;
             }
+            writer.writeEndElement();
             i++;
         } else {
             qDebug() << "We have a multipolygon" << path.points_position.count();
