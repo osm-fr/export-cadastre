@@ -536,6 +536,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                     }
                     nOuter--;
                 }
+                writer.writeEndElement();
                 i++;
             }
 
