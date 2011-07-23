@@ -75,7 +75,7 @@ void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &contex
 {
     Q_UNUSED(fillRule);
     if (context.pen.widthF() > 10)
-        qDebug() << "huge pen ?" << context.pen.widthF();
+        ;//qDebug() << "huge pen ?" << context.pen.widthF();
     if (context.brush.color() == QColor(255, 204, 51)) {
         OSMPath result;
         result.path = path;
@@ -383,6 +383,7 @@ void OSMGenerator::parsingDone(bool result)
 
 void OSMGenerator::dumpOSMs(const QString &baseFileName)
 {
+    qDebug() << "Going to dump osms";
     // Once proj 4.8 is available, one thread should be used for each category here
     if (!m_waters.isEmpty())
         dumpOSM(baseFileName + "-water.osm", &m_waters, true);
@@ -398,9 +399,13 @@ void OSMGenerator::dumpOSMs(const QString &baseFileName)
         dumpOSM(baseFileName + "-lands.osm", &m_lands);
 }
 
+#define areaCodeFromPt(pt) ((int(pt.x()/(m_pdfBoundingBox.width()/1000)) * 1000) + int(pt.y()/(m_pdfBoundingBox.height()/1000)))
+
 void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool merge)
 {
+    qDebug() << "Dumping to " << fileName << " ==> " << paths->size() << "elements";
     if (merge) {
+        qDebug() << "Merging...";
         QList<OSMPath> new_paths;
         QList<QRectF> bounding_boxes;
         foreach (const OSMPath &path, *paths) {
@@ -424,6 +429,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
             }
         }
         *paths = new_paths;
+        qDebug() << "Merge done";
     }
 
     QList<QPointF> nodes;
@@ -450,6 +456,10 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
     writer.writeAttribute("maxlon", QString::number(boundsLatLon[1].x(), 'f'));
 
     QList<OSMPath> goodPaths;
+    qDebug() << "Extracting nodes...";
+
+    typedef QPair<QPointF, int> PointPositionned;
+    QHash<int, QList<PointPositionned> > hashedPoints;
     foreach (OSMPath path, *paths) {
         QList<QPolygonF> sub_polygons = path.path.toSubpathPolygons();
         path.points_position.clear();
@@ -458,17 +468,31 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                 continue;
             QList<int> sub_points;
             foreach (const QPointF &pt, sub_polygon) {
-                int pos = nodes.indexOf(pt);
+                int area = areaCodeFromPt(pt);
+                int pos = -1;
+                if (hashedPoints.contains(area)) {
+                    //const QPair<QPointF, int> &areaPoint;
+                    const QList<PointPositionned> &areaPoints = hashedPoints[area];
+                    foreach (const PointPositionned &areaPoint, areaPoints) {
+                        if (areaPoint.first == pt) {
+                            pos = areaPoint.second;
+                            break;
+                        }
+                    }
+                } else {
+                    hashedPoints[area] = QList<PointPositionned >();
+                }
                 if (pos == -1) {
-                    pos = nodes.length();
+                    pos = nodes.size();
                     nodes << pt;
+                    hashedPoints[area].append(QPair<QPointF, int>(pt, pos));
                 }
                 sub_points << pos;
             }
             path.points_position << sub_points;
         }
-        if (sub_polygons.size() > 0)
-                goodPaths << path;
+        if (path.points_position.size() > 0)
+            goodPaths << path;
     }
 
     qDebug()  << "Done extracting nodes";
@@ -748,4 +772,3 @@ QList<QPointF> OSMGenerator::convertToEPSG4326(const QList<QPointF> &points)
     delete(pointsY);
     return result;
 }
-
