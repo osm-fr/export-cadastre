@@ -1,0 +1,4 @@
+* 17/11/2012 - sly  
+Dans le menu de sélection des communes, choisir plutot nom-ref:insee plutot que ref:insee-nom 
+Maintenir la logique de l'ordre alphabétique, et permettre un accès au clavier directement à la commune souhaitée qui semble se chercher plus souvent 
+par nom que par ref insee

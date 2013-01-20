@@ -1,0 +1,43 @@
+body {
+	background: url('../images/cadastre_top.jpeg') no-repeat;
+	margin-top: 50px;
+}
+
+#head h1 {
+	text-shadow: 0 0 0.2em #aaa, 0 0 0.2em #aaa;
+}
+
+#head ul {
+	position: absolute;
+	top:0px;right:50px;
+	padding: 0;
+	margin: 0;
+}
+
+#head ul li {
+	display: inline;
+	padding: 7px;
+	margin: 0px;
+	margin-right: 5px;
+	border: solid 1px black;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	background: #d22;
+	box-shadow: 2px 2px 2px #ccc;
+}
+
+#head ul li a {
+	color: white;
+}
+
+#information {
+	margin: 15px 90px;
+	border: solid 1px black;
+/*	background-color: navajowhite;
+	opacity:0.6;*/
+	background-color: rgba(234,234,200,0.6);
+	border-radius: 10px;
+	height: 1.2em;
+	padding: 5px 10px;
+	box-shadow: 5px 5px 5px #ccc;
+}
