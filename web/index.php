@@ -80,6 +80,6 @@ else {
 	</div>
 </form>
 <p>
-Note: Vous pensez avoir trouvé un bug ? <a href="http://trac.openstreetmap.fr/newticket">Vous pouvez le signaler ici (composant export cadastre)</a>
+Note: Vous pensez avoir trouvé un bug ? <a href="http://trac.openstreetmap.fr/newticket?component=export%20cadastre">Vous pouvez le signaler ici (composant export cadastre)</a>
 </p>
 <? include("includes/footer.php"); ?>
