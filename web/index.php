@@ -9,23 +9,23 @@ if(isset($_POST["ville"])) $ville=$_POST["ville"];
 <div id="information">
 <?php
 if(isset($dep) && isset($ville)) {
-	if(!file_exists("locks/".$dep))
-		mkdir("locks/".$dep);
-	if(!file_exists("logs/".$dep))
-		mkdir("logs/".$dep);
-	if(file_exists("locks/".$dep."/".$dep."-".$ville.".lock")) {
+	if(!file_exists("$locks_path/".$dep))
+		mkdir("$locks_path/".$dep);
+	if(!file_exists("$logs_path/".$dep))
+		mkdir("$logs_path/".$dep);
+	if(file_exists("$locks_path/".$dep."/".$dep."-".$ville.".lock")) {
 		echo "Import en cours";
 	}
 	else {
-		if(touch("locks/".$dep."/".$dep."-".$ville.".lock")) {
-			$log=fopen("logs/log.txt","a+");
+		if(touch("$locks_path/".$dep."/".$dep."-".$ville.".lock")) {
+			$log=fopen("$logs_path/log.txt","a+");
 			fwrite($log,date("d-m-Y H:i:s")." ".$_SERVER["REMOTE_ADDR"]." : ".$dep." ".$ville.";\n");
 			fclose($log);
 			$v=explode('-',$ville,2);
 			$command=sprintf("%simport-ville.sh %s %s \"%s\" > \"logs/%s/%s-%s.log\" 2>&1",$bin_path,$dep,$v[0],trim($v[1]),$dep,$dep,$ville);
 			exec($command);
 			echo "Import ok. Acc&egrave;s <a href=\"data/".$dep."\">aux fichiers</a> - <a href=\"data/".$dep."/".$v[0]."-".trim($v[1]).".tar.bz2\">&agrave; l'archive</a>";
-			unlink("locks/".$dep."/".$dep."-".$ville.".lock");
+			unlink("$locks_path/".$dep."/".$dep."-".$ville.".lock");
 		}
 		else {
 			echo "Something went wrong";

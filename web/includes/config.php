@@ -1,7 +1,10 @@
-<?
-$data_path="/data/project/cadastre.openstreetmap.fr/data/";
-$bin_path="/data/project/cadastre.openstreetmap.fr/bin/";
-$logs_path="/data/project/cadastre.openstreetmap.fr/logs/";
+<?php
+$temporary_dir="/data/work/cadastre.openstreetmap.fr";
+$project_dir="/data/project/cadastre.openstreetmap.fr";
+$data_path="$temporary_dir/data/";
+$bin_path="$project_dir/bin/";
+$logs_path="$temporary_dir/logs/";
+$locks_path="$temporary_dir/locks";
 
 $dep_array=array(
 	array("id" => "970", "name" => "970 Saint-Barth&eacute;l&eacute;my"),
