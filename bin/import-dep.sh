@@ -2,7 +2,7 @@
 # ©Cléo 2010
 # GPL v3 or higher — http://www.gnu.org/licenses/gpl-3.0.html
 
-. /config
+. ./config
 cd $data_dir
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
