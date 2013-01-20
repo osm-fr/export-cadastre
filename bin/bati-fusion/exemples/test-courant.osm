@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' generator='JOSM'>
+  <node id='-41' visible='true' lat='44.99692011872984' lon='2.658199502328014' />
+  <node id='-39' visible='true' lat='45.000663282555216' lon='2.6765692688998053' />
+  <node id='-37' visible='true' lat='44.98427092664582' lon='2.671716061675892' />
+  <node id='-35' visible='true' lat='44.984293006498156' lon='2.648890950778839' />
+  <node id='-34' visible='true' lat='45.00039734853245' lon='2.6475241798975286' />
+  <node id='-26' action='modify' visible='true' lat='45.02694520013918' lon='2.619570275053283'>
+    <tag k='amenity' v='parking' />
+  </node>
+  <node id='-24' action='modify' visible='true' lat='45.02654533871014' lon='2.607771311565453' />
+  <node id='-22' action='modify' visible='true' lat='45.019194638091605' lon='2.616195748210685' />
+  <node id='-21' action='modify' visible='true' lat='45.022719066423' lon='2.6206133778424543' />
+  <node id='-17' action='modify' visible='true' lat='44.98548361930333' lon='2.6004428931881494' />
+  <node id='-15' action='modify' visible='true' lat='44.980563576414994' lon='2.6089725199206986' />
+  <node id='-13' action='modify' visible='true' lat='44.97925686736785' lon='2.6217876677147145' />
+  <node id='-11' action='modify' visible='true' lat='44.98528621360207' lon='2.6217480101969666' />
+  <node id='-9' action='modify' visible='true' lat='44.987108085521186' lon='2.628457057212201' />
+  <node id='-8' action='modify' visible='true' lat='44.9978232994959' lon='2.6035280238182574' />
+  <node id='-4' visible='true' lat='45.01254161974197' lon='2.6763755570526864' />
+  <node id='-2' visible='true' lat='45.00600264633178' lon='2.6559889870043243' />
+  <node id='-1' visible='true' lat='45.021299019744646' lon='2.65526298096081' />
+  <way id='-36' action='modify' visible='true'>
+    <nd ref='-34' />
+    <nd ref='-35' />
+    <nd ref='-37' />
+    <nd ref='-39' />
+    <nd ref='-41' />
+    <nd ref='-34' />
+  </way>
+  <way id='-23' action='modify' visible='true'>
+    <nd ref='-21' />
+    <nd ref='-22' />
+    <nd ref='-24' />
+    <nd ref='-26' />
+    <nd ref='-21' />
+    <tag k='building' v='yes' />
+  </way>
+  <way id='-10' action='modify' visible='true'>
+    <nd ref='-8' />
+    <nd ref='-9' />
+    <nd ref='-11' />
+    <nd ref='-13' />
+    <nd ref='-15' />
+    <nd ref='-17' />
+    <nd ref='-8' />
+    <tag k='building' v='yes' />
+    <tag k='name' v='A' />
+  </way>
+  <way id='-3' action='modify' visible='true'>
+    <nd ref='-1' />
+    <nd ref='-2' />
+    <nd ref='-4' />
+    <nd ref='-1' />
+    <tag k='building' v='yes' />
+  </way>
+</osm>

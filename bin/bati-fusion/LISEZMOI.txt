@@ -1,0 +1,65 @@
+--------------------------------------------
+bati-fusion 0.1
+Copyright (c) 2010-2011 Jérôme Cornet
+--------------------------------------------
+
+À quoi ça sert?
+---------------------------------------------
+bati-fusion est un outil d'aide à l'import bati sur des communes possédant déjà des bâtiments tracés à la main et porteurs d'informations (addresses, tags divers) non présentes dans les calques d'import bati.
+C'est un outil semi-automatique, dans le sens où les fichiers de sortie ne sont pas directement importables dans OSM, et nécessite une passe de vérification manuelle.
+
+Prérequis
+---------------------------------------------
+ - GNU Make (gmake sur certains systèmes)
+ - GCC/G++ (testé à partir de la version 4)
+
+Compilation / Installation
+--------------------------------------------
+
+ - Se placer au niveau de ce LISEZMOI
+ - Taper make (ou gmake)
+
+L'executable bati-fusion est généré au même niveau.
+
+Utilisation
+--------------------------------------------
+bati-fusion calque-bati calque-courant prefixe-sortie
+
+bati-fusion prend en entrée:
+
+ - calque-bati: un fichier .osm issue de import-bati. Il est fortement recommandé de "nettoyer" les données brutes issues de import-bati en vérifiant les superpositions de polygones, les éventuelles fusions de polygones à réaliser, etc. Faire le nettoyage à posteriori demande plus de travail, et produit des résultats moins bons dans bati-fusion.
+
+ - calque-courant: un fichier .osm contenant un extrait de la base OSM aux coordonnées considérées. bati-fusion est testé avec des fichiers obtenus par JOSM (téléchargement puis enregister sous).
+
+En sortie:
+
+ - prefixe-sortie: le nom de base des fichiers qui seront générés par bati-fusion.
+
+Fonctionnement
+--------------------------------------------
+
+bati-fusion parcourt tous les polygones "bâtiments" (building=yes) de calque-bati, et 
+recherche si un bâtiment existe déjà dans la base (calque-courant) au même endroit. En sortie, bati-fusion réalise un classement et une fusion éventuelle des informations:
+
+- Dans le fichier OK (.ok.osm): les bâtiments qui n'ont aucune intersection avec un bâtiment existant.
+- Dans le fichier No Fusion (.nofusion.osm): les bâtiments qui ont a priori une intersection avec un bâtiment existant, mais considérés comme dans la marge d'erreur de l'algorithme d'intersection (voir plus loin sur les intersections). Il est probable que ces bâtiments n'aient pas d'intersection du tout avec un bâti existant, mais il est nécessaire d'effectuer une vérification manuelle.
+- Dans le fichier Fusion (.fusion.osm): les bâtiments qui sont en intersection franche avec un bâtiment existant dans la base. Dans ce cas, les tags éventuels du bâtiment de la base, non relatifs au bâti (building=) et à la source (source=) sont importés, pour les nœuds et pour le polygone en lui même.
+- Dans le fichier Conflit (.conflit.osm): les bâtiments pour lesquels l'outil n'a pas pu prendre de décisions. Les bâtiments sont recopiés tels quels, sans import de tags.
+
+En raison de la difficulté à calculer exactement les intersections de polygones (algorithme coûteux en temps), bati-fusion se base sur les rectangles englobant les polygones. Cette méthode produit évidemment de faux positifs (fichier No Fusion) ainsi que des faux négatifs (fichier Conflit).
+
+Critères considérées pour la version actuelle:
+
+- Polygone placé dans le fichier Fusion: 
+  - intersection avec au maximum un polygone existant, surfaces des rectangles englobant se recouvrant à 80% ou plus. OU
+  - intersection avec plusieurs polygones, mais un seul polygone dont le recouvrement est à 80% ou plus, et aucun autre polygone se recouvrant à plus de 50%.
+- Polygone placé dans le fichier NoFusion: i
+  - intersection avec plusieurs polygones, mais aucun qui ne dépasse 10% de recouvrement.
+- Polygone placé dans le fichier Conflit: tous les autres.
+
+Limitations
+--------------------------------------------
+
+- (à revérifier): problèmes éventuels lors de l'import d'un bâtiments faisant partie d'une relation multipolygon.
+- Certains bâtiments (comme les hôpitaux ou autres "amenity") ne sont pas taggés comme du bâti, et ne sont donc pas vu par l'outil.
+
