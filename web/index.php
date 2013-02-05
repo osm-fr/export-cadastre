@@ -84,4 +84,14 @@ else {
 <p>
 Note: Vous pensez avoir trouvé un bug ? <a href="http://trac.openstreetmap.fr/newticket?component=export%20cadastre">Vous pouvez le signaler ici (composant export cadastre)</a>
 </p>
-<? include("includes/footer.php"); ?>
+<?php
+if( $_POST["ville"] )
+{
+?>
+<script type="text/javascript">
+	getDepartement( '<?php echo $ville; ?>' ); 
+</script>
+<?php
+}
+include("includes/footer.php");
+?>
