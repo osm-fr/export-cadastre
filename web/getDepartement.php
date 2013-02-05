@@ -6,6 +6,7 @@ else {
 	echo "No dep";
 	exit();
 }
+if( isset( $_REQUEST['ville'] ) ) $ville = $_REQUEST['ville'];
 
 if($villes_file=fopen($data_path.$dep."/".$dep."-liste.txt","r")) {
 	while($v=fgets($villes_file)) {
