@@ -71,7 +71,7 @@ else {
 		<legend>Mise en garde</legend>
 		<br />
 		<p>
-		L'intégration de données "batiments" en provenance du cadastre n'est pas triviale, si vous ne venez pas de <a href="http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_b%C3%A2timents">la page page suivante</a>, il est vivement recommandé d'aller la lire !
+		L'intégration de données "batiments" en provenance du cadastre n'est pas triviale, si vous ne venez pas de <a href="http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_b%C3%A2timents">la page suivante</a>, il est vivement recommandé d'aller la lire !
 		</p>
 		<p>
 		Pour les limites de communes, c'est pas trivial non plus et la <a href="http://wiki.openstreetmap.org/wiki/WikiProject_France/Limites_administratives/Tracer_les_limites_administratives">documentation est ici.</a>
