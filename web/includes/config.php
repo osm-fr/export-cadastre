@@ -1,10 +1,10 @@
 <?php
-$temporary_dir="/data/work/cadastre.openstreetmap.fr";
-$project_dir="/data/project/cadastre.openstreetmap.fr";
-$data_path="$temporary_dir/data/";
-$bin_path="$project_dir/bin/";
-$logs_path="$temporary_dir/logs/";
-$locks_path="$temporary_dir/locks";
+$temporary_dir = "/home/windu/workspace/export-cadastre/work/cadastre.openstreetmap.fr/";
+$project_dir = "/data/project/cadastre.openstreetmap.fr";
+$data_path = "$temporary_dir/data/";
+$bin_path = "$project_dir/bin/";
+$logs_path = "$temporary_dir/logs/";
+$locks_path = "$temporary_dir/locks";
 
 $dep_array=array(
 	array("id" => "970", "name" => "970 Saint-Barth&eacute;l&eacute;my"),
@@ -111,4 +111,3 @@ $dep_array=array(
 	array("id" => "094", "name" => "094 Val-de-Marne"),
 	array("id" => "095", "name" => "095 Val-d'Oise")
 );
-?>
