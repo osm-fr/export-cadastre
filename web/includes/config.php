@@ -1,5 +1,5 @@
 <?php
-$temporary_dir = "/home/windu/workspace/export-cadastre/work/cadastre.openstreetmap.fr/";
+$temporary_dir = "/data/work/cadastre.openstreetmap.fr";
 $project_dir = "/data/project/cadastre.openstreetmap.fr";
 $data_path = "$temporary_dir/data/";
 $bin_path = "$project_dir/bin/";
