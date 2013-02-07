@@ -11,7 +11,7 @@ if( isset( $_POST['ville'] ) )
 <?php
 if( isset( $dep ) && isset( $ville ) )
 {
-	if( !file_exists( '$locks_path/' . $dep ) )
+	if( !file_exists( $locks_path . '/' . $dep ) )
 		mkdir( $locks_path . '/' . $dep );
 	if( !file_exists( $logs_path . '/' . $dep ) )
 		mkdir( $logs_path . '/' . $dep );
@@ -21,7 +21,7 @@ if( isset( $dep ) && isset( $ville ) )
 	{
 		if( touch( $locks_path . '/' . $dep . '/' . $dep . '-' . $ville .'.lock' ) )
 		{
-			$log = fopen( '$logs_path/log.txt', 'a+' );
+			$log = fopen( $logs_path . '/log.txt', 'a+' );
 			fwrite( $log, date( 'd-m-Y H:i:s' ) . ' ' . $_SERVER['REMOTE_ADDR'] . ' : ' . $dep . ' ' . $ville . ';\n' );
 			fclose( $log );
 			$v = explode( '-', $ville, 2 );
