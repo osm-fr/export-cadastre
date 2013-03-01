@@ -1,0 +1,9 @@
+Dependencies:
+
+  aptitude install qt4-qmake libpodofo-dev libqt4-dev libproj-dev libgeos++-dev
+
+
+Building:
+
+  make
+  cp Qadastre2OSM ../
