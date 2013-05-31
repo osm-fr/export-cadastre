@@ -17,5 +17,7 @@ rm -f "$2-$3.tar.bz2"
 tar cvf "$2-$3.tar" --exclude="*.pdf" --exclude="*-water.osm" $2-"$3"*
 bzip2 -f "$2-$3.tar"
 cd ..
+# Création du dossier si celui-ci n'existe pas
+mkdir eau 2>/dev/null
 mv -f $1/*.pdf $1/*-water.osm eau
 date
