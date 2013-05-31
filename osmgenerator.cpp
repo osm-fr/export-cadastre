@@ -434,7 +434,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
 
     QList<QPointF> nodes;
 
-    QString source = QString::fromUtf8("cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : %1").arg(QDate::currentDate().year());
+    QString source = QString::fromUtf8("cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : %1").arg(QDate::currentDate().year());
 
     QFile target(fileName);
     if (!target.open(QIODevice::WriteOnly)) {
