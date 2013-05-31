@@ -1,0 +1,13 @@
+== git == 
+Le projet cadastre est géré par git, c'est pourquoi j'ai fait des liens un peu à l'arrache comme ça.
+
+== cron ==
+Ligne à mettre dans le cron : (ça sert à purger nomber logs, et fichier qui
+sont généré et finalement obsolètes)
+
+0 3 * * * cd /data/project/cadastre.openstreetmap.fr/export-cadastre/bin/ ; ./maj-dep-massif.sh
+
+== zone d'accès restreint aux export de polygones rivières ==
+Dans le dossier des data, pensez à créer un dossier "eau" et le protéger par
+un .htaccess avec le mot de passe indiqué dans
+mot-de-passe-acces-a-cadastre-eau

@@ -1,4 +1,6 @@
 #!/bin/bash
 
-data_dir="/data/work/cadastre.openstreetmap.fr/data"
+work_dir="/data/work/cadastre.openstreetmap.fr/"
+data_dir="$work_dir/data"
+log_dir="$work_dir/logs"
 bin_dir="/data/project/cadastre.openstreetmap.fr/bin"
