@@ -17,5 +17,5 @@ rm -f "$2-$3.tar.bz2"
 tar cvf "$2-$3.tar" --exclude="*.pdf" --exclude="*-water.osm" $2-"$3"*
 bzip2 -f "$2-$3.tar"
 cd ..
-mv $1/*.pdf $1/*-water.osm eau
+mv -f $1/*.pdf $1/*-water.osm eau
 date
