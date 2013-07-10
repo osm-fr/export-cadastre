@@ -9,6 +9,8 @@ cd $data_dir
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
 
 [ -d $1 ] || mkdir $1
+chmod 777 $1
+
 cd $1
 date
 $Qadastre2OSM --download $1 $2 "$3"
@@ -19,5 +21,6 @@ bzip2 -f "$2-$3.tar"
 cd ..
 # Création du dossier si celui-ci n'existe pas
 mkdir eau 2>/dev/null
+chmod 777 eau 
 mv -f $1/*.pdf $1/*-water.osm eau
 date
