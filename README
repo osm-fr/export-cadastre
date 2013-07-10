@@ -11,3 +11,16 @@ sont généré et finalement obsolètes)
 Dans le dossier des data, pensez à créer un dossier "eau" et le protéger par
 un .htaccess avec le mot de passe indiqué dans
 mot-de-passe-acces-a-cadastre-eau
+
+== Qadastre2OSM ==
+Ici se trouve une copie du code de Qadastre2OSM qui a été patché avec le
+temps et qui s'est bien désynchronisée de l'original que l'on peut trouver à
+:
+http://gitorious.org/qadastre/qadastre2osm
+
+Son auteur, pinaraf est contactable par emal à : pinaraf -|- pinaraf // info
+et peut filer un coup de main s'il y a des ajouts à faire sur qadastre2osm.
+
+ps: Oui, je sais, avoir copié le code n'est pas terrible, mais si quelqu'un
+à le courage à remonter nos patchs à pinaraf on pourrait re-séparer
+proprement
