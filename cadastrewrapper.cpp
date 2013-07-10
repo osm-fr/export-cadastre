@@ -100,7 +100,7 @@ void CadastreWrapper::requestCities(const QString &department)
 QMap<QString, QString> CadastreWrapper::listCities(const QString &department)
 {
     if ((m_citiesRequest.contains(department)) && (m_cities[department].count() == 0)) {
-        QRegExp tableExtractor("<table.*class=\"resultat\".*>(.*)</table>");
+        QRegExp tableExtractor("<table.*class=\"resonglet\".*>(.*)</table>");
         QRegExp titleExtractor("<strong>(.*) </strong>");
         QRegExp codeExtractor("ajoutArticle\\('(\\w*)',");
         tableExtractor.setMinimal(true);
@@ -153,7 +153,7 @@ void CadastreWrapper::bboxAvailable(QObject *networkReply)
     QString cityCode = rep->property("cityCode").toString();
 
     // Search the bounding box
-    QRegExp projExtracton("<span id=\"projectionName\">(.*)</span>");
+    QRegExp projExtracton("<span[^>]*id=\"projectionName\"[^>]*>(.*)</span>");
     projExtracton.setMinimal(true);
     QRegExp bbExtractor("new GeoBox\\(\n\t*(\\d*\\.\\d*),\n\t*(\\d*\\.\\d*),\n\t*(\\d*\\.\\d*),\n\t*(\\d*\\.\\d*)\\)");
     QString pageCode = rep->readAll();
