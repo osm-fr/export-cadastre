@@ -7,6 +7,11 @@ if( isset( $_POST['dep'] ) )
 if( isset( $_POST['ville'] ) )
 	$ville = $_POST['ville'];
 ?>
+<div id="conditions-utilisation">
+<p>
+Ce service et les données du cadastre disponibles ici sont exclusivement réservés à l'usage des contributeurs OpenStreetMap. <a href="http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">En savoir plus</a>
+</p>
+</div>
 <div id='information'>
 <?php
 if( isset( $dep ) && isset( $ville ) )
