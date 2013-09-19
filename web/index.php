@@ -68,12 +68,12 @@ else
 		</select>
 	</fieldset>
 	<fieldset id='fville'>
-		<legend>Choix de la ville</legend>
+		<legend>Choix de la commune</legend>
 		<img src='images/throbber_16.gif' style='display:none;' alt='pending' id='throbber_ville' />
 		<select id='ville' name='ville'>
 		</select>
 		<br />
-		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code de la ville est son <a href='http://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
+		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='http://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
 		<p style='font-size:small;'>Seules les communes existant au format vecteur au cadastre sont listées</p>
 	</fieldset>
 	<fieldset id='mise_en_garde'>
