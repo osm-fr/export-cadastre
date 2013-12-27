@@ -21,7 +21,7 @@ if( isset( $dep ) && isset( $ville ) )
 		@mkdir( $locks_path );
 		mkdir( $locks_path . '/' . $dep );
 	}
-	if( !file_exists( $logs_path . '/' . $dep ) )
+	if( !file_exists( $logs_path . '/' . $dep ) and $do_we_log )
 	{
 		@mkdir( $logs_path );
 		mkdir( $logs_path . '/' . $dep );
