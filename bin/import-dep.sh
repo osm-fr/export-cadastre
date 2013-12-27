@@ -15,8 +15,8 @@ while read l
 	do
 		code=`echo $l|cut -d' ' -f1`
 		ville=`echo $l|sed "s/[^ ]* //"`
-		$Qadastre2OSM --download $1 $code "$ville"
-		$Qadastre2OSM --convert $code "$ville"
+		$Qadastre2OSM --download $1 $code $ville
+		$Qadastre2OSM --convert $code $ville
 		rm -f "$code-$ville.tar.bz2"
 		tar cvf "$code-$ville.tar" --exclude="*.pdf" $code-$ville*
 		bzip2 -f "$code-$ville.tar"

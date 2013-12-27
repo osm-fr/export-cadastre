@@ -17,20 +17,32 @@ Ce service et les données du cadastre disponibles ici sont exclusivement réser
 if( isset( $dep ) && isset( $ville ) )
 {
 	if( !file_exists( $locks_path . '/' . $dep ) )
+	{
+		@mkdir( $locks_path );
 		mkdir( $locks_path . '/' . $dep );
+	}
 	if( !file_exists( $logs_path . '/' . $dep ) )
+	{
+		@mkdir( $logs_path );
 		mkdir( $logs_path . '/' . $dep );
+	}
 	if( file_exists( $locks_path . '/' . $dep . '/' . $dep . '-' . $ville . '.lock' ) )
 		echo 'Import en cours';
 	else
 	{
 		if( touch( $locks_path . '/' . $dep . '/' . $dep . '-' . $ville .'.lock' ) )
 		{
-			$log = fopen( $logs_path . '/log.txt', 'a+' );
-			fwrite( $log, date( 'd-m-Y H:i:s' ) . ' ' . $_SERVER['REMOTE_ADDR'] . ' : ' . $dep . ' ' . $ville . ";\n" );
-			fclose( $log );
+			if ($do_we_log)
+			{
+				$log = fopen( $logs_path . '/log.txt', 'a+' );
+				fwrite( $log, date( 'd-m-Y H:i:s' ) . ' ' . $_SERVER['REMOTE_ADDR'] . ' : ' . $dep . ' ' . $ville . ";\n" );
+				fclose( $log );
+				$import_ville_logs="> \"$logs_path/%s/%s-%s.log\" 2>&1";
+			}
+			else
+				$import_ville_logs="";
 			$v = explode( '-', $ville, 2 );
-			$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" > \"$logs_path/%s/%s-%s.log\" 2>&1", $bin_path, $dep, $v[0], trim( $v[1] ), $dep, $dep, $ville );
+			$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $import_ville_logs", $bin_path, $dep, $v[0], trim( $v[1] ), $dep, $dep, $ville );
 			exec( $command );
 			echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
 			unlink( $locks_path . '/' . $dep . '/' . $dep . '-' . $ville . '.lock' );

@@ -6,6 +6,9 @@ $bin_path = "$project_dir/bin/";
 $logs_path = "$temporary_dir/logs/";
 $locks_path = "$temporary_dir/locks";
 
+// Set it to true when you have a doubt about Qadastre output
+$do_we_log=false;
+
 $dep_array=array(
 	array("id" => "970", "name" => "970 Saint-Barth&eacute;l&eacute;my"),
 	array("id" => "971", "name" => "971 Guadeloupe"),
