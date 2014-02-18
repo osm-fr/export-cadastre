@@ -4,7 +4,7 @@
 
 temp_file=/dev/shm/tempo.txt
 . ./config
-cd $data_dir
+cd $data_dir || exit -1
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
 
@@ -19,7 +19,7 @@ do
 	mv *-liste.txt $temp_file
 
 	# Ajouter par sly (sylvain@letuffe.org) pour éviter que des gens se retrouvent avec une trop vielle version des fichiers à importer
-	rm -f * 2>/dev/null
+	rm -rf * 2>/dev/null
 	$Qadastre2OSM --list $i > $i-liste.txt
 
 	# Fichier vide, plantage probable, on reprend notre sauvegarde
