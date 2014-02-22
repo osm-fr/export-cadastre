@@ -19,7 +19,10 @@ do
 	mv *-liste.txt $temp_file
 
 	# Ajouter par sly (sylvain@letuffe.org) pour éviter que des gens se retrouvent avec une trop vielle version des fichiers à importer
-	rm -rf * 2>/dev/null
+	rm -f * 2>/dev/null
+	if [ -n "$hidden_dir" -a -d "$hidden_dir/$i" ] ; then
+		rm -rf "$hidden_dir/$i" 2>/dev/null
+	fi
 	$Qadastre2OSM --list $i > $i-liste.txt
 
 	# Fichier vide, plantage probable, on reprend notre sauvegarde

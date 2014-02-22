@@ -38,10 +38,10 @@ fi
 #
 
 depdir="$data_dir/$code_departement"
-comunedir="$depdir/$code_commune"
+communedir="$hidden_dir/$code_departement/$code_commune"
 
 command1="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $PWD/cadastre-housenumber/cadastre_vers_osm_adresses.py $code_departement $code_commune"
-command1dir="$comunedir"
+command1dir="$communedir"
 
 command2="python addr_fantoir_building.py $code_insee $code_commune"
 command2dir=$PWD/cadastre-housenumber/associatedStreet
@@ -52,17 +52,17 @@ file1="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_sans_b
 file2="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_tag_sur_batiment.zip"
 file3="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_point_sur_batiment.zip"
 
-mkdir -p $comunedir
-chmod 02775 $comunedir
+mkdir -p $communedir
+chmod 02775 $communedir
 
 cd $command1dir && $command1 || exit -1
-mv "$comunedir/${code_commune}-adresses.zip" "${file1}"
+mv "$communedir/${code_commune}-adresses.zip" "${file1}"
 $command3 "${file1}" "${file1/associatedStreet/addrstreet}"
 
 cd $command2dir && $command2 || exit -1
 
-mv "$comunedir/${code_commune}_adresse_tag_sur_batiment.zip" "${file2}"
-mv "$comunedir/${code_commune}_adresse_point_sur_batiment.zip" "${file3}"
+mv "$communedir/${code_commune}_adresse_tag_sur_batiment.zip" "${file2}"
+mv "$communedir/${code_commune}_adresse_point_sur_batiment.zip" "${file3}"
 $command3 "${file2}" "${file2/associatedStreet/addrstreet}"
 $command3 "${file3}" "${file3/associatedStreet/addrstreet}"
 
