@@ -2,13 +2,25 @@
 require_once( 'includes/header.php' );
 require_once( 'includes/config.php' );
 
-if( isset( $_POST['dep'] ) )
-	$dep = $_POST['dep'];
-if( isset( $_POST['ville'] ) )
-	$ville = $_POST['ville'];
-if( isset( $_POST['type'] ) )
-	$type = $_POST['type'];
+function get_post_value($name, $format) {
+	if (isset($_POST[$name])) {
+	    if (preg_match($format, $_POST[$name])) {
+			return $_POST[$name];
+		} else {
+			echo "Internal Error ". $_POST[$name] . "<br/>\n";
+			require_once( 'includes/footer.php' );
+			exit(0);
+		}
+	} else {
+		return "";
+	}
+}
+
+$dep = get_post_value("dep", "/^[09][0-9][0-9AB]$/");
+$ville = get_post_value("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/");
+$type = get_post_value("type", "/^(bati)|(adresses)$/");
 $command = "";
+
 ?>
 <style>
 #dep {
@@ -139,7 +151,7 @@ Ce service et les données du cadastre disponibles ici sont exclusivement réser
 </div>
 <div id='information'>
 <?php
-if( isset( $dep ) && isset( $ville ) && isset( $type ))
+if( $dep && $ville && $type )
 {
 	if( !file_exists( $locks_path . '/' . $dep ) )
 	{
@@ -153,11 +165,12 @@ if( isset( $dep ) && isset( $ville ) && isset( $type ))
 	}
 	$log_file = $logs_path . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.log';
 	$lock_file = $locks_path . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.lock';
-	if( file_exists( $lock_file ) && ((time() - filemtime ( $lock_file )) < 60*60)) {
+	if( file_exists( $lock_file ) && ((time() - filemtime ( $lock_file )) < 2*60*60)) {
 		echo 'Import en cours';
 	}
 	else
 	{
+		register_shutdown_function ( unlink, $lock_file );
 		if( touch( $lock_file ) )
 		{
 		    chmod( $lock_file, 0664);
@@ -181,7 +194,6 @@ if( isset( $dep ) && isset( $ville ) && isset( $type ))
 			    $command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 				exec( $command );
 				echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
-				unlink( $lock_file );
 				$command = '';
 			}
 		}
@@ -206,7 +218,7 @@ if( $handle = opendir( $data_path ) )
 		if( !isset( $d['name'] ) )
 			$d['name'] = $d['id'];
 		echo "\t\t\t" . '<option value="' . $d['id'] . '"';
-		if( isset( $dep ) && $dep == $d['id'] )
+		if( $dep == $d['id'] )
 			echo ' selected="selected"';
 		echo '>' . $d['name'] . "</option>\n";
 	}
@@ -222,6 +234,11 @@ else
 		<legend>Choix de la commune</legend>
 		<img src='images/throbber_16.gif' style='display:none;' alt='pending' id='throbber_ville' />
 		<select id='ville' name='ville'>
+<?php 
+if ($dep) {
+  include("getDepartement.php");
+}
+?>
 		</select>
 		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
 
@@ -232,8 +249,8 @@ else
 	<fieldset id='ftype'>
 		<legend>Choix du type de données</legend>
 <?php
-$bati_checked = ((isset($type)) && ($type=="bati")) ? "checked" : "";
-$adresses_checked = ((!isset($type)) || ($type=="adresses")) ? "checked" : "";
+$bati_checked = ($type=="bati") ? "checked" : "";
+$adresses_checked = ( (!$type) || ($type=="adresses")) ? "checked" : "";
 ?>
 		<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input><br/>
 		<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>>Adresses</input><br/>
@@ -255,15 +272,16 @@ $adresses_checked = ((!isset($type)) || ($type=="adresses")) ? "checked" : "";
 <p>
 Note: Vous pensez avoir trouvé un bug ? <a href='http://trac.openstreetmap.fr/newticket?component=export%20cadastre&owner=vdct'>Vous pouvez le signaler ici (composant export cadastre)</a>
 </p>
-<?php
-if( isset($_POST['ville']) && $_POST['ville'])
-{
-?>
 <script type='text/javascript'>
-	getDepartement( '<?php echo $ville; ?>' ); 
+<?php
+if ($ville) {
+	echo "\tdocument.getElementById( 'ville' ).focus();\n";
+} else {
+	echo "\tdocument.getElementById( 'dep' ).focus();\n";
+}
+?>
 </script>
 <?php
-}
 if ($command) {
     class ProcessLineReader {
       private $resource;
@@ -315,7 +333,6 @@ if ($command) {
       flush();
     }
     $process->print_error_and_close();
-    unlink( $lock_file );
 
     $associatedStreet_files = array (
         "Sans bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
