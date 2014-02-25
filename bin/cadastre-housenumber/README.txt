@@ -1,5 +1,4 @@
 
-
 Import de addr:housenumber depuis le cadastre (http://cadastre.gouv.fr)
 
 ATTENTION: l'utilisation des données du cadastre n'est pas libre, et ces
@@ -17,13 +16,12 @@ Installation et Compilation
 sudo apt-get install libpodofo-dev
 sudo apt-get install qt4-qmake
 sudo apt-get install libqt4-dev
+sudo apt-get install python-gdal
 sudo apt-get install python-numpy
 sudo apt-get install libspatialindex1
 sudo pip install shapely
 sudo pip install rtree
 make
-
-Installation python:
 
 Le script principal:
 --------------------

@@ -80,7 +80,7 @@ def nearest_point_from_segment_ab_to_point_c(a,b,c):
     r_numerator = (c.x-a.x)*(b.x-a.x) + (c.y-a.y)*(b.y-a.y)
     r_denomenator = (b.x-a.x)*(b.x-a.x) + (b.y-a.y)*(b.y-a.y)
     if r_denomenator == 0:
-	return a;
+        return a;
     r = r_numerator / r_denomenator;
     if (r <=0):
         return a

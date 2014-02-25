@@ -13,16 +13,21 @@
 # along with it. If not, see <http://www.gnu.org/licenses/>.
 
 
+import os
 import sys
 import time
 import math
-import xml.parsers.expat
-import os
 import os.path
-import xml.etree.ElementTree as ET
+import traceback
 import subprocess
+import xml.parsers.expat
+import xml.etree.ElementTree as ET
 from math  import *
-from osgeo import osr    # apt-get install python-gdal
+try:
+  from osgeo import osr    # apt-get install python-gdal
+except:
+  traceback.print_exc()
+  print "Please install python-gdal (sudo apt-get install python-gdal)"
 
 from mytools import toposort
 
@@ -117,6 +122,22 @@ class CadastreToOSMTransform(Transform):
         source.ImportFromProj4(
             "+init=IGNF:" + cadastre_IGNF_code + " +wktext");
         target.ImportFromEPSG(4326);
+        self.transformation = osr.CoordinateTransformation(
+            source, target)
+    def transform_point(self, point):
+        x,y,z = self.transformation.TransformPoint(point[0], point[1], 0.0)
+        return Point(x,y)
+
+class OSMToCadastreTransform(Transform):
+    """Transformation from cordinates used by OSM 
+       to IGNF coordinates used by the cadastre"""
+    def __init__(self, cadastre_IGNF_code):
+        Transform.__init__(self)
+        source = osr.SpatialReference();
+        target = osr.SpatialReference();
+        target.ImportFromProj4(
+            "+init=IGNF:" + cadastre_IGNF_code + " +wktext");
+        source.ImportFromEPSG(4326);
         self.transformation = osr.CoordinateTransformation(
             source, target)
     def transform_point(self, point):

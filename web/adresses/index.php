@@ -2,12 +2,12 @@
 require_once( 'includes/header.php' );
 require_once( 'includes/config.php' );
 
-function get_post_value($name, $format) {
+function get_parameter($name, $format) {
 	if (isset($_POST[$name])) {
 	    if (preg_match($format, $_POST[$name])) {
 			return $_POST[$name];
 		} else {
-			echo "Internal Error ". $_POST[$name] . "<br/>\n";
+			echo "Erreur interne: ". $_POST[$name] . "<br/>\n";
 			require_once( 'includes/footer.php' );
 			exit(0);
 		}
@@ -16,9 +16,9 @@ function get_post_value($name, $format) {
 	}
 }
 
-$dep = get_post_value("dep", "/^[09][0-9][0-9AB]$/");
-$ville = get_post_value("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/");
-$type = get_post_value("type", "/^(bati)|(adresses)$/");
+$dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/");
+$ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/");
+$type = get_parameter("type", "/^(bati)|(adresses)$/");
 $command = "";
 
 ?>
@@ -61,7 +61,7 @@ function handler()
         {
                 document.getElementById( "ville" ).innerHTML = this.responseText;
                 ville_filter = new SelectBoxFilter(ville);
-				document.getElementById( "recherche_ville" ).value = '';
+				document.getElementById( "recherche_ville" ).value = 'Recherche';
 				filter_ville();
         //      document.getElementById("throbber_ville").style.display = "none";
         }
@@ -335,9 +335,10 @@ if ($command) {
     $process->print_error_and_close();
 
     $associatedStreet_files = array (
-        "Sans bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
-        "Point sur bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
-        "Tag sur bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip"
+        "Mix en façade proche ou point isolé" => "/data/$dep/$ville-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
+        "Toujours en façade de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
+        "Toujours comme attribut de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip",
+        "Toujours comme point isolés" => "/data/$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
     );
     $addrstreet_files = array();
     foreach($associatedStreet_files as $key => $val) {
@@ -346,19 +347,19 @@ if ($command) {
     print "</pre>\n";
     print "<fieldset>\n";
     echo "<legend>Résultat avec tag addr:street:</legend>\n";
-    echo "<ul>\n";
+    echo "<table class=\"result\">\n";
     foreach($addrstreet_files as $key => $val) {
-        echo "<li>$key: <a href='$val'>" . basename($val) . "</a></li>\n";
+        echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
     }
-    echo "</ul>\n";
+    echo "</table>\n";
     print "</fieldset>\n";
     print "<fieldset>\n";
     echo "<legend>Résultat avec relation associatedStreet:</legend>\n";
-    echo "<ul>\n";
+    echo "<table class=\"result\">\n";
     foreach($associatedStreet_files as $key => $val) {
-        echo "<li>$key: <a href='$val'>" . basename($val) . "</a></li>\n";
+        echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
     }
-    echo "</ul>\n";
+    echo "</table>\n";
     print "</fieldset>\n";
     ?>
     <script type='text/javascript'>

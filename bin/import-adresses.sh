@@ -49,21 +49,24 @@ command2dir=$PWD/cadastre-housenumber/associatedStreet
 command3="$PWD/cadastre-housenumber/supprime_relations_associatedStreet.py"
 
 file1="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_sans_batiment.zip"
-file2="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_tag_sur_batiment.zip"
-file3="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_point_sur_batiment.zip"
+file2="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_mix_en_facade_ou_isole.zip"
+file3="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_tag_sur_batiment.zip"
+file4="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_point_sur_batiment.zip"
 
 mkdir -p $communedir
 chmod 02775 $communedir
 
 cd $command1dir && $command1 || exit -1
 mv "$communedir/${code_commune}-adresses.zip" "${file1}"
+mv "$communedir/${code_commune}-adresses_buildings_proches.zip" "${file2}"
 $command3 "${file1}" "${file1/associatedStreet/addrstreet}"
+$command3 "${file2}" "${file2/associatedStreet/addrstreet}"
 
 cd $command2dir && $command2 || exit -1
 
-mv "$communedir/${code_commune}_adresse_tag_sur_batiment.zip" "${file2}"
-mv "$communedir/${code_commune}_adresse_point_sur_batiment.zip" "${file3}"
-$command3 "${file2}" "${file2/associatedStreet/addrstreet}"
+mv "$communedir/${code_commune}_adresse_tag_sur_batiment.zip" "${file3}"
+mv "$communedir/${code_commune}_adresse_point_sur_batiment.zip" "${file4}"
 $command3 "${file3}" "${file3/associatedStreet/addrstreet}"
+$command3 "${file3}" "${file4/associatedStreet/addrstreet}"
 
 

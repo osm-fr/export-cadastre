@@ -14,8 +14,14 @@
 
 
 
-""" Execution du programme associatedStreet 
+""" 
+    Cherche le code FANTOIR et les highways d'OSM
+    correspondants à chaque relation associatedStreet.
+
+    Ce code apelle des script du projet associatedStreet:
     https://github.com/vdct/associatedStreet/
+
+    Ce Code est basé sur associatedStreet/addrfantoir.py
 """
 
 import sys
@@ -124,28 +130,45 @@ def get_dict_fantoir(code_departement, code_commune):
                       nom_fantoir = nature_voie + " " + libele_voie
                       dict_fantoir[normalize(nom_fantoir)] = code_fantoir
         return dict_fantoir
-            
 
-def open_osm_highways_commune(code_departement, code_commune):
-    filename = code_commune + "-highways.osm"
-    ok_filename = filename + ".ok"
-    if not (os.path.exists(filename) and os.path.exists(ok_filename)):
-        if os.path.exists(filename): os.remove(filename)
+
+def open_osm_overpass(requete, cache_filename, metropole=False):
+    ok_filename = cache_filename + ".ok"
+    if not (os.path.exists(cache_filename) and os.path.exists(ok_filename)):
+        if os.path.exists(cache_filename): os.remove(cache_filename)
         if os.path.exists(ok_filename): os.remove(ok_filename)
-        code_insee = cadastre.code_insee(code_departement, code_commune)
-        area = 3600000000 + addr_fantoir_building.dicts.osm_insee[code_insee]
-        overpass_data = 'way(area:%d)["highway"]["name"];out meta;' % area
-        if code_departement.startswith("0"):
+        if metropole:
+            # oapi-fr.openstreetmap.fr n'a que la métropole, pas l'outre mer
             overvass_server = "http://oapi-fr.openstreetmap.fr/oapi/interpreter?"
         else:
             overvass_server = "http://overpass-api.de/api/interpreter?"
-        url = overvass_server + urllib.urlencode({'data':overpass_data})
-        sys.stdout.write((u"Requette overpass pour récupérer les highway de la commune " + code_insee + ":\n").encode("utf-8"))
-        sys.stdout.write(urllib.unquote(url) + "\n")
+        url = overvass_server + urllib.urlencode({'data':requete})
+        sys.stdout.write((urllib.unquote(url) + "\n").encode("utf-8"))
         sys.stdout.flush()
-        write_stream_to_file(urllib2.urlopen(url), filename)
+        write_stream_to_file(urllib2.urlopen(url), cache_filename)
         open(ok_filename, "a").close()
-    return OsmParser().parse(filename)
+    return OsmParser().parse(cache_filename)
+            
+def open_osm_multipolygon_s_ways_commune(code_departement, code_commune, type_multipolygon, filtre="", nodes=False):
+    cache_filename = code_commune + "-multipolygon_" + type_multipolygon + "s.osm"
+    code_insee = cadastre.code_insee(code_departement, code_commune)
+    area = 3600000000 + addr_fantoir_building.dicts.osm_insee[code_insee]
+    requete_overpass = 'rel(area:%d)[type=multipolygon]["%s"]%s;way(r);' % (area, type_multipolygon, filtre)
+    if nodes: requete_overpass += "(._;>;);"
+    requete_overpass += "out meta;"
+    sys.stdout.write((u"Récupération des multipolygon " + type_multipolygon + " de la commune\n").encode("utf-8"))
+    return open_osm_overpass(requete_overpass, cache_filename, metropole=code_departement.startswith("0"))
+
+def open_osm_ways_commune(code_departement, code_commune, type_way, filtre="", nodes=False):
+    cache_filename = code_commune + "-" + type_way + "s.osm"
+    code_insee = cadastre.code_insee(code_departement, code_commune)
+    area = 3600000000 + addr_fantoir_building.dicts.osm_insee[code_insee]
+    requete_overpass = 'way(area:%d)["%s"]%s;' % (area, type_way, filtre)
+    if nodes: requete_overpass += "(._;>;);"
+    requete_overpass += "out meta;"
+    sys.stdout.write((u"Récupération des " + type_way + " de la commune\n").encode("utf-8"))
+    return open_osm_overpass(requete_overpass, cache_filename, metropole=code_departement.startswith("0"))
+
     
 def get_dict_osm_ways(osm):
     """ Pour le fichier osm donné, retourne un dictionnaire qui mappe le
@@ -279,7 +302,7 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
            dans le fichier osm_noms passé en paramètre.
     """
     sys.stdout.write((u"Rapprochement avec les codes FANTOIR, et les highway OSM\n").encode("utf-8"))
-    highways_osm = open_osm_highways_commune(code_departement, code_commune)
+    highways_osm = open_osm_ways_commune(code_departement, code_commune, "highway", '["name"]', nodes=False)
     dict_ways_osm = get_dict_osm_ways(highways_osm)
     dict_fantoir = get_dict_fantoir(code_departement, code_commune)
     dict_abrev_type_voie = get_dict_abrev_type_voie()
