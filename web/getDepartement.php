@@ -33,10 +33,10 @@ if( $villes_file = fopen( $data_path . $dep . '/' . $dep . '-liste.txt','r' ) )
 		if( isset( $ville ) && $ville == $v['id'] . '-' . $v['name'] )
 			echo ' selected';
 		if( substr( $dep, 0, 1 ) == '0' )
-			$dep = substr( $dep, 1, 2 );
+			$insee_dep = substr( $dep, 1, 2 );
 		else
-			$dep = substr( $dep, 0, 2 );
-		$v['INSEEcode'] = $dep.substr( $v['id'], 2, 3 );
+			$insee_dep = substr( $dep, 0, 2 );
+		$v['INSEEcode'] = $insee_dep.substr( $v['id'], 2, 3 );
 		echo '>' . $v['name'] . '-' . $v['INSEEcode'] . "</option>\n";
 	}
 }
