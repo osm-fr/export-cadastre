@@ -50,6 +50,12 @@ def get_osm_buildings_and_barrier_ways(code_departement, code_commune):
           if not id in merge_osm.nodes:
             merge_osm.add_node(node)
       for id, way in osm.ways.iteritems():
+          if any([nid not in osm.nodes for nid in way.nodes]):
+              # Il manque des nodes à ce way, ça arrive parfois
+              # dans les résultats d'overpass, je ne sais pas pourquoi
+              # mais cela ferait bugger l'utilisation de ce way
+              # donc on le zap:
+              continue
           if not id in merge_osm.ways:
             merge_osm.add_way(way)
       for id, rel in osm.ways.iteritems():
