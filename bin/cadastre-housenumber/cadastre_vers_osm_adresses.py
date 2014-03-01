@@ -92,7 +92,7 @@ PARCELLE_LIMITE_MATCH_BOUNDS_TOLERANCE = 1  # expressed in cadastre reference ~=
 PARCELLE_LIMITE_MATCH_AREA_TOLERANCE   = 10 # expressed in cadastre reference ~= square meter
 NUMERO_RE =  re.compile("^[0-9][0-9A-Za-z]*(( bis)|( ter)|( quater)|)")
 
-SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : " + time.strftime("%Y")
+SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
 
 def print_help():
     programme = sys.argv[0]

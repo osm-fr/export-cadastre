@@ -33,7 +33,7 @@ from mytools import toposort
 
 THIS_DIR = os.path.dirname(__file__)
 REFERENCE_HOUSENUMBERS = os.path.join(THIS_DIR, "reference-housenumbers.svg")
-SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : " + time.strftime("%Y")
+SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
 
 class Point(object):
     """ An object with an x and a y field"""
