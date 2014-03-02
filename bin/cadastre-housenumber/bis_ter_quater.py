@@ -109,7 +109,7 @@ def determine_osm_adresses_bis_ter_quater(osm):
                     if not item.numero in series[item.street]: series[item.street][item.numero] = set()
                     series[item.street][item.numero].add(item.lettre)
     for relation in osm.relations.itervalues():
-        print relation, relation.tags.get("type"), relation.tags.get("name")
+        #print relation, relation.tags.get("type"), relation.tags.get("name")
         if relation.tags.get("type") == "associatedStreet" and relation.tags.get("name"):
             street = relation.tags.get("name")
             if not street in series: series[street] = {}
@@ -118,7 +118,7 @@ def determine_osm_adresses_bis_ter_quater(osm):
                     if member and hasattr(member, "lettre") and member.lettre:
                         member.street = street
                         if not member.numero in series[member.street]: series[member.street][member.numero] = set()
-                        print "serrie[" + member.street + "][" + member.numero + "].add(" + member.lettre + ")"
+                        #print "serrie[" + member.street + "][" + member.numero + "].add(" + member.lettre + ")"
                         series[member.street][member.numero].add(member.lettre)
 
     DISTANCE_X2 = DISTANCE_RECHERCHE_VOSINS_ORPHELINS * DISTANCE_RECHERCHE_VOSINS_ORPHELINS
@@ -152,9 +152,6 @@ def determine_osm_adresses_bis_ter_quater(osm):
         }
         for rue, lettres_numeros in series.iteritems()
     }
-    for street,numeros in is_bis_ter_quater.iteritems():
-      for numero,val in numeros.iteritems():
-        print "is_bis_ter_quater[" + street + "][" + numero + "] : " + str(val)
 
     # On corrige les addr:housenumber pour correspondre au nos calculs, et on nettoi les champs qu'on avait ajouté:
     for item in osm.iteritems():
@@ -162,7 +159,7 @@ def determine_osm_adresses_bis_ter_quater(osm):
             if item.lettre:
                 if item.street and is_bis_ter_quater[item.street][item.numero]:
                     item.lettre = bis_ter_quater[item.lettre]
-                print item.tags["addr:housenumber"] + " => " + item.numero + " " + item.lettre
+                #print item.tags["addr:housenumber"] + " => " + item.numero + " " + item.lettre
                 item.tags["addr:housenumber"] = item.numero + " " + item.lettre
             delattr(item, "numero")
             delattr(item, "lettre")

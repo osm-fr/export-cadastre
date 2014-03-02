@@ -185,7 +185,7 @@ class OsmParser(object):
         elif name == "member":
             member = attrs
             relation = self.current
-            relation.add_member(member)
+            relation.members.append(member)
         else:
             raise Exception("ERROR: unknown tag <"+name+"> in file " 
                     + self.filename + "\n")
