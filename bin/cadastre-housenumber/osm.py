@@ -23,48 +23,33 @@ import sys
 import os.path
 import xml.sax.saxutils
 import xml.parsers.expat
+import itertools
+
 
 class Osm(object):
+    min_id = 0
     def __init__(self, attrs):
         self.attrs = {}
         self.attrs.update(attrs);
         self.nodes = {}
         self.ways = {}
         self.relations = {}
-        self.min_node_id = 0;
-        self.min_way_id = 0;
-        self.min_relation_id = 0;
         self.bounds = []
         if not self.attrs.has_key('version'):
           self.attrs['version'] = '0.6'
         if not self.attrs.has_key('generator'):
           self.attrs['generator'] = os.path.basename(sys.argv[0])
     def add_node(self, node):
-        if (node.attrs.has_key("id")):
-            id = int(node.attrs["id"])
-            assert(not self.nodes.has_key(id))
-        else:
-            id = self.min_node_id - 1
-            node.attrs["id"] = str(id)
-        self.min_node_id = min(self.min_node_id, id)
+        id = node.id()
+        assert(not self.nodes.has_key(id))
         self.nodes[id] = node
     def add_way(self, way):
-        if (way.attrs.has_key("id")):
-            id = int(way.attrs["id"])
-            assert(not self.ways.has_key(id))
-        else:
-            id = self.min_way_id - 1
-            way.attrs["id"] = str(id)
-        self.min_way_id = min(self.min_way_id, id)
+        id = way.id()
+        assert(not self.ways.has_key(id))
         self.ways[id] = way
     def add_relation(self, relation):
-        if (relation.attrs.has_key("id")):
-            id = int(relation.attrs["id"])
-            assert(not self.relations.has_key(id))
-        else:
-            id = self.min_relation_id - 1
-            relation.attrs["id"] = str(id)
-        self.min_relation_id = min(self.min_relation_id, id)
+        id = relation.id()
+        assert(not self.relations.has_key(id))
         self.relations[id] = relation
     def bbox(self):
         minlon = min([float(b["minlon"]) for b in self.bounds])
@@ -79,52 +64,68 @@ class Osm(object):
           "minlat": str(minlat),
           "maxlon": str(maxlon),
           "maxlat": str(maxlat)})
+    def iteritems(self):
+        return itertools.chain.from_iterable([self.nodes.itervalues(), self.ways.itervalues(), self.relations.itervalues()])
+    def get(self, item_type, item_id):
+        if item_type == "node":
+            return self.nodes.get(item_id)
+        elif item_type == "way":
+            return self.ways.get(item_id)
+        else:
+            assert(item_type == "relation")
+            return self.relations.get(item_id)
+    def iter_relation_members(self, relation):
+        for mtype, mref, mrole in relation.itermembers():
+            yield self.get(mtype, int(mref)), mrole
 
-class Node(object):
+class Item(object):
     def __init__(self, attrs,tags=None):
         self.attrs = attrs
         self.tags = tags or {}
+        if (attrs.has_key("id")):
+            id = int(attrs["id"])
+        else:
+            id = Osm.min_id - 1
+            attrs["id"] = str(id)
+        Osm.min_id = min(Osm.min_id, id)
     def id(self):
         return int(self.attrs["id"])
 
-class Way(object):
+class Node(Item):
     def __init__(self, attrs,tags=None):
-        self.attrs = attrs
-        self.tags = tags or {}
+        Item.__init__(self, attrs, tags)
+    def type(self):
+        return "node"
+
+class Way(Item):
+    def __init__(self, attrs,tags=None):
+        Item.__init__(self, attrs, tags)
         self.nodes = []
+    def type(self):
+        return "way"
     def add_node(self, node):
         if type(node) == Node:
             self.nodes.append(node.id())
         else:
             assert((type(node) == str) or (type(node) == unicode) or (type(node) == int))
             self.nodes.append(int(node))
-    def id(self):
-        return int(self.attrs["id"])
         
 
-class Relation(object):
+class Relation(Item):
     def __init__(self, attrs,tags=None):
-        self.attrs = attrs
-        self.tags = tags or {}
+        Item.__init__(self, attrs, tags)
         self.members = []
-    def add_member(self, member, role=""):
-        if type(member) == dict:
-            attrs = member
-        else:
-            attrs = {}
-            if type(member) == Node:
-                attrs['type'] = 'node'
-            elif type(member) == Way:
-                attrs['type'] = 'way'
-            elif type(member) == Relation:
-                attrs['type'] = 'relation'
-            else:
-                raise Exception("unknown member type")
-            attrs['ref'] = str(member.id())
-        if role: attrs['role'] = role
+    def type(self):
+        return "relation"
+    def add_member_type_ref_role(self, mtype, mref, mrole):
+        attrs = {'type': mtype, 'ref': str(mref), 'role': mrole}
         self.members.append(attrs)
-    def id(self):
-        return int(self.attrs["id"])
+    def add_member(self, member, role=""):
+        attrs = {'type': member.type(), 'ref': str(member.id()), 'role': role}
+        self.members.append(attrs)
+    def itermembers(self):
+        for attrs in self.members:
+            yield attrs.get("type"), int(attrs.get("ref")), attrs.get("role")
 
 class OsmParser(object):
     def __init__(self):

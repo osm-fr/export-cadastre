@@ -330,7 +330,7 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
                 if name_norm in dict_ways_osm:
                     nb_voies_osm += 1
                     for id_way in dict_ways_osm[name_norm]['ids']:
-                        relation.add_member({'type':'way', 'ref':str(id_way), 'role':'street'})
+                        relation.add_member_type_ref_role('way', id_way, 'street')
                     relation.tags['name'] = dict_ways_osm[name_norm]['name']
                     log.write((" osm highway[" + relation.tags['name'] + "]\n").encode("utf-8"))
                 else:

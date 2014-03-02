@@ -73,6 +73,9 @@ from pdf_vers_osm_limites_parcelles import ParcellePathRecognizer
 from partitionnement_noeuds_osm import partitionnement_osm_nodes
 from cherche_fantoir_et_osm_highways import cherche_fantoir_et_osm_highways
 from cherche_osm_buildings import cherche_osm_buildings_proches
+from bis_ter_quater import determine_osm_adresses_bis_ter_quater
+from bis_ter_quater import determine_osm_parcelles_bis_ter_quater
+from bis_ter_quater import RE_NUMERO_CADASTRE
 
 import bbox_vers_osm_box
 
@@ -90,7 +93,6 @@ FIXME_JOINDRE_NOEUD_AU_WAY = u"Joindre le nœud au bâtiment (J)"
 
 PARCELLE_LIMITE_MATCH_BOUNDS_TOLERANCE = 1  # expressed in cadastre reference ~= meter
 PARCELLE_LIMITE_MATCH_AREA_TOLERANCE   = 10 # expressed in cadastre reference ~= square meter
-NUMERO_RE =  re.compile("^[0-9][0-9A-Za-z]*(( bis)|( ter)|( quater)|)")
 
 SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
 
@@ -282,7 +284,7 @@ def match_parcelles_et_numeros(parcelles, numeros):
                 if not parcelles_des_adresses.has_key(addr):
                     parcelles_des_adresses[addr] = []
                 parcelles_des_adresses[addr].append(parcelle)
-                numero_match = NUMERO_RE.match(addr)
+                numero_match = RE_NUMERO_CADASTRE.match(addr)
                 if numero_match:
                     numero = numero_match.group(0)
                     if not parcelle.positions_numeros.has_key(numero):
@@ -409,7 +411,7 @@ def generate_osm_parcelles(parcelles, transform):
         way = osm_add_polygon(osm, limite, transform)
         if hasattr(parcelle, 'adresses'):
             for i,addr in enumerate(parcelle.adresses):
-                numero_match = NUMERO_RE.match(addr)
+                numero_match = RE_NUMERO_CADASTRE.match(addr)
                 if numero_match:
                     num = numero_match.group(0)
                     way.tags['addr%d:housenumber' % i] = num
@@ -500,7 +502,7 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
     positions_des_lieus = {}
     for parcelle in parcelles.itervalues():
         for addr in parcelle.adresses:
-            numero_match = NUMERO_RE.match(addr)
+            numero_match = RE_NUMERO_CADASTRE.match(addr)
             if addr and (not numero_match) and (not associatedStreets.has_key(addr)):
                 if not positions_des_lieus.has_key(addr):
                     positions_des_lieus[addr] = []
@@ -595,9 +597,9 @@ def partitionnement_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             assert(n.id() >= 0 and "action" not in n.attrs)
     for r in osm.relations.itervalues():
         if r.id() < 0 and r.tags.get("type") == "associatedStreet":
-            for member in r.members:
-                if member['type'] == 'node':
-                    associatedStreet_of_housenumber_node[int(member['ref'])].append(r)
+            for mtype,mref,mrole in r.itermembers():
+                if mtype == 'node':
+                    associatedStreet_of_housenumber_node[mref].append(r)
         else:
             # le code actuel ne sait partitionner que les relation
             # associatedStreet que l'on a créé nous même (id<0)
@@ -612,16 +614,15 @@ def partitionnement_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             street_osm = Osm({})
             street_relation = Relation(r.attrs.copy(), r.tags.copy())
             street_osm.add_relation(street_relation)
-            for member in r.members:
-                if member['role'] == 'house':
-                    assert(member['type'] == 'node')
-                    i = int(member['ref'])
-                    if len(associatedStreet_of_housenumber_node[i]) == 1:
-                        node = osm.nodes[i]
+            for mtype,mref,mrole in r.itermembers():
+                if mrole  == 'house':
+                    assert(mtype == 'node')
+                    if len(associatedStreet_of_housenumber_node[mref]) == 1:
+                        node = osm.nodes[mref]
                         street_osm.add_node(node)
-                        street_relation.add_member(node, member['role'])
+                        street_relation.add_member(node, mrole)
                 else:
-                    street_relation.add_member(member)
+                    street_relation.add_member_type_ref_role(mtype, mref, mrole)
             filename = subdir + to_ascii(r.tags['name']) + ".osm"
             filename_osm_map[filename] = street_osm
     # Partitionne les noeuds ambigus
@@ -890,7 +891,9 @@ def cadastre_vers_adresses(argv):
       sys.stdout.write((u"Sauve fichiers de numéros, de parcelles et de noms.\n").encode("utf-8"))
       sys.stdout.flush()
       OsmWriter(generate_osm_housenumbers(numeros, transform_to_osm)).write_to_file(code_commune + "-housenumbers.osm")
-      OsmWriter(generate_osm_parcelles(parcelles, transform_to_osm)).write_to_file(code_commune + "-parcelles.osm")
+      osm_parcelles = generate_osm_parcelles(parcelles, transform_to_osm)
+      determine_osm_parcelles_bis_ter_quater(osm_parcelles)
+      OsmWriter(osm_parcelles).write_to_file(code_commune + "-parcelles.osm")
       osm_noms = generate_osm_noms(quartiers, nom_rues, transform_to_osm)
       OsmWriter(osm_noms).write_to_file(code_commune + "-noms.osm")
 
@@ -910,11 +913,13 @@ def cadastre_vers_adresses(argv):
           #   le même numéro avec une autre lettre que B T ou Q
           #   pour ça ont doit pouvoir réutiliser l'index spatial utilise 
           #   dans la fonction match_parcelles_et_numeros()
+          determine_osm_adresses_bis_ter_quater(osm)
 
           try:
               cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_noms)
           except:
               traceback.print_exc()
+
           OsmWriter(osm).write_to_file(code_commune + "-adresses.osm")
           partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses.zip", code_commune)
 
