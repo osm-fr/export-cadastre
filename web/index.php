@@ -40,7 +40,7 @@ if( isset( $dep ) && isset( $ville ) )
 				$import_ville_logs="> \"$logs_path/%s/%s-%s.log\" 2>&1";
 			}
 			else
-				$import_ville_logs="";
+				$import_ville_logs="> /dev//null 2>&1";
 			$v = explode( '-', $ville, 2 );
 			$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $import_ville_logs", $bin_path, $dep, $v[0], trim( $v[1] ), $dep, $dep, $ville );
 			exec( $command );

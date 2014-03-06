@@ -186,7 +186,13 @@ if( $dep && $ville && $type )
 				}
 			}
 			else
-				$log_cmd="";
+			{
+				if ($type == "adresses") { 
+					$log_cmd="2>&1";
+				} else {
+					$log_cmd="> /dev/null 2>&1";
+				}
+			}
 			$v = explode( '-', $ville, 2 );
 			if ($type == "adresses") { 
 				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
