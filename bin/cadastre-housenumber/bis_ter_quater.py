@@ -26,7 +26,7 @@ bis_ter_quater = {
   " quinquies" : "quinquies",
 }
 
-RE_NUMERO_CADASTRE = re.compile("^([0-9][0-9]*)(([A-Za-z]*)|( bis)|( ter)|( quater)|( quinquies)|)")
+RE_NUMERO_CADASTRE = re.compile("^([0-9][0-9]*)(( bis)|( ter)|( quater)|( quinquies)|([A-Za-z?]*))\\b", re.I)
 
 DISTANCE_RECHERCHE_VOSINS_ORPHELINS = 100
 

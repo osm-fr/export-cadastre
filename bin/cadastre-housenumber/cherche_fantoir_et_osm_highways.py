@@ -68,7 +68,7 @@ addr_fantoir_building.dicts.load_mot_a_blanc()
 addr_fantoir_building.dicts.load_osm_insee()
 
 def normalize(nom):
-    return addr_fantoir_building.normalize(nom)
+    return addr_fantoir_building.normalize(to_ascii(nom))
 
 def get_fantoir_txt_filename(code_departement):
     assert(len(code_departement) == 3)
@@ -277,6 +277,7 @@ def get_dict_accents_mots(osm_noms):
     dict_accents_mots.update({
         "EGLISE": u"Église", 
         "ECOLE": u"École", 
+        "ECOLES": u"Écoles", 
         "ALLEE": u"Allée", 
         "ALLEES": u"Allées",
         "GENERAL" : u"Général",

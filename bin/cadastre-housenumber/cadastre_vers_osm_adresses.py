@@ -635,7 +635,10 @@ def partitionnement_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
     filename_osm_map.update(partitionnement_osm_nodes_filename_map(noeuds_orphelins, subdir + "_ORPHELINS_"))
     # Partitionne les noeuds de quartiers (place=neighbourhood):
     noeuds_quartiers = [n for n in osm.nodes.itervalues() if (n.id()<0) and ("place" in n.tags)]
-    filename_osm_map.update(partitionnement_osm_nodes_filename_map(noeuds_quartiers, subdir + "_QUARTIERS_"))
+    osms_quartiers = partitionnement_osm_nodes_filename_map(noeuds_quartiers, subdir + "_QUARTIERS_")
+    for filename, new_osm in osms_quartiers.iteritems():
+        new_osm.attrs["upload"] = "false"
+    filename_osm_map.update(osms_quartiers)
 
     # Avec l'intégration des addr:housenumber au buildings, le fichier d'entrée
     # contiens peut-être aussi des way issue d'OSM qui ont été modifiés.
