@@ -158,7 +158,14 @@ def parse_adresses_of_parcelles_info_pdfs(pdfs, code_commune):
                 continue
             #print line
             if line.startswith("Références de la parcelle "):
-                id1,id2,id3 = line[len("Références de la parcelle "):].strip().split(" ")
+                ids = line[len("Références de la parcelle "):].strip()
+                if len(ids.split(" ")) == 2:
+                    # Cas rencontré sur la commune de Mauves, Ardèche
+                    # Seulement 2 ids, on assume la valeur 0 pour le 3ème:
+                    id1,id2 = ids.split(" ")
+                    id3 = "0"
+                else:
+                    id1,id2,id3 = ids.split(" ")
                 if len(id2) ==1:
                    id2 = "0" + id2
                 id3 = "%04d" % int(id3)
