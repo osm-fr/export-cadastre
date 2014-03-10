@@ -30,6 +30,7 @@ import subprocess
 import urllib2
 import shutil
 import urllib
+import collections
 from zipfile import ZipFile
 
 import cadastre 
@@ -68,7 +69,10 @@ addr_fantoir_building.dicts.load_mot_a_blanc()
 addr_fantoir_building.dicts.load_osm_insee()
 
 def normalize(nom):
-    return addr_fantoir_building.normalize(to_ascii(nom))
+    result = addr_fantoir_building.normalize(to_ascii(nom))
+    if result.startswith("GR GRANDE RUE") or result.startswith("GR GRAND RUE"):
+        result = result[3:]
+    return result
 
 def get_fantoir_txt_filename(code_departement):
     assert(len(code_departement) == 3)
@@ -208,6 +212,8 @@ def humanise_nom_fantoir(name, dict_premier_mot, dict_tout_les_mots):
     name = name.replace(" D "," d'")
     name = name.replace(" Saint "," Saint-")
     name = name.replace(" Sainte "," Sainte-")
+    name = name.replace("Grande Rue Grande Rue", "Grande Rue")
+    name = name.replace("Grande Rue Grand Rue", "Grand'Rue")
     #if name != original_name:
     #    print " - ", original_name, "=>", name
     return name
@@ -285,6 +291,7 @@ def get_dict_accents_mots(osm_noms):
         "PDT": u"Président",
         "CDT": "Commandant",
         "REGT" : u"Régiment",
+        "DOC" : "Docteur",
         "ST" : "Saint",
         "STE" : "Sainte",
     })
@@ -315,6 +322,13 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
     nb_voies_fantoir = 0
     nb_voies_osm = 0
 
+    # Compte le nombre d'occurence de chaque nom normalizé
+    # afin de détecter les conflits
+    conflits_normalization = collections.Counter([
+        normalize(r.tags['name']) for r in osm.relations.itervalues() 
+        if r.tags.get('type') == 'associatedStreet'])
+  
+
     for relation in osm.relations.itervalues():
         if relation.tags['type'] == 'associatedStreet':
             nb_associatedStreet += 1
@@ -322,27 +336,38 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
             name_norm = normalize(name)
             if name and name_norm:
                 log.write((name + u" => normalizé[" + name_norm + "]").encode("utf-8"))
-                if name_norm in dict_fantoir:
-                    relation.tags['ref:FR:FANTOIR'] = dict_fantoir[name_norm]
-                    nb_voies_fantoir += 1
-                    log.write((" ref:FR:FANTOIR[" + dict_fantoir[name_norm] + "]").encode("utf-8"))
-                else:
-                    log.write((" ref:FR:FANTOIR[???]").encode("utf-8"))
-                if name_norm in dict_ways_osm:
-                    nb_voies_osm += 1
-                    for id_way in dict_ways_osm[name_norm]['ids']:
-                        relation.add_member_type_ref_role('way', id_way, 'street')
-                    relation.tags['name'] = dict_ways_osm[name_norm]['name']
-                    log.write((" osm highway[" + relation.tags['name'] + "]\n").encode("utf-8"))
-                else:
+                if conflits_normalization[name_norm] > 1:
+                    # Cas rencontré à Dijon (021 B0231), deux rues différentes "Rue la Fontaine" et "Rue de Fontaine" 
+                    # ont le même nom normalizé, on ne tente donc pas de raprochement Fantoir ou OSM
                     relation.tags['name'] = humanise_nom_fantoir(name, dict_abrev_type_voie, dict_accents_mots)
-                    log.write((" osm highway[???] => " + relation.tags['name'] + "\n").encode("utf-8"))
+                    log.write((" CONFLIT DE NORMALIZATION, => " + relation.tags['name'] + "\n").encode("utf-8"))
+                else:
+                    if name_norm in dict_fantoir:
+                        relation.tags['ref:FR:FANTOIR'] = dict_fantoir[name_norm]
+                        nb_voies_fantoir += 1
+                        log.write((" ref:FR:FANTOIR[" + dict_fantoir[name_norm] + "]").encode("utf-8"))
+                    else:
+                        log.write((" ref:FR:FANTOIR[???]").encode("utf-8"))
+                    if name_norm in dict_ways_osm:
+                        nb_voies_osm += 1
+                        for id_way in dict_ways_osm[name_norm]['ids']:
+                            relation.add_member_type_ref_role('way', id_way, 'street')
+                        relation.tags['name'] = dict_ways_osm[name_norm]['name']
+                        log.write((" osm highway[" + relation.tags['name'] + "]\n").encode("utf-8"))
+                    else:
+                        relation.tags['name'] = humanise_nom_fantoir(name, dict_abrev_type_voie, dict_accents_mots)
+                        log.write((" osm highway[???] => " + relation.tags['name'] + "\n").encode("utf-8"))
     log.close()
     sys.stdout.write(("Nombre de rues: "+str(nb_associatedStreet)+ "\n").encode("utf-8"))
     if nb_associatedStreet > 0:
       sys.stdout.write(("     avec code FANTOIR      : "+str(nb_voies_fantoir)+" ("+str(int(nb_voies_fantoir*100/nb_associatedStreet))+"%)\n").encode("utf-8"))
       sys.stdout.write(("     avec rapprochement OSM : "+str(nb_voies_osm)+" ("+str(int(nb_voies_osm*100/nb_associatedStreet))+"%)\n").encode("utf-8"))
 
+    # Humanise aussi les noms de quartier:
+    for node in osm.nodes.itervalues():
+        if node.tags.get("place") == "neighbourhood":
+            node.tags["name"] = relation.tags['name'] = humanise_nom_fantoir(
+                node.tags["name"], dict_abrev_type_voie, dict_accents_mots)
     
 def print_help():
     programme = sys.argv[0]
