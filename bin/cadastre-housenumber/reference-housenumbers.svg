@@ -30,9 +30,9 @@
      inkscape:window-height="1161"
      id="namedview3195"
      showgrid="false"
-     inkscape:zoom="5.1744112"
-     inkscape:cx="164.79807"
-     inkscape:cy="976.37294"
+     inkscape:zoom="16"
+     inkscape:cx="203.6418"
+     inkscape:cy="1005.1616"
      inkscape:window-x="0"
      inkscape:window-y="18"
      inkscape:window-maximized="0"
@@ -262,4 +262,19 @@
        y="151.28067"
        style="font-size:8px"
        id="tspan3072">par le cadastre (par exemple Lambert 9 Zones) qui inverse l'axe Y.</tspan></text>
-</svg>
+<path
+     id="path75796"
+     style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+     d="m 212.54678,50.242487 1.05379,6e-5 2.01255,-3.000577 2.00473,2.996753 1.06793,3.26e-4 -2.58203,-3.828809 -3.5e-4,-3.465547 -0.9831,0.0014 3.6e-4,3.465547 -2.57389,3.830882 z"
+     inkscape:connector-curvature="0"><title
+       id="title29182">Y</title></path><path
+     id="path76224"
+     style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+     d="m 205.3576,50.218433 1.05802,0.0025 1.82001,-2.72141 1.82816,2.714835 1.04996,0.0085 -2.34583,-3.501031 2.49073,-3.800033 -1.04403,-4.22e-4 -2.05502,3.093525 -2.06517,-3.086758 -1.06395,-0.01058 2.61464,3.899217 -2.28752,3.40166 z"
+     inkscape:connector-curvature="0"><title
+       id="title29180">X</title></path><path
+     id="path76268"
+     style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+     d="m 219.75524,50.275375 5.73062,0.0018 4e-4,-0.765571 -4.6018,-5.706122 4.71426,0.0031 0.003,-0.832579 -5.94994,-0.0032 -0.004,0.756426 4.61095,5.702077 -4.50813,-0.0068 0.005,0.850869 z"
+     inkscape:connector-curvature="0"><title
+       id="title29184">Z</title></path></svg>
