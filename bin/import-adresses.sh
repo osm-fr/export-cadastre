@@ -67,6 +67,6 @@ cd $command2dir && $command2 || exit -1
 mv "$communedir/${code_commune}_adresse_tag_sur_batiment.zip" "${file3}"
 mv "$communedir/${code_commune}_adresse_point_sur_batiment.zip" "${file4}"
 $command3 "${file3}" "${file3/associatedStreet/addrstreet}"
-$command3 "${file3}" "${file4/associatedStreet/addrstreet}"
+$command3 "${file4}" "${file4/associatedStreet/addrstreet}"
 
 
