@@ -146,7 +146,9 @@ def open_osm_overpass(requete, cache_filename, metropole=False):
             overvass_server = "http://oapi-fr.openstreetmap.fr/oapi/interpreter?"
         else:
             overvass_server = "http://overpass-api.de/api/interpreter?"
-        url = overvass_server + urllib.urlencode({'data':requete})
+# 16/03/14 : patch temporaire pour ignorer oapi-fr car osm3 en panne
+        overvass_server = "http://overpass-api.de/api/interpreter?"
+	url = overvass_server + urllib.urlencode({'data':requete})
         sys.stdout.write((urllib.unquote(url) + "\n").encode("utf-8"))
         sys.stdout.flush()
         write_stream_to_file(urllib2.urlopen(url), cache_filename)
