@@ -366,7 +366,7 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
     # Humanise aussi les noms de quartier:
     for node in osm.nodes.itervalues():
         if node.tags.get("place") == "neighbourhood":
-            node.tags["name"] = relation.tags['name'] = humanise_nom_fantoir(
+            node.tags["name"] = humanise_nom_fantoir(
                 node.tags["name"], dict_abrev_type_voie, dict_accents_mots)
     
 def print_help():
