@@ -2,148 +2,29 @@
 require_once( 'includes/header.php' );
 require_once( 'includes/config.php' );
 
-function get_parameter($name, $format) {
+function get_parameter($name, $format, $default) {
 	if (isset($_POST[$name])) {
-	    if (preg_match($format, $_POST[$name])) {
-			return $_POST[$name];
-		} else {
-			echo "Erreur interne: ". $_POST[$name] . "<br/>\n";
-			require_once( 'includes/footer.php' );
-			exit(0);
-		}
-	} else {
-		return "";
+		$val = $_POST[$name];
+        } else if (isset($_GET[$name])) {
+		$val = $_GET[$name];
+        } else {
+		$val = $default;
 	}
+	if (($val != "") && (! preg_match($format, $val))) {
+		echo "Erreur interne: ". $val . "<br/>\n";
+		require_once( 'includes/footer.php' );
+		exit(0);
+        } else {
+		return $val;
+        }
 }
 
-$dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/");
-$ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/");
-$type = get_parameter("type", "/^(bati)|(adresses)$/");
+$dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/", "");
+$ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/", "");
+$type = get_parameter("type", "/^(bati)|(adresses)$/", "bati");
 $command = "";
 
 ?>
-<style>
-#dep {
-    width: 200px;
-}
-#ville {
-    width: 300px;
-}
-#recherche_dep {
-    color: grey;
-}
-#recherche_ville {
-    color: grey;
-}
-</style>
-<script type="text/javascript">
-var previous_depCode = '';
-function getDepartement( ville )
-{
-        depIndex = document.getElementById( "dep" ).selectedIndex;
-        depCode = document.getElementById( "dep" ).options[depIndex].value;
-		if (depCode != previous_depCode) {
-		  previous_depCode = depCode;
-		  params = "dep=" + depCode;
-		  //document.getElementById("throbber_ville").style.display = "inline";
-		  xhr = new XMLHttpRequest();
-		  xhr.onreadystatechange = handler;
-		  xhr.open("POST", "getDepartement.php?ville=" + ville, true );
-		  xhr.setRequestHeader( "Content-type", "application/x-www-form-urlencoded" );
-		  xhr.setRequestHeader( "Content-length", params.length );
-		  xhr.setRequestHeader( "Connection", "close" );
-		  xhr.send(params);
-		}
-}
-function handler()
-{
-        if( this.readyState == 4 && this.status == 200 )
-        {
-                document.getElementById( "ville" ).innerHTML = this.responseText;
-                ville_filter = new SelectBoxFilter(ville);
-				document.getElementById( "recherche_ville" ).value = 'Recherche';
-				filter_ville();
-        //      document.getElementById("throbber_ville").style.display = "none";
-        }
-}
-function normalize(text) {
-  text = text.toLowerCase();
-  text = text.replace(/[-_']/g,' ');
-  text = text.replace(/[aàÀ]/g,'a');
-  text = text.replace(/[éèêëÉÈÊË]/g,'e');
-  text = text.replace(/[ïîÏÎ]/g,'i');
-  text = text.replace(/[ôÔ]/g,'o');
-  text = text.replace(/[ùÙûÛ]/g,'u');
-  text = text.replace(/\bsaint\b/g,'st');
-  return text;
-}
-function SelectBoxFilter(selectbox) {
-    this.selectbox = selectbox;
-    if (typeof selectboxfilter_backgroundcolor == 'undefined') {
-        selectboxfilter_backgroundcolor = selectbox.style.backgroundColor;
-    }
-    this.optionscopy = new Array();
-    for(var i=0; i<selectbox.options.length; i++) {
-        var option = selectbox.options[i];
-        this.optionscopy[i] = new Option(option.text, option.value);
-    }
-    this.filter = function(reg_exp) {
-        var selectedValue = this.selectbox.value;
-        var selectedIndex = 0;
-        this.selectbox.options.length = 0;
-        var nb = 0;
-        var nbvalue = 0;
-        for(var i=0; i<this.optionscopy.length; i++) {
-          option = this.optionscopy[i];
-          if((option.value == "") || (normalize(option.text).search(reg_exp) != -1)) {
-              if (option.value != "") nbvalue++;
-              if (option.value == selectedValue) selectedIndex = nb;
-              this.selectbox.options[nb++] = new Option(option.text, option.value, false);
-          }
-        }
-        this.selectbox.selectedIndex = selectedIndex;
-        if (nbvalue == 0) {
-          this.selectbox.style.backgroundColor = "#d22";
-        } else if (nbvalue == 1) {
-          this.selectbox.style.backgroundColor = "#bf6";
-        } else {
-          this.selectbox.style.backgroundColor = selectboxfilter_backgroundcolor;
-        }
-    }
-}
-
-function filter_dep() {
-  var text = document.getElementById("recherche_dep").value
-  if (typeof previous_filter_dep_text == 'undefined') {
-      previous_filter_dep_text = '';
-  }
-  if ((text != "Recherche") && (text != previous_filter_dep_text)) {
-    previous_filter_dep_text = text;
-    var dep = document.getElementById("dep");
-    if (typeof dep_filter == 'undefined') {
-      dep_filter = new SelectBoxFilter(dep);
-    }
-    // recherche en début de mot (ou avec un 0 pour les code de département):
-    dep_filter.filter(new RegExp("\\b0?" + normalize(text)));
-    if (dep.options.length == 2) {
-      dep.selectedIndex = 1;
-      getDepartement();
-    }
-  }
-}
-function filter_ville() {
-  var text = document.getElementById("recherche_ville").value
-  if (text != "Recherche") {
-    var ville = document.getElementById("ville");
-    if (typeof ville_filter == 'undefined') {
-      ville_filter = new SelectBoxFilter(ville);
-    }
-    // recherche en début de mot:
-    ville_filter.filter(new RegExp("\\b" + normalize(text)));
-  }
-}
-</script>
-
 <div id="conditions-utilisation">
 <p>
 Ce service et les données du cadastre disponibles ici sont exclusivement réservés à l'usage des contributeurs OpenStreetMap. <a href="http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">En savoir plus</a>
@@ -256,7 +137,7 @@ if ($dep) {
 		<legend>Choix du type de données</legend>
 <?php
 $bati_checked = ($type=="bati") ? "checked" : "";
-$adresses_checked = ( (!$type) || ($type=="adresses")) ? "checked" : "";
+$adresses_checked = ($type=="adresses") ? "checked" : "";
 ?>
 		<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input><br/>
 		<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>>Adresses</input><br/>

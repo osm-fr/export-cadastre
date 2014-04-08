@@ -41,3 +41,21 @@ body {
 	padding: 5px 10px;
 	box-shadow: 5px 5px 5px #ccc;
 }
+#dep {
+    width: 200px;
+}
+#ville {
+    width: 300px;
+}
+#recherche_dep {
+    color: grey;
+}
+#recherche_ville {
+    color: grey;
+}
+.selectboxfilter_found {
+    background-color: #bf6;
+}
+.selectboxfilter_notfound {
+    background-color: #d22;
+}
