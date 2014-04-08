@@ -7,3 +7,6 @@ RewriteBase	/
 
 RewriteCond %{HTTP_HOST}	!^cadastre\.openstreetmap\.fr [NC]
 RewriteRule (.*)	http://cadastre.openstreetmap.fr/$1 [L,R=301]
+
+RewriteCond %{REQUEST_URI} /adresses [NC]
+RewriteRule (.*)        http://cadastre.openstreetmap.fr/ [L,R=301]
