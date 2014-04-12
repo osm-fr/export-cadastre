@@ -197,7 +197,12 @@ def humanise_nom_fantoir(name, dict_premier_mot, dict_tout_les_mots):
     mots = name.split()
     premier_mot_norm = to_ascii(mots[0]).upper()
     if premier_mot_norm in dict_premier_mot:
-        mots = dict_premier_mot[premier_mot_norm].split() + mots[1:]
+        if mots[1] == dict_premier_mot[premier_mot_norm]:
+            # Le type de voie est répété dans le nom de la voie, ça arrive parfois, on le supprime:
+            mots = mots[1:]
+        else:
+            # On remplace étend le préfixe:
+            mots = dict_premier_mot[premier_mot_norm].split() + mots[1:]
     for i,mot in enumerate(mots):
         mot_norm = to_ascii(mot).upper()
         if mot_norm in dict_tout_les_mots:
@@ -209,7 +214,9 @@ def humanise_nom_fantoir(name, dict_premier_mot, dict_tout_les_mots):
     name = name.replace(" Des "," des ")
     name = name.replace(" Et "," et ")
     name = name.replace(" L "," l'")
+    name = name.replace(" L'"," l'")
     name = name.replace(" D "," d'")
+    name = name.replace(" D'"," d'")
     name = name.replace(" Saint "," Saint-")
     name = name.replace(" Sainte "," Sainte-")
     name = name.replace("Grande Rue Grande Rue", "Grande Rue")
@@ -235,6 +242,8 @@ def get_dict_abrev_type_voie():
                 dict_abrev_type_voie[abrev] = nom
     dict_abrev_type_voie["CHEM"] = "Chemin" # à la place de CHEMINEMENT
     dict_abrev_type_voie["CHE"] = "Chemin" # à la place de CHEM
+    dict_abrev_type_voie["ILE"] = u"Île" # pb d'encodage dans le projet associatedStreet
+    dict_abrev_type_voie["ECA"] = u"Écart" # pb d'encodage dans le projet associatedStreet
     return dict_abrev_type_voie
 
 def get_dict_accents_mots(osm_noms):
