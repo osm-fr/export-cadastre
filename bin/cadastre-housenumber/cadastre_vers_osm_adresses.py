@@ -457,6 +457,7 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
                     # de la parcelle, si c'est le cas et qu'il est proche des limites,
                     # on le déplace sur la limite:
                     if hasattr(parcelle,'limite') and \
+                            (parcelle.limite != None) and \
                             (not position.within(parcelle.limite)) and \
                             (position.distance(parcelle.limite) < 2):
                         boundary = parcelle.limite.boundary
@@ -493,7 +494,7 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
                 if len(rues) > 1:
                     fixme.append(u"choisir la bonne rue: " +
                         " ou ".join(rues))
-                if hasattr(parcelle,'limite'):
+                if hasattr(parcelle,'limite') and parcelle.limite != None:
                     limite = parcelle.limite
                 else:
                     limite = parcelle.box
@@ -514,7 +515,14 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
                 if not positions_des_lieus.has_key(addr):
                     positions_des_lieus[addr] = []
                 if hasattr(parcelle,'limite') and parcelle.limite != None:
-                    positions_des_lieus[addr].append(parcelle.limite.centroid)
+                    centroid = parcelle.limite.centroid
+                    if centroid.wkt == 'GEOMETRYCOLLECTION EMPTY':
+                        # Pour la ville de Kingersheim (68), il existe une limite de parcelle
+                        # aplatie (sur une ligne, donc d'area nulle) ce qui lui donne
+                        # un centroid vide.
+                        # On utilise alors le centre des points composant sa limite exteieur
+                        centroid = parcelle.limite.exterior.centroid
+                    positions_des_lieus[addr].append(centroid)
                 else:
                     positions_des_lieus[addr].append(parcelle.box.centroid)
     for lieu, positions in positions_des_lieus.iteritems():
