@@ -399,7 +399,10 @@ def generate_osm_noms(quartiers, rues, transform):
     for nom, position, angle in quartiers:
         node = osm_add_point(osm, position, transform)
         node.tags['name'] = nom
-        node.tags['place'] = 'neighbourhood'
+        if nom.lower().startswith("hameau "):
+            node.tags['place'] = 'hamlet'
+        else:
+            node.tags['place'] = 'neighbourhood'
         node.tags['source'] = SOURCE_TAG
     for nom, position, angle in rues:
         node = osm_add_point(osm, position, transform)
@@ -528,12 +531,23 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
     for lieu, positions in positions_des_lieus.iteritems():
         centre = MultiPoint(positions).centroid
         node = osm_add_point(osm, centre, transform)
-        node.tags['place'] = 'neighbourhood'
         node.tags['name'] = lieu
         node.tags['source'] = SOURCE_TAG
+        if lieu.lower().startswith("hameau "):
+            node.tags['place'] = 'hamlet'
+        else:
+            node.tags['place'] = 'neighbourhood'
         node.tags['fixme'] = u"à vérifier: lieu créé automatiquement à partir des adresses du coin"
     return osm
 
+def transforme_place_en_highway(osm):
+    """Transforme les place=neighbourhood dont le nom ressemple à un nom de rue"""
+    for n in osm.nodes.itervalues():
+        if n.id()<0 and "place" in n.tags:
+            if "name" in n.tags and n.tags["name"].split()[0].lower() in ["rue","impasse","chemin","passage","route","avenue","boulevard"]:
+                del(n.tags["place"])
+                n.tags["highway"] = "road"
+                n.tags["fixme"] = u"à vérifier: nom de rue créé automatiquement à partir des adresses du coin"
 
 
 def parse_pdfs_parcelles_numeros_quartiers_nom_rues(pdfs):
@@ -602,7 +616,7 @@ def partitionnement_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             if "addr:housenumber" in n.tags:
                 associatedStreet_of_housenumber_node[n.id()] = []
             else:
-                assert("place" in n.tags)
+                assert(("place" in n.tags) or ("highway" in n.tags))
         else:
             # le code actuel ne sait partitionner que des neuds addr:housenumber que l'on a
             # créé nous même (id<0)
@@ -651,9 +665,13 @@ def partitionnement_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
     # Partitionne les noeuds de quartiers (place=neighbourhood):
     noeuds_quartiers = [n for n in osm.nodes.itervalues() if (n.id()<0) and ("place" in n.tags)]
     osms_quartiers = partitionnement_osm_nodes_filename_map(noeuds_quartiers, subdir + "_QUARTIERS_")
-    for filename, new_osm in osms_quartiers.iteritems():
-        new_osm.attrs["upload"] = "false"
     filename_osm_map.update(osms_quartiers)
+    # Partitionne les noeuds de rue (highway=):
+    noeuds_rues = [n for n in osm.nodes.itervalues() if (n.id()<0) and ("highway" in n.tags)]
+    osms_rues = partitionnement_osm_nodes_filename_map(noeuds_rues, subdir + "_ADRESSES_RESSEMBLANTS_NOM_DE_RUE_")
+    for filename, new_osm in osms_rues.iteritems():
+        new_osm.attrs["upload"] = "false"
+    filename_osm_map.update(osms_rues)
 
     # Avec l'intégration des addr:housenumber au buildings, le fichier d'entrée
     # contiens peut-être aussi des way issue d'OSM qui ont été modifiés.
@@ -933,10 +951,13 @@ def cadastre_vers_adresses(argv):
           #   dans la fonction match_parcelles_et_numeros()
           determine_osm_adresses_bis_ter_quater(osm)
 
+
           try:
               cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_noms)
           except:
               traceback.print_exc()
+
+          transforme_place_en_highway(osm)
 
           OsmWriter(osm).write_to_file(code_commune + "-adresses.osm")
           partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses.zip", code_commune)

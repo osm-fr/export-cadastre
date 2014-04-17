@@ -197,7 +197,7 @@ def humanise_nom_fantoir(name, dict_premier_mot, dict_tout_les_mots):
     mots = name.split()
     premier_mot_norm = to_ascii(mots[0]).upper()
     if premier_mot_norm in dict_premier_mot:
-        if mots[1] == dict_premier_mot[premier_mot_norm]:
+        if len(mots) > 1 and mots[1] == dict_premier_mot[premier_mot_norm]:
             # Le type de voie est répété dans le nom de la voie, ça arrive parfois, on le supprime:
             mots = mots[1:]
         else:
@@ -374,7 +374,7 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
 
     # Humanise aussi les noms de quartier:
     for node in osm.nodes.itervalues():
-        if node.tags.get("place") == "neighbourhood":
+        if node.tags.has_key("place"):
             node.tags["name"] = humanise_nom_fantoir(
                 node.tags["name"], dict_abrev_type_voie, dict_accents_mots)
     
