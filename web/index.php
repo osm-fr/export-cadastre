@@ -2,26 +2,36 @@
 require_once( 'includes/header.php' );
 require_once( 'includes/config.php' );
 
-function get_parameter($name, $format, $default) {
-	if (isset($_POST[$name])) {
-		$val = $_POST[$name];
-        } else if (isset($_GET[$name])) {
-		$val = $_GET[$name];
-        } else {
-		$val = $default;
+function get_parameter($name, $format, $default_GET = "", $default_POST = null) {
+	if ($default_POST === null) {
+		$default_POST = $default_GET;
+	}
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		if (isset($_POST[$name])) {
+			$val = $_POST[$name];
+		} else {
+			$val = $default_POST;
+		}
+	} else {
+		if (isset($_GET[$name])) {
+			$val = $_GET[$name];
+		} else {
+			$val = $default_GET;
+		}
 	}
 	if (($val != "") && (! preg_match($format, $val))) {
 		echo "Erreur interne: ". $val . "<br/>\n";
 		require_once( 'includes/footer.php' );
 		exit(0);
-        } else {
+	} else {
 		return $val;
-        }
+	}
 }
 
-$dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/", "");
-$ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/", "");
+$dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/");
+$ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/");
 $type = get_parameter("type", "/^(bati$)|(bati_seul$)|(adresses$)/", "bati");
+$bis = get_parameter("bis","/(^true$)|(^false$)/", "true", "false");
 $command = "";
 
 ?>
@@ -54,7 +64,7 @@ if( $dep && $ville && $type )
 		register_shutdown_function ( unlink, $lock_file );
 		if( touch( $lock_file ) )
 		{
-		    chmod( $lock_file, 0664);
+			chmod( $lock_file, 0664);
 			if ($do_we_log)
 			{
 				$log = fopen( $logs_path . '/log.txt', 'a+' );
@@ -76,9 +86,9 @@ if( $dep && $ville && $type )
 			}
 			$v = explode( '-', $ville, 2 );
 			if ($type == "adresses") { 
-				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 			} else {
-			    $command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $type $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+				$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $type $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 				exec( $command );
 				echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
 				$command = '';
@@ -139,10 +149,28 @@ if ($dep) {
 $bati_checked = ($type=="bati") ? "checked" : "";
 $bati_seul_checked = ($type=="bati_seul") ? "checked" : "";
 $adresses_checked = ($type=="adresses") ? "checked" : "";
+$bis_checked = ($bis=="true") ? "checked" : "";
 ?>
-		<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>>Adresses</input><br/>
-		<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input><br/>
-		<input type="radio" name="type" value="bati_seul" <?php echo $bati_seul_checked;?>>Bâti seul <small>(pour les villes où l'extraction Bâti &amp; Limites échoue)</small></input><br/>
+		<table border="0" cellspacing="0">
+			<tr>
+				<td>
+					<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>>Adresses</input>
+				</td><td>
+					<small>(<input type="checkbox" name="bis" value="true" title="Transforme les lettres B,T,Q en bis, ter, quater et rajoute un espace pour les autres" <?php echo $bis_checked;?>/>B,T,Q&rarr; bis, ter, quater &nbsp; A&rarr;&#x2423;A )</small>
+				</td>
+			</tr><tr>
+				<td>
+					<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input>
+				</td><td>
+				</td>
+			</tr><tr>
+				<td>
+					<input type="radio" name="type" value="bati_seul" <?php echo $bati_seul_checked;?>>Bâti seul
+				</td><td>
+					<small>(pour les villes où l'extraction Bâti &amp; Limites échoue)</small></input>
+				</td>
+			</tr>
+		</table>
 	</fieldset>
 	<fieldset id='mise_en_garde'>
 		<legend>Mise en garde</legend>

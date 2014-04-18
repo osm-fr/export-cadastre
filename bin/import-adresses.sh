@@ -2,13 +2,14 @@
 
 . config || exit -1
 
-if [ $# != 3 ] ; then
+if [[ $# != 3 && $# != 4 ]] ; then
     echo "ERREUR: mauvais nombre d'arguments"
     exit -1
 fi
 code_departement=$1
 code_commune=$2
 nom_commune=$3
+bis=$4
 
 if [ ${#code_departement} != 3 ] ; then
     echo "ERREUR: le code département doit avoir 3 caractères"
@@ -39,8 +40,11 @@ fi
 
 depdir="$data_dir/$code_departement"
 communedir="$hidden_dir/$code_departement/$code_commune"
+if [ "$bis" = "false" ] ; then
+  nobis="-nobis"
+fi
 
-command1="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $PWD/cadastre-housenumber/cadastre_vers_osm_adresses.py $code_departement $code_commune"
+command1="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $PWD/cadastre-housenumber/cadastre_vers_osm_adresses.py $nobis $code_departement $code_commune"
 command1dir="$communedir"
 
 command2="python addr_fantoir_building.py $code_insee $code_commune"

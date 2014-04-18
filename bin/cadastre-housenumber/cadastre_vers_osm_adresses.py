@@ -101,10 +101,11 @@ def print_help():
     spaces = " " * len(programme)
     sys.stdout.write((u"Récupération des adresses depuis le cadaste\n").encode("utf-8"))
     sys.stdout.write((u"USAGE:" + "\n").encode("utf-8"))
-    sys.stdout.write((u"%s  [-data] [-nd] CODE_DEPARTEMENT CODE_COMUNE" % programme + "\n").encode("utf-8"))
+    sys.stdout.write((u"%s  [-data] [-nd] [-nobis] CODE_DEPARTEMENT CODE_COMUNE" % programme + "\n").encode("utf-8"))
     sys.stdout.write((u"OPTIONS:" + "\n").encode("utf-8"))
     sys.stdout.write((u"    -data : n'extrait que les données brutes\n").encode("utf-8"))
     sys.stdout.write((u"    -nd : ne retélécharge pas, utilise les fichiers déja présents\n").encode("utf-8"))
+    sys.stdout.write((u"    -nobis : ne transforme pas B,T,Q en bis, ter, quater et n'ajoute pas d'espace.\n").encode("utf-8"))
 
 def command_line_error(message, help=False):
     sys.stdout.write(("ERREUR: " + message + "\n").encode("utf-8"))
@@ -845,20 +846,30 @@ def iter_download_parcelles_info_pdf(cadastreWebsite, ids_parcelles):
 def cadastre_vers_adresses(argv):
   download = True
   merge_adresses = True
+  bis = True
+  i = 1
+  while i < len(argv):
+      if argv[i].startswith("-"):
+          if argv[i] in ["-h", "-help","--help"]:
+              print_help()
+              return
+          elif argv[i] in ["-nobis"]:
+              bis = False
+              del(argv[i:i+1])
+          elif argv[i] in ["-nd", "-nodownload"]:
+              download = False
+              del(argv[i:i+1])
+          elif argv[i] in ["-data"]:
+              merge_adresses = False
+              del(argv[i:i+1])
+          else:
+              command_line_error(u"option invalide: " + argv[i])
+              return
+      else:
+          i = i + 1
   if len(argv) <= 1:
       command_line_open_cadastre(argv)
       return
-  elif argv[1] in ["-h", "-help","--help"]:
-      print_help()
-      return
-  elif argv[1] == "-data" :
-      merge_adresses = False
-      del(argv[1])
-  elif argv[1] == "-nd" :
-      download = False
-      del(argv[1])
-  if argv[1].startswith("-"):
-      command_line_error(u"paramètres invalides")
   elif len(argv) == 2:
       error = command_line_open_cadastre(argv)
       if error: command_line_error(error)
@@ -928,7 +939,7 @@ def cadastre_vers_adresses(argv):
       sys.stdout.flush()
       OsmWriter(generate_osm_housenumbers(numeros, transform_to_osm)).write_to_file(code_commune + "-housenumbers.osm")
       osm_parcelles = generate_osm_parcelles(parcelles, transform_to_osm)
-      determine_osm_parcelles_bis_ter_quater(osm_parcelles)
+      if bis: determine_osm_parcelles_bis_ter_quater(osm_parcelles)
       OsmWriter(osm_parcelles).write_to_file(code_commune + "-parcelles.osm")
       osm_noms = generate_osm_noms(quartiers, nom_rues, transform_to_osm)
       OsmWriter(osm_noms).write_to_file(code_commune + "-noms.osm")
@@ -949,7 +960,7 @@ def cadastre_vers_adresses(argv):
           #   le même numéro avec une autre lettre que B T ou Q
           #   pour ça ont doit pouvoir réutiliser l'index spatial utilise 
           #   dans la fonction match_parcelles_et_numeros()
-          determine_osm_adresses_bis_ter_quater(osm)
+          if bis: determine_osm_adresses_bis_ter_quater(osm)
 
 
           try:
