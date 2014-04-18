@@ -21,7 +21,7 @@ function get_parameter($name, $format, $default) {
 
 $dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/", "");
 $ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/", "");
-$type = get_parameter("type", "/^(bati)|(adresses)$/", "bati");
+$type = get_parameter("type", "/^(bati$)|(bati_seul$)|(adresses$)/", "bati");
 $command = "";
 
 ?>
@@ -78,7 +78,7 @@ if( $dep && $ville && $type )
 			if ($type == "adresses") { 
 				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 			} else {
-			    $command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+			    $command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $type $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 				exec( $command );
 				echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
 				$command = '';
@@ -137,10 +137,12 @@ if ($dep) {
 		<legend>Choix du type de données</legend>
 <?php
 $bati_checked = ($type=="bati") ? "checked" : "";
+$bati_seul_checked = ($type=="bati_seul") ? "checked" : "";
 $adresses_checked = ($type=="adresses") ? "checked" : "";
 ?>
-		<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input><br/>
 		<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>>Adresses</input><br/>
+		<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input><br/>
+		<input type="radio" name="type" value="bati_seul" <?php echo $bati_seul_checked;?>>Bâti seul <small>(pour les villes où l'extraction Bâti &amp; Limites échoue)</small></input><br/>
 	</fieldset>
 	<fieldset id='mise_en_garde'>
 		<legend>Mise en garde</legend>
@@ -157,7 +159,7 @@ $adresses_checked = ($type=="adresses") ? "checked" : "";
 	</div>
 </form>
 <p>
-Note: Vous pensez avoir trouvé un bug ? <a href='http://trac.openstreetmap.fr/newticket?component=export%20cadastre&owner=vdct'>Vous pouvez le signaler ici (composant export cadastre)</a>
+Note: Vous pensez avoir trouvé un bug ? <a href='http://trac.openstreetmap.fr/newticket?component=export%20cadastre&owner=vdct&cc=tyndare'>Vous pouvez le signaler ici (composant export cadastre)</a>
 </p>
 <script type='text/javascript'>
 <?php

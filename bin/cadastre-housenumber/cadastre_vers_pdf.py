@@ -34,12 +34,19 @@ import time
 from cadastre import CadastreWebsite
 from mytools import write_string_to_file
 from mytools import write_stream_to_file
+from cadastre import command_line_open_cadastre
 
-ATTENTE_EN_SECONDE_ENTRE_DOWNLOAD = 2
-# Taille dans la projection cadastrale des PDF exportés:
-PDF_DOWNLOAD_BBOX_SIZE = 2000
+
+PDF_DOWNALOD_WAIT_SECONDS = 2
 # Nombre de pixels / unite projection cadastre des PDF exportés
 PDF_DOWNLOAD_PIXELS_RATIO = 4.5
+# Mode de découpage des pdf: "NB": pour nombre fixe, "SIZE": pour taille fixe:
+PDF_DOWNLOAD_SPLIT_MODE = "SIZE" 
+# Si MODE="SIZE", Taille dans la projection cadastrale des PDF exportés:
+PDF_DOWNLOAD_SPLIT_SIZE = 2000
+# Si MODE="ZB", Taille dans la projection cadastrale des PDF exportés:
+PDF_DOWNLOAD_SPLIT_NB = 2
+
 
 def decoupage_bbox_cadastre_forced(bbox, nb_x, x_bbox_size, x_pixels_ratio, nb_y, y_bbox_size, y_pixels_ratio):
   sys.stdout.write((u"Découpe la bbox en %d * %d [%d pdfs]\n" % (nb_x,nb_y,nb_x*nb_y)).encode("utf-8"))
@@ -92,16 +99,19 @@ def decoupage_bbox_cadastre_nb(bbox, nb, pixels_ratio):
   y_bbox_size = (xmax - xmin) / nb
   return decoupage_bbox_cadastre_forced((xmin,ymin,xmax,ymax), nb, x_bbox_size, pixels_ratio, nb, y_bbox_size, pixels_ratio)
 
-def iter_download_pdfs(cadastreWebsite, code_departement, code_commune):
+def iter_download_pdfs(cadastreWebsite, code_departement, code_commune, ratio=PDF_DOWNLOAD_PIXELS_RATIO, mode=PDF_DOWNLOAD_SPLIT_MODE, nb=PDF_DOWNLOAD_SPLIT_NB, size=PDF_DOWNLOAD_SPLIT_SIZE, wait=PDF_DOWNALOD_WAIT_SECONDS):
     cadastreWebsite.set_departement(code_departement)
     cadastreWebsite.set_commune(code_commune)
     projection = cadastreWebsite.get_projection()
     bbox = cadastreWebsite.get_bbox()
     write_string_to_file(projection + ":%f,%f,%f,%f" % bbox, code_commune + ".bbox")
-    for ((i,j), sous_bbox, (largeur,hauteur)) in \
-            decoupage_bbox_cadastre_size(bbox, 
-                PDF_DOWNLOAD_BBOX_SIZE, PDF_DOWNLOAD_PIXELS_RATIO):
+    if mode=="SIZE":
+        liste = decoupage_bbox_cadastre_size(bbox, size, ratio)
+    else:
+        liste = decoupage_bbox_cadastre_nb(bbox, nb, ratio)
+    for ((i,j), sous_bbox, (largeur,hauteur)) in liste:
         pdf_filename = code_commune + ("-%d-%d" % (i,j)) + ".pdf"
+        print pdf_filename
         bbox_filename = code_commune + ("-%d-%d" % (i,j)) + ".bbox"
         sous_bbox_str = projection + (":%f,%f,%f,%f" % sous_bbox)
         #sys.stdout.write((pdf_filename + " " + sous_bbox_str + "\n").encode("utf-8"))
@@ -113,7 +123,7 @@ def iter_download_pdfs(cadastreWebsite, code_departement, code_commune):
               cadastreWebsite.open_pdf(sous_bbox, largeur, hauteur),
               pdf_filename)
             open(pdf_filename + ".ok", 'a').close()
-            time.sleep(ATTENTE_EN_SECONDE_ENTRE_DOWNLOAD)
+            time.sleep(wait)
         yield pdf_filename
 
 
@@ -121,6 +131,11 @@ def print_help():
     programme = sys.argv[0]
     spaces = " " * len(programme)
     sys.stdout.write((u"Téléchargement de PDF du cadastre" + "\n").encode("utf-8"))
+    sys.stdout.write((u"OPTIONS:" + "\n").encode("utf-8"))
+    sys.stdout.write((u"    -nb <int>      : découpage par un nombre fixe" + "\n").encode("utf-8"))
+    sys.stdout.write((u"    -size <int>    : découpage par une taille fixe (en metre)" + "\n").encode("utf-8"))
+    sys.stdout.write((u"    -ratio <float> : Nombre de pixels / metre des PDF exportés" + "\n").encode("utf-8"))
+    sys.stdout.write((u"    -wait <seconds>: attente en seconde entre chaque téléchargement" + "\n").encode("utf-8"))
     sys.stdout.write((u"USAGE:" + "\n").encode("utf-8"))
     sys.stdout.write((u"%s  DEPARTEMENT COMMUNE" % programme + "\n").encode("utf-8"))
     sys.stdout.write((u"           télécharge les export PDFs du cadastre d'une commune.\n").encode("utf-8"))
@@ -135,12 +150,38 @@ def command_line_error(message, help=False):
 
 
 def cadastre_vers_pdfs(argv):
-  if len(argv) <= 1: 
+  i = 1
+  ratio=PDF_DOWNLOAD_PIXELS_RATIO
+  mode=PDF_DOWNLOAD_SPLIT_MODE
+  nb=PDF_DOWNLOAD_SPLIT_NB
+  size=PDF_DOWNLOAD_SPLIT_SIZE
+  wait=PDF_DOWNALOD_WAIT_SECONDS
+  while i < len(argv):
+      if argv[i].startswith("-"):
+          if argv[i] in ["-h", "-help","--help"]:
+              print_help()
+              return
+          elif argv[i] in ["-r", "-ratio","--ratio"]:
+              ratio = float(argv[i+1])
+              del(argv[i:i+2])
+          elif argv[i] in ["-s", "-size","--size"]:
+              size = int(argv[i+1])
+              mode = "SIZE"
+              del(argv[i:i+2])
+          elif argv[i] in ["-n", "-nb","--nb"]:
+              nb = int(argv[i+1])
+              mode = "NB"
+              del(argv[i:i+2])
+          elif argv[i] in ["-w", "-wait","--wait"]:
+              wait = float(argv[i+1])
+              del(argv[i:i+2])
+          else:
+              command_line_error(u"option invalide: " + argv[i])
+              return
+      else:
+          i = i + 1
+  if len(argv) == 1: 
       command_line_open_cadastre(argv)
-  elif argv[1] in ["-h", "-help","--help"]:
-      print_help()
-  elif argv[1].startswith("-"):
-      command_line_error(u"paramètres invalides")
   elif len(argv) == 2: 
       error = command_line_open_cadastre(argv)
       if error: command_line_error(error)
@@ -149,16 +190,16 @@ def cadastre_vers_pdfs(argv):
   else:
       cadastreWebsite = command_line_open_cadastre(argv)
       if type(cadastreWebsite) in [str, unicode]:
-        command_line_error(cadastreWebsite, help=False)
+          command_line_error(cadastreWebsite, help=False)
       else:
-        code_departement = cadastreWebsite.code_departement
-        code_commune = cadastreWebsite.code_commune
-        nom_commune = cadastreWebsite.communes[code_commune] 
-        sys.stdout.write((u"Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n").encode("utf-8"))
-        sys.stdout.flush()
-        write_string_to_file("", code_commune + "-" + nom_commune + ".txt")
-        return list(iter_download_pdfs(cadastreWebsite, code_departement, code_commune))
+          code_departement = cadastreWebsite.code_departement
+          code_commune = cadastreWebsite.code_commune
+          nom_commune = cadastreWebsite.communes[code_commune] 
+          sys.stdout.write((u"Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n").encode("utf-8"))
+          sys.stdout.flush()
+          write_string_to_file("", code_commune + "-" + nom_commune + ".txt")
+          return list(iter_download_pdfs(cadastreWebsite, code_departement, code_commune,mode=mode,size=size,nb=nb,ratio=ratio,wait=wait))
 
 if __name__ == '__main__':
-    list(cadastre_vers_pdfs(sys.argv))
+    cadastre_vers_pdfs(sys.argv)
 

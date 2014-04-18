@@ -7,16 +7,35 @@
 cd $data_dir
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
+cadastre_vers_pdf="$bin_dir/cadastre-housenumber/cadastre_vers_pdf.py"
 
 [ -d $1 ] || mkdir $1
 chmod 777 $1
 
 cd $1
 date
-$Qadastre2OSM --download $1 $2 "$3"
+
+
+if [ "$4" != "bati_seul" ] ; then
+  # Téléchargement original:
+  $Qadastre2OSM --download $1 $2 "$3"
+else
+  # Téléchargement alternatif, qui extrait un nombre minimal d'info 
+  # (ratio 0.5 juste sufisant pour avoir le bati)
+  # Cela permet à la requette de fonctionner avec des villes comme 
+  # Vassy ou Toulouse.
+  $cadastre_vers_pdf -ratio 0.5 -nb 1 $1 $2
+  rm -f $2-*.txt
+  rm -f $2-*.ok
+  rm -f "$2.bbox"
+  mv -f "$2-0-0.bbox" "$2-$3.bbox"
+  mv -f "$2-0-0.pdf" "$2-$3.pdf"
+fi
+
 $Qadastre2OSM --convert $2 "$3"
+
 rm -f "$2-$3.tar.bz2"
-tar cvf "$2-$3.tar" --exclude="*.pdf" --exclude="*-water.osm" $2-"$3"*
+tar cvf "$2-$3.tar" --exclude="*-water.osm" $2-"$3"*.osm
 bzip2 -f "$2-$3.tar"
 cd ..
 # Création du dossier si celui-ci n'existe pas
