@@ -23,7 +23,7 @@ from pdf_vers_osm_housenumbers import CadastreParser
 from pdf_vers_osm_housenumbers import CadastreToOSMTransform
 
 
-# distance max en metre pour considerer qu'un polygon est ferme
+# distance max en mètres pour considérer qu'un polygon est fermé:
 TOLERANFCE_FERMETURE_POLYGON_METRES = 0.5
 
 class ParcellePathRecognizer(object):
