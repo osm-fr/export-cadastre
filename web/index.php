@@ -32,7 +32,7 @@ $dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/");
 $ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/");
 $type = get_parameter("type", "/(^bati$)|(^adresses$)/", "bati");
 $bis = get_parameter("bis","/(^true$)|(^false$)/", "true", "false");
-$bbox = get_parameter("bbox","/^[0-9.,]*$/");
+$bbox = get_parameter("bbox","/^[-0-9.,]*$/");
 $command = "";
 
 ?>
