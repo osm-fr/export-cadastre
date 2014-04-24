@@ -35,6 +35,7 @@ from cadastre import CadastreWebsite
 from mytools import write_string_to_file
 from mytools import write_stream_to_file
 from cadastre import command_line_open_cadastre
+from pdf_vers_osm_housenumbers import BoundingBox, OSMToCadastreTransform
 
 
 PDF_DOWNALOD_WAIT_SECONDS = 2
@@ -46,6 +47,8 @@ PDF_DOWNLOAD_SPLIT_MODE = "SIZE"
 PDF_DOWNLOAD_SPLIT_SIZE = 2000
 # Si MODE="ZB", Taille dans la projection cadastrale des PDF exportés:
 PDF_DOWNLOAD_SPLIT_NB = 2
+
+BBOX_OPTION_FORMAT = re.compile("^([0-9]*(\\.[0-9]*)?,){3}[0-9]*(\\.[0-9]*)?$")
 
 
 def decoupage_bbox_cadastre_forced(bbox, nb_x, x_bbox_size, x_pixels_ratio, nb_y, y_bbox_size, y_pixels_ratio):
@@ -99,12 +102,15 @@ def decoupage_bbox_cadastre_nb(bbox, nb, pixels_ratio):
   y_bbox_size = (xmax - xmin) / nb
   return decoupage_bbox_cadastre_forced((xmin,ymin,xmax,ymax), nb, x_bbox_size, pixels_ratio, nb, y_bbox_size, pixels_ratio)
 
-def iter_download_pdfs(cadastreWebsite, code_departement, code_commune, ratio=PDF_DOWNLOAD_PIXELS_RATIO, mode=PDF_DOWNLOAD_SPLIT_MODE, nb=PDF_DOWNLOAD_SPLIT_NB, size=PDF_DOWNLOAD_SPLIT_SIZE, wait=PDF_DOWNALOD_WAIT_SECONDS):
+def iter_download_pdfs(cadastreWebsite, code_departement, code_commune, ratio=PDF_DOWNLOAD_PIXELS_RATIO, mode=PDF_DOWNLOAD_SPLIT_MODE, nb=PDF_DOWNLOAD_SPLIT_NB, size=PDF_DOWNLOAD_SPLIT_SIZE, wait=PDF_DOWNALOD_WAIT_SECONDS,force_bbox=None):
     cadastreWebsite.set_departement(code_departement)
     cadastreWebsite.set_commune(code_commune)
     projection = cadastreWebsite.get_projection()
     bbox = cadastreWebsite.get_bbox()
     write_string_to_file(projection + ":%f,%f,%f,%f" % bbox, code_commune + ".bbox")
+    if force_bbox:
+        bbox = OSMToCadastreTransform(projection).transform_bbox(
+            BoundingBox(*force_bbox))
     if mode=="SIZE":
         liste = decoupage_bbox_cadastre_size(bbox, size, ratio)
     else:
@@ -156,6 +162,7 @@ def cadastre_vers_pdfs(argv):
   nb=PDF_DOWNLOAD_SPLIT_NB
   size=PDF_DOWNLOAD_SPLIT_SIZE
   wait=PDF_DOWNALOD_WAIT_SECONDS
+  bbox=None
   while i < len(argv):
       if argv[i].startswith("-"):
           if argv[i] in ["-h", "-help","--help"]:
@@ -174,6 +181,13 @@ def cadastre_vers_pdfs(argv):
               del(argv[i:i+2])
           elif argv[i] in ["-w", "-wait","--wait"]:
               wait = float(argv[i+1])
+              del(argv[i:i+2])
+          elif argv[i] in ["-b", "-bbox","--bbox"]:
+              bbox = argv[i+1]
+              if not BBOX_OPTION_FORMAT.match(bbox):
+                command_line_error(u"paramètre bbox invalide: " + bbox)
+                return
+              bbox = map(float,bbox.split(","))
               del(argv[i:i+2])
           else:
               command_line_error(u"option invalide: " + argv[i])
@@ -198,7 +212,7 @@ def cadastre_vers_pdfs(argv):
           sys.stdout.write((u"Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n").encode("utf-8"))
           sys.stdout.flush()
           write_string_to_file("", code_commune + "-" + nom_commune + ".txt")
-          return list(iter_download_pdfs(cadastreWebsite, code_departement, code_commune,mode=mode,size=size,nb=nb,ratio=ratio,wait=wait))
+          return list(iter_download_pdfs(cadastreWebsite, code_departement, code_commune,mode=mode,size=size,nb=nb,ratio=ratio,wait=wait,force_bbox=bbox))
 
 if __name__ == '__main__':
     cadastre_vers_pdfs(sys.argv)

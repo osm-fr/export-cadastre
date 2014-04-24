@@ -1,12 +1,42 @@
 
 var ville_filter;
 var dep_filter;
+var bbox_map = null;
+var bbox_map_areaSelect = null;
+
+function getSelectedDepCode() {
+	var depIndex = document.getElementById( "dep" ).selectedIndex;
+	return document.getElementById( "dep" ).options[depIndex].value;
+}
+
+function getSelectedVilleCode() {
+	var villeIndex = document.getElementById( "ville" ).selectedIndex;
+	if (villeIndex < 0) {
+		return "";
+	} else {
+		return document.getElementById( "ville" ).options[villeIndex].value;
+	}
+}
+
+function getSelectedInseeCode() {
+	var dep = getSelectedDepCode();
+	var ville = getSelectedVilleCode();
+	var insee;
+	if ((dep.length === 3) && (ville.length >= 5)) {
+		if (dep.charAt(0) == '0') {
+			return dep.substr(1,2) + ville.substr(2,3);
+		} else {
+			return dep.substr(0,2) + ville.substr(2,3);
+		}
+	} else {
+		return "";
+	}
+}
 
 var getDepartement_previous_depCode = '';
 function getDepartement( ville )
 {
-        var depIndex = document.getElementById( "dep" ).selectedIndex;
-        var depCode = document.getElementById( "dep" ).options[depIndex].value;
+	var depCode = getSelectedDepCode();
 	if (depCode != getDepartement_previous_depCode) {
 		getDepartement_previous_depCode = depCode;
 		var params = "dep=" + depCode;
@@ -23,15 +53,15 @@ function getDepartement( ville )
 
 function handler()
 {
-        if( this.readyState == 4 && this.status == 200 )
-        {
-                var ville = document.getElementById( "ville" );
-                ville.innerHTML = this.responseText;
-                ville_filter = new SelectBoxFilter(ville);
+	if( this.readyState == 4 && this.status == 200 )
+	{
+		var ville = document.getElementById( "ville" );
+		ville.innerHTML = this.responseText;
+		ville_filter = new SelectBoxFilter(ville);
 		document.getElementById( "recherche_ville" ).value = 'Recherche';
 		filter_ville();
-        //      document.getElementById("throbber_ville").style.display = "none";
-        }
+		//document.getElementById("throbber_ville").style.display = "none";
+	}
 }
 
 function normalize(text) {
@@ -78,6 +108,7 @@ function SelectBoxFilter(selectbox) {
             } else {
               this.selectbox.className = "";
             }
+            this.selectbox.onchange();
         }
     }
 }
@@ -109,3 +140,56 @@ function filter_ville() {
     ville_filter.filter(new RegExp("\\b" + normalize(text)));
   }
 }
+
+function bbox_display() {
+	insee = getSelectedInseeCode();
+	if (insee == "") {
+		return bbox_cancel();
+	}
+	document.getElementById("bbox_overlay").style.display = 'initial';
+	document.getElementById("bbox_frame").style.display = 'initial';
+	if (bbox_map == null) {
+		var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+		var osm = new L.TileLayer(osmUrl, {minZoom: 2, maxZoom: 17, attribution: osmAttrib});	 
+		bbox_map = L.map('bbox_map');
+		bbox_map.addLayer(osm);
+		bbox_map_areaSelect = L.areaSelect({width:300, height:200});
+		bbox_map_areaSelect.addTo(bbox_map);
+	}
+	// récupère la position de la commune sélectionnée avec une requête overpass
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4) {
+			bbox_map_setViewOnOverpassResult(xmlhttp.responseText);
+		}
+	};
+	// Requête overpass pour chercher un nœeud "place" avec "ref:INSEE"=insee
+	xmlhttp.open("GET", "http://overpass-api.de/api/interpreter?data=[out:json];node[%22ref%3AINSEE%22%3D%22" + insee + "%22][%22place%22]%3Bout%3B");
+	xmlhttp.send();
+}
+
+function bbox_confirm() {
+	document.getElementById("bbox_frame").style.display = 'none';
+	document.getElementById("bbox_overlay").style.display = 'none';
+	document.getElementById("bbox").value = bbox_map_areaSelect.getBounds().toBBoxString();
+}
+
+function bbox_cancel() {
+	document.getElementById("bbox_frame").style.display = 'none';
+	document.getElementById("bbox_overlay").style.display = 'none';
+	document.getElementById("bbox").checked = false;
+}
+
+function bbox_map_setViewOnOverpassResult(overpass_json_text) {
+	result = JSON.parse(overpass_json_text);
+	if (result.elements.length > 0) {
+		center = result.elements[0];
+		bbox_map.setView([center.lat, center.lon], 15);
+	} else {
+		// centre sur la France:
+		bbox_map.setView([46.0, 2], 6);
+	}
+}
+
+

@@ -1,7 +1,7 @@
 <?php
 include( 'includes/config.php' );
 
-if( isset( $_REQUEST['dep'] ) )
+if( isset( $_REQUEST['dep'] ) && ($_REQUEST['dep'] != ""))
 	$dep = $_REQUEST['dep'];
 else
 {

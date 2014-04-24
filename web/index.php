@@ -30,8 +30,9 @@ function get_parameter($name, $format, $default_GET = "", $default_POST = null) 
 
 $dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/");
 $ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '()]*$/");
-$type = get_parameter("type", "/^(bati$)|(bati_seul$)|(adresses$)/", "bati");
+$type = get_parameter("type", "/(^bati$)|(^adresses$)/", "bati");
 $bis = get_parameter("bis","/(^true$)|(^false$)/", "true", "false");
+$bbox = get_parameter("bbox","/^[0-9.,]*$/");
 $command = "";
 
 ?>
@@ -88,7 +89,7 @@ if( $dep && $ville && $type )
 			if ($type == "adresses") { 
 				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 			} else {
-				$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $type $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+				$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $bbox $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 				exec( $command );
 				echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
 				$command = '';
@@ -100,6 +101,19 @@ if( $dep && $ville && $type )
 }
 ?>
 </div>
+
+<!-- bbox selection -->
+<div id="bbox_overlay"></div>
+<div id="bbox_frame">
+	<div id="bbox_title">Sélectionnez la zone à exporter</div>
+	<div id="bbox_map"></div>
+	<div id="bbox_buttons">
+		<span class="bbox_button" onclick="bbox_confirm();">OK</span>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="bbox_button" onclick="bbox_cancel();">Annuler</span>
+	</div>
+</div>
+
 
 <form name='form-dep' action='' method='POST'>
 	<fieldset id='fdep'>
@@ -125,19 +139,19 @@ else
 	echo 'No data';
 ?>
 		</select>
-		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
+		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onChange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
 	</fieldset>
 	<fieldset id='fville'>
 		<legend>Choix de la commune</legend>
 		<img src='images/throbber_16.gif' style='display:none;' alt='pending' id='throbber_ville' />
-		<select id='ville' name='ville'>
+		<select id='ville' name='ville' onChange="document.getElementById('bbox').checked=false;">
 <?php 
 if ($dep) {
   include("getDepartement.php");
 }
 ?>
 		</select>
-		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
+		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onChange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
 
 		<br />
 		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='http://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
@@ -147,9 +161,9 @@ if ($dep) {
 		<legend>Choix du type de données</legend>
 <?php
 $bati_checked = ($type=="bati") ? "checked" : "";
-$bati_seul_checked = ($type=="bati_seul") ? "checked" : "";
 $adresses_checked = ($type=="adresses") ? "checked" : "";
 $bis_checked = ($bis=="true") ? "checked" : "";
+$bbox_checked = ($bbox!="") ? "checked" : "";
 ?>
 		<table border="0" cellspacing="0">
 			<tr>
@@ -162,12 +176,7 @@ $bis_checked = ($bis=="true") ? "checked" : "";
 				<td>
 					<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input>
 				</td><td>
-				</td>
-			</tr><tr>
-				<td>
-					<input type="radio" name="type" value="bati_seul" <?php echo $bati_seul_checked;?>>Bâti seul
-				</td><td>
-					<small>(pour les villes où l'extraction Bâti &amp; Limites échoue)</small></input>
+					<small>(<input type="checkbox" id="bbox" name="bbox" value="<?php echo $bbox;?>" onChange="if (this.checked) bbox_display();" <?php echo $bbox_checked;?>/>Sélectionner une zone à exporter)</small/>
 				</td>
 			</tr>
 		</table>
@@ -186,6 +195,7 @@ $bis_checked = ($bis=="true") ? "checked" : "";
 		<input type='submit' value='Générer' />
 	</div>
 </form>
+
 <p>
 Note: Vous pensez avoir trouvé un bug ? <a href='http://trac.openstreetmap.fr/newticket?component=export%20cadastre&owner=vdct&cc=tyndare'>Vous pouvez le signaler ici (composant export cadastre)</a>
 </p>

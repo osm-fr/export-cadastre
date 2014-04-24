@@ -59,3 +59,49 @@ body {
 .selectboxfilter_notfound {
     background-color: #d22;
 }
+#bbox_overlay {
+    filter: alpha(opacity=75);
+    -moz-opacity: .75;
+    opacity: .75;
+    background-color: #c0c0c0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%; height: 100%;
+    display: none;
+    z-index:1;
+}
+#bbox_frame {
+    text-align: center;
+    position:absolute;
+    left: 0;
+    top: 0
+    bottom: 0;
+    right: 0;
+    margin:auto;
+    width: 50%;
+    height: 50%;
+    border: solid 3px grey;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px #ccc;
+    display: none;
+    z-index:2;
+    background: white;
+}
+#bbox_title {
+    padding:5px;
+    background-color: rgba(234,234,200,0.6);
+}
+#bbox_buttons {
+    padding:10px;
+}
+.bbox_button {
+    border: 1px solid;
+    border-radius: 10px;
+    padding:5px;
+    background-color: #eeeeee;
+}
+#bbox_map {
+    height: 80%;
+}
+

@@ -99,7 +99,7 @@ $dep_array=array(
 	array("id" => "079", "name" => "079 Deux-S&egrave;vres"),
 	array("id" => "080", "name" => "080 Somme"),
 	array("id" => "081", "name" => "081 Tarn"),
-	array("id" => "082", "name" => "082 Tarn et Garone"),
+	array("id" => "082", "name" => "082 Tarn et Garonne"),
 	array("id" => "083", "name" => "083 Var"),
 	array("id" => "084", "name" => "084 Vaucluse"),
 	array("id" => "085", "name" => "085 Vend&eacute;e"),

@@ -16,15 +16,13 @@ cd $1
 date
 
 
-if [ "$4" != "bati_seul" ] ; then
+if [ "$4" = "" ] ; then
   # Téléchargement original:
   $Qadastre2OSM --download $1 $2 "$3"
 else
-  # Téléchargement alternatif, qui extrait un nombre minimal d'info 
-  # (ratio 0.5 juste sufisant pour avoir le bati)
-  # Cela permet à la requette de fonctionner avec des villes comme 
-  # Vassy ou Toulouse.
-  $cadastre_vers_pdf -ratio 0.5 -nb 1 $1 $2
+  # Téléchargement alternatif, qui extrait seulement une zone (bbox)
+  $cadastre_vers_pdf -bbox "$4" -nb 1 $1 $2
+  # renomme les fichiers générés:
   rm -f $2-*.txt
   rm -f $2-*.ok
   rm -f "$2.bbox"
