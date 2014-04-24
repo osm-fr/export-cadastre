@@ -49,7 +49,7 @@ PDF_DOWNLOAD_SPLIT_SIZE = 2000
 # largeur et en hauteur):
 PDF_DOWNLOAD_SPLIT_NB = 2
 
-BBOX_OPTION_FORMAT = re.compile("^([0-9]*(\\.[0-9]*)?,){3}[0-9]*(\\.[0-9]*)?$")
+BBOX_OPTION_FORMAT = re.compile("^(-?[0-9]*(\\.[0-9]*)?,){3}-?[0-9]*(\\.[0-9]*)?$")
 
 
 def decoupage_bbox_cadastre_forced(bbox, nb_x, x_bbox_size, x_pixels_ratio, nb_y, y_bbox_size, y_pixels_ratio):
