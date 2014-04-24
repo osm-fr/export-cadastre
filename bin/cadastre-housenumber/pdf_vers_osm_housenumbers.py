@@ -514,7 +514,7 @@ class TextPathRecognizer(object):
           width="1488.75"
           version="1.1">
         """)
-        f.write("<!-- inversion de l'axe Y pour remetre à l'endroit:\n<g transform='matrix(1,0,0,-1,0,0)'>-->\n")
+        f.write(u"<!-- inversion de l'axe Y pour remettre à l'endroit:\n<g transform='matrix(1,0,0,-1,0,0)'>-->\n".encode("utf-8"))
         for elems in self.database.itervalues():
             for value, path, _ in elems:
                 f.write('    <path style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"\n d="')

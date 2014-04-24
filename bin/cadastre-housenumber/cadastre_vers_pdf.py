@@ -42,9 +42,10 @@ PDF_DOWNALOD_WAIT_SECONDS = 2
 PDF_DOWNLOAD_PIXELS_RATIO = 4.5
 # Mode de découpage des pdf: "NB": pour nombre fixe, "SIZE": pour taille fixe:
 PDF_DOWNLOAD_SPLIT_MODE = "SIZE" 
-# Si MODE="SIZE", Taille dans la projection cadastrale des PDF exportés:
+# Si MODE="SIZE", Taille dans la projection cadastrale (~ mètres) des PDF exportés:
 PDF_DOWNLOAD_SPLIT_SIZE = 2000
-# Si MODE="ZB", Taille dans la projection cadastrale des PDF exportés:
+# Si MODE="NB", nombre par lequelle la taille du pdf sera découpée (en
+# largeur et en hauteur):
 PDF_DOWNLOAD_SPLIT_NB = 2
 
 
@@ -96,7 +97,7 @@ def decoupage_bbox_cadastre_nb(bbox, nb, pixels_ratio):
   ymin = ymin - 10
   ymax = ymax + 10
   x_bbox_size = (xmax - xmin) / nb
-  y_bbox_size = (xmax - xmin) / nb
+  y_bbox_size = (ymax - ymin) / nb
   return decoupage_bbox_cadastre_forced((xmin,ymin,xmax,ymax), nb, x_bbox_size, pixels_ratio, nb, y_bbox_size, pixels_ratio)
 
 def iter_download_pdfs(cadastreWebsite, code_departement, code_commune, ratio=PDF_DOWNLOAD_PIXELS_RATIO, mode=PDF_DOWNLOAD_SPLIT_MODE, nb=PDF_DOWNLOAD_SPLIT_NB, size=PDF_DOWNLOAD_SPLIT_SIZE, wait=PDF_DOWNALOD_WAIT_SECONDS):
@@ -111,7 +112,6 @@ def iter_download_pdfs(cadastreWebsite, code_departement, code_commune, ratio=PD
         liste = decoupage_bbox_cadastre_nb(bbox, nb, ratio)
     for ((i,j), sous_bbox, (largeur,hauteur)) in liste:
         pdf_filename = code_commune + ("-%d-%d" % (i,j)) + ".pdf"
-        print pdf_filename
         bbox_filename = code_commune + ("-%d-%d" % (i,j)) + ".bbox"
         sous_bbox_str = projection + (":%f,%f,%f,%f" % sous_bbox)
         #sys.stdout.write((pdf_filename + " " + sous_bbox_str + "\n").encode("utf-8"))
@@ -133,8 +133,8 @@ def print_help():
     sys.stdout.write((u"Téléchargement de PDF du cadastre" + "\n").encode("utf-8"))
     sys.stdout.write((u"OPTIONS:" + "\n").encode("utf-8"))
     sys.stdout.write((u"    -nb <int>      : découpage par un nombre fixe" + "\n").encode("utf-8"))
-    sys.stdout.write((u"    -size <int>    : découpage par une taille fixe (en metre)" + "\n").encode("utf-8"))
-    sys.stdout.write((u"    -ratio <float> : Nombre de pixels / metre des PDF exportés" + "\n").encode("utf-8"))
+    sys.stdout.write((u"    -size <int>    : découpage par une taille fixe (en mètres)" + "\n").encode("utf-8"))
+    sys.stdout.write((u"    -ratio <float> : Nombre de pixels / mètre des PDF exportés" + "\n").encode("utf-8"))
     sys.stdout.write((u"    -wait <seconds>: attente en seconde entre chaque téléchargement" + "\n").encode("utf-8"))
     sys.stdout.write((u"USAGE:" + "\n").encode("utf-8"))
     sys.stdout.write((u"%s  DEPARTEMENT COMMUNE" % programme + "\n").encode("utf-8"))
