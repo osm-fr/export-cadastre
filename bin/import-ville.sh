@@ -21,7 +21,7 @@ if [ "$4" = "" ] ; then
   $Qadastre2OSM --download $1 $2 "$3"
 else
   # Téléchargement alternatif, qui extrait seulement une zone (bbox)
-  $cadastre_vers_pdf -bbox "$4" -nb 1 $1 $2
+  $cadastre_vers_pdf -bbox "$4" -nb 1 -wait 0 $1 $2
   # renomme les fichiers générés:
   rm -f $2-*.txt
   rm -f $2-*.ok

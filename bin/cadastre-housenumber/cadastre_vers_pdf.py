@@ -142,6 +142,7 @@ def print_help():
     sys.stdout.write((u"    -size <int>    : découpage par une taille fixe (en mètres)" + "\n").encode("utf-8"))
     sys.stdout.write((u"    -ratio <float> : Nombre de pixels / mètre des PDF exportés" + "\n").encode("utf-8"))
     sys.stdout.write((u"    -wait <seconds>: attente en seconde entre chaque téléchargement" + "\n").encode("utf-8"))
+    sys.stdout.write((u"    -bbox lon1,lat1,lon2,lat2: restreint la zone a extraire\n").encode("utf-8"))
     sys.stdout.write((u"USAGE:" + "\n").encode("utf-8"))
     sys.stdout.write((u"%s  DEPARTEMENT COMMUNE" % programme + "\n").encode("utf-8"))
     sys.stdout.write((u"           télécharge les export PDFs du cadastre d'une commune.\n").encode("utf-8"))

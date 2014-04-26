@@ -8,8 +8,8 @@
 		<script type="text/javascript" src="includes/main.js"></script>
 		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 		<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-		<link rel="stylesheet" href="http://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.css"></script>
-		<script src="http://rawgit.com/heyman/leaflet-areaselect/master/src/leaflet-areaselect.js"></script>
+		<link rel="stylesheet" href="http://rawgit.com/tyndare/leaflet-areaselect/master/src/leaflet-areaselect.css"></script>
+		<script src="http://rawgit.com/tyndare/leaflet-areaselect/master/src/leaflet-areaselect.js"></script>
 	</head>
 <body>
 <div id="head">

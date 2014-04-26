@@ -172,7 +172,19 @@ function bbox_display() {
 function bbox_confirm() {
 	document.getElementById("bbox_frame").style.display = 'none';
 	document.getElementById("bbox_overlay").style.display = 'none';
-	document.getElementById("bbox").value = bbox_map_areaSelect.getBounds().toBBoxString();
+  try {
+    bbox = bbox_map_areaSelect.getBounds().toBBoxString();
+    if (bbox) {
+      document.getElementById("bbox").value = bbox;
+      document.getElementById("bbox").setAttribute("value",bbox);
+      document.getElementById("bbox").setAttribute("checked","true");
+    } else {
+      document.getElementById("bbox").checked = false;
+    }
+  } catch(err) {
+    alert(err);
+    document.getElementById("bbox").checked = false;
+  }
 }
 
 function bbox_cancel() {
@@ -184,12 +196,29 @@ function bbox_cancel() {
 function bbox_map_setViewOnOverpassResult(overpass_json_text) {
 	result = JSON.parse(overpass_json_text);
 	if (result.elements.length > 0) {
-		center = result.elements[0];
+		var center = result.elements[0];
 		bbox_map.setView([center.lat, center.lon], 15);
 	} else {
-		// centre sur la France:
-		bbox_map.setView([46.0, 2], 6);
+    // call getCenter.php to get cadastre center
+    var xmlhttp=new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == 4) {
+        bbox_map_setViewOnCenterResult(xmlhttp.responseText);
+      }
+    };
+	  var dep = getSelectedDepCode();
+	  var ville = getSelectedVilleCode();
+    xmlhttp.open("GET", "getCenter.php?dep=" + dep + "&ville=" + ville);
+    xmlhttp.send();
 	}
 }
 
-
+function bbox_map_setViewOnCenterResult(response) {
+  if (response.match(/[-0-9.,]*/)) {
+    var values = response.split(",");
+		bbox_map.setView([parseFloat(values[0]), parseFloat(values[1])], 14);
+	} else {
+		// centre sur la France:
+		bbox_map.setView([46.0, 2], 6);
+  }
+}
