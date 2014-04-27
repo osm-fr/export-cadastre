@@ -105,7 +105,7 @@ if( $dep && $ville && $type )
 <!-- bbox selection -->
 <div id="bbox_overlay"></div>
 <div id="bbox_frame">
-	<div id="bbox_title">Sélectionnez la zone à exporter</div>
+	<div id="bbox_title"><div>Sélectionnez la zone à exporter</div></div>
 	<div id="bbox_map"></div>
 	<div id="bbox_buttons">
 		<span class="bbox_button" onclick="bbox_confirm();">OK</span>
@@ -115,11 +115,11 @@ if( $dep && $ville && $type )
 </div>
 
 
-<form name='form-dep' action='' method='POST'>
+<form name='form-dep' action='' method='post'>
 	<fieldset id='fdep'>
 		<legend>Choix du d&eacute;partement</legend>
 		<label>D&eacute;partement&nbsp;:</label>
-		<select name='dep' id='dep' onChange='javascript:getDepartement();'>
+		<select name='dep' id='dep' onchange='javascript:getDepartement();'>
 			<option></option>
 <?php
 if( $handle = opendir( $data_path ) )
@@ -139,19 +139,19 @@ else
 	echo 'No data';
 ?>
 		</select>
-		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onChange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
+		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
 	</fieldset>
 	<fieldset id='fville'>
 		<legend>Choix de la commune</legend>
 		<img src='images/throbber_16.gif' style='display:none;' alt='pending' id='throbber_ville' />
-		<select id='ville' name='ville' onChange="document.getElementById('bbox').checked=false;">
+		<select id='ville' name='ville' onchange="document.getElementById('bbox').checked=false;">
 <?php 
 if ($dep) {
   include("getDepartement.php");
 }
 ?>
 		</select>
-		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onChange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
+		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
 
 		<br />
 		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='http://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
@@ -160,23 +160,23 @@ if ($dep) {
 	<fieldset id='ftype'>
 		<legend>Choix du type de données</legend>
 <?php
-$bati_checked = ($type=="bati") ? "checked" : "";
-$adresses_checked = ($type=="adresses") ? "checked" : "";
-$bis_checked = ($bis=="true") ? "checked" : "";
-$bbox_checked = ($bbox!="") ? "checked" : "";
+$bati_checked = ($type=="bati") ? 'checked="checked"' : '';
+$adresses_checked = ($type=="adresses") ? 'checked="checked"' : '';
+$bis_checked = ($bis=="true") ? 'checked="checked"' : "";
+$bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 ?>
 		<table border="0" cellspacing="0">
 			<tr>
 				<td>
-					<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>>Adresses</input>
+					<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>></input>Adresses
 				</td><td>
-					<small>(<input type="checkbox" name="bis" value="true" title="Transforme les lettres B,T,Q en bis, ter, quater et rajoute un espace pour les autres" <?php echo $bis_checked;?>/>B,T,Q&rarr; bis, ter, quater &nbsp; A&rarr;&#x2423;A )</small>
+					<small>(<input type="checkbox" name="bis" value="true" title="Transforme les lettres B,T,Q en bis, ter, quater et rajoute un espace pour les autres" <?php echo $bis_checked;?>></input>B,T,Q&rarr; bis, ter, quater &nbsp; A&rarr;&#x2423;A )</small>
 				</td>
 			</tr><tr>
 				<td>
-					<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>>Bâti &amp; Limites</input>
+					<input type="radio" name="type" value="bati" <?php echo $bati_checked;?>></input>Bâti &amp; Limites
 				</td><td>
-					<small>(<input type="checkbox" id="bbox" name="bbox" value="<?php echo $bbox;?>" onChange="if (this.checked) bbox_display();" <?php echo $bbox_checked;?>/>Sélectionner une zone à exporter)</small/>
+					<small>(<input type="checkbox" id="bbox" name="bbox" value="<?php echo $bbox;?>" onchange="if (this.checked) bbox_display();" <?php echo $bbox_checked;?>></input>Sélectionner une zone à exporter)</small>
 				</td>
 			</tr>
 		</table>
@@ -197,7 +197,7 @@ $bbox_checked = ($bbox!="") ? "checked" : "";
 </form>
 
 <p>
-Note: Vous pensez avoir trouvé un bug ? <a href='http://trac.openstreetmap.fr/newticket?component=export%20cadastre&owner=vdct&cc=tyndare'>Vous pouvez le signaler ici (composant export cadastre)</a>
+Note: Vous pensez avoir trouvé un bug ? <a href='http://trac.openstreetmap.fr/newticket?component=export%20cadastre&amp;owner=vdct&amp;cc=tyndare'>Vous pouvez le signaler ici (composant export cadastre)</a>
 </p>
 <script type='text/javascript'>
 <?php

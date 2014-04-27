@@ -73,6 +73,7 @@ body {
 }
 #bbox_frame {
     text-align: center;
+    vertical-align: middle;
     position:absolute;
     left: 0;
     top: 0
@@ -80,7 +81,7 @@ body {
     right: 0;
     margin:auto;
     width: 50%;
-    height: 50%;
+    height: 60%;
     border: solid 3px grey;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #ccc;
@@ -89,17 +90,32 @@ body {
     background: white;
 }
 #bbox_title {
-    padding:5px;
     background-color: rgba(234,234,200,0.6);
+    height: 8%;
+    -webkit-transform-style: preserve-3d;
 }
+#bbox_title div {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 #bbox_buttons {
-    padding:10px;
+    height: 10%;
+    -webkit-transform-style: preserve-3d;
 }
 .bbox_button {
     border: 1px solid;
     border-radius: 10px;
     padding:5px;
     background-color: #eeeeee;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 #bbox_map {
     height: 80%;

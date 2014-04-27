@@ -144,10 +144,15 @@ function filter_ville() {
 function bbox_display() {
 	insee = getSelectedInseeCode();
 	if (insee == "") {
+		if (getSelectedDepCode() == "") {
+			alert("Veuillez commencer par choisir le département et la commune");
+		} else {
+			alert("Veuillez d'abord choisir la commune");
+		}
 		return bbox_cancel();
 	}
-	document.getElementById("bbox_overlay").style.display = 'initial';
-	document.getElementById("bbox_frame").style.display = 'initial';
+	document.getElementById("bbox_overlay").style.display = 'block';
+	document.getElementById("bbox_frame").style.display = 'block';
 	if (bbox_map == null) {
 		var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
@@ -177,7 +182,7 @@ function bbox_confirm() {
     if (bbox) {
       document.getElementById("bbox").value = bbox;
       document.getElementById("bbox").setAttribute("value",bbox);
-      document.getElementById("bbox").setAttribute("checked","true");
+      document.getElementById("bbox").setAttribute("checked","checked");
     } else {
       document.getElementById("bbox").checked = false;
     }
