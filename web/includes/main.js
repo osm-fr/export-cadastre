@@ -34,20 +34,16 @@ function getSelectedInseeCode() {
 }
 
 var getDepartement_previous_depCode = '';
-function getDepartement( ville )
+function getDepartement()
 {
 	var depCode = getSelectedDepCode();
 	if (depCode != getDepartement_previous_depCode) {
 		getDepartement_previous_depCode = depCode;
-		var params = "dep=" + depCode;
 		//document.getElementById("throbber_ville").style.display = "inline";
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = handler;
-		xhr.open("POST", "getDepartement.php?ville=" + ville, true );
-		xhr.setRequestHeader( "Content-type", "application/x-www-form-urlencoded" );
-		xhr.setRequestHeader( "Content-length", params.length );
-		xhr.setRequestHeader( "Connection", "close" );
-		xhr.send(params);
+		xhr.open("GET", "getDepartement.php?dep=" + depCode);
+		xhr.send();
 	}
 }
 
@@ -55,9 +51,12 @@ function handler()
 {
 	if( this.readyState == 4 && this.status == 200 )
 	{
-		var ville = document.getElementById( "ville" );
-		ville.innerHTML = this.responseText;
-		ville_filter = new SelectBoxFilter(ville);
+		// A cause de ce bug sur Internet Explorer 8 et 9
+		// (http://support.microsoft.com/kb/276228/fr)
+		// on remplace le innerHTML du <span id="ville_container"> 
+		// au lieu de remplacer celui du <select id="ville">:
+		document.getElementById( "ville_container" ).innerHTML = this.responseText;
+		ville_filter = new SelectBoxFilter(document.getElementById( "ville" ));
 		document.getElementById( "recherche_ville" ).value = 'Recherche';
 		filter_ville();
 		//document.getElementById("throbber_ville").style.display = "none";

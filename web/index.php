@@ -144,13 +144,11 @@ else
 	<fieldset id='fville'>
 		<legend>Choix de la commune</legend>
 		<img src='images/throbber_16.gif' style='display:none;' alt='pending' id='throbber_ville' />
-		<select id='ville' name='ville' onchange="document.getElementById('bbox').checked=false;">
+		<span id='ville_container'>
 <?php 
-if ($dep) {
   include("getDepartement.php");
-}
 ?>
-		</select>
+		</span>
 		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
 
 		<br />
