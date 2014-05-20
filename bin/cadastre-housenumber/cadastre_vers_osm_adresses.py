@@ -112,6 +112,15 @@ def command_line_error(message, help=False):
     if help: print_help()
 
 
+def get_xml_child_text(e, tag, default=None):
+    """ return the text of the child element tag of xml element e
+        or default if no child has tag exist.
+    """
+    try:
+        return e.iter(tag).next().text
+    except StopIteration:
+        return default
+
 class Parcelle(object):
     def __init__(self, fid, nature="", libellex=0.0, libelley=0.0,
             xmin=0.0,ymin=0,xmax=0.0,ymax=0.0,surface_geom=0.0,
@@ -130,8 +139,11 @@ class Parcelle(object):
           #tree = ET.parse(filename).getroot()
           tree = ET.fromstring(xml)
           for parcelle in tree:
-              param = {attr : float(parcelle.iter(attr.upper()).next().text) for attr in
+              param = {attr : float(get_xml_child_text(parcelle, attr.upper(), "0"))
+                  for attr in
                   ["libellex", "libelley", "xmin","xmax","ymin","ymax","surface_geom"]}
+                  # La commune de Vizille (38) n'as parfois pas de champ
+                  # libellex et libelley.
               fid  = parcelle.attrib['fid'][9:]
               resultmap[fid] = Parcelle(
                   fid  = parcelle.attrib['fid'][9:],
