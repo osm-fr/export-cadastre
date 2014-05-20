@@ -937,7 +937,15 @@ def cadastre_vers_adresses(argv):
       else:
           info_pdfs = glob.glob(code_commune + "-parcelles-*.pdf")
       for fid,adresses in parse_adresses_of_parcelles_info_pdfs(info_pdfs, code_commune).iteritems():
-          parcelles[fid].adresses = adresses
+          if fid in parcelles:
+              parcelles[fid].adresses = adresses
+          else:
+              # Problème rencontré sur la ville de Vitry-sur-Seine (94):
+              # Lorsque l'on demande les info pdf de parcelle Z0081000AL00DP 
+              # le fichier pdf résultat remplace l'id par Z0081000AL0000 et il
+              # ne contient aucune adresse correspondante.
+              sys.stdout.write((u"ERREUR sur un id de parcelle invalide: " + fid + "\n").encode("utf-8"))
+
 
       sys.stdout.write((u"Associe les limites et les parcelles.\n").encode("utf-8"))
       sys.stdout.flush()
