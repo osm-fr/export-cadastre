@@ -80,7 +80,7 @@ from bis_ter_quater import RE_NUMERO_CADASTRE
 import bbox_vers_osm_box
 
 ATTENTE_EN_SECONDE_ENTRE_DOWNLOAD = 2
-# Nombre max de parcelles pour par requette bbox:
+# Nombre max de parcelles pour par requête bbox:
 MAX_PARCELLES_PAR_BBOX = 1500
 # Nombre max de parcelles pour lesquelles on demande les info en une fois:
 MAX_PARCELLES_PAR_INFO_PDF = 100
@@ -91,8 +91,15 @@ TAILLE_PARTITIONEMENT_NOEUDS = 20
 
 FIXME_JOINDRE_NOEUD_AU_WAY = u"Joindre le nœud au bâtiment (J)"
 
+# Comparaison des valeurs calculées par rapport aux limites extraites des PDFs,
+# avec les informations trouvées dans les fichiers XML des parcelles:
 PARCELLE_LIMITE_MATCH_BOUNDS_TOLERANCE = 1  # expressed in cadastre reference ~= meter
 PARCELLE_LIMITE_MATCH_AREA_TOLERANCE   = 10 # expressed in cadastre reference ~= square meter
+
+# Les limites de parcelle vont se retrouver dupliquées sur plusieurs PDFs si
+# elles sont à cheval.
+# Nombre de décimal à comparer (après la virgule en mètre) pour éliminer les doublons:
+LIMITE_ALMOST_EQUALS_DECIMAL = 1
 
 SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
 
@@ -212,24 +219,36 @@ def parse_adresses_of_parcelles_info_pdfs(pdfs, code_commune):
         adresses_parcelles[id_parcelle] = list(set_adresses)
 
     return adresses_parcelles
-  
+ 
 def bounds_diff(bounds1, bounds2):
     return max([abs(operator.sub(*t)) for t in zip(bounds1, bounds2)])
 
 
 def polygones_et_index_des_limite_parcelles(limite_parcelles):
-    # Transforme les limites en polygones:
+    # Transforme les limites (liste de liste de coordonées) en polygone Shapely
+    # et génère un index spatialisé avec leur bounds:
     polygones = []
-    for linear_rings in limite_parcelles:
-        polygones.append(Polygon(linear_rings[0], linear_rings[1:]))
-        # Si nous avons un polygone creux, nous ajoutons ses polygones
-        # interieurs a la liste des limites:
-        for linear_ring in linear_rings[1:]:
-            polygones.append(Polygon(linear_ring))
-    # Génre un index:
     index = rtree.index.Index()
-    for i,p in enumerate(polygones):
-        index.insert(i, p.bounds)
+    sys.stdout.write((u"Élimine les doublons dans les limites de parcelles\n").encode("utf-8"))
+    sys.stdout.flush()
+    def already_present(p):
+        # FIXME: cette recherche vas être quadratique si les intersections sont importantes,
+        # comme à Apatou en Guyane:
+        for i in index.intersection(p.centroid.coords[0]):
+            if p.almost_equals(polygones[i], LIMITE_ALMOST_EQUALS_DECIMAL):
+                return True
+        return False
+    def add_polygon(p):
+        if not already_present(p):
+            i = len(polygones)
+            polygones.append(p)
+            index.insert(i, p.bounds)
+    for linear_rings in limite_parcelles:
+        add_polygon(Polygon(linear_rings[0], linear_rings[1:]))
+        # Si nous avons un polygone creux, nous ajoutons aussi ses polygones
+        # interieurs à la liste des limites:
+        for linear_ring in linear_rings[1:]:
+            add_polygon(Polygon(linear_ring))
     return polygones, index
 
 
@@ -277,7 +296,7 @@ def match_parcelles_et_limites(parcelles, limites, limites_index):
     #        way.tags["area"] = str(parcelle.area)
     #        way.tags["name"] = parcelle.fid
     #OsmWriter(osm).write_to_file("l.osm")
-  
+ 
 def match_parcelles_et_numeros(parcelles, numeros):
     numeros_index = rtree.index.Index()
     sys.stdout.write((str(len(numeros)) + u" numéros à trouver\n").encode("utf-8"))
@@ -520,7 +539,7 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
                     fixme.reverse()
                 if fixme:
                     node.tags['fixme'] = " et ".join(fixme)
-                  
+
 
     # Cherche les nom de lieus: toutes les adresse sans numéro qui ne sont pas des nom de rue:
     positions_des_lieus = {}
@@ -814,11 +833,11 @@ def decoupe_bbox_selon_taille_index(bbox, index, maxcount, basename):
         return l1
 
 def iter_download_parcelles_xml(cadastreWebsite, index_parcelles):
-    # La requette vers le site du cadastre pour récupéré les fichiers xml correspondant au cadastre
-    # est limité à 2000 résultats.
-    # On utilise donc les limites extraites depuis les export pdf du cadastre pour creer un index spatial,
+    # La requête vers le site du cadastre pour récupérer les fichiers xml correspondants
+    # a une bbox est limité à 2000 résultats (2000 parcelles).
+    # On utilise donc l'index spatial des limites extraites depuis les export pdf du cadastre
     # et évaluer le nombre de parcelles qui sont dans une zonne donnée, afin de la découper de tel sorte qu'il
-    # ait moins de 2000 résultats.
+    # y ait moins de 2000 résultats par requête.
     for name, bbox in decoupe_bbox_selon_taille_index(
             cadastreWebsite.get_bbox(), 
             index_parcelles, 
