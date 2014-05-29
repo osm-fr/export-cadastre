@@ -115,6 +115,8 @@ def print_help():
     sys.stdout.write((u"    -data : n'extrait que les données brutes\n").encode("utf-8"))
     sys.stdout.write((u"    -nd : ne retélécharge pas, utilise les fichiers déja présents\n").encode("utf-8"))
     sys.stdout.write((u"    -nobis : ne transforme pas B,T,Q en bis, ter, quater et n'ajoute pas d'espace.\n").encode("utf-8"))
+    sys.stdout.write((u"    -ne : ne pas utiliser de données externes (FANTOIR et OSM).\n").encode("utf-8"))
+    sys.stdout.write((u"    -nzip : ne pas découper le résultat par rue et en faire des zip.\n").encode("utf-8"))
 
 def command_line_error(message, help=False):
     sys.stdout.write(("ERREUR: " + message + "\n").encode("utf-8"))
@@ -904,6 +906,8 @@ def cadastre_vers_adresses(argv):
   download = True
   merge_adresses = True
   bis = True
+  donnees_externes = True
+  split_result = True
   i = 1
   while i < len(argv):
       if argv[i].startswith("-"):
@@ -918,6 +922,12 @@ def cadastre_vers_adresses(argv):
               del(argv[i:i+1])
           elif argv[i] in ["-data"]:
               merge_adresses = False
+              del(argv[i:i+1])
+          elif argv[i] in ["-ne"]:
+              donnees_externes = False
+              del(argv[i:i+1])
+          elif argv[i] in ["-nzip"]:
+              split_result = False
               del(argv[i:i+1])
           else:
               command_line_error(u"option invalide: " + argv[i])
@@ -1027,23 +1037,26 @@ def cadastre_vers_adresses(argv):
           #   dans la fonction match_parcelles_et_numeros()
           if bis: determine_osm_adresses_bis_ter_quater(osm)
 
-
-          try:
-              cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_noms)
-          except:
-              traceback.print_exc()
+          if donnees_externes:
+              try:
+                  cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_noms)
+              except:
+                  traceback.print_exc()
 
           transforme_place_en_highway(osm)
 
           OsmWriter(osm).write_to_file(code_commune + "-adresses.osm")
-          partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses.zip", code_commune)
+          if split_result:
+              partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses.zip", code_commune)
 
-          try:
-              cherche_osm_buildings_proches(code_departement, code_commune, osm, transform_to_osm, transform_from_osm)
-              OsmWriter(osm).write_to_file(code_commune + "-adresses_buildings_proches.osm")
-              partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses_buildings_proches.zip", code_commune)
-          except:
-              traceback.print_exc()
+          if donnees_externes:
+              try:
+                  cherche_osm_buildings_proches(code_departement, code_commune, osm, transform_to_osm, transform_from_osm)
+                  OsmWriter(osm).write_to_file(code_commune + "-adresses_buildings_proches.osm")
+                  if split_result:
+                      partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses_buildings_proches.zip", code_commune)
+              except:
+                  traceback.print_exc()
 
 
 
