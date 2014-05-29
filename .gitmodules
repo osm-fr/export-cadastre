@@ -1,0 +1,3 @@
+[submodule "bin/cadastre-housenumber/associatedStreet"]
+	path = bin/cadastre-housenumber/associatedStreet
+	url = https://github.com/vdct/associatedStreet.git

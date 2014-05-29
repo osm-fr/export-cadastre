@@ -38,7 +38,6 @@ from osm import OsmParser, OsmWriter
 from mytools import write_stream_to_file
 from mytools import to_ascii
 
-ASSOCIATEDSTREET_GIT = "https://github.com/vdct/associatedStreet.git"
 ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "associatedStreet")
 
 FANTOIR_URL = "http://www2.impots.gouv.fr/documentation/fantoir/"
@@ -46,15 +45,12 @@ FANTOIR_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fantoir
 FANTOIR_TXT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fantoir.txt")
 
 
-# Clone le projet associatedStreet:
-if not os.path.exists(ASSOCIATEDSTREET_DIR):
-   subprocess.check_call(["git", "clone", ASSOCIATEDSTREET_GIT, ASSOCIATEDSTREET_DIR])
 associatedStreet_init = os.path.join(ASSOCIATEDSTREET_DIR,"__init__.py")
 if not os.path.exists(associatedStreet_init):
     open(associatedStreet_init, "a").close()
-associatedStreet_pg_connextion = os.path.join(ASSOCIATEDSTREET_DIR,"pg_connexion.py")
-if not os.path.exists(associatedStreet_pg_connextion):
-    shutil.copyfile(associatedStreet_pg_connextion + ".txt", associatedStreet_pg_connextion)
+associatedStreet_pg_connexion = os.path.join(ASSOCIATEDSTREET_DIR,"pg_connexion.py")
+if not os.path.exists(associatedStreet_pg_connexion):
+    shutil.copyfile(associatedStreet_pg_connexion + ".txt", associatedStreet_pg_connexion)
 
 
 import associatedStreet.addr_fantoir_building as addr_fantoir_building
