@@ -1,7 +1,8 @@
 
 
 QT += core
-CONFIG += debug
+#CONFIG += debug
+CONFIG += release
 
 SOURCES += pdfparser.cpp
 

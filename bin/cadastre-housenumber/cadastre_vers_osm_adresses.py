@@ -972,6 +972,9 @@ def cadastre_vers_adresses(argv):
       else:
           pdfs = glob.glob(code_commune + "-[0-9]*-[0-9]*.pdf")
           pdfs.sort()
+          if len(pdfs) == 0:
+              command_line_error(u"Options -nd alors qu'aucune donnée n'a été téléchargée")
+              return
 
       projection, limite_parcelles, numeros, quartiers, nom_rues = parse_pdfs_parcelles_numeros_quartiers_nom_rues(pdfs)
       polygones_parcelles, index_polygones_parcelles = polygones_et_index_des_limite_parcelles(limite_parcelles)
@@ -982,6 +985,9 @@ def cadastre_vers_adresses(argv):
           xmls = iter_download_parcelles_xml(cadastreWebsite, index_polygones_parcelles)
       else:
           xmls = imap(lambda f:open(f).read().decode("utf-8"), glob.glob(code_commune + "-parcelles*.xml"))
+          if len(xmls) == 0:
+              command_line_error(u"Options -nd alors qu'aucune donnée n'a été téléchargée")
+              return
       parcelles = Parcelle.parse_xml_strings(xmls)
 
       info_pdf_count = (len(parcelles) + MAX_PARCELLES_PAR_INFO_PDF - 1) / MAX_PARCELLES_PAR_INFO_PDF
@@ -991,6 +997,9 @@ def cadastre_vers_adresses(argv):
           info_pdfs = iter_download_parcelles_info_pdf(cadastreWebsite, parcelles.keys())
       else:
           info_pdfs = glob.glob(code_commune + "-parcelles-*.pdf")
+          if len(info_pdfs) == 0:
+              command_line_error(u"Options -nd alors qu'aucune donnée n'a été téléchargée")
+              return
       for fid,adresses in parse_adresses_of_parcelles_info_pdfs(info_pdfs, code_commune).iteritems():
           if fid in parcelles:
               parcelles[fid].adresses = adresses

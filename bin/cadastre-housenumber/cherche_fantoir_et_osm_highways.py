@@ -40,10 +40,15 @@ from mytools import to_ascii
 
 ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "associatedStreet")
 
-FANTOIR_URL = "http://www2.impots.gouv.fr/documentation/fantoir/"
-FANTOIR_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fantoir")
-FANTOIR_TXT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fantoir.txt")
+FANTOIR_URL = "http://collectivites-locales.gouv.fr/files/files/gestion_locale_dgfip/national/FANTOIR.zip"
+FANTOIR_ZIP = os.path.join(os.path.dirname(os.path.realpath(__file__)), "FANTOIR.zip")
 
+if not os.path.exists(os.path.join(ASSOCIATEDSTREET_DIR,"addr_fantoir_building.py")):
+  sys.stderr.write(u"ERREUR: le projet associatedStreet n'as pas été trouvé.\n".encode("utf-8"))
+  sys.stderr.write(u"        Veuillez executer les commandes suivantes et relancer:\n".encode("utf-8"))
+  sys.stderr.write(u"    git submodules init\n".encode("utf-8"))
+  sys.stderr.write(u"    git submodules update\n".encode("utf-8"))
+  sys.exit(-1)
 
 associatedStreet_init = os.path.join(ASSOCIATEDSTREET_DIR,"__init__.py")
 if not os.path.exists(associatedStreet_init):
@@ -70,20 +75,12 @@ def normalize(nom):
         result = result[3:]
     return result
 
-def get_fantoir_txt_filename(code_departement):
-    assert(len(code_departement) == 3)
+def get_fantoir_code_departement(code_departement):
     if code_departement[0] == '0':
-        return code_departement[1:3] + '0.txt'
+        return code_departement[1:3] + '0'
     else:
-        return code_departement[0:3] + '.txt'
+        return code_departement[0:3]
 
-def get_fantoir_zip_filename(code_departement):
-    wanted_filename = get_fantoir_txt_filename(code_departement)
-    with open(FANTOIR_TXT,"r") as f:
-        for line in f:
-            zip_filename, txt_filename = line.strip().split("/")
-            if txt_filename == wanted_filename:
-                return zip_filename
 
 def get_dict_fantoir(code_departement, code_commune):
     """ Retourne un dictionnaire qui mappe un nom normalizé 
@@ -100,23 +97,21 @@ def get_dict_fantoir(code_departement, code_commune):
         # La connexion avec la base SQL a du échouer, on 
         # charge les fichiers zip fantoir manuellement:
         dict_fantoir = {}
-        zip_filename = get_fantoir_zip_filename(code_departement)
-        filename = os.path.join(FANTOIR_DIR, zip_filename)
+        filename = FANTOIR_ZIP
         ok_filename = filename + ".ok"
         if not (os.path.exists(filename) and os.path.exists(ok_filename)):
-            sys.stdout.write("Téléchargement du fichier Fantoir " + zip_filename  + "\n")
+            sys.stdout.write("Téléchargement du fichier Fantoir " + FANTOIR_URL  + "\n")
             if os.path.exists(filename): os.remove(filename)
             if os.path.exists(ok_filename): os.remove(ok_filename)
-            if not os.path.exists(FANTOIR_DIR): os.mkdir(FANTOIR_DIR)
-            write_stream_to_file(urllib2.urlopen(FANTOIR_URL + zip_filename), filename)
+            write_stream_to_file(urllib2.urlopen(FANTOIR_URL), filename)
             open(ok_filename, "a").close()
         else:
-            sys.stdout.write("Lecture du fichier Fantoir " + zip_filename  + "\n")
+            sys.stdout.write("Lecture du fichier FANTOIR.zip")
         sys.stdout.flush()
-        txt_filename = get_fantoir_txt_filename(code_departement)
         num_commune = code_insee[2:5]
-        for line in ZipFile(filename, "r").open(txt_filename):
-            if line[3:6] == num_commune:
+        debut = get_fantoir_code_departement(code_departement) + num_commune
+        for line in ZipFile(filename, "r").open("FANTOIR.txt"):
+            if line.startswith(debut):
                if line[108:109] != ' ':
                   # C'est un unregistrement de voie
                   if line[73] == ' ':

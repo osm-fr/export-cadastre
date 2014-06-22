@@ -34,6 +34,13 @@ from mytools import toposort
 THIS_DIR = os.path.dirname(__file__)
 REFERENCE_HOUSENUMBERS = os.path.join(THIS_DIR, "reference-housenumbers.svg")
 SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
+PDFPARSER = os.path.join(THIS_DIR, "pdfparser", "pdfparser")
+
+if not os.path.exists(PDFPARSER):
+  sys.stderr.write(u"ERREUR: le programme pdfparser n'as pas été trouvé.\n".encode("utf-8"))
+  sys.stderr.write(u"        Veuillez executer la commande suivante et relancer:\n".encode("utf-8"))
+  sys.stderr.write(u"    make\n".encode("utf-8"))
+  sys.exit(-1)
 
 class Point(object):
     """ An object with an x and a y field"""
@@ -714,9 +721,7 @@ class CadastreParser(object):
             parser.StartElementHandler = self.handle_start_element
             parser.ParseFile(open(filename))
         elif ext == ".pdf":
-            pipe = subprocess.Popen([
-                    os.path.join(THIS_DIR, "pdfparser", "pdfparser"), 
-                    filename], 
+            pipe = subprocess.Popen([PDFPARSER, filename], 
                     bufsize=128*1024, stdout=subprocess.PIPE).stdout
             while True:
                 line = pipe.readline()
