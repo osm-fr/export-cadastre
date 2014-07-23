@@ -46,8 +46,8 @@ FANTOIR_ZIP = os.path.join(os.path.dirname(os.path.realpath(__file__)), "FANTOIR
 if not os.path.exists(os.path.join(ASSOCIATEDSTREET_DIR,"addr_fantoir_building.py")):
   sys.stderr.write(u"ERREUR: le projet associatedStreet n'as pas été trouvé.\n".encode("utf-8"))
   sys.stderr.write(u"        Veuillez executer les commandes suivantes et relancer:\n".encode("utf-8"))
-  sys.stderr.write(u"    git submodules init\n".encode("utf-8"))
-  sys.stderr.write(u"    git submodules update\n".encode("utf-8"))
+  sys.stderr.write(u"    git submodule init\n".encode("utf-8"))
+  sys.stderr.write(u"    git submodule update\n".encode("utf-8"))
   sys.exit(-1)
 
 associatedStreet_init = os.path.join(ASSOCIATEDSTREET_DIR,"__init__.py")
