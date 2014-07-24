@@ -142,6 +142,7 @@ void CadastreWrapper::requestPDF(const QString &dept, const QString &cityCode, c
     QNetworkReply *req = m_nam->post(request, postData.toLatin1());
     req->setProperty("cityCode", cityCode);
     req->setProperty("cityName", cityName);
+    req->setProperty("dept", dept);
     m_citySearchMapper.setMapping(req, req);
     connect(req, SIGNAL(finished()), &m_citySearchMapper, SLOT(map()));
 }
@@ -153,6 +154,8 @@ void CadastreWrapper::bboxAvailable(QObject *networkReply)
     if (!rep)
         return;
     QString cityCode = rep->property("cityCode").toString();
+    QString cityName = rep->property("cityName").toString();
+    QString dept = rep->property("dept").toString();
 
     // Search the bounding box
     QRegExp projExtracton("<span[^>]*id=\"projectionName\"[^>]*>(.*)</span>");
@@ -167,8 +170,18 @@ void CadastreWrapper::bboxAvailable(QObject *networkReply)
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
         QNetworkReply *pdfRep = m_nam->post(request, postData.toLocal8Bit());
         pdfRep->setProperty("cityCode", cityCode);
-        pdfRep->setProperty("cityName", rep->property("cityName").toString());
-        pdfRep->setProperty("boundingBox", projExtracton.cap(1).trimmed() + ":" + bbox);
+        QString proj = projExtracton.cap(1).trimmed();
+        if (dept == "971")
+        {
+            if (cityCode.endsWith("123" /*SAINT BARTHELEMY (ILE)*/) ||
+                cityCode.endsWith("127" /*SAINT MARTIN*/))
+            {
+                qDebug() << "projection corrigee de " + proj + " vers GUADFM49U20";
+                proj = "GUADFM49U20";
+            }
+        }
+        pdfRep->setProperty("cityName", cityName);
+        pdfRep->setProperty("boundingBox", proj + ":" + bbox);
         m_pdfSignalMapper.setMapping(pdfRep, pdfRep);
         connect(pdfRep, SIGNAL(finished()), &m_pdfSignalMapper, SLOT(map()));
     } else {
@@ -206,11 +219,13 @@ void CadastreWrapper::cityFound(QObject *networkReply)
     //qDebug() << rep->readAll();
     QString cityCode = rep->property("cityCode").toString();
     QString cityName = rep->property("cityName").toString();
+    QString dept = rep->property("dept").toString();
 
     QString url = QString("http://www.cadastre.gouv.fr/scpc/afficherCarteCommune.do?c=%1&dontSaveLastForward&keepVolatileSession=").arg(cityCode);
     QNetworkReply *req = m_nam->get(QNetworkRequest(url));
     req->setProperty("cityCode", cityCode);
     req->setProperty("cityName", cityName);
+    req->setProperty("dept", dept);
     m_bboxSignalMapper.setMapping(req, req);
     connect(req, SIGNAL(finished()), &m_bboxSignalMapper, SLOT(map()));
 }
