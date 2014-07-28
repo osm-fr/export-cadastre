@@ -601,7 +601,7 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
     return osm
 
 def transforme_place_en_highway(osm):
-    """Transforme les place=neighbourhood dont le nom ressemple à un nom de rue"""
+    """Transforme les place=neighbourhood dont le nom ressemble à un nom de rue"""
     for n in osm.nodes.itervalues():
         if n.id()<0 and "place" in n.tags:
             if "name" in n.tags and n.tags["name"].split()[0].lower() in ["rue","impasse","chemin","passage","route","avenue","boulevard"]:
@@ -722,10 +722,12 @@ def partitionnement_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
     noeuds_orphelins = [osm.nodes[i] for i in associatedStreet_of_housenumber_node.iterkeys() if
         len(associatedStreet_of_housenumber_node[i]) == 0]
     filename_osm_map.update(partitionnement_osm_nodes_filename_map(noeuds_orphelins, subdir + "_ORPHELINS_"))
-    # Partitionne les noeuds de quartiers (place=neighbourhood):
-    noeuds_quartiers = [n for n in osm.nodes.itervalues() if (n.id()<0) and ("place" in n.tags)]
-    osms_quartiers = partitionnement_osm_nodes_filename_map(noeuds_quartiers, subdir + "_QUARTIERS_")
-    filename_osm_map.update(osms_quartiers)
+
+    # Partitionne les noeuds de quartiers (place=*):
+    #noeuds_quartiers = [n for n in osm.nodes.itervalues() if (n.id()<0) and ("place" in n.tags)]
+    #osms_quartiers = partitionnement_osm_nodes_filename_map(noeuds_quartiers, subdir + "_QUARTIERS_")
+    #filename_osm_map.update(osms_quartiers)
+
     # Partitionne les noeuds de rue (highway=):
     noeuds_rues = [n for n in osm.nodes.itervalues() if (n.id()<0) and ("highway" in n.tags)]
     osms_rues = partitionnement_osm_nodes_filename_map(noeuds_rues, subdir + "_ADRESSES_RESSEMBLANTS_NOM_DE_RUE_")
