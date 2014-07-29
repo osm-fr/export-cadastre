@@ -79,7 +79,7 @@ def pdf_vers_osm_noms(pdf_filename_list, osm_output):
         if nom.lower().split()[0]== "hameau":
             node.tags['place'] = 'hamlet'
         else:
-            node.tags['place'] = 'neighbourhood'
+            node.tags['place'] = ''
     for nom, position, angle in rues:
         node = osm_add_node(osm, cadastre_to_osm_transform(position))
         node.tags['name'] = nom

@@ -462,7 +462,7 @@ def generate_osm_noms(quartiers, rues, transform):
         if nom.lower().startswith("hameau "):
             node.tags['place'] = 'hamlet'
         else:
-            node.tags['place'] = 'neighbourhood'
+            node.tags['place'] = ''
         node.tags['source'] = SOURCE_TAG
     for nom, position, angle in rues:
         node = osm_add_point(osm, position, transform)
@@ -596,12 +596,11 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
         if lieu.lower().startswith("hameau "):
             node.tags['place'] = 'hamlet'
         else:
-            node.tags['place'] = 'neighbourhood'
-        node.tags['fixme'] = u"à vérifier: lieu créé automatiquement à partir des adresses du coin"
+            node.tags['place'] = ''
     return osm
 
 def transforme_place_en_highway(osm):
-    """Transforme les place=neighbourhood dont le nom ressemble à un nom de rue"""
+    """Transforme les place=* dont le nom ressemble à un nom de rue"""
     for n in osm.nodes.itervalues():
         if n.id()<0 and "place" in n.tags:
             if "name" in n.tags and n.tags["name"].split()[0].lower() in ["rue","impasse","chemin","passage","route","avenue","boulevard"]:
