@@ -363,7 +363,7 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
       sys.stdout.write(("     avec code FANTOIR      : "+str(nb_voies_fantoir)+" ("+str(int(nb_voies_fantoir*100/nb_associatedStreet))+"%)\n").encode("utf-8"))
       sys.stdout.write(("     avec rapprochement OSM : "+str(nb_voies_osm)+" ("+str(int(nb_voies_osm*100/nb_associatedStreet))+"%)\n").encode("utf-8"))
 
-    # Humanise aussi les noms de quartier:
+    # Humanise aussi les noms de lieux-dits:
     for node in osm.nodes.itervalues():
         if node.tags.has_key("place"):
             node.tags["name"] = humanise_nom_fantoir(

@@ -28,25 +28,25 @@ from pdf_vers_osm_housenumbers import CadastreToOSMTransform
 
 THIS_DIR = os.path.dirname(__file__)
 REFERENCE_NOM_DE_RUE = os.path.join(THIS_DIR, "reference-noms_de_rue.svg")
-REFERENCE_NOM_DE_QUARTIER = os.path.join(THIS_DIR, "reference-noms_de_quartier.svg")
+REFERENCE_NOM_DE_LIEUXDITS = os.path.join(THIS_DIR, "reference-noms_de_lieux-dits.svg")
 
 
 class NamePathRecognizer(object):
     def __init__(self):
         self.nom_rue_recognizer = TextPathRecognizer(tolerance=0.05, min_scale=0.9, max_scale=1.1)
         self.nom_rue_recognizer.load_from_svg(REFERENCE_NOM_DE_RUE)
-        self.nom_quartier_recognizer = TextPathRecognizer(tolerance=0.05, min_scale=0.9, max_scale=1.1, force_horizontal=True)
-        self.nom_quartier_recognizer .load_from_svg(REFERENCE_NOM_DE_QUARTIER)
+        self.nom_lieuxdits_recognizer = TextPathRecognizer(tolerance=0.05, min_scale=0.9, max_scale=1.1, force_horizontal=True)
+        self.nom_lieuxdits_recognizer .load_from_svg(REFERENCE_NOM_DE_LIEUXDITS)
         # Il y a parfois des noms écrits en petit, pour les des lotissement par exemple, on réutilise
         # la même base de donnée utilisée pour les nom de rues mais en diminuant la taille (scale):
         self.petit_nom_recognizer = TextPathRecognizer(tolerance=0.05, min_scale=0.55, max_scale=0.69, force_horizontal=True)
         self.petit_nom_recognizer.database = self.nom_rue_recognizer.database
         self.petit_nom_recognizer.space_width = self.nom_rue_recognizer.space_width * (self.petit_nom_recognizer.max_scale + self.petit_nom_recognizer.min_scale) / (self.nom_rue_recognizer.max_scale + self.nom_rue_recognizer.min_scale)
         self.rues = []
-        self.quartiers = []
+        self.lieuxdits = []
     def handle_path(self, path, transform):
-        found = self.nom_quartier_recognizer.recognize(path)
-        for recognizer, liste in [(self.nom_quartier_recognizer, self.quartiers), (self.petit_nom_recognizer, self.rues), (self.nom_rue_recognizer, self.rues)]:
+        found = self.nom_lieuxdits_recognizer.recognize(path)
+        for recognizer, liste in [(self.nom_lieuxdits_recognizer, self.lieuxdits), (self.petit_nom_recognizer, self.rues), (self.nom_rue_recognizer, self.rues)]:
             found = recognizer.recognize(path)
             if found:
                 text, position, angle = found
@@ -67,13 +67,13 @@ def pdf_vers_cadastre_noms(pdf_filename_list):
     cadastre_parser = CadastreParser([noms_recognizer.handle_path])
     for pdf_filename in pdf_filename_list:
         cadastre_parser.parse(pdf_filename)
-    return cadastre_parser.cadastre_projection, noms_recognizer.quartiers, noms_recognizer.rues
+    return cadastre_parser.cadastre_projection, noms_recognizer.lieuxdits, noms_recognizer.rues
 
 def pdf_vers_osm_noms(pdf_filename_list, osm_output):
-    projection, quartiers, rues = pdf_vers_cadastre_noms(pdf_filename_list)
+    projection, lieuxdits, rues = pdf_vers_cadastre_noms(pdf_filename_list)
     cadastre_to_osm_transform = CadastreToOSMTransform(projection).transform_point
     osm = Osm({'upload':'false'})
-    for nom, position, angle in quartiers:
+    for nom, position, angle in lieuxdits:
         node = osm_add_node(osm, cadastre_to_osm_transform(position))
         node.tags['name'] = nom
         if nom.lower().split()[0]== "hameau":
