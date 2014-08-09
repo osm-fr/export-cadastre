@@ -286,6 +286,14 @@ if ($command) {
     }
     echo "</table>\n";
     print "</fieldset>\n";
+    print "<fieldset>\n";
+    echo "<legend>Résultat de Lieux-Dits tag place=</legend>\n";
+    echo "<table class=\"result\">\n";
+    $key = "Lieux-Dits";
+    $val = "/data/$dep/$ville-adresses-lieux-dits.zip";
+    echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+    echo "</table>\n";
+    print "</fieldset>\n";
     ?>
     <script type='text/javascript'>
     	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="/data/<?php echo $dep;?>">aux fichiers</a>';

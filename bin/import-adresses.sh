@@ -56,6 +56,7 @@ file1="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_sans_b
 file2="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_mix_en_facade_ou_isole.zip"
 file3="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_tag_sur_batiment.zip"
 file4="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_point_sur_batiment.zip"
+file5="${depdir}/${code_commune}-${nom_commune}-adresses-lieux-dits.zip"
 
 mkdir -p $communedir
 chmod 02775 $communedir
@@ -65,6 +66,7 @@ mv "$communedir/${code_commune}-adresses.zip" "${file1}"
 mv "$communedir/${code_commune}-adresses_buildings_proches.zip" "${file2}"
 $command3 "${file1}" "${file1/associatedStreet/addrstreet}"
 $command3 "${file2}" "${file2/associatedStreet/addrstreet}"
+mv "$communedir/${code_commune}-lieux-dits.zip" "${file5}"
 
 cd $command2dir && $command2 || exit -1
 
