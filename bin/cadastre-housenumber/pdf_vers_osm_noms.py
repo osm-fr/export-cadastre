@@ -43,10 +43,14 @@ class NamePathRecognizer(object):
         self.petit_nom_recognizer.database = self.nom_rue_recognizer.database
         self.petit_nom_recognizer.space_width = self.nom_rue_recognizer.space_width * (self.petit_nom_recognizer.max_scale + self.petit_nom_recognizer.min_scale) / (self.nom_rue_recognizer.max_scale + self.nom_rue_recognizer.min_scale)
         self.rues = []
+        self.petits_noms = []
         self.lieuxdits = []
     def handle_path(self, path, transform):
         found = self.nom_lieuxdits_recognizer.recognize(path)
-        for recognizer, liste in [(self.nom_lieuxdits_recognizer, self.lieuxdits), (self.petit_nom_recognizer, self.rues), (self.nom_rue_recognizer, self.rues)]:
+        for recognizer, liste in [
+                (self.nom_lieuxdits_recognizer, self.lieuxdits),
+                (self.petit_nom_recognizer, self.petits_noms),
+                (self.nom_rue_recognizer, self.rues)]:
             found = recognizer.recognize(path)
             if found:
                 text, position, angle = found

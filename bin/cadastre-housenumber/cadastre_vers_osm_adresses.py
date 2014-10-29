@@ -454,7 +454,7 @@ def generate_osm_housenumbers(numeros, transform):
         node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
     return osm
 
-def generate_osm_noms(lieuxdits, rues, transform):
+def generate_osm_noms(lieuxdits, rues, petits_noms, transform):
     osm = Osm({'upload':'false'})
     for nom, position, angle in lieuxdits:
         node = osm_add_point(osm, position, transform)
@@ -469,6 +469,22 @@ def generate_osm_noms(lieuxdits, rues, transform):
         node.tags['name'] = nom
         node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
         node.tags['source'] = SOURCE_TAG
+    for nom, position, angle in petits_noms:
+        node = osm_add_point(osm, position, transform)
+        node.tags['name'] = nom
+        node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
+        node.tags['small'] = "yes"
+        node.tags['source'] = SOURCE_TAG
+    return osm
+
+
+def generate_osm_petits_noms(petits_noms, transform):
+    osm = Osm({'upload':'false'})
+    for nom, position, angle in petits_noms:
+        if (int(round(angle * 180 / math.pi)) == 0):
+            node = osm_add_point(osm, position, transform)
+            node.tags['name'] = nom
+            node.tags['source'] = SOURCE_TAG
     return osm
 
 def generate_osm_parcelles(parcelles, transform):
@@ -634,7 +650,7 @@ def transforme_place_en_highway(osm):
 
 
 def parse_pdfs_parcelles_numeros_lieuxdits_nom_rues(pdfs):
-    nb = [0, 0, 0, 0]
+    nb = [0, 0, 0, 0, 0]
     parcelle_recognizer = ParcellePathRecognizer()
     nom_recognizer = NamePathRecognizer()
     numero_recognizer = HousenumberPathRecognizer()
@@ -643,12 +659,12 @@ def parse_pdfs_parcelles_numeros_lieuxdits_nom_rues(pdfs):
     sys.stdout.flush()
     for filename in pdfs:
         cadastre_parser.parse(filename)
-        new_nb = [len(parcelle_recognizer.parcelles), len(numero_recognizer.housenumbers), len(nom_recognizer.lieuxdits), len(nom_recognizer.rues)]
+        new_nb = [len(parcelle_recognizer.parcelles), len(numero_recognizer.housenumbers), len(nom_recognizer.lieuxdits), len(nom_recognizer.rues), len(nom_recognizer.petits_noms)]
         diff = map(operator.sub, new_nb, nb)
-        sys.stdout.write((filename + ": " + ", ".join([str(val) + " " + name for name,val in zip(["parcelles", u"numéros","lieux-dits", "noms"], diff)]) + "\n").encode("utf-8"))
+        sys.stdout.write((filename + ": " + ", ".join([str(val) + " " + name for name,val in zip(["parcelles", u"numéros","lieux-dits", "noms", "petits noms"], diff)]) + "\n").encode("utf-8"))
         sys.stdout.flush()
         nb = new_nb
-    return cadastre_parser.cadastre_projection, parcelle_recognizer.parcelles, numero_recognizer.housenumbers, nom_recognizer.lieuxdits, nom_recognizer.rues
+    return cadastre_parser.cadastre_projection, parcelle_recognizer.parcelles, numero_recognizer.housenumbers, nom_recognizer.lieuxdits, nom_recognizer.rues, nom_recognizer.petits_noms
 
 def partitionnement_osm_nodes_filename_map(node_list, filenameprefix):
     """Partitionne les noeuds de la node list en plusieurs objet Osm()
@@ -1045,7 +1061,7 @@ def cadastre_vers_adresses(argv):
               command_line_error(u"Options -nd alors qu'aucune donnée n'a été téléchargée")
               return
 
-      projection, limite_parcelles, numeros, nom_lieuxdits, nom_rues = parse_pdfs_parcelles_numeros_lieuxdits_nom_rues(pdfs)
+      projection, limite_parcelles, numeros, nom_lieuxdits, nom_rues, petits_noms = parse_pdfs_parcelles_numeros_lieuxdits_nom_rues(pdfs)
       polygones_parcelles, index_polygones_parcelles = polygones_et_index_des_limite_parcelles(limite_parcelles)
 
       sys.stdout.write((u"Chargement des infos xml (id et position) d'environ %d parcelles:\n" % len(polygones_parcelles)).encode("utf-8"))
@@ -1094,8 +1110,10 @@ def cadastre_vers_adresses(argv):
       osm_parcelles = generate_osm_parcelles(parcelles, transform_to_osm)
       if bis: determine_osm_parcelles_bis_ter_quater(osm_parcelles)
       OsmWriter(osm_parcelles).write_to_file(code_commune + "-parcelles.osm")
-      osm_noms = generate_osm_noms(nom_lieuxdits, nom_rues, transform_to_osm)
+      osm_noms = generate_osm_noms(nom_lieuxdits, nom_rues, petits_noms, transform_to_osm)
       OsmWriter(osm_noms).write_to_file(code_commune + "-noms.osm")
+      osm_petits_noms = generate_osm_petits_noms(petits_noms, transform_to_osm)
+      OsmWriter(osm_petits_noms).write_to_file(code_commune + "-petits_noms.osm")
 
       if merge_adresses:
           sys.stdout.write((u"Associe la position des numéros aux parcelles:\n").encode("utf-8"))
