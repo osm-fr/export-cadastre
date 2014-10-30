@@ -454,7 +454,7 @@ def generate_osm_housenumbers(numeros, transform):
         node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
     return osm
 
-def generate_osm_noms(lieuxdits, rues, petits_noms, transform):
+def generate_osm_mots(lieuxdits, rues, petits_mots, transform):
     osm = Osm({'upload':'false'})
     for nom, position, angle in lieuxdits:
         node = osm_add_point(osm, position, transform)
@@ -469,7 +469,7 @@ def generate_osm_noms(lieuxdits, rues, petits_noms, transform):
         node.tags['name'] = nom
         node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
         node.tags['source'] = SOURCE_TAG
-    for nom, position, angle in petits_noms:
+    for nom, position, angle in petits_mots:
         node = osm_add_point(osm, position, transform)
         node.tags['name'] = nom
         node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
@@ -477,11 +477,27 @@ def generate_osm_noms(lieuxdits, rues, petits_noms, transform):
         node.tags['source'] = SOURCE_TAG
     return osm
 
-
-def generate_osm_petits_noms(petits_noms, transform):
+def generate_osm_mots_lieuxdits(mots, transform):
     osm = Osm({'upload':'false'})
-    for nom, position, angle in petits_noms:
-        if (int(round(angle * 180 / math.pi)) == 0):
+    for nom, position, angle in mots:
+            node = osm_add_point(osm, position, transform)
+            node.tags['name'] = nom
+            node.tags['source'] = SOURCE_TAG
+    return osm
+
+def generate_osm_mots_rues(mots, transform):
+    osm = Osm({'upload':'false'})
+    for nom, position, angle in mots:
+        if (len(nom) > 1) or (int(round(angle * 180 / math.pi)) != 0):
+            node = osm_add_point(osm, position, transform)
+            node.tags['name'] = nom
+            node.tags['source'] = SOURCE_TAG
+    return osm
+
+def generate_osm_petits_mots(mots, transform):
+    osm = Osm({'upload':'false'})
+    for nom, position, angle in mots:
+        #if (int(round(angle * 180 / math.pi)) == 0):
             node = osm_add_point(osm, position, transform)
             node.tags['name'] = nom
             node.tags['source'] = SOURCE_TAG
@@ -646,10 +662,11 @@ def transforme_place_en_highway(osm):
             if "name" in n.tags and n.tags["name"].split()[0].lower() in ["rue","impasse","chemin","passage","route","avenue","boulevard"]:
                 del(n.tags["place"])
                 n.tags["highway"] = "road"
-                n.tags["fixme"] = u"à vérifier: nom de rue créé automatiquement à partir des adresses du coin"
+                n.tags["fixme"] = u"à vérifier: nom créé automatiquement à partir des adresses du coin"
+    return
 
 
-def parse_pdfs_parcelles_numeros_lieuxdits_nom_rues(pdfs):
+def parse_pdfs_parcelles_numeros_lieuxdits_mots_rues(pdfs):
     nb = [0, 0, 0, 0, 0]
     parcelle_recognizer = ParcellePathRecognizer()
     nom_recognizer = NamePathRecognizer()
@@ -830,7 +847,7 @@ def partitionnement_osm_lieuxdits_zip(osm_adresses,osm_lieuxdits, zip_filename, 
     noeuds_rues = [n for n in osm_adresses.nodes.itervalues() 
         if (n.id()<0) and ("highway" in n.tags)]
     osms_rues = partitionnement_osm_nodes_filename_map(noeuds_rues,
-        subdir + "lieux-dits_ressemblants_nom_de_rue_-_NE_PAS_ENVOYER_SUR_OSM")
+        subdir + "lieux_ressemblants_noms_de_rues_-_NE_PAS_ENVOYER_SUR_OSM")
     for filename, new_osm in osms_rues.iteritems():
         new_osm.attrs["upload"] = "false"
     filename_osm_map.update(osms_rues)
@@ -845,6 +862,19 @@ def partitionnement_osm_lieuxdits_zip(osm_adresses,osm_lieuxdits, zip_filename, 
     zip_output.writestr(subdir + "LISEZ-MOI.txt", """Bien verifier le nom et la position des lieux-dits.\r\nRemplir le tag place= en s'aidant des limites (nombre de maisons).\r\nAttention: les maisons avec numero d'adresse sont exclues des limites a tort et devraient souvent etre comptabilisees.\r\nhttp://wiki.openstreetmap.org/wiki/FR:Key:place\r\n""") 
     zip_output.close()
     
+def zip_osm_mots(osm_mots_lieuxdits, osm_mots_rues, osm_petits_most, zip_filename, subdir=""):
+    if subdir: subdir += "/"
+    filename_osm_map = {}
+    filename_osm_map[subdir + "mots_lieux-dits_-_NE_PAS_ENVOYER_SUR_OSM.osm"] = osm_mots_lieuxdits
+    filename_osm_map[subdir + "mots_rues_-_NE_PAS_ENVOYER_SUR_OSM.osm"] = osm_mots_rues
+    filename_osm_map[subdir + "petits_mots_-_NE_PAS_ENVOYER_TEL_QUEL_SUR_OSM.osm"] = osm_petits_most
+    zip_output = zipfile.ZipFile(zip_filename,"w", zipfile.ZIP_DEFLATED)
+    for filename, osm in filename_osm_map.iteritems():
+        s = StringIO()
+        OsmWriter(osm).write_to_stream(s)
+        zip_output.writestr(filename, s.getvalue())
+    zip_output.writestr(subdir + "LISEZ-MOI.txt", """Ces fichiers contiennent des mots positionnes a l'endroit\r\nou ils sont dessines sur le cadastre.\r\nIls peuvent etre utilises comme sources d'information pour\r\ncompleter OpenStreetMap, mais ils ne doivent surtout\r\npas etre envoyes tels quels vers OSM.""") 
+    zip_output.close()
             
 
 def osm_add_point(osm, point, transform):
@@ -1061,7 +1091,7 @@ def cadastre_vers_adresses(argv):
               command_line_error(u"Options -nd alors qu'aucune donnée n'a été téléchargée")
               return
 
-      projection, limite_parcelles, numeros, nom_lieuxdits, nom_rues, petits_noms = parse_pdfs_parcelles_numeros_lieuxdits_nom_rues(pdfs)
+      projection, limite_parcelles, numeros, mots_lieuxdits, mots_rues, petits_mots = parse_pdfs_parcelles_numeros_lieuxdits_mots_rues(pdfs)
       polygones_parcelles, index_polygones_parcelles = polygones_et_index_des_limite_parcelles(limite_parcelles)
 
       sys.stdout.write((u"Chargement des infos xml (id et position) d'environ %d parcelles:\n" % len(polygones_parcelles)).encode("utf-8"))
@@ -1110,10 +1140,14 @@ def cadastre_vers_adresses(argv):
       osm_parcelles = generate_osm_parcelles(parcelles, transform_to_osm)
       if bis: determine_osm_parcelles_bis_ter_quater(osm_parcelles)
       OsmWriter(osm_parcelles).write_to_file(code_commune + "-parcelles.osm")
-      osm_noms = generate_osm_noms(nom_lieuxdits, nom_rues, petits_noms, transform_to_osm)
-      OsmWriter(osm_noms).write_to_file(code_commune + "-noms.osm")
-      osm_petits_noms = generate_osm_petits_noms(petits_noms, transform_to_osm)
-      OsmWriter(osm_petits_noms).write_to_file(code_commune + "-petits_noms.osm")
+      osm_mots = generate_osm_mots(mots_lieuxdits, mots_rues, petits_mots, transform_to_osm)
+      OsmWriter(osm_mots).write_to_file(code_commune + "-mots.osm")
+      zip_osm_mots(
+        generate_osm_mots_lieuxdits(mots_lieuxdits, transform_to_osm),
+        generate_osm_mots_rues(mots_rues, transform_to_osm),
+        generate_osm_petits_mots(petits_mots, transform_to_osm),
+        code_commune + "-mots.zip", 
+        code_commune + "-mots");
 
       if merge_adresses:
           sys.stdout.write((u"Associe la position des numéros aux parcelles:\n").encode("utf-8"))
@@ -1135,7 +1169,7 @@ def cadastre_vers_adresses(argv):
 
           if donnees_externes:
               try:
-                  cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_noms)
+                  cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_mots)
               except:
                   traceback.print_exc()
 
@@ -1143,14 +1177,14 @@ def cadastre_vers_adresses(argv):
 
           OsmWriter(osm).write_to_file(code_commune + "-adresses.osm")
           if split_result:
-              partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses.zip", code_commune)
+              partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses.zip", code_commune + "-adresses")
 
           if donnees_externes:
               try:
                   cherche_osm_buildings_proches(code_departement, code_commune, osm, transform_to_osm, transform_from_osm)
                   OsmWriter(osm).write_to_file(code_commune + "-adresses_buildings_proches.osm")
                   if split_result:
-                      partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses_buildings_proches.zip", code_commune)
+                      partitionnement_osm_associatedStreet_zip(osm, code_commune + "-adresses_buildings_proches.zip", code_commune + "-adresses")
               except:
                   traceback.print_exc()
       
@@ -1159,7 +1193,7 @@ def cadastre_vers_adresses(argv):
           osm_lieuxdits = generate_osm_limite_lieuxdits(parcelles, transform_to_osm)
           OsmWriter(osm_lieuxdits).write_to_file(code_commune + "-lieux-dits.osm")
           if split_result:
-              partitionnement_osm_lieuxdits_zip(osm, osm_lieuxdits, code_commune + "-lieux-dits.zip", code_commune)
+              partitionnement_osm_lieuxdits_zip(osm, osm_lieuxdits, code_commune + "-lieux-dits.zip", code_commune + "-lieux-dits")
       except:
           traceback.print_exc()
 

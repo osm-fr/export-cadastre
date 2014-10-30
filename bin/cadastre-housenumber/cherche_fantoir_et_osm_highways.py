@@ -94,7 +94,7 @@ def get_dict_fantoir(code_departement, code_commune):
         db_cursor = addr_fantoir_building.get_pgc().cursor()
         sql_query = ''' SELECT  code_insee||id_voie||cle_rivoli,
                                 nature_voie||' '||libelle_voie,
-                                type_voie||ld_bati
+                                type_voie, ld_bati
                         FROM  fantoir_voie
                         WHERE code_insee = \'''' + code_insee + '''\' 
                               AND caractere_annul NOT IN ('O','Q');'''
@@ -102,8 +102,9 @@ def get_dict_fantoir(code_departement, code_commune):
         for result in db_cursor:
             code_fantoir = result[0]
             nom_fantoir = ' '.join(result[1].replace('-',' ').split())
-            lieu_dit_non_bati = result[2] == '30'
-            dict_fantoir[normalize(nom_fantoir)] = (code_fantoir, lieu_dit_non_bati)
+            #lieu_dit_non_bati = (result[2] == '3') and (result[3] == '0')
+            highway = result[2] in ['1', '4', '5']
+            dict_fantoir[normalize(nom_fantoir)] = (code_fantoir, highway)
         assert(len(dict_fantoir) > 0)
         return dict_fantoir
     except:
@@ -135,9 +136,10 @@ def get_dict_fantoir(code_departement, code_commune):
                       libele_voie = line[15:41].strip()
                       code_fantoir = code_insee + id_voie + cle_rivoli
                       nom_fantoir = nature_voie + " " + libele_voie
-                      lieu_dit_non_bati = line[108:110] == '30'
+                      #lieu_dit_non_bati = line[108:110] == '30'
+                      highway = line[108:109] in ['1', '4', '5']
                       dict_fantoir[normalize(nom_fantoir)] = \
-                          (code_fantoir, lieu_dit_non_bati)
+                          (code_fantoir, highway)
         return dict_fantoir
 
 
@@ -381,14 +383,19 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
     for node in osm.nodes.itervalues():
         if node.tags.has_key("place"):
             name = node.tags["name"]
-            node.tags["name"] = humanise_nom_fantoir(
-                name, dict_abrev_type_voie, dict_accents_mots)
             name_norm = normalize(name)
+            highway = False
             if (name_norm in dict_fantoir):
                 node.tags['ref:FR:FANTOIR'] = dict_fantoir[name_norm][0]
-                #if dict_fantoir[name_norm][1]:
-                #  # Lieu-dit non bâti
-                #  node.tags["place"] = "locality"
+                highway = dict_fantoir[name_norm][1]
+            node.tags["name"] = humanise_nom_fantoir(name, 
+                dict_abrev_type_voie if highway else {},
+                dict_accents_mots)
+            if highway:
+                del(node.tags["place"])
+                node.tags["highway"] = "road"
+                node.tags["fixme"] = u"à vérifier: nom de rue créé automatiquement à partir des adresses du coin"
+
     
 def print_help():
     programme = sys.argv[0]

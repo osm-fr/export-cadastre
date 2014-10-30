@@ -39,7 +39,7 @@ class NamePathRecognizer(object):
         self.nom_lieuxdits_recognizer .load_from_svg(REFERENCE_NOM_DE_LIEUXDITS)
         # Il y a parfois des noms écrits en petit, pour les des lotissement par exemple, on réutilise
         # la même base de donnée utilisée pour les nom de rues mais en diminuant la taille (scale):
-        self.petit_nom_recognizer = TextPathRecognizer(tolerance=0.05, min_scale=0.55, max_scale=0.69, force_horizontal=True)
+        self.petit_nom_recognizer = TextPathRecognizer(tolerance=0.05, min_scale=0.55, max_scale=0.69, force_horizontal=False)
         self.petit_nom_recognizer.database = self.nom_rue_recognizer.database
         self.petit_nom_recognizer.space_width = self.nom_rue_recognizer.space_width * (self.petit_nom_recognizer.max_scale + self.petit_nom_recognizer.min_scale) / (self.nom_rue_recognizer.max_scale + self.nom_rue_recognizer.min_scale)
         self.rues = []

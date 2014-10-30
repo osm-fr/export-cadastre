@@ -270,6 +270,7 @@ if ($command) {
         $addrstreet_files[$key] = str_replace("associatedStreet","addrstreet",$associatedStreet_files[$key]);
     }
     print "</pre>\n";
+
     print "<fieldset>\n";
     echo "<legend>Résultat avec tag addr:street:</legend>\n";
     echo "<table class=\"result\">\n";
@@ -286,11 +287,21 @@ if ($command) {
     }
     echo "</table>\n";
     print "</fieldset>\n";
+
     print "<fieldset>\n";
-    echo "<legend>Résultat de Lieux-Dits tag place=</legend>\n";
+    echo "<legend>Résultat de Lieux-Dits, tag place=...</legend>\n";
     echo "<table class=\"result\">\n";
     $key = "Lieux-Dits";
     $val = "/data/$dep/$ville-adresses-lieux-dits.zip";
+    echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+    echo "</table>\n";
+    print "</fieldset>\n";
+
+    print "<fieldset>\n";
+    echo "<legend>Liste de mots dessinés sur le cadastre (noms de rues, de lieux-dits ou autre)</legend>\n";
+    echo "<table class=\"result\">\n";
+    $key = "Lieux-Dits";
+    $val = "/data/$dep/$ville-mots.zip";
     echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
     echo "</table>\n";
     print "</fieldset>\n";
