@@ -12,7 +12,7 @@
    width="1488.75"
    version="1.1"
    id="svg2"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="reference-noms_de_rue.svg"><metadata
      id="metadata316"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
@@ -30,9 +30,9 @@
      inkscape:window-height="1161"
      id="namedview312"
      showgrid="false"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="172.44376"
-     inkscape:cy="900.70724"
+     inkscape:zoom="2"
+     inkscape:cx="232.80682"
+     inkscape:cy="1004.3204"
      inkscape:window-x="0"
      inkscape:window-y="18"
      inkscape:window-maximized="0"
@@ -489,4 +489,14 @@
        y="262.34946"
        style="font-size:12px"
        id="tspan3072">par le cadastre (par exemple Lambert 9 Zones) qui inverse l'axe Y.</tspan></text>
-</svg>
+<path
+     id="path99934"
+     style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+     d="m 154.00477,109.82468 1.88,0 0,-11.480007 -1.88,0 0,11.480007 z m 0.25,5.32 1.38,0 2.25,-3.86 -1.28,0 -1.66,2.51 -1.65,-2.51 -1.29,0 2.25,3.86 z"
+     inkscape:connector-curvature="0"><title
+       id="title3172">î</title></path><path
+     id="path137766"
+     style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+     d="m 144.54916,135.71042 13.15275,2.9e-4 -4.1e-4,-1.72818 -13.1594,0.007 0.007,1.72071 z m -0.007,-4.17139 13.1594,-0.007 -0.001,-1.74229 -13.15275,-3e-4 -0.005,1.74976 z"
+     inkscape:connector-curvature="0"><title
+       id="title3190">=</title></path></svg>
