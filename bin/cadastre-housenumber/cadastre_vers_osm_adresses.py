@@ -444,6 +444,18 @@ def match_parcelles_et_numeros(parcelles, numeros):
         sys.stdout.write((u"Toutes les adresses ont trouvé leur numéro!\n").encode("utf-8"))
     sys.stdout.flush()
 
+
+def osm_add_way_direction(osm, node, position, angle, taille, transform):
+    """ Ajoute un chemin (way) pour indiquer la direction associé a un noeud)"""
+    pos1 = (position[0] - taille * math.cos(angle), 
+            position[1] - taille * math.sin(angle))
+    #pos2 = (position[0] + taille * math.cos(angle), 
+    #        position[1] + taille * math.sin(angle))
+    p1 = osm_add_point(osm, pos1, transform)
+    #p2 = osm_add_point(osm, pos2, transform)
+    #return osm_add_nodes_way(osm, [p1, node, p2])
+    return osm_add_nodes_way(osm, [p1, node])
+
 def generate_osm_housenumbers(numeros, transform):
     osm = Osm({'upload':'false'})
     for numero, position, angle in numeros:
@@ -451,7 +463,10 @@ def generate_osm_housenumbers(numeros, transform):
         node.tags['fixme'] = u"à vérifier et associer à la bonne rue"
         node.tags['addr:housenumber'] = numero
         node.tags['source'] = SOURCE_TAG
-        node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
+        angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
+        node.tags['angle'] = str(angle_deg) + u"°"
+        if angle_deg != 0:
+            osm_add_way_direction(osm, node, position, angle - (math.pi /2), 1, transform)
     return osm
 
 def generate_osm_mots(lieuxdits, rues, petits_mots, transform):
@@ -464,43 +479,71 @@ def generate_osm_mots(lieuxdits, rues, petits_mots, transform):
         else:
             node.tags['place'] = ''
         node.tags['source'] = SOURCE_TAG
+        angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
+        if angle_deg != 0:
+            osm_add_way_direction(osm, node, position, angle, len(nom), transform)
     for nom, position, angle in rues:
         node = osm_add_point(osm, position, transform)
         node.tags['name'] = nom
-        node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
         node.tags['source'] = SOURCE_TAG
+        angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
+        node.tags['angle'] = str(angle_deg) + u"°"
+        if angle_deg != 0:
+            osm_add_way_direction(osm, node, position, angle, len(nom), transform)
     for nom, position, angle in petits_mots:
         node = osm_add_point(osm, position, transform)
         node.tags['name'] = nom
-        node.tags['angle'] = str(int(round(angle * 180 / math.pi))) + u"°"
         node.tags['small'] = "yes"
         node.tags['source'] = SOURCE_TAG
+        angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
+        node.tags['angle'] = str(angle_deg) + u"°"
+        if angle_deg != 0:
+            osm_add_way_direction(osm, node, position, angle, len(nom), transform)
     return osm
 
 def generate_osm_mots_lieuxdits(mots, transform):
     osm = Osm({'upload':'false'})
     for nom, position, angle in mots:
-            node = osm_add_point(osm, position, transform)
-            node.tags['name'] = nom
-            node.tags['source'] = SOURCE_TAG
+        node = osm_add_point(osm, position, transform)
+        node.tags['name'] = nom
+        node.tags['source'] = SOURCE_TAG
+        angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
+        if angle_deg != 0:
+            osm_add_way_direction(osm, node, position, angle, len(nom), transform)
     return osm
 
 def generate_osm_mots_rues(mots, transform):
     osm = Osm({'upload':'false'})
     for nom, position, angle in mots:
-        if (len(nom) > 1) or (int(round(angle * 180 / math.pi)) != 0):
+        angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
+        # exclue les lettres uniques (len=1) écrites à l'horizontal (angle=0)
+        if (len(nom) > 1) or (angle_deg != 0):
             node = osm_add_point(osm, position, transform)
             node.tags['name'] = nom
             node.tags['source'] = SOURCE_TAG
+            if angle_deg != 0:
+                osm_add_way_direction(osm, node, position, angle, len(nom), transform)
+            #pos1 = (position[0] - len(nom) * math.cos(angle), 
+            #        position[1] - len(nom) * math.sin(angle))
+            #pos2 = (position[0] + len(nom) * math.cos(angle), 
+            #        position[1] + len(nom) * math.sin(angle))
+            #p1 = osm_add_point(osm, pos1, transform)
+            #p2 = osm_add_point(osm, pos2, transform)
+            #way = osm_add_nodes_way(osm, [p1, p2])
+            #way.tags['name'] = nom
+            #way.tags['source'] = SOURCE_TAG
+            #way.tags['highway'] = "unclassified"
     return osm
 
 def generate_osm_petits_mots(mots, transform):
     osm = Osm({'upload':'false'})
     for nom, position, angle in mots:
-        #if (int(round(angle * 180 / math.pi)) == 0):
-            node = osm_add_point(osm, position, transform)
-            node.tags['name'] = nom
-            node.tags['source'] = SOURCE_TAG
+        node = osm_add_point(osm, position, transform)
+        node.tags['name'] = nom
+        node.tags['source'] = SOURCE_TAG
+        angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
+        if angle_deg != 0:
+            osm_add_way_direction(osm, node, position, angle, len(nom), transform)
     return osm
 
 def generate_osm_parcelles(parcelles, transform):

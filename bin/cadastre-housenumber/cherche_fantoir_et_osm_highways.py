@@ -266,7 +266,7 @@ def get_dict_accents_mots(osm_noms):
         # On essaye de parser l'ensemble des noms extraits du cadastre pour
         # en faire un dictionaire de remplacement a appliquer
         for node in osm_noms.nodes.itervalues():
-          if not 'place' in node.tags: # on évite les nœuds place=* qui sont écrit en majuscule sans accents
+          if ('name' in node.tags) and not ('place' in node.tags): # on évite les nœuds place=* qui sont écrit en majuscule sans accents
             for mot in node.tags['name'].replace("_"," ").replace("-"," ").split():
                 if len(mot) > 1:
                     mot_norm = to_ascii(mot).upper()
