@@ -158,7 +158,15 @@ def open_osm_overpass(requete, cache_filename, metropole=False):
         sys.stdout.flush()
         write_stream_to_file(urllib2.urlopen(url), cache_filename)
         open(ok_filename, "a").close()
-    return OsmParser().parse(cache_filename)
+    try:
+        return OsmParser().parse(cache_filename)
+    except Exception as ex:
+        os.unlink(ok_filename)
+        if metropole:
+            # Essai avec l'autre serveur overpass (metropole=False)
+            return open_osm_overpass(requete, cache_filename, False)
+        else:
+            raise ex
             
 def open_osm_multipolygon_s_ways_commune(code_departement, code_commune, type_multipolygon, filtre="", nodes=False):
     cache_filename = code_commune + "-multipolygon_" + type_multipolygon + "s.osm"
