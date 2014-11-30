@@ -23,14 +23,17 @@
 #include <QDebug>
 #include <QList>
 
-// Users of podofo >= 0.9.0, uncomment the next line, comment the following podofo includes...
-//#include <podofo/podofo-base.h>
-/*PODOFO is *definitely* not a serious library regarding compatibility*/
+// Users of podofo < 0.9.0, switch this flag to 0...
+#if 1
+#include <podofo/podofo-base.h>
+#else
+// PODOFO is *definitely* not a serious library regarding compatibility
 #include <podofo/PdfDictionary.h>
 #include <podofo/PdfObject.h>
 #include <podofo/PdfParser.h>
 #include <podofo/PdfStream.h>
 #include <podofo/PdfVecObjects.h>
+#endif
 
 #include "vectorpath.h"
 #include <cstdlib>
