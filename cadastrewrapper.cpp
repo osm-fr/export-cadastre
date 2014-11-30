@@ -137,11 +137,14 @@ void CadastreWrapper::requestPDF(const QString &dept, const QString &cityCode, c
     QString postData = QString("numeroVoie=&indiceRepetition=&nomVoie=&lieuDit=&ville=%1&codePostal=&codeDepartement=%2&nbResultatParPage=100&x=31&y=11").arg(QString::fromLatin1(QUrl::toPercentEncoding(cityName)), dept);
 
     qDebug() << postData;
-    QNetworkReply *req = m_nam->post(QNetworkRequest(url), postData.toLatin1());
-    req->setProperty("cityCode", cityCode);
-    req->setProperty("cityName", cityName);
-    m_citySearchMapper.setMapping(req, req);
-    connect(req, SIGNAL(finished()), &m_citySearchMapper, SLOT(map()));
+    QNetworkRequest req(url);
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QNetworkReply *reply = m_nam->post(req, postData.toLatin1());
+
+    reply->setProperty("cityCode", cityCode);
+    reply->setProperty("cityName", cityName);
+    m_citySearchMapper.setMapping(reply, reply);
+    connect(reply, SIGNAL(finished()), &m_citySearchMapper, SLOT(map()));
 }
 
 void CadastreWrapper::bboxAvailable(QObject *networkReply)
@@ -161,7 +164,9 @@ void CadastreWrapper::bboxAvailable(QObject *networkReply)
         QString bbox = QString("%1,%2,%3,%4").arg(bbExtractor.cap(1)).arg(bbExtractor.cap(2)).arg(bbExtractor.cap(3)).arg(bbExtractor.cap(4));
         // Now we have everything needed to request the PDF !
         QString postData = QString("WIDTH=%1&HEIGHT=%2&MAPBBOX=%3&SLD_BODY=&RFV_REF=%4").arg(90000).arg(90000).arg(bbox).arg(cityCode);
-        QNetworkReply *pdfRep = m_nam->post(QNetworkRequest(QUrl("http://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do")), postData.toLocal8Bit());
+        QNetworkRequest pdfRequest(QUrl("http://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do"));
+        pdfRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+        QNetworkReply *pdfRep = m_nam->post(pdfRequest, postData.toLocal8Bit());
         pdfRep->setProperty("cityCode", cityCode);
         pdfRep->setProperty("cityName", rep->property("cityName").toString());
         pdfRep->setProperty("boundingBox", projExtracton.cap(1).trimmed() + ":" + bbox);
