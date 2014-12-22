@@ -60,7 +60,10 @@ file5="${depdir}/${code_commune}-${nom_commune}-adresses-lieux-dits.zip"
 file6="${depdir}/${code_commune}-${nom_commune}-mots.zip"
 
 mkdir -p $communedir
-chmod 02775 $communedir
+chmod -R a+rw $communedir
+umask 0000
+rm $communedir/*building*.osm
+rm $communedir/*building*.osm.ok
 
 cd $command1dir && $command1 || exit -1
 mv "$communedir/${code_commune}-adresses.zip" "${file1}"
