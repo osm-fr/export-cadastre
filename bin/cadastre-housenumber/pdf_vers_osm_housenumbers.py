@@ -766,7 +766,7 @@ def write_osm_for_housenumbers(output, osm_bbox, housenumbers):
                      (id, position.x, position.y))
         output.write("    <tag k='addr:housenumber' v='%s' />\n" 
                      % (number,))
-        output.write(("    <tag k='source' v='" + SOURCE_TAG + "'' />\n").encode("utf-8"))
+        output.write(("    <tag k='source' v='" + SOURCE_TAG + "' />\n").encode("utf-8"))
         output.write(u"    <tag k='fixme' v='À vérifier et associer à la bonne rue' />\n".encode("utf-8"))
         output.write("  </node>\n")
     output.write("</osm>\n")

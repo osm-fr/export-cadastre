@@ -134,11 +134,11 @@ def get_xml_child_text(e, tag, default=None):
 
 class Parcelle(object):
     def __init__(self, fid, nature="", libellex=0.0, libelley=0.0,
-            xmin=0.0,ymin=0,xmax=0.0,ymax=0.0,surface_geom=0.0,
+            xmin=0.0,ymin=0,xmax=0.0,ymax=0.0,surfacegeom=0.0,
             limite=None):
         self.__dict__.update(locals()); del self.self
         self.bounds = (self.xmin, self.ymin, self.xmax, self.ymax)
-        self.area = surface_geom
+        self.area = surfacegeom
         self.box = shapely.geometry.box(*self.bounds)
 
     @staticmethod
@@ -150,9 +150,9 @@ class Parcelle(object):
           #tree = ET.parse(filename).getroot()
           tree = ET.fromstring(xml)
           for parcelle in tree:
-              param = {attr : float(get_xml_child_text(parcelle, attr.upper(), "0"))
+              param = {attr.replace("_","") : float(get_xml_child_text(parcelle, attr.upper(), "0"))
                   for attr in
-                  ["libellex", "libelley", "xmin","xmax","ymin","ymax","surface_geom"]}
+                  ["libellex", "libelley", "x_min","x_max","y_min","y_max","surface_geom"]}
                   # La commune de Vizille (38) n'as parfois pas de champ
                   # libellex et libelley.
               fid  = parcelle.attrib['fid'][9:]
@@ -955,6 +955,9 @@ def osm_add_multipolygon(osm, polygon, transform):
         geoms = [polygon]
     elif type(polygon) == MultiPolygon:
         geoms = polygon.geoms
+    else:
+        sys.stdout.write(("ERROR: unknown polygon type: " + str(type(polygon)) + "\n").encode("utf-8"))
+        sys.stdout.flush()
     #if len(geoms) == 1 and len(geoms[0].interiors) == 0:
     #    return osm_add_polygon(osm, polygon, transform)
     #else:
