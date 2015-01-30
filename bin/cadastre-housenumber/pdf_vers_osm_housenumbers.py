@@ -589,10 +589,10 @@ class TextPathRecognizer(object):
                       #        #print str([(p.points[i][0]-p.points[i-1][0], p.points[i][1]-p.points[i-1][1]) for i in xrange(1, len(p.points))])
                     else:
                         #sys.stdout.write((value_i + " commence par " + value_j + "\n").encode("utf-8"))
-                        deps[i].add(i)
+                        deps[j].add(i)
                 elif j_startswith_i:
                     #sys.stdout.write((value_j + " commence par " + value_i + "\n").encode("utf-8"))
-                    deps[j].add(i)
+                    deps[i].add(j)
         for i in toposort(deps):
             val, path = elems[i]
             alters = [elems[j] for j in alternatives[i]]

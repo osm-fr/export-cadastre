@@ -46,7 +46,6 @@ class NamePathRecognizer(object):
         self.petits_noms = []
         self.lieuxdits = []
     def handle_path(self, path, transform):
-        found = self.nom_lieuxdits_recognizer.recognize(path)
         for recognizer, liste in [
                 (self.nom_lieuxdits_recognizer, self.lieuxdits),
                 (self.petit_nom_recognizer, self.petits_noms),
