@@ -145,23 +145,24 @@ def get_dict_fantoir(code_departement, code_commune):
 
 def open_osm_overpass(requete, cache_filename, metropole=False):
     ok_filename = cache_filename + ".ok"
-    if not (os.path.exists(cache_filename) and os.path.exists(ok_filename)):
-        if os.path.exists(cache_filename): os.remove(cache_filename)
-        if os.path.exists(ok_filename): os.remove(ok_filename)
-        if metropole:
-            # oapi-fr.openstreetmap.fr n'a que la métropole, pas l'outre mer
-            overvass_server = "http://oapi-fr.openstreetmap.fr/oapi/interpreter?"
-        else:
-            overvass_server = "http://overpass-api.de/api/interpreter?"
-        url = overvass_server + urllib.urlencode({'data':requete})
-        sys.stdout.write((urllib.unquote(url) + "\n").encode("utf-8"))
-        sys.stdout.flush()
-        write_stream_to_file(urllib2.urlopen(url), cache_filename)
-        open(ok_filename, "a").close()
     try:
+        if not (os.path.exists(cache_filename) and os.path.exists(ok_filename)):
+            if os.path.exists(cache_filename): os.remove(cache_filename)
+            if os.path.exists(ok_filename): os.remove(ok_filename)
+            if metropole:
+                # oapi-fr.openstreetmap.fr n'a que la métropole, pas l'outre mer
+                overvass_server = "http://oapi-fr.openstreetmap.fr/oapi/interpreter?"
+            else:
+                overvass_server = "http://overpass-api.de/api/interpreter?"
+            url = overvass_server + urllib.urlencode({'data':requete})
+            sys.stdout.write((urllib.unquote(url) + "\n").encode("utf-8"))
+            sys.stdout.flush()
+            write_stream_to_file(urllib2.urlopen(url), cache_filename)
+            open(ok_filename, "a").close()
         return OsmParser().parse(cache_filename)
     except Exception as ex:
-        os.unlink(ok_filename)
+        if os.path.isfile(ok_filename):
+            os.unlink(ok_filename)
         if metropole:
             # Essai avec l'autre serveur overpass (metropole=False)
             return open_osm_overpass(requete, cache_filename, False)
