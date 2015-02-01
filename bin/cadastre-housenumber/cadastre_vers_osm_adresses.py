@@ -290,7 +290,8 @@ def match_parcelles_et_limites(parcelles, limites, limites_index):
     for parcelle in parcelles.itervalues():
         best_diff = float("inf")
         best_limite = None
-        for i in limites_index.intersection(parcelle.bounds):
+        center = parcelle.box.centroid.coords[0]
+        for i in limites_index.intersection(center):
             limite = limites[i]
             if abs(parcelle.area - limite.area) < PARCELLE_LIMITE_MATCH_AREA_TOLERANCE:
                 diff = bounds_diff(parcelle.bounds, limite.bounds)
@@ -393,6 +394,14 @@ def match_parcelles_et_numeros(parcelles, numeros):
                         if numeros[i]:
                             num, position, angle = numeros[i]
                             if position.within(limite_etendue):
+                              if num == "6" or num == "9":
+                                  # Avec la nouvelle Police de caracètres utilisée par le cadastre
+                                  # on n'est pas capable de faire la différence ente un 6 et un 9
+                                  # donc si le numéro était un 6 on considère que c'était peut être aussi un 9...
+                                  num_possibilities = ["6","9"]
+                              else:
+                                  num_possibilities = [num,]
+                              for num in num_possibilities:
                                 if parcelle.positions_numeros.has_key(num) and \
                                         (len(parcelle.positions_numeros[num]) < len(parcelle.addrs_numeros[num])):
                                         # on a vérifie qu'il faut encore trouver ce numéro pour une des adresses
@@ -417,6 +426,7 @@ def match_parcelles_et_numeros(parcelles, numeros):
                                                 del(p.addrs_numeros[num])
                                                 del(p.positions_numeros[num])
                                             p.num_to_find -= 1
+                                    break # for num in num_possibilities:
 
         if nb_trouve_avec_limite>0:
             sys.stdout.write((str(nb_trouve_avec_limite) + u" numéros trouvés à moins de " + str(distance) + "m des limite des parcelles\n").encode("utf-8"))
@@ -601,6 +611,8 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
             num, position, angle = n
             node = osm_add_point(osm, position, transform)
             node.tags['fixme'] = u"à vérifier et associer à la bonne rue"
+            if num == "6" or num == "9":
+              node.tags['fixme'] = u"ATTENTION: 6 peut être confondu avec 9"
             node.tags['addr:housenumber'] = num
             node.tags['source'] = SOURCE_TAG
             node.angle = angle

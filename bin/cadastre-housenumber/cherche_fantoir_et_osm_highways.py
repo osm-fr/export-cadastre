@@ -165,6 +165,8 @@ def open_osm_overpass(requete, cache_filename, metropole=False):
             os.unlink(ok_filename)
         if metropole:
             # Essai avec l'autre serveur overpass (metropole=False)
+            print "ERREUR:", ex
+            print "Tentative depuis le serveur allemand:"
             return open_osm_overpass(requete, cache_filename, False)
         else:
             raise ex
