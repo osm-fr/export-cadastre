@@ -612,7 +612,8 @@ def generate_osm_adresses(parcelles, numeros_restant, transform):
             node = osm_add_point(osm, position, transform)
             node.tags['fixme'] = u"à vérifier et associer à la bonne rue"
             if num == "6" or num == "9":
-              node.tags['fixme'] = u"ATTENTION: 6 peut être confondu avec 9"
+                num = "6 ou 9"
+                node.tags['fixme'] = u"ATTENTION: 6 peut être confondu avec 9, vérifier sur le cadastre."
             node.tags['addr:housenumber'] = num
             node.tags['source'] = SOURCE_TAG
             node.angle = angle
