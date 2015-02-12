@@ -74,8 +74,8 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
 void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule)
 {
     Q_UNUSED(fillRule);
-    if (context.pen.widthF() > 10)
-        ;//qDebug() << "huge pen ?" << context.pen.widthF();
+    if (context.pen.widthF() > 30)
+        qDebug() << "huge pen ?" << context.pen.widthF();
     if (context.brush.color() == QColor(255, 204, 51)) {
         OSMPath result;
         result.path = path;
