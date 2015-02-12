@@ -120,7 +120,7 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
         result.path = path;
         result.tags["boundary"] = "administrative";
         m_cityLimit << result;
-    } else if (generateLands && context.pen.widthF() == 0.77 && context.pen.style() == Qt::SolidLine) {
+    } else if (generateLands && context.pen.widthF() == 0.76063 && context.pen.style() == Qt::SolidLine) {
         // Ensure poly closed
         QList<QPolygonF> polygons = path.toSubpathPolygons();
         bool poly = false;
