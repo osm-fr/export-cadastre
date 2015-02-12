@@ -1,0 +1,8 @@
+AuthUserFile /data/work/cadastre.openstreetmap.fr/data/eau/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Acces restreint a l'eau (ouais je sais, c'est vraiment sans pitie)"
+AuthType Basic
+
+<LIMIT GET POST>
+Require valid-user
+</LIMIT>

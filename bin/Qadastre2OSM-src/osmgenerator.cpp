@@ -114,7 +114,7 @@ void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &contex
 
 void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &context)
 {
-    if ((context.pen.widthF() == 18 || context.pen.widthF() == 8.5) && context.pen.style() == Qt::SolidLine) {
+    if ((context.pen.widthF() == 17.86 || context.pen.widthF() == 8.5) && context.pen.style() == Qt::SolidLine) {
         // limit element...
         OSMPath result;
         result.path = path;
@@ -434,7 +434,7 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
 
     QList<QPointF> nodes;
 
-    QString source = QString::fromUtf8("cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : %1").arg(QDate::currentDate().year());
+    QString source = QString::fromUtf8("cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : %1").arg(QDate::currentDate().year());
 
     QFile target(fileName);
     if (!target.open(QIODevice::WriteOnly)) {

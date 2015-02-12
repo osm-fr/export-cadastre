@@ -1,0 +1,123 @@
+body {
+	background: url('../images/cadastre_top.jpeg') no-repeat;
+	margin-top: 50px;
+}
+
+#head h1 {
+	text-shadow: 0 0 0.2em #aaa, 0 0 0.2em #aaa;
+}
+
+#head ul {
+	position: absolute;
+	top:0px;right:50px;
+	padding: 0;
+	margin: 0;
+}
+
+#head ul li {
+	display: inline;
+	padding: 7px;
+	margin: 0px;
+	margin-right: 5px;
+	border: solid 1px black;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	background: #d22;
+	box-shadow: 2px 2px 2px #ccc;
+}
+
+#head ul li a {
+	color: white;
+}
+
+#information {
+	margin: 15px 90px;
+	border: solid 1px black;
+/*	background-color: navajowhite;
+	opacity:0.6;*/
+	background-color: rgba(234,234,200,0.6);
+	border-radius: 10px;
+	height: 1.2em;
+	padding: 5px 10px;
+	box-shadow: 5px 5px 5px #ccc;
+}
+#dep {
+    width: 200px;
+}
+#ville {
+    width: 300px;
+}
+#recherche_dep {
+    color: grey;
+}
+#recherche_ville {
+    color: grey;
+}
+.selectboxfilter_found {
+    background-color: #bf6;
+}
+.selectboxfilter_notfound {
+    background-color: #d22;
+}
+#bbox_overlay {
+    filter: alpha(opacity=75);
+    -moz-opacity: .75;
+    opacity: .75;
+    background-color: #c0c0c0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%; height: 100%;
+    display: none;
+    z-index:1;
+}
+#bbox_frame {
+    text-align: center;
+    vertical-align: middle;
+    position:absolute;
+    left: 0;
+    top: 0
+    bottom: 0;
+    right: 0;
+    margin:auto;
+    width: 50%;
+    height: 60%;
+    border: solid 3px grey;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px #ccc;
+    display: none;
+    z-index:2;
+    background: white;
+}
+#bbox_title {
+    background-color: rgba(234,234,200,0.6);
+    height: 8%;
+    -webkit-transform-style: preserve-3d;
+}
+#bbox_title div {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+#bbox_buttons {
+    height: 10%;
+    -webkit-transform-style: preserve-3d;
+}
+.bbox_button {
+    border: 1px solid;
+    border-radius: 10px;
+    padding:5px;
+    background-color: #eeeeee;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+#bbox_map {
+    height: 80%;
+}
+

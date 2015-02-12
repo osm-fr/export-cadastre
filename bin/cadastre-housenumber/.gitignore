@@ -1,0 +1,13 @@
+/*.pdf
+/*.osm
+/*.zip
+/*.bbox
+/*.xml
+/*.ok
+/*-*.txt
+*.swp
+*.pyc
+*.log
+*~
+/data
+/FANTOIR.zip
