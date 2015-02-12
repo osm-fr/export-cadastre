@@ -684,7 +684,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
 
             int houseId;
             qDebug() << "Created a multi-polygon to check";
-            QSqlQuery qry;
+            QSqlQuery qry(db);
             qry.prepare("SELECT id FROM houses WHERE \"type\"=:t AND city=:c AND geom=setsrid(st_geomfromewkt(:g), 4326) AND substring(geom::bytea for 2048) = substring(setsrid(st_geomfromewkt(:g2), 4326)::bytea for 2048)");
             qry.bindValue(":t", realType);
             qry.bindValue(":c", cityId);
@@ -703,7 +703,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
             } else {
                 // Insert the polygon now
                 qDebug() << "Inserting ?";
-                QSqlQuery insertQry;
+                QSqlQuery insertQry(db);
                 insertQry.prepare("INSERT INTO houses(city, \"type\", geom) VALUES (:c, :t, setsrid(st_geomfromewkt(:g)::geometry, 4326)) RETURNING id");
                 insertQry.bindValue(":t", realType);
                 insertQry.bindValue(":c", cityId);
@@ -733,7 +733,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
 
     qDebug() << "Done inserting all polygons !";
     // Insert all there polygonIds
-    QSqlQuery insertImportHouse;
+    QSqlQuery insertImportHouse(db);
     insertImportHouse.prepare("INSERT INTO import_houses (import, house) VALUES (:i, :h)");
     foreach (int polygonId, polygonIds)
     {
