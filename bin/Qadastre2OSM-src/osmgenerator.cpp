@@ -57,7 +57,7 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
     char **argsSource = (char**) malloc(sizeof(char*));
     argsSource[0] = QString("init=IGNF:%1").arg(m_projection).toLocal8Bit().data();
     char **argsTarget = (char**) malloc(sizeof(char*));
-    argsTarget[0] = "init=epsg:4326";
+    argsTarget[0] = (char *) "init=epsg:4326";
 
     if (!(m_projection_source = pj_init(1, argsSource)))
         qFatal(QString("Unable to initialize source projection %1").arg(m_projection).toLocal8Bit().data());
