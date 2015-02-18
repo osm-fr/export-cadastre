@@ -226,3 +226,12 @@ function bbox_map_setViewOnCenterResult(response) {
 		bbox_map.setView([46.0, 2], 6);
   }
 }
+
+function confirmAlreadyGenerated() {
+    if (confirm("Les fichiers ont déjà été générés, voulez-vous y accéder directement ?")) {
+        window.location="data/" + getSelectedDepCode() + "/";
+    } else {
+        document.getElementById("force").value = "true";
+        document.forms["main_form"].submit();
+    }
+}

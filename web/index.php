@@ -33,7 +33,43 @@ $ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '
 $type = get_parameter("type", "/(^bati$)|(^adresses$)/", "bati");
 $bis = get_parameter("bis","/(^true$)|(^false$)/", "true", "false");
 $bbox = get_parameter("bbox","/^[-0-9.,]*$/");
+$force = get_parameter("force","/^(true)|(false)*$/","false");
+$confirmAlreadyGenerated = false;
 $command = "";
+
+function already_generated() {
+  global $type;
+  global $dep;
+  global $ville;
+  global $data_path;
+  $prefix = $data_path . $dep . "/" . $ville;
+  if ($type == "bati") {
+	$fichiers = array(
+		"-city-limit.osm",
+		"-houses.osm");
+  } else if ($type == "adresses") {
+	$fichiers = array(
+		"-adresses-addrstreet_mix_en_facade_ou_isole.zip",
+		"-adresses-addrstreet_point_sur_batiment.zip",
+		"-adresses-addrstreet_sans_batiment.zip",
+		"-adresses-addrstreet_tag_sur_batiment.zip",
+		"-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
+		"-adresses-associatedStreet_point_sur_batiment.zip",
+		"-adresses-associatedStreet_sans_batiment.zip",
+		"-adresses-associatedStreet_tag_sur_batiment.zip",
+		"-adresses-lieux-dits.zip",
+		"-mots.zip");
+  } else {
+    return false;
+  }
+  foreach($fichiers as $fichier) {
+    //echo $prefix . $fichier . "<br/>";
+    if ( ! file_exists($prefix . $fichier)) {
+	  return false;
+    }
+  }
+  return true;
+}
 
 ?>
 <div id="conditions-utilisation">
@@ -59,7 +95,11 @@ if( $dep && $ville && $type )
 	$lock_file = $locks_path . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.lock';
 	if( file_exists( $lock_file ) && ((time() - filemtime ( $lock_file )) < 2*60*60)) {
 		echo 'Import en cours';
-	}
+	} 
+	else if (($force != "true") && already_generated())
+	{
+	    $confirmAlreadyGenerated = true;
+	} 
 	else
 	{
 		register_shutdown_function ( unlink, $lock_file );
@@ -115,7 +155,7 @@ if( $dep && $ville && $type )
 </div>
 
 
-<form name='form-dep' action='' method='post'>
+<form id='main_form' name='form-dep' action='' method='post'>
 	<fieldset id='fdep'>
 		<legend>Choix du d&eacute;partement</legend>
 		<label>D&eacute;partement&nbsp;:</label>
@@ -189,6 +229,7 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 		Pour l'intégration des données <i><u>adresses</u></i>, <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses'>il faut lire cette page</a>.
 		</p>
 	</fieldset>
+	<input id='force' type='hidden' name='force' value='false'/>
 	<div>
 		<input type='submit' value='Générer' />
 	</div>
@@ -310,5 +351,12 @@ if ($command) {
     	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="/data/<?php echo $dep;?>">aux fichiers</a>';
     </script>
     <?php
+} else if ($confirmAlreadyGenerated) {
+    ?>
+    <script type='text/javascript'>
+    	confirmAlreadyGenerated();
+    </script>
+    <?php
 }
 require_once( 'includes/footer.php' );
+?>
