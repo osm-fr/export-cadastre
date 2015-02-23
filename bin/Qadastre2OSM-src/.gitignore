@@ -1,3 +1,7 @@
 *.o
 moc_*.cpp
 Qadastre2OSM
+*.pdf
+*.osm
+*.bbox
+Makefile

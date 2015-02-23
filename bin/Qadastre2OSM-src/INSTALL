@@ -5,5 +5,6 @@ Dependencies:
 
 Building:
 
+  qmake -o Makefile Qadastre2OSM.pro
   make
   cp Qadastre2OSM ../

@@ -57,7 +57,7 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
     char **argsSource = (char**) malloc(sizeof(char*));
     argsSource[0] = QString("init=IGNF:%1").arg(m_projection).toLocal8Bit().data();
     char **argsTarget = (char**) malloc(sizeof(char*));
-    argsTarget[0] = "init=epsg:4326";
+    argsTarget[0] = (char *) "init=epsg:4326";
 
     if (!(m_projection_source = pj_init(1, argsSource)))
         qFatal(QString("Unable to initialize source projection %1").arg(m_projection).toLocal8Bit().data());
@@ -74,8 +74,8 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
 void OSMGenerator::fillPath(const VectorPath &path, const GraphicContext &context, Qt::FillRule fillRule)
 {
     Q_UNUSED(fillRule);
-    if (context.pen.widthF() > 10)
-        ;//qDebug() << "huge pen ?" << context.pen.widthF();
+    if (context.pen.widthF() > 30)
+        qDebug() << "huge pen ?" << context.pen.widthF();
     if (context.brush.color() == QColor(255, 204, 51)) {
         OSMPath result;
         result.path = path;
@@ -120,7 +120,7 @@ void OSMGenerator::strikePath(const VectorPath &path, const GraphicContext &cont
         result.path = path;
         result.tags["boundary"] = "administrative";
         m_cityLimit << result;
-    } else if (generateLands && context.pen.widthF() == 0.77 && context.pen.style() == Qt::SolidLine) {
+    } else if (generateLands && context.pen.widthF() == 0.76063 && context.pen.style() == Qt::SolidLine) {
         // Ensure poly closed
         QList<QPolygonF> polygons = path.toSubpathPolygons();
         bool poly = false;
@@ -684,7 +684,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
 
             int houseId;
             qDebug() << "Created a multi-polygon to check";
-            QSqlQuery qry;
+            QSqlQuery qry(db);
             qry.prepare("SELECT id FROM houses WHERE \"type\"=:t AND city=:c AND geom=setsrid(st_geomfromewkt(:g), 4326) AND substring(geom::bytea for 2048) = substring(setsrid(st_geomfromewkt(:g2), 4326)::bytea for 2048)");
             qry.bindValue(":t", realType);
             qry.bindValue(":c", cityId);
@@ -703,7 +703,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
             } else {
                 // Insert the polygon now
                 qDebug() << "Inserting ?";
-                QSqlQuery insertQry;
+                QSqlQuery insertQry(db);
                 insertQry.prepare("INSERT INTO houses(city, \"type\", geom) VALUES (:c, :t, setsrid(st_geomfromewkt(:g)::geometry, 4326)) RETURNING id");
                 insertQry.bindValue(":t", realType);
                 insertQry.bindValue(":c", cityId);
@@ -733,7 +733,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
 
     qDebug() << "Done inserting all polygons !";
     // Insert all there polygonIds
-    QSqlQuery insertImportHouse;
+    QSqlQuery insertImportHouse(db);
     insertImportHouse.prepare("INSERT INTO import_houses (import, house) VALUES (:i, :h)");
     foreach (int polygonId, polygonIds)
     {

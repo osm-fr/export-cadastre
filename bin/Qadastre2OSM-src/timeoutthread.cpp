@@ -31,9 +31,6 @@ void TimeoutThread::run()
 {
     this->sleep(m_secs);
     std::cerr << m_message.toLocal8Bit().constData() << std::endl;
-    // Ouch, I'm a bad guy !
-    char *machin = 0;
-    machin[42] = 12;
     // Nothing too subtle here : it must stop right now, enough time wasted.
     ::exit(-2);
 }
