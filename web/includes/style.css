@@ -121,3 +121,19 @@ body {
     height: 80%;
 }
 
+#generer {
+	padding: 10px;
+}
+
+#generer input {
+	font-weight: bold;
+}
+
+#stats_fantoir {
+	background-color: rgba(234,234,200,0.6);
+	border: solid 1px grey;
+	border-radius: 10px;
+	margin: 5px;
+	padding: 2px 2px;
+	box-shadow: 2px 2px 2px #ccc;
+}

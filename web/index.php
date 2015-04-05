@@ -159,7 +159,7 @@ if( $dep && $ville && $type )
 	<fieldset id='fdep'>
 		<legend>Choix du d&eacute;partement</legend>
 		<label>D&eacute;partement&nbsp;:</label>
-		<select name='dep' id='dep' onchange='javascript:getDepartement();'>
+		<select name='dep' id='dep' onchange='javascript:onDepartementChange();'>
 			<option></option>
 <?php
 if( $handle = opendir( $data_path ) )
@@ -230,8 +230,13 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 		</p>
 	</fieldset>
 	<input id='force' type='hidden' name='force' value='false'/>
-	<div>
+	<div id="generer">
 		<input type='submit' value='Générer' />
+		&nbsp;&nbsp;
+		<span id="stats_fantoir">Stats FANTOIR
+		  <a id="fantoir_dep_link" href="fantoir/stats_dept.html">D&eacute;partement</a>
+		  <a id="fantoir_ville_link" href="fantoir"> Commune</a>
+		</span>
 	</div>
 </form>
 

@@ -17,7 +17,7 @@
 <div id="head">
 	<h1>Interface de g&eacute;n&eacute;ration de fichiers .osm &agrave; partir du cadastre</h1>
 	<ul>
-		<li><a href="data">Acc&egrave;s aux donn&eacute;es</a></li>
+		<li><a id="data_link" href="data">Acc&egrave;s aux donn&eacute;es</a></li>
 	</ul>
 </div>
 <div id="main">

@@ -33,21 +33,32 @@ function getSelectedInseeCode() {
 	}
 }
 
-var getDepartement_previous_depCode = '';
-function getDepartement()
-{
+function updateFantoirVilleLink() {
+	insee = getSelectedInseeCode();
+	document.getElementById("fantoir_ville_link").href = "fantoir/#insee=" + insee;
+}
+
+var onDepartementChange_previous_depCode = '';
+function onDepartementChange() {
 	var depCode = getSelectedDepCode();
-	if (depCode != getDepartement_previous_depCode) {
-		getDepartement_previous_depCode = depCode;
-		//document.getElementById("throbber_ville").style.display = "inline";
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = handler;
-		xhr.open("GET", "getDepartement.php?dep=" + depCode);
-		xhr.send();
+	if (depCode != onDepartementChange_previous_depCode) {
+		onDepartementChange_previous_depCode = depCode;
+		document.getElementById("data_link").href = "data/" + depCode + "/";
+		document.getElementById("fantoir_dep_link").href = "fantoir/stats_dept.html#dept=" + (depCode.startsWith("0") ? depCode.substr(1) : depCode);
+		downloadVilleForDepartement(depCode);
 	}
 }
 
-function handler()
+function downloadVilleForDepartement(depCode)
+{
+	//document.getElementById("throbber_ville").style.display = "inline";
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = downloadVilleForDepartement_handler;
+	xhr.open("GET", "getDepartement.php?dep=" + depCode);
+	xhr.send();
+}
+
+function downloadVilleForDepartement_handler()
 {
 	if( this.readyState == 4 && this.status == 200 )
 	{
@@ -59,9 +70,17 @@ function handler()
 		ville_filter = new SelectBoxFilter(document.getElementById( "ville" ));
 		document.getElementById( "recherche_ville" ).value = 'Recherche';
 		filter_ville();
+		updateFantoirVilleLink();
 		//document.getElementById("throbber_ville").style.display = "none";
 	}
 }
+
+function onVilleChange() {
+	document.getElementById('bbox').checked=false;
+	updateFantoirVilleLink();
+}
+
+
 
 function normalize(text) {
   text = text.toLowerCase();

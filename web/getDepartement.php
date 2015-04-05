@@ -24,7 +24,7 @@ if (!isset($dep)) {
 // (http://support.microsoft.com/kb/276228/fr)
 // nous retournons l'élément <select> entier:
 ?>
-		<select id='ville' name='ville' onchange="document.getElementById('bbox').checked=false;">
+		<select id='ville' name='ville' onchange="javascript:onVilleChange();">
 <?php
 
 if( $villes_file = fopen( $data_path . $dep . '/' . $dep . '-liste.txt','r' ) )
