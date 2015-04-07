@@ -180,6 +180,9 @@ else
 ?>
 		</select>
 		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
+		<span class="stats_fantoir">
+		  <a id="fantoir_dep_link" href="fantoir/stats_dept.html">Stats FANTOIR</a>
+		</span>
 	</fieldset>
 	<fieldset id='fville'>
 		<legend>Choix de la commune</legend>
@@ -190,6 +193,9 @@ else
 ?>
 		</span>
 		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
+		<span class="stats_fantoir">
+		  <a id="fantoir_ville_link" href="fantoir">Stats FANTOIR</a>
+		</span>
 
 		<br />
 		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='http://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
@@ -232,11 +238,6 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 	<input id='force' type='hidden' name='force' value='false'/>
 	<div id="generer">
 		<input type='submit' value='Générer' />
-		&nbsp;&nbsp;
-		<span id="stats_fantoir">Stats FANTOIR
-		  <a id="fantoir_dep_link" href="fantoir/stats_dept.html">D&eacute;partement</a>
-		  <a id="fantoir_ville_link" href="fantoir"> Commune</a>
-		</span>
 	</div>
 </form>
 

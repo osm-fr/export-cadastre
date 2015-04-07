@@ -129,11 +129,11 @@ body {
 	font-weight: bold;
 }
 
-#stats_fantoir {
+span.stats_fantoir {
 	background-color: rgba(234,234,200,0.6);
 	border: solid 1px grey;
-	border-radius: 10px;
-	margin: 5px;
+	border-radius: 5px;
 	padding: 2px 2px;
 	box-shadow: 2px 2px 2px #ccc;
+  float:right
 }
