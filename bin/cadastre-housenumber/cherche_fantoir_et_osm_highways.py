@@ -40,7 +40,7 @@ from mytools import to_ascii
 
 ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "associatedStreet")
 
-FANTOIR_URL = "http://collectivites-locales.gouv.fr/files/files/gestion_locale_dgfip/national/FANTOIR.zip"
+FANTOIR_URL = "https://www.data.gouv.fr/s/resources/fichier-fantoir-des-voies-et-lieux-dits/20150512-104128/FANTOIR0415.zip"
 FANTOIR_ZIP = os.path.join(os.path.dirname(os.path.realpath(__file__)), "FANTOIR.zip")
 
 if not os.path.exists(os.path.join(ASSOCIATEDSTREET_DIR,"addr_fantoir_building.py")):
