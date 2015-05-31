@@ -69,7 +69,6 @@ function downloadVilleForDepartement_handler()
 		document.getElementById( "ville_container" ).innerHTML = this.responseText;
 		ville_filter = new SelectBoxFilter(document.getElementById( "ville" ));
 		document.getElementById( "recherche_ville" ).value = 'Recherche';
-		filter_ville();
 		updateFantoirVilleLink();
 		//document.getElementById("throbber_ville").style.display = "none";
 	}
@@ -142,7 +141,7 @@ function filter_dep() {
     dep_filter.filter(new RegExp("\\b0?" + normalize(text)));
     if (dep.options.length == 2) {
       dep.selectedIndex = 1;
-      getDepartement();
+      onDepartementChange();
     }
   }
 }
