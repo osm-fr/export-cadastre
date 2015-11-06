@@ -76,7 +76,9 @@ CORRECTIONS_PROJECTION_CADASTRE = {
     # Corrections de projections extraites de 
     # https://github.com/osm-fr/export-cadastre/blob/master/bin/Qadastre2OSM-src/osmgenerator.cpp
     "RGFG95UTM22" : "UTM22RGFG95",
-    "RGR92UTM" : "RGR92UTM40S"
+    "RGR92UTM" : "RGR92UTM40S",
+    # Addition pour Mayotte:
+    "RGM04" : "RGM04UTM38S",
 }
 
 CORRECTIONS_PROJECTION_CADASTRE_COMMUNE = {

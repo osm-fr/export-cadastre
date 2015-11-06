@@ -49,6 +49,10 @@ OSMGenerator::OSMGenerator(const QString &bbox, const bool lands, QObject *paren
     {
         m_projection = "UTM22RGFG95";
     }
+    else if (m_projection == "RGM04")
+    {
+        m_projection = "RGM04UTM38S";
+    }
     else if (m_projection == "RGR92UTM")
     {
         m_projection = "RGR92UTM40S";
