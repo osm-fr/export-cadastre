@@ -144,7 +144,6 @@ void Qadastre::run()
         connect(qApp, SIGNAL(aboutToQuit()), &loop, SLOT(quit()));
         loop.exec();
     } else if ((qApp->arguments().length() == 4)  && ((qApp->arguments()[1] == "--convert") || (qApp->arguments()[1] == "--convert-with-lands"))) {
-        m_cadastre = new CadastreWrapper;
         tthread = new TimeoutThread(120*60, "Timeout on convert");
         tthread->start();
         connect(qApp, SIGNAL(aboutToQuit()), tthread, SLOT(terminate()));
