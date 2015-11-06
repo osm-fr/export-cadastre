@@ -336,13 +336,11 @@ def get_previous_it_and_following_from_closed_list(from_list, searching):
 
 def way_angle_at_node(osm_data, way, node):
     "return the angle the way is doing at this node"
+    #if way.nodes[0] != way.nodes[-1]:
+    #    raise Exception("WAY " + way_id + " NON FERME")
     node_id = node.id()
-    if way.nodes[0] != way.nodes[-1]:
-        if VERBOSE: print "WAY ", way_id, + "NON FERME"
-        sys.exit(-1)
     p0,p1,p2 = [osm_data.nodes[i].position for i in get_previous_it_and_following_from_closed_list(way.nodes, node_id)]
     return p0.minus(p1).angle(p2.minus(p1))
-    raise KeyError("node " + str(node_id) + " not part of way " + str(way.id()))
 
 
 def min_node_angle(osm_data, node):

@@ -8,7 +8,8 @@ cd $data_dir
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
 cadastre_vers_pdf="$bin_dir/cadastre-housenumber/cadastre_vers_pdf.py"
-simplify_qadastre_houses="$bin_dir/cadastre-housenumber/simplify_qadastre_houses.py"
+simplify_qadastre_houses="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/simplify_qadastre_houses.py"
+
 
 [ -d $1 ] || mkdir $1
 chmod 777 $1
