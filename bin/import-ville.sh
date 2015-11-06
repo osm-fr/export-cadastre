@@ -8,6 +8,7 @@ cd $data_dir
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
 cadastre_vers_pdf="$bin_dir/cadastre-housenumber/cadastre_vers_pdf.py"
+simplify_qadastre_houses="$bin_dir/cadastre-housenumber/simplify_qadastre_houses.py"
 
 [ -d $1 ] || mkdir $1
 chmod 777 $1
@@ -31,6 +32,8 @@ else
 fi
 
 $Qadastre2OSM --convert $2 "$3"
+
+$simplify_qadastre_houses "$2-$3-houses.osm"
 
 rm -f "$2-$3.tar.bz2"
 tar cvf "$2-$3.tar" --exclude="*-water.osm" $2-"$3"*.osm

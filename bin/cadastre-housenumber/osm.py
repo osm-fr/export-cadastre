@@ -20,6 +20,7 @@ OSM file Parser/Writer
 """
 
 import sys
+import math
 import os.path
 import xml.sax.saxutils
 import xml.parsers.expat
@@ -96,6 +97,24 @@ class Node(Item):
         Item.__init__(self, attrs, tags)
     def type(self):
         return "node"
+    def lon(self):
+      return float(self.attrs["lon"])
+    def lat(self):
+      return float(self.attrs["lat"])
+    def distance(self, node):
+        # http://fr.wikipedia.org/wiki/Distance_du_grand_cercle
+        def square(a): return a*a
+        def degree_to_radian(a): return a * math.pi / 180
+        a_lon = degree_to_radian(float(self.attrs["lon"]))
+        a_lat = degree_to_radian(float(self.attrs["lat"]))
+        b_lon = degree_to_radian(float(node.attrs["lon"]))
+        b_lat = degree_to_radian(float(node.attrs["lat"]))
+        R = 6371000.0 # Earth ray in metter
+        result = 2 * R * math.asin(math.sqrt(
+            square(math.sin((b_lat-a_lat)/2))
+            + math.cos(a_lat)*math.cos(b_lat)*square(math.sin((b_lon-a_lon)/2))
+            ));
+        return result
 
 class Way(Item):
     def __init__(self, attrs,tags=None):
