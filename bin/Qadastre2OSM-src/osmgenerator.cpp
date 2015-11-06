@@ -539,7 +539,6 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
             qDebug() << "We have a multipolygon" << path.points_position.count();
             
             // Let's say the outer polygon is always the first one
-            int nOuter = path.path.getNOuter();
             QList<int> wayNumbers;
             foreach (const QList<int> &nodesPositions, path.points_position) {
                 writer.writeStartElement("way");
@@ -553,17 +552,6 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
                 writer.writeEmptyElement("tag");
                 writer.writeAttribute("k", "source");
                 writer.writeAttribute("v", source);
-
-                if (nOuter > 0) {
-                    QMap<QString, QString>::const_iterator tags = path.tags.constBegin();
-                    while (tags != path.tags.constEnd()) {
-                        writer.writeEmptyElement("tag");
-                        writer.writeAttribute("k", tags.key());
-                        writer.writeAttribute("v", tags.value());
-                        ++tags;
-                    }
-                    nOuter--;
-                }
                 writer.writeEndElement();
                 i++;
             }
@@ -575,7 +563,15 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
             writer.writeAttribute("k", "type");
             writer.writeAttribute("v", "multipolygon");
 
-            nOuter = path.path.getNOuter();
+            QMap<QString, QString>::const_iterator tags = path.tags.constBegin();
+            while (tags != path.tags.constEnd()) {
+                writer.writeEmptyElement("tag");
+                writer.writeAttribute("k", tags.key());
+                writer.writeAttribute("v", tags.value());
+                ++tags;
+            }
+
+            int nOuter = path.path.getNOuter();
             foreach(int wayId, wayNumbers) {
                 writer.writeEmptyElement("member");
                 writer.writeAttribute("type", "way");

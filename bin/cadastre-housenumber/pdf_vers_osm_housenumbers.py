@@ -62,6 +62,32 @@ class Point(object):
         return "Point(" + repr(self.x) + ", " + repr(self.y) + ")"
     def is_empty(self):
         return False
+    def minus(self, (x,y)):
+      return Point(self.x - x, self.y - y)
+    def distance(self, p2):
+      return self.minus(p2).norm()
+    def norm(self):
+      return math.sqrt((self.x * self.x) + (self.y * self.y))
+    def square_norm(self):
+      return (self.x * self.x) + (self.y * self.y)
+    def dot_product(self, (x,y)):
+      return self.x*x + self.y*y
+    def angle(p1, p2):
+      if type(p2) != Point:
+          p2 = Point(p2[0], p2[1])
+      d = p1.norm() * p2.norm()
+      if d == 0:
+          return 0
+      else:
+          v = p1.dot_product(p2) / d
+          if v>1: v = 1
+          if v <-1:v=-1
+          return math.acos(v)
+    def area(p1, p2):
+      if type(p2) != Point:
+          p2 = Point(p2[0], p2[1])
+      return 0.5 * abs(p1.x * p2.y - p2.x * p1.y)
+
 
 class BoundingBox(object):
     __slots__  = ("x1","y1","x2","y2")
@@ -151,21 +177,27 @@ class OSMToCadastreTransform(Transform):
         x,y,z = self.transformation.TransformPoint(point[0], point[1], 0.0)
         return Point(x,y)
 
-class PDFToCadastreTransform(Transform):
-    """Transformation from the coordinates used inside a PDF, into the coordinate of the cadastre"""
-    def __init__(self, pdf_bbox, cadastre_bbox):
+class LinearTransform(Transform):
+    """Linear Transformation"""
+    def __init__(self, input_bbox,output_bbox):
         Transform.__init__(self)
-        Transform.__init__(self)
-        self.pdf_bbox = pdf_bbox
-        self.cadastre_bbox = cadastre_bbox
+        ix1, iy1, ix2, iy2 = input_bbox
+        ox1, oy1, ox2, oy2 = output_bbox
+        self.xfactor = (ox2 - ox1) / (ix2 - ix1)
+        self.yfactor = (oy2 - oy1) / (iy2 - iy1)
+        self.ix1 = ix1
+        self.iy1 = iy1
+        self.ox1 = ox1
+        self.oy1 = oy1
     def transform_point(self, point):
         return Point(
-            self.cadastre_bbox.x1 + 
-                (point[0] - self.pdf_bbox.x1) *
-                    self.cadastre_bbox.width() / self.pdf_bbox.width(),
-            self.cadastre_bbox.y1 + 
-                (point[1] - self.pdf_bbox.y1) 
-                    * self.cadastre_bbox.height() / self.pdf_bbox.height())
+            self.ox1 + (point[0] - self.ix1) * self.xfactor,
+            self.oy1 + (point[1] - self.iy1) * self.yfactor)
+
+class PDFToCadastreTransform(LinearTransform):
+    """Transformation from the coordinates used inside a PDF, into the coordinate of the cadastre"""
+    def __init__(self, pdf_bbox, cadastre_bbox):
+        LinearTransform.__init__(self, pdf_bbox, cadastre_bbox)
 
 class CompositeTransform(Transform):
     """Composition of many transformations"""

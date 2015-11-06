@@ -47,8 +47,8 @@ def determine_osm_parcelles_bis_ter_quater(osm):
                         series[street][numero].add(lettre)
     # On calcule pour chacune des serie si elle est en bis,ter,quater:
     is_bis_ter_quater = {
-        rue: { 
-            num: all([l in bis_ter_quater for l in lettres]) 
+        rue: {
+            num: all([l in bis_ter_quater for l in lettres])
             for num,lettres in lettres_numeros.iteritems()
         }
         for rue, lettres_numeros in series.iteritems()
@@ -69,21 +69,21 @@ def determine_osm_parcelles_bis_ter_quater(osm):
 
 def distance_x2((x1,y1), (x2,y2)):
     return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)
-    
+
 
 def determine_osm_adresses_bis_ter_quater(osm):
     """Remplace, pour les nœuds addr:housenumber,
        les lettres qui suivent le numéro par bis, ter, quater
        si approprié.
-       
-       On fait la distinction entre les séries commencent à la lettre 
-       A et qui peuvent faire tout l'alphabet, et celles commençant à 
+
+       On fait la distinction entre les séries commencent à la lettre
+       A et qui peuvent faire tout l'alphabet, et celles commençant à
        la lettres B qui se restreignent à B,T,Q,C.
 
-       Pour les série de lettres A,B,C,... on les laisse tel quelle,
+       Pour les séries de lettres A,B,C,... on les laisse tels quels,
        mais en rajoutant juste un espace entre le numéro et la lettre.
-       
-       Pour les séries B,T,Q,C on les transforme en bis, ter, quater 
+
+       Pour les séries B,T,Q,C on les transforme en bis, ter, quater
        et quinquies en minuscule avec aussi un espace pour le séparer
        du numéro.
 
@@ -94,7 +94,7 @@ def determine_osm_adresses_bis_ter_quater(osm):
        ils appartiennent.
     """
 
-    series = {}
+    series = {} # séries d'adresses ayant [même nom de rue][même numéro], mais des suffix A,B,... différents
     housenumber_index = rtree.index.Index()
     for item in osm.iteritems():
         if item.tags.has_key("addr:housenumber"):
@@ -124,8 +124,8 @@ def determine_osm_adresses_bis_ter_quater(osm):
     DISTANCE_X2 = DISTANCE_RECHERCHE_VOSINS_ORPHELINS * DISTANCE_RECHERCHE_VOSINS_ORPHELINS
     for item in osm.iteritems():
         if hasattr(item, "lettre") and item.lettre and not item.street:
-            # On a affaire a un numéro avec une lettre, mais orphelin (sans rue associée) 
-            # on vas essyer de chercher dans le coin si il n'y aurais pas des numéros
+            # On a affaire à un numéro avec une lettre, mais orphelin (sans rue associée)
+            # on vas essyer de chercher dans le coin si il n'y aurait cas des numéros
             # identiques (mais avec potentiellement une lettre différente)
             x,y = item.xy
             search_bounds = (x-DISTANCE_RECHERCHE_VOSINS_ORPHELINS, y-DISTANCE_RECHERCHE_VOSINS_ORPHELINS,
@@ -142,18 +142,18 @@ def determine_osm_adresses_bis_ter_quater(osm):
             if all([lettre in bis_ter_quater for lettre in item_series]):
                 item.lettre = bis_ter_quater[item.lettre]
 
-    # Maintenant qu'on a traiter les numéros orhpelins du mieux qu'on a pu
-    # ou vas traiter les numéros dont on connais la rue.
+    # Maintenant qu'on a traité les numéros orhpelins du mieux qu'on a pu
+    # ou va traiter les numéros dont on connait la rue.
     # On calcule pour chacune des series si elle est en bis,ter,quater:
     is_bis_ter_quater = {
-        rue: { 
-            num: all([l in bis_ter_quater for l in lettres]) 
+        rue: {
+            num: all([l in bis_ter_quater for l in lettres])
             for num,lettres in lettres_numeros.iteritems()
         }
         for rue, lettres_numeros in series.iteritems()
     }
 
-    # On corrige les addr:housenumber pour correspondre au nos calculs, et on nettoi les champs qu'on avait ajouté:
+    # On corrige les addr:housenumber pour correspondre a nos calculs, et on nettoie les champs qu'on avait ajoutés:
     for item in osm.iteritems():
         if hasattr(item, "lettre"):
             if item.lettre:
