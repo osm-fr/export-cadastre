@@ -102,6 +102,8 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
     node.min_angle = min_node_angle(osm_data, node)
 
   merge_close_nodes(osm_data, merge_distance)
+  
+  remove_duplicated_nodes_in_ways(osm_data)
 
   simplify_ways(osm_data, simplify_threshold)
   
@@ -282,6 +284,16 @@ def split_node_list_per_way_belonging(nodes):
     return result 
 
 
+def remove_duplicated_nodes_in_ways(osm_data):
+    for way in osm_data.ways.values():
+        i = 0
+        previous = None
+        while i < len(way.nodes):
+            if way.nodes[i] == previous:
+                del way.nodes[i]
+            else:
+                previous = way.nodes[i]
+                i = i + 1
 
 def replace_node(osm_data, src_node, dst_node):
   # We assume nodes are not part of relations
