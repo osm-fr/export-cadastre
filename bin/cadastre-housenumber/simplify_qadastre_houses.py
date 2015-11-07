@@ -90,9 +90,15 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
     node.ways = set()
 
   for way in osm_data.ways.itervalues():
+    way.relations = set()
     for node_id in way.nodes:
         node = osm_data.nodes[node_id]
         node.ways.add(way.id())
+
+  for rel in osm_data.relations.itervalues():
+     for rtype,rref,rrole in rel.itermembers():
+        if rtype == "way":
+            osm_data.ways[rref].relations.add(rel.id())
 
   for node in osm_data.nodes.values():
     node.position = inputTransform.transform_point(
@@ -101,13 +107,17 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
   for node in osm_data.nodes.values():
     node.min_angle = min_node_angle(osm_data, node)
 
-  merge_close_nodes(osm_data, merge_distance)
+  merge_close_nodes(osm_data, merge_distance, False)
   
   remove_duplicated_nodes_in_ways(osm_data)
 
   simplify_ways(osm_data, simplify_threshold)
+
+  merge_close_nodes(osm_data, merge_distance, True)
   
   join_close_nodes(osm_data, join_distance)
+
+  suppress_identical_ways(osm_data)
 
   for n in osm_data.nodes.itervalues():
     lon, lat = outputTransform.transform_point(n.position)
@@ -129,7 +139,7 @@ def get_centered_metric_equirectangular_transformation(osm_data):
   return inputTransform, outputTransform 
 
 
-def merge_close_nodes(osm_data, max_distance):
+def merge_close_nodes(osm_data, max_distance, can_merge_same_way):
   """Merge nodes that are close to one another while not being members of the same ways.
 
      We assume nodes are not part of relations
@@ -145,7 +155,7 @@ def merge_close_nodes(osm_data, max_distance):
       for near_node_id in [e.object for e in nodes_index.intersection(search_bounds, objects=True)]:
           near_node = osm_data.nodes[near_node_id]
           if p.distance(near_node.position) < max_distance:
-             if (node.ways & near_node.ways) == set():
+             if can_merge_nodes(osm_data, node, near_node, can_merge_same_way):
                # Amongst the two nodes we keep the one which ways are making
                # the smallest (the sharpest) angle.
                # This way we hope to keep the nodes that are the most relevant
@@ -159,6 +169,19 @@ def merge_close_nodes(osm_data, max_distance):
       if keep:
           nodes_index.insert(node.id(), (node.position.x, node.position.y), node.id())
 
+def can_merge_nodes(osm_data, n1, n2, can_merge_same_way):
+    result = True
+    same_ways = n1.ways & n2.ways
+    if len(same_ways) > 0:
+        if can_merge_same_way:
+            for way_id in same_ways:
+                way = osm_data.ways[way_id]
+                n1_previous, n1_id, n1_following = get_previous_it_and_following_from_closed_list(way.nodes, n1.id())
+                if n2.id() != n1_previous and n2.id() != n1_following:
+                    result = False
+        else:
+            result = False
+    return result
 
 def join_close_nodes(osm_data, distance):
     """Join nodes to close ways."""
@@ -307,10 +330,12 @@ def replace_node(osm_data, src_node, dst_node):
     if dst_id in way.nodes:
       # we just remove src_node from the way
       if (way.nodes[0] == src_id) and (way.nodes[-1] == src_id):
-          del(way.nodes[0])
-          way.nodes[-1] = way.nodes[0]
+          while src_id in way.nodes:
+              way.nodes.remove(src_id)
+          way.nodes.append(way.nodes[0])
       else:
-          way.nodes.remove(src_id)
+          while src_id in way.nodes:
+              way.nodes.remove(src_id)
     else:
       dst_node.ways.add(way_id)
       for i in xrange(len(way.nodes)):
@@ -334,6 +359,41 @@ def delete_node(osm_data, node):
     else:
         way.nodes.remove(node_id)
   del(osm_data.nodes[node_id])
+
+def suppress_identical_ways(osm_data):
+    # We assume that the ways are all closed and reversable
+    ways_hashed_by_sorted_node_list = {}
+    for way in osm_data.ways.values():
+        nodes_ids = way.nodes[:-1] # remove the last one that should be the same as first one (closed way)
+        min_id = min(nodes_ids)
+        min_index = nodes_ids.index(min_id)
+        # rearange starting with smallest one:
+        nodes_ids = nodes_ids[min_index:] + nodes_ids[:min_index]
+        if nodes_ids[1] < nodes_ids[-1]:
+            #reverse the order of the nodes except the first one which we keep at the first place:
+            tail = nodes_ids[1:]
+            tail.reverse()
+            nodes_ids = [nodes_ids[0]] + tail
+        nodes_ids = tuple(nodes_ids) # to be hashable
+        if nodes_ids in ways_hashed_by_sorted_node_list:
+            keeped_way = ways_hashed_by_sorted_node_list[nodes_ids]
+            if VERBOSE: print "suppress way ", way.id(), " keeping identical way ", keeped_way.id()
+            # merge attributes
+            for tag,val in way.tags.iteritems():
+                # in case of tag confict keep the longest value
+                if (not tag in keeped_way.tags) or (len(keeped_way.tags[tag]) < len(val)):
+                    if VERBOSE: print "  copy tag ", tag, " => ", val
+                    keeped_way.tags[tag] = val
+            # Replace in relations
+            for rel_id in way.relations:
+                if VERBOSE: print "   replace in relation ", rel_id
+                rel = osm_data.relations[rel_id]
+                for member in rel.members:
+                    if member.get("type") == "way" and member.get("ref") == str(way.id()):
+                        member["ref"] = str(keeped_way.id())
+            del(osm_data.ways[way.id()])
+        else:
+            ways_hashed_by_sorted_node_list[nodes_ids] = way
 
 
 def get_previous_it_and_following_from_closed_list(from_list, searching):
