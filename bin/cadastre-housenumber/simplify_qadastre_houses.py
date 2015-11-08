@@ -30,7 +30,7 @@ from shapely.geometry.polygon import Polygon
 
 #sys.path.append("../../cadastre-openstreetmap-fr/")
 
-from osm import Osm, OsmParser, OsmWriter
+from osm import Osm, Node, Way, Relation, OsmParser, OsmWriter
 from pdf_vers_osm_housenumbers import BoundingBox, LinearTransform, Point
 from cherche_osm_buildings import orthoprojection_on_segment_ab_of_point_c
 
@@ -113,9 +113,9 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
 
   simplify_ways(osm_data, simplify_threshold)
 
-  merge_close_nodes(osm_data, merge_distance, True)
-  
   join_close_nodes(osm_data, join_distance)
+
+  merge_close_nodes(osm_data, merge_distance, True)
 
   suppress_identical_ways(osm_data)
 
@@ -133,7 +133,7 @@ def get_centered_metric_equirectangular_transformation(osm_data):
   bbox = BoundingBox(*osm_data.bbox())
   center = bbox.center()
   bb1 = (center.x, center.y, center.x + 360, center.y + 360)
-  bb2 = (0, 0, EARTH_CIRCUMFERENCE_IN_METTER*math.cos(center.y), EARTH_CIRCUMFERENCE_IN_METTER)
+  bb2 = (0, 0, EARTH_CIRCUMFERENCE_IN_METTER*math.cos(center.y*math.pi/180), EARTH_CIRCUMFERENCE_IN_METTER)
   inputTransform = LinearTransform(bb1, bb2)
   outputTransform = LinearTransform(bb2, bb1)
   return inputTransform, outputTransform 
@@ -228,6 +228,8 @@ def simplify_ways(osm_data, threshold):
             for n in node_sublist:
                 if not n in keeped_nodes:
                   delete_node(osm_data, n)
+        if len(way.nodes) <= 3:
+            delete_way(osm_data, way)
 
 
 def buildSimplifiedNodeSet(nodes, fromIndex, toIndex, threshold):
@@ -309,14 +311,16 @@ def split_node_list_per_way_belonging(nodes):
 
 def remove_duplicated_nodes_in_ways(osm_data):
     for way in osm_data.ways.values():
-        i = 0
-        previous = None
+        i = 1
+        previous = way.nodes[0]
         while i < len(way.nodes):
             if way.nodes[i] == previous:
                 del way.nodes[i]
             else:
                 previous = way.nodes[i]
                 i = i + 1
+        if len(way.nodes) <= 3:
+            delete_way(osm_data, way)
 
 def replace_node(osm_data, src_node, dst_node):
   # We assume nodes are not part of relations
@@ -341,8 +345,15 @@ def replace_node(osm_data, src_node, dst_node):
       for i in xrange(len(way.nodes)):
         if way.nodes[i] == src_id:
           way.nodes[i] = dst_id
+  copy_tags(src_node, dst_node)
   del(osm_data.nodes[src_id])
 
+def copy_tags(src,dst):
+    for tag,val in src.tags.iteritems():
+        # in case of tag confict keep the longest value
+        if (not tag in dst.tags) or (len(dst.tags[tag]) < len(val)):
+            if VERBOSE: print "  copy tag ", tag, " => ", val
+            dst.tags[tag] = val
 
 def delete_node(osm_data, node):
   # We assume nodes are not part of relations
@@ -356,7 +367,7 @@ def delete_node(osm_data, node):
     if (way.nodes[0] == node_id) and (way.nodes[-1] == node_id):
         del(way.nodes[0])
         way.nodes[-1] = way.nodes[0]
-    else:
+    while node_id in way.nodes:
         way.nodes.remove(node_id)
   del(osm_data.nodes[node_id])
 
@@ -369,21 +380,19 @@ def suppress_identical_ways(osm_data):
         min_index = nodes_ids.index(min_id)
         # rearange starting with smallest one:
         nodes_ids = nodes_ids[min_index:] + nodes_ids[:min_index]
-        if nodes_ids[1] < nodes_ids[-1]:
-            #reverse the order of the nodes except the first one which we keep at the first place:
-            tail = nodes_ids[1:]
-            tail.reverse()
-            nodes_ids = [nodes_ids[0]] + tail
+        if len(nodes_ids) > 1:
+            if nodes_ids[1] < nodes_ids[-1]:
+                #reverse the order of the nodes except the first one which we keep at the first place:
+                tail = nodes_ids[1:]
+                tail.reverse()
+                nodes_ids = [nodes_ids[0]] + tail
+        else:
+            if VERBOSE: print "ERROR: way", way.id(), "has only one 1 node ???"
         nodes_ids = tuple(nodes_ids) # to be hashable
         if nodes_ids in ways_hashed_by_sorted_node_list:
             keeped_way = ways_hashed_by_sorted_node_list[nodes_ids]
             if VERBOSE: print "suppress way ", way.id(), " keeping identical way ", keeped_way.id()
-            # merge attributes
-            for tag,val in way.tags.iteritems():
-                # in case of tag confict keep the longest value
-                if (not tag in keeped_way.tags) or (len(keeped_way.tags[tag]) < len(val)):
-                    if VERBOSE: print "  copy tag ", tag, " => ", val
-                    keeped_way.tags[tag] = val
+            copy_tags(way, keeped_way)
             # Replace in relations
             for rel_id in way.relations:
                 if VERBOSE: print "   replace in relation ", rel_id
@@ -391,10 +400,29 @@ def suppress_identical_ways(osm_data):
                 for member in rel.members:
                     if member.get("type") == "way" and member.get("ref") == str(way.id()):
                         member["ref"] = str(keeped_way.id())
-            del(osm_data.ways[way.id()])
+            delete_way(osm_data, way)
         else:
             ways_hashed_by_sorted_node_list[nodes_ids] = way
 
+def delete_way(osm_data, way):
+    if VERBOSE: print "delete way", way.id()
+    del(osm_data.ways[way.id()])
+    for node_id in way.nodes:
+        if node_id in osm_data.nodes:
+          node = osm_data.nodes[node_id]
+          if way.id() in node.ways:
+              node.ways.remove(way.id())
+              if (len(node.ways) == 0) and (len(node.tags) == 0):
+                  delete_node(osm_data, node)
+    for rel_id in way.relations:
+        rel = osm_data.relations[rel_id]
+        i = 0
+        while i < len(rel.members):
+            member = rel.members[i]
+            if (member.get("type") == "way") and (member.get("ref") == way.attrs["id"]):
+                del(members[i])
+            else:
+              i = i + 1
 
 def get_previous_it_and_following_from_closed_list(from_list, searching):
     """A closed list is a list from which the last element is ignored as 
