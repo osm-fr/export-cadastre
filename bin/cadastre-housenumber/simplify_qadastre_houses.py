@@ -223,7 +223,7 @@ def join_close_nodes(osm_data, distance):
 def simplify_ways(osm_data, threshold):
     for way in osm_data.ways.values():
         nodes = [osm_data.nodes[node_id] for node_id in way.nodes]
-        for node_sublist in split_node_list_per_way_belonging(nodes):
+        for node_sublist in split_node_list_per_way_belonging(osm_data, nodes):
             keeped_nodes = buildSimplifiedNodeSet(node_sublist, 0, len(node_sublist)-1, threshold)
             for n in node_sublist:
                 if not n in keeped_nodes:
@@ -278,13 +278,14 @@ def course(lat1, lon1, lat2, lon2):
                 * math.cos(lat2) * math.cos(lon1 - lon2)) \
                 % (2 * math.pi)
 
-def split_node_list_per_way_belonging(nodes):
+def split_node_list_per_way_belonging(osm_data, nodes):
     """ split the list of nodes in sections where all nodes belong the same set of ways"""
     result = [[nodes[0]]]
     previous_ways = nodes[0].ways
+    previous_node = nodes[0]
     for n in nodes[1:]:
         if (len(n.ways - previous_ways)>0) and (len(previous_ways - n.ways))>0:
-            # on this node we have exited ways, and entered new ones, 
+            # on this node from the previous one we have exited ways, and entered new ones, 
             # so we don't add this node to the previous list, we just start a new one 
             result.append([n])
         elif n.ways - previous_ways: 
@@ -293,15 +294,35 @@ def split_node_list_per_way_belonging(nodes):
             result[-1].append(n)
             # and we start a new one
             result.append([n])
-        elif previous_ways - n.ways:
-            # on this node we have exited some ways, so the cut
-            # is done on the previous node, which we also add to the
-            # new list we start:
-            result.append([result[-1][-1], n])
         else:
-            # We are still on the same set of ways, we continue the list:
-            result[-1].append(n)
+            # All the way on this node where also passing by the previous one,
+            # but to consider that the way [previous_node, n] bellongs to all the way 
+            # we wust ensure that all the ways are DIRECTY passing from the previous_node
+            # to the current one, if they go through extra nodes in between, 
+            # we must not consider [previous_node, n] as a way we can simplify,
+            # and we must start a new way.
+            all_ways_dirrectly_connect_previous_node = True
+            for way_id in n.ways:
+                way = osm_data.ways[way_id]
+                n0, _, n2 = get_previous_it_and_following_from_closed_list(way.nodes, n.id())
+                if previous_node.id() not in (n0, n2):
+                    all_ways_dirrectly_connect_previous_node = False
+
+            if previous_ways - n.ways:
+                # on this node we have exited some ways, so the cut
+                # is done on the previous node, we start a new list.
+                if all_ways_dirrectly_connect_previous_node:
+                   result.append([result[-1][-1], n])
+                else:
+                   result.append([n])
+            else:
+                # We are still on the exact same set of ways, we may extend the list.
+                if all_ways_dirrectly_connect_previous_node:
+                   result[-1].append(n)
+                else:
+                   result.append([n])
         previous_ways = n.ways
+        previous_node = n
     if len(result) > 1 and nodes[0].id() == nodes[-1].id():
         # The input way was a closed way, so we concatenate the first and last lists:
         result[-1] = result[-1] + result[0][1:]
