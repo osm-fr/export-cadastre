@@ -45,9 +45,9 @@ VERBOSE=False
 
 def main(argv):
   args = argv[1:]
-  merge_distance  = MERGE_DISTANCE  
-  join_distance = JOIN_DISTANCE 
-  simplify_threshold = SIMPLIFY_THRESHOLD 
+  merge_distance  = MERGE_DISTANCE
+  join_distance = JOIN_DISTANCE
+  simplify_threshold = SIMPLIFY_THRESHOLD
   global VERBOSE
   i = 0
   while i < (len(args) - 1):
@@ -108,12 +108,12 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
     node.min_angle = min_node_angle(osm_data, node)
 
   merge_close_nodes(osm_data, merge_distance, False)
-  
+
   remove_duplicated_nodes_in_ways(osm_data)
 
   simplify_ways(osm_data, simplify_threshold)
 
-  join_close_nodes(osm_data, join_distance)
+  join_close_nodes_and_remove_inside_ways(osm_data, join_distance)
 
   merge_close_nodes(osm_data, simplify_threshold, True)
 
@@ -127,7 +127,7 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
 
 def get_centered_metric_equirectangular_transformation(osm_data):
   """ return a Transform from OSM data WSG84 lon/lat coordinate system
-      to an equirectangular projection centered on the center of the data, 
+      to an equirectangular projection centered on the center of the data,
       with a unit ~ 1 meter at the center
   """
   bbox = BoundingBox(*osm_data.bbox())
@@ -136,7 +136,7 @@ def get_centered_metric_equirectangular_transformation(osm_data):
   bb2 = (0, 0, EARTH_CIRCUMFERENCE_IN_METTER*math.cos(center.y*math.pi/180), EARTH_CIRCUMFERENCE_IN_METTER)
   inputTransform = LinearTransform(bb1, bb2)
   outputTransform = LinearTransform(bb2, bb1)
-  return inputTransform, outputTransform 
+  return inputTransform, outputTransform
 
 
 def merge_close_nodes(osm_data, max_distance, can_merge_same_way):
@@ -183,13 +183,19 @@ def can_merge_nodes(osm_data, n1, n2, can_merge_same_way):
             result = False
     return result
 
-def join_close_nodes(osm_data, distance):
-    """Join nodes to close ways."""
+
+def join_close_nodes_and_remove_inside_ways(osm_data, join_distance):
     ways_index = rtree.index.Index()
-    index = 0
     for way in osm_data.ways.values():
         bbox = BoundingBox.of_points([osm_data.nodes[node_id].position for node_id in way.nodes])
-        ways_index.insert(index, [bbox.x1,bbox.y1,bbox.x2, bbox.y2], way.id())
+        way.bbox = [bbox.x1,bbox.y1,bbox.x2, bbox.y2]
+        ways_index.insert(way.id(), way.bbox, way.id())
+    join_close_nodes(osm_data, ways_index, join_distance)
+    remove_inside_ways(osm_data, ways_index)
+
+
+def join_close_nodes(osm_data, ways_index, distance):
+    """Join nodes to close ways."""
     for node in osm_data.nodes.values():
         node_id = node.id()
         position = node.position
@@ -218,6 +224,25 @@ def join_close_nodes(osm_data, distance):
           closest_way.nodes.insert(closest_index, node_id)
           node.ways.add(closest_way.id())
           node.position = closest_position
+
+
+def remove_inside_ways(osm_data, ways_index):
+    for way1 in osm_data.ways.values():
+        if len(way1.relations) == 0:
+            polygon1 =  polygon_of_way(osm_data, way1)
+            for way2_id in [e.object for e in ways_index.intersection(way1.bbox, objects=True)]:
+                way2 = osm_data.ways[way2_id]
+                if (way2_id != way1.id()) and len(way2.relations) == 0:
+                    polygon2 =  polygon_of_way(osm_data, way2)
+                    if polygon2.contains(polygon1):
+                        if VERBOSE: print "way ", way1.id(), " inside ", way2_id
+                        ways_index.delete(way1.id(), way1.bbox)
+                        delete_way(osm_data, way1)
+                        break
+
+
+def polygon_of_way(osm_data, way):
+    return Polygon([osm_data.nodes[i].position for i in way.nodes])
 
 
 def simplify_ways(osm_data, threshold):
@@ -295,7 +320,7 @@ def isRequiredNode(osm_data, node):
             if set([n1,n2]) != n1_n2_set:
                 result = True
     return result
-    
+
 
 def split_node_list_at_required_nodes(osm_data, nodes):
     result = [[nodes[0]]]
@@ -307,9 +332,9 @@ def split_node_list_at_required_nodes(osm_data, nodes):
         # The input node list was a closed way, so we concatenate the first and last lists:
         result[-1] = result[-1] + result[0][1:]
         del(result[0])
-    return result 
+    return result
 
-            
+
 def remove_duplicated_nodes_in_ways(osm_data):
     for way in osm_data.ways.values():
         i = 1
@@ -363,7 +388,7 @@ def delete_node(osm_data, node):
   node_id = node.id()
   if VERBOSE: print "delete node ", node_id
   for way_id in node.ways:
-    if VERBOSE: print "  from way ", way_id 
+    if VERBOSE: print "  from way ", way_id
     way = osm_data.ways[way_id]
     if (way.nodes[0] == node_id) and (way.nodes[-1] == node_id):
         del(way.nodes[0])
@@ -426,14 +451,14 @@ def delete_way(osm_data, way):
               i = i + 1
 
 def get_previous_it_and_following_from_closed_list(from_list, searching):
-    """A closed list is a list from which the last element is ignored as 
+    """A closed list is a list from which the last element is ignored as
        it should be the same as the first one, like list of nodes for a closed way"""
     len_minus_1 = len(from_list) - 1
     i = from_list.index(searching)
     previous = from_list[(i - 1) % len_minus_1]
     following = from_list[(i + 1) % len_minus_1]
     return previous, searching, following
-   
+
 
 def way_angle_at_node(osm_data, way, node):
     "return the angle the way is doing at this node"
