@@ -177,7 +177,7 @@ def can_merge_nodes(osm_data, n1, n2, can_merge_same_way):
             for way_id in same_ways:
                 way = osm_data.ways[way_id]
                 n1_previous, n1_id, n1_following = get_previous_it_and_following_from_closed_list(way.nodes, n1.id())
-                if n2.id() != n1_previous and n2.id() != n1_following:
+                if (n2.id() != n1_previous) and (n2.id() != n1_following):
                     result = False
         else:
             result = False
@@ -211,19 +211,33 @@ def join_close_nodes(osm_data, ways_index, distance):
             node = osm_data.nodes[node_id]
             i = 0
             for i in xrange(len(way.nodes) - 1):
-              p1 = osm_data.nodes[way.nodes[i]].position
-              p2 = osm_data.nodes[way.nodes[i+1]].position
-              p = orthoprojection_on_segment_ab_of_point_c(p1,p2, node.position)
-              if p !=None and node.position.distance(p) < closest_distance:
-                closest_distance = node.position.distance(p)
-                closest_way = way
-                closest_index = i+1
-                closest_position = Point(p[0],p[1])
+              n1 = osm_data.nodes[way.nodes[i]]
+              n2 = osm_data.nodes[way.nodes[i+1]]
+              node_is_in_same_way_as_n1_n2_segment = False
+              for common_way_id in (node.ways & n1.ways & n2.ways):
+                  common_way = osm_data.ways[common_way_id]
+                  n1_common_previous, _, n1_common_next = get_previous_it_and_following_from_closed_list(common_way.nodes, n1.id())
+                  if n2.id() == n1_common_previous or n2.id() == n1_common_next:
+                      node_is_in_same_way_as_n1_n2_segment = True
+                      break
+              if not node_is_in_same_way_as_n1_n2_segment:
+                  p1 = n1.position
+                  p2 = n2.position
+                  p = orthoprojection_on_segment_ab_of_point_c(p1,p2, node.position)
+                  if (p !=None) and (node.position.distance(p) < closest_distance):
+                    closest_distance = node.position.distance(p)
+                    closest_way = way
+                    closest_index = i+1
+                    closest_position = Point(p[0],p[1])
         if closest_way:
           if VERBOSE: print "Join node ", node_id, " to way ", closest_way.id()
           closest_way.nodes.insert(closest_index, node_id)
           node.ways.add(closest_way.id())
           node.position = closest_position
+          # It is possible that the segment we join (n1,n2) is part
+          # of more than one other way, so in theory we should insert 
+          # the node in all of them, but we do not as this is necessariy
+          # an invaid situation that will raise an error in JOSM.
 
 
 def remove_inside_ways(osm_data, ways_index):
@@ -232,7 +246,7 @@ def remove_inside_ways(osm_data, ways_index):
             polygon1 =  polygon_of_way(osm_data, way1)
             for way2_id in [e.object for e in ways_index.intersection(way1.bbox, objects=True)]:
                 way2 = osm_data.ways[way2_id]
-                if (way2_id != way1.id()) and len(way2.relations) == 0:
+                if (way2_id != way1.id()) and (len(way2.relations) == 0):
                     polygon2 =  polygon_of_way(osm_data, way2)
                     if polygon2.contains(polygon1):
                         if VERBOSE: print "way ", way1.id(), " inside ", way2_id
@@ -328,7 +342,7 @@ def split_node_list_at_required_nodes(osm_data, nodes):
         result[-1].append(n)
         if isRequiredNode(osm_data, n):
             result.append([n])
-    if len(result) > 1 and nodes[0].id() == nodes[-1].id():
+    if (len(result) > 1) and (nodes[0].id() == nodes[-1].id()):
         # The input node list was a closed way, so we concatenate the first and last lists:
         result[-1] = result[-1] + result[0][1:]
         del(result[0])
@@ -424,7 +438,7 @@ def suppress_identical_ways(osm_data):
                 if VERBOSE: print "   replace in relation ", rel_id
                 rel = osm_data.relations[rel_id]
                 for member in rel.members:
-                    if member.get("type") == "way" and member.get("ref") == str(way.id()):
+                    if (member.get("type") == "way") and (member.get("ref") == str(way.id())):
                         member["ref"] = str(keeped_way.id())
             delete_way(osm_data, way)
         else:
