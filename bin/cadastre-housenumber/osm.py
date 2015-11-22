@@ -44,14 +44,29 @@ class Osm(object):
         id = node.id()
         assert(not self.nodes.has_key(id))
         self.nodes[id] = node
+    def create_node(self, attrs,tags=None):
+        node = Node(attrs, tags)
+        self.add_node(node)
+        return node
     def add_way(self, way):
         id = way.id()
         assert(not self.ways.has_key(id))
         self.ways[id] = way
+    def create_way(self, attrs,tags=None):
+        way = Way(attrs, tags)
+        self.add_way(way)
+        return way
     def add_relation(self, relation):
         id = relation.id()
         assert(not self.relations.has_key(id))
         self.relations[id] = relation
+    def create_relation(self, attrs,tags=None):
+        relation = Relation(attrs, tags)
+        self.add_relation(relation)
+        return relation
+    def add_bounds(self, bounds_attrs):
+        """bounds_attrs: a hashtabe with keys 'minlon', 'minlat', 'maxlon' and 'maxlat'.""" 
+        self.bounds.append(bounds_attrs)
     def bbox(self):
         minlon = min([float(b["minlon"]) for b in self.bounds])
         minlat = min([float(b["minlat"]) for b in self.bounds])
@@ -60,6 +75,7 @@ class Osm(object):
         return minlon,minlat,maxlon,maxlat
     def set_bbox(self,bbox):
         minlon,minlat,maxlon,maxlat = bbox
+        self.bounds = []
         self.bounds.append({
           "minlon": str(minlon),
           "minlat": str(minlat),
@@ -123,11 +139,10 @@ class Way(Item):
     def type(self):
         return "way"
     def add_node(self, node):
-        if type(node) == Node:
-            self.nodes.append(node.id())
-        else:
-            assert((type(node) == str) or (type(node) == unicode) or (type(node) == int))
+        if (type(node) == str) or (type(node) == unicode) or (type(node) == int):
             self.nodes.append(int(node))
+        else:
+            self.nodes.append(node.id())
         
 
 class Relation(Item):
@@ -138,16 +153,18 @@ class Relation(Item):
         return "relation"
     def add_member_type_ref_role(self, mtype, mref, mrole):
         attrs = {'type': mtype, 'ref': str(mref), 'role': mrole}
-        self.members.append(attrs)
+        self.add_member_attrs(attrs)
     def add_member(self, member, role=""):
         attrs = {'type': member.type(), 'ref': str(member.id()), 'role': role}
+        self.add_member_attrs(attrs)
+    def add_member_attrs(self, attrs):
         self.members.append(attrs)
     def itermembers(self):
         for attrs in self.members:
             yield attrs.get("type"), int(attrs.get("ref")), attrs.get("role")
 
 class OsmParser(object):
-    def __init__(self):
+    def __init__(self,factory=Osm):
         self.parser = xml.parsers.expat.ParserCreate("utf-8")
         assert(self.parser.SetParamEntityParsing(
             xml.parsers.expat.XML_PARAM_ENTITY_PARSING_NEVER))
@@ -155,6 +172,7 @@ class OsmParser(object):
         self.parser.CharacterDataHandler = self.handle_char_data
         self.parser.StartElementHandler = self.handle_start_element
         self.parser.EndElementHandler = self.handle_end_element
+        self.factory = factory
     def parse(self, filename):
         self.filename = filename
         self.osm = None
@@ -172,7 +190,7 @@ class OsmParser(object):
         return self.osm
     def handle_start_element(self,name, attrs):
         if name == "osm":
-            osm = Osm(attrs)
+            osm = self.factory(attrs)
             self.osm = osm
             self.current = None
         elif name == "note":
@@ -182,14 +200,12 @@ class OsmParser(object):
             #TODO
             pass
         elif name == "bounds":
-            self.osm.bounds.append(attrs)
+            self.osm.add_bounds(attrs)
         elif name == "node":
-            node = Node(attrs);
-            self.osm.add_node(node)
+            node = self.osm.create_node(attrs);
             self.current = node
         elif name == "way":
-            way = Way(attrs)
-            self.osm.add_way(way)
+            way = self.osm.create_way(attrs)
             self.current = way
         elif name == "nd":
             ref = int(attrs["ref"])
@@ -198,13 +214,11 @@ class OsmParser(object):
         elif name == "tag":
             self.current.tags[attrs["k"]] = attrs["v"];
         elif name == "relation":
-            relation = Relation(attrs)
-            self.osm.add_relation(relation)
+            relation = self.osm.create_relation(attrs)
             self.current = relation
         elif name == "member":
-            member = attrs
             relation = self.current
-            relation.members.append(member)
+            relation.add_member_attrs(attrs)
         else:
             raise Exception("ERROR: unknown tag <"+name+"> in file " 
                     + self.filename + "\n")
