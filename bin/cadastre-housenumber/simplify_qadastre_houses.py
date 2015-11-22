@@ -244,11 +244,13 @@ def remove_inside_ways(osm_data, ways_index):
     for way1 in osm_data.ways.values():
         if len(way1.relations) == 0:
             polygon1 =  polygon_of_way(osm_data, way1)
-            for way2_id in [e.object for e in ways_index.intersection(way1.bbox, objects=True)]:
+            if polygon1.is_valid:
+              for way2_id in [e.object for e in ways_index.intersection(way1.bbox, objects=True)]:
                 way2 = osm_data.ways[way2_id]
-                if (way2_id != way1.id()) and (len(way2.relations) == 0):
+                if (way2_id != way1.id()) and (len(way2.relations) == 0) and (("wall" in way1.tags) or ("wall" not in way2.tags)):
                     polygon2 =  polygon_of_way(osm_data, way2)
-                    if polygon2.contains(polygon1):
+                    if polygon2.is_valid:
+                      if polygon2.contains(polygon1):
                         if VERBOSE: print "way ", way1.id(), " inside ", way2_id
                         ways_index.delete(way1.id(), way1.bbox)
                         delete_way(osm_data, way1)
