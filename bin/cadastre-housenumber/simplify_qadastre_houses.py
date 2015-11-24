@@ -25,6 +25,7 @@ import sys
 import copy
 import math
 import os.path
+import operator
 import rtree.index
 from shapely.geometry.polygon import Polygon
 
@@ -207,20 +208,13 @@ def join_close_nodes(osm_data, ways_index, distance):
         closest_index = None
         for way_id in [e.object for e in ways_index.intersection(search_bounds, objects=True)]:
           way = osm_data.ways[way_id]
-          if not node_id in way.nodes:
+          if can_join_node_to_way(node, way):
             node = osm_data.nodes[node_id]
             i = 0
             for i in xrange(len(way.nodes) - 1):
               n1 = osm_data.nodes[way.nodes[i]]
               n2 = osm_data.nodes[way.nodes[i+1]]
-              node_is_in_same_way_as_n1_n2_segment = False
-              for common_way_id in (node.ways & n1.ways & n2.ways):
-                  common_way = osm_data.ways[common_way_id]
-                  n1_common_previous, _, n1_common_next = get_previous_it_and_following_from_closed_list(common_way.nodes, n1.id())
-                  if n2.id() == n1_common_previous or n2.id() == n1_common_next:
-                      node_is_in_same_way_as_n1_n2_segment = True
-                      break
-              if not node_is_in_same_way_as_n1_n2_segment:
+              if can_join_node_to_segment(osm_data, node, n1, n2):
                   p1 = n1.position
                   p2 = n2.position
                   p = orthoprojection_on_segment_ab_of_point_c(p1,p2, node.position)
@@ -240,21 +234,48 @@ def join_close_nodes(osm_data, ways_index, distance):
           # an invaid situation that will raise an error in JOSM.
 
 
+def can_join_node_to_way(node, way):
+   # Don't join to the same way:
+   return node.id() not in way.nodes
+
+
+def can_join_node_to_segment(osm_data, node, n1, n2):
+    result = True
+    node_ways_relations = reduce(operator.or_, [osm_data.ways[way_id].relations for way_id in node.ways])
+    for way_id in (n1.ways & n2.ways):
+        way = osm_data.ways[way_id]
+        n1_previous, _, n1_next = get_previous_it_and_following_from_closed_list(way.nodes, n1.id())
+        if n2.id() == n1_previous or n2.id() == n1_next:
+            # the segment n1, n2 is directly part of 'way' (without making a longer path)
+            if way_id in node.ways:
+                # node is member of the same way as the segment 
+                result = False
+                break
+            if len(node_ways_relations & way.relations) != 0:
+                # node's way are member of a common relation (i.e multipolygon)
+                result = False
+                break
+    return result
+
 def remove_inside_ways(osm_data, ways_index):
     for way1 in osm_data.ways.values():
         if len(way1.relations) == 0:
             polygon1 =  polygon_of_way(osm_data, way1)
-            if polygon1.is_valid:
-              for way2_id in [e.object for e in ways_index.intersection(way1.bbox, objects=True)]:
+            for way2_id in [e.object for e in ways_index.intersection(way1.bbox, objects=True)]:
                 way2 = osm_data.ways[way2_id]
                 if (way2_id != way1.id()) and (len(way2.relations) == 0) and (("wall" in way1.tags) or ("wall" not in way2.tags)):
                     polygon2 =  polygon_of_way(osm_data, way2)
-                    if polygon2.is_valid:
+                    try:
                       if polygon2.contains(polygon1):
                         if VERBOSE: print "way ", way1.id(), " inside ", way2_id
                         ways_index.delete(way1.id(), way1.bbox)
                         delete_way(osm_data, way1)
                         break
+                    except:
+                        # polygon2.contains(polygon1) will fail if either polygon1 or 2 
+                        # are invalid, but it is faster to catch exceptions than
+                        # to check for .is_valid
+                        pass
 
 
 def polygon_of_way(osm_data, way):

@@ -29,6 +29,7 @@ import sys
 import copy
 import math
 import os.path
+import operator
 import traceback
 import rtree.index
 from shapely.ops import polygonize
@@ -257,20 +258,13 @@ def join_close_nodes(osm_data, ways_rtree, distance):
         for result in ways_rtree.intersection(search_bounds, objects=True):
             way_id = result.object
             way = osm_data.ways[way_id]
-            if not node_id in way.nodes:
+            if can_join_node_to_way(node, way):
                 node = osm_data.nodes[node_id]
                 i = 0
                 for i in xrange(len(way.nodes) - 1):
                     n1 = osm_data.nodes[way.nodes[i]]
                     n2 = osm_data.nodes[way.nodes[i+1]]
-                    node_is_in_same_way_as_n1_n2_segment = False
-                    for common_way_id in (node.ways & n1.ways & n2.ways):
-                        common_way = osm_data.ways[common_way_id]
-                        n1_common_previous, n1_common_next = common_way.get_previous_and_next_node(n1)
-                        if n2 == n1_common_previous or n2 == n1_common_next:
-                            node_is_in_same_way_as_n1_n2_segment = True
-                            break
-                    if not node_is_in_same_way_as_n1_n2_segment:
+                    if can_join_node_to_segment(osm_data, node, n1, n2):
                         p1 = n1.position
                         p2 = n2.position
                         p = orthoprojection_on_segment_ab_of_point_c(p1,p2, node.position)
@@ -288,6 +282,31 @@ def join_close_nodes(osm_data, ways_rtree, distance):
             # of more than one other way, so in theory we should insert 
             # the node in all of them, but we do not as this is necessariy
             # an invaid situation that will raise an error in JOSM.
+
+
+def can_join_node_to_way(node, way):
+   # Don't join to the same way:
+   return node.id() not in way.nodes
+
+
+def can_join_node_to_segment(osm_data, node, n1, n2):
+    result = True
+    node_ways_relations = reduce(operator.or_, [osm_data.ways[way_id].relations for way_id in node.ways])
+    for way_id in (n1.ways & n2.ways):
+        way = osm_data.ways[way_id]
+        n1_previous, n1_next = way.get_previous_and_next_node(n1)
+        if n2.id() == n1_previous or n2.id() == n1_next:
+            # the segment n1, n2 is directly part of 'way' (without making a longer path)
+            if way_id in node.ways:
+                # node is member of the same way as the segment 
+                result = False
+                break
+            if len(node_ways_relations & way.relations) != 0:
+                # node's way are member of a common relation (i.e multipolygon)
+                result = False
+                break
+    return result
+
 
 def remove_inside_ways(osm_data, ways_rtree):
     for way1 in osm_data.ways.values():
