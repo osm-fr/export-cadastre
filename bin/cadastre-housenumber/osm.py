@@ -68,10 +68,16 @@ class Osm(object):
         """bounds_attrs: a hashtabe with keys 'minlon', 'minlat', 'maxlon' and 'maxlat'.""" 
         self.bounds.append(bounds_attrs)
     def bbox(self):
-        minlon = min([float(b["minlon"]) for b in self.bounds])
-        minlat = min([float(b["minlat"]) for b in self.bounds])
-        maxlon = max([float(b["maxlon"]) for b in self.bounds])
-        maxlat = max([float(b["maxlat"]) for b in self.bounds])
+        if len(self.bounds):
+            minlon = min([float(b["minlon"]) for b in self.bounds])
+            minlat = min([float(b["minlat"]) for b in self.bounds])
+            maxlon = max([float(b["maxlon"]) for b in self.bounds])
+            maxlat = max([float(b["maxlat"]) for b in self.bounds])
+        else:
+            minlon = min([n.lon() for n in self.nodes.itervalues()])
+            minlat = min([n.lat() for n in self.nodes.itervalues()])
+            maxlon = max([n.lon() for n in self.nodes.itervalues()])
+            maxlat = max([n.lat() for n in self.nodes.itervalues()])
         return minlon,minlat,maxlon,maxlat
     def set_bbox(self,bbox):
         minlon,minlat,maxlon,maxlat = bbox

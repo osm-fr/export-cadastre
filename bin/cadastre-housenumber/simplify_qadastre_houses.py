@@ -510,7 +510,6 @@ def min_node_angle(osm_data, node):
     """"return the minimum angle ways are doing at this node."""
     return min([math.pi * 2] + [way_angle_at_node(osm_data, osm_data.ways[way_id], node) for way_id in node.ways])
 
-
-sys.exit(main(sys.argv))
-
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
 

@@ -1013,7 +1013,7 @@ def named_chunks(l, n):
 
 def decoupe_bbox_selon_taille_index(bbox, index, maxcount, basename):
     """ Découpe la bbox en une liste de bbox, chacune ne contenant pas plus de maxcount
-        élément selont l'index spatial donné
+        éléments selon l'index spatial donné
     """
     if index.count(bbox) < maxcount:
         return [(basename, bbox)]

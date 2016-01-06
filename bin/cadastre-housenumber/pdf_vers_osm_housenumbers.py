@@ -80,8 +80,8 @@ class Point(object):
           return 0
       else:
           v = p1.dot_product(p2) / d
-          if v>1: v = 1
-          if v <-1:v=-1
+          if v > 1: v = 1
+          if v <-1: v =-1
           return math.acos(v)
     def area(p1, p2):
       if type(p2) != Point:

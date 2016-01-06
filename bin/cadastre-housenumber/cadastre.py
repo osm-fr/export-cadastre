@@ -83,7 +83,7 @@ CORRECTIONS_PROJECTION_CADASTRE = {
 
 CORRECTIONS_PROJECTION_CADASTRE_COMMUNE = {
     # Corrections de projections pour les îles Saint-Martin et Saint Barthélémy
-    # le site cadastre.gouv.fr ne semple pas renvoyer la bonne valeur
+    # le site cadastre.gouv.fr ne semble pas renvoyer la bonne valeur
     # voir https://lists.openstreetmap.org/pipermail/dev-fr/2010-November/000059.html
     "SAINT MARTIN (97150)" : "GUADFM49U20",
     "SAINT BARTHELEMY (ILE) (97133)" : "GUADFM49U20",

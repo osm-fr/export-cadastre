@@ -821,6 +821,6 @@ class Timer():
             print self.msg + " => " + str(round(self(), 4)) +  " s"
 
 
-sys.exit(main(sys.argv))
-
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
 
