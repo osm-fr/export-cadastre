@@ -247,8 +247,16 @@ def parse_adresses_of_parcelles_info_pdfs(pdfs, code_commune):
 
     return adresses_parcelles
  
+
 def bounds_diff(bounds1, bounds2):
     return max([abs(operator.sub(*t)) for t in zip(bounds1, bounds2)])
+
+
+def bounds_center(bounds):
+    minx, miny, maxx, maxy = bounds
+    centerx = (minx + maxx) / 2
+    centery = (miny + maxy) / 2
+    return (centerx, centery)
 
 
 def polygones_et_index_des_limite_parcelles(limite_parcelles):
@@ -261,7 +269,7 @@ def polygones_et_index_des_limite_parcelles(limite_parcelles):
     def already_present(p):
         # FIXME: cette recherche vas être quadratique si les intersections sont importantes,
         # comme à Apatou en Guyane:
-        center = shapely.geometry.box(*(p.bounds)).centroid.coords[0]
+        center = bounds_center(p.bounds)
         for i in index.intersection(center):
             if p.almost_equals(polygones[i], LIMITE_ALMOST_EQUALS_DECIMAL):
                 return True
