@@ -96,7 +96,7 @@ if( $dep && $ville && $type )
 	if( file_exists( $lock_file ) && ((time() - filemtime ( $lock_file )) < 2*60*60)) {
 		echo 'Import en cours';
 	} 
-	else if (($force != "true") && already_generated())
+	else if (($force != "true") && $bbox=="" && already_generated())
 	{
 	    $confirmAlreadyGenerated = true;
 	} 
