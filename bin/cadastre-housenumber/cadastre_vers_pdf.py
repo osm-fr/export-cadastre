@@ -44,7 +44,7 @@ PDF_DOWNLOAD_PIXELS_RATIO = 4.5
 # Mode de découpage des pdf: "NB": pour nombre fixe, "SIZE": pour taille fixe:
 PDF_DOWNLOAD_SPLIT_MODE = "SIZE" 
 # Si MODE="SIZE", Taille dans la projection cadastrale (~ mètres) des PDF exportés:
-PDF_DOWNLOAD_SPLIT_SIZE = 2000
+PDF_DOWNLOAD_SPLIT_SIZE = 200
 # Si MODE="NB", nombre par lequelle la taille du pdf sera découpée (en
 # largeur et en hauteur):
 PDF_DOWNLOAD_SPLIT_NB = 2
