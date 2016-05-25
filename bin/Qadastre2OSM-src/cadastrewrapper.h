@@ -62,6 +62,8 @@ private:
     QMap<QString, QNetworkReply*> m_citiesRequest;
     QMap<QString, QMap<QString, QString> > m_cities;
     QSignalMapper m_citiesSignalMapper, m_bboxSignalMapper, m_pdfSignalMapper, m_citySearchMapper;
+    QString m_token;
+    QString parse_token(QNetworkReply* reply);
 };
 
 #endif // CADASTREWRAPPER_H

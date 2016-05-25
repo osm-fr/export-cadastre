@@ -104,7 +104,7 @@ class CadastreWebsite(object):
     self.url_opener = urllib2.build_opener(
         urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
     # Récupération de la liste des départements
-    self.departements = CadastreWebsite.__parse_liste_departements(
+    self.departements = self.__parse_liste_departements(
         self.url_opener.open(
             "http://www.cadastre.gouv.fr/scpc/rechercherPlan.do").read())
     code_departement = self.code_departement
@@ -126,10 +126,18 @@ class CadastreWebsite(object):
       sys.stdout.flush()
       self.reinit_session()
 
-  @staticmethod
-  def __parse_liste_departements(html):
+  def __parse_liste_departements(self, html):
     resultat = {}
     html = html.decode("utf8")
+    csrf_token_index = html.find("CSRF_TOKEN=")
+    if csrf_token_index >= 0:
+        csrf_token_index  = csrf_token_index + len("CSRF_TOKEN=")
+        end_index = csrf_token_index 
+        while html[end_index] not in ('"', '&', "'", " "):
+            end_index = end_index + 1
+        self.CSRF_TOKEN = html[csrf_token_index:end_index]
+    else:
+        self.CSRF_TOKEN = ""
     html = html.split("<select name=\"codeDepartement\"")[1].split("</select>")[0]
     pattern = re.compile("<option value=\"(...)\">([^<]*)</option>", re.S)
     for match in pattern.finditer(html):
@@ -161,11 +169,10 @@ class CadastreWebsite(object):
     self.bbox = None
     communes = {}
     self.check_session_timeout()
-    url = "http://www.cadastre.gouv.fr/scpc/listerCommune.do?codeDepartement=" \
+    url = "http://www.cadastre.gouv.fr/scpc/listerCommune.do?CSRF_TOKEN=" + self.CSRF_TOKEN + "&codeDepartement=" \
         + code_departement \
         + "&libelle=&keepVolatileSession=&offset=5000"
     html = self.url_opener.open(url).read().decode("utf8")
-    #print html.encode("utf8")
     table_pattern = re.compile("<table[^>]*class=\"resonglet\"[^>]*>(.*?)</table>", re.S)
     # On ne considère que les communes vectorielles 'VECT':
     code_pattern = re.compile("ajoutArticle\\('([^']*)','VECT',", re.S);
@@ -190,7 +197,11 @@ class CadastreWebsite(object):
     self.check_session_timeout()
     self.code_commune = code_commune
     url = self.__get_commune_url()
-    html = self.url_opener.open(url).read().decode("utf8")
+    html = self.url_opener.open(url).read()
+    try:
+        html = html.decode("utf8")
+    except:
+        html = html.decode("8859")
     bbox_pattern = re.compile(
         "new GeoBox\\(\\s*([0-9.]*),\\s*([0-9.]*),\\s*([0-9.]*),\\s*([0-9.]*)\\),\\s*\"([^\"]*)\",",
         re.S);
@@ -223,7 +234,8 @@ class CadastreWebsite(object):
           "MAPBBOX" : "%f,%f,%f,%f" % bbox,
           "SLD_BODY" : "",
           "RFV_REF" : self.code_commune}
-    url = "http://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do"
+    url = "http://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do?CSRF_TOKEN=" + self.CSRF_TOKEN
+
     return self.url_opener.open(url, urllib.urlencode(post_data))
 
   def get_parcelle_lon_lat(self, lon, lat):
@@ -326,7 +338,7 @@ class CadastreWebsite(object):
   def get_infos_parcelle(self, parcelle):
     """retourne les infos de la parcelle"""
     data = "<PARCELLES><PARCELLE>" + parcelle + "</PARCELLE></PARCELLES>"
-    url = "http://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do"
+    url = "http://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib2.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
@@ -345,14 +357,14 @@ class CadastreWebsite(object):
     return result
 
   def __get_commune_url(self):
-      return 'http://www.cadastre.gouv.fr/scpc/afficherCarteCommune.do?c=' \
-          + self.code_commune + '&dontSaveLastForward&keepVolatileSession='
+      return 'http://www.cadastre.gouv.fr/scpc/afficherCarteCommune.do?CSRF_TOKEN=' + self.CSRF_TOKEN \
+          + '&c=' + self.code_commune + '&dontSaveLastForward&keepVolatileSession='
 
   def open_pdf_infos_parcelles(self, parcelles):
     """ouvre le pdf qui contient les infos des parcelles données"""
     self.check_session_timeout()
     data = "<PARCELLES><PARCELLE>" + "</PARCELLE><PARCELLE>".join(parcelles) + "</PARCELLE></PARCELLES>"
-    url = "http://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do"
+    url = "http://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib2.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
@@ -360,7 +372,7 @@ class CadastreWebsite(object):
     answer = self.url_opener.open(request).read()
     # Quand on demande les infos de plusieurs parcelles, il faut ensuite
     # ouvrir le pdf pour avoir les infos:
-    url = "http://www.cadastre.gouv.fr/scpc/editerInfosParcelles.do"
+    url = "http://www.cadastre.gouv.fr/scpc/editerInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib2.Request(url)
     request.add_header('referer', self.__get_commune_url())
     return self.url_opener.open(request)
@@ -442,4 +454,30 @@ def code_insee(code_departement, code_commune):
       assert(code_departement[2] == code_commune[2])
       result = code_departement[:2] + code_commune[2:]
   return result
+
+
+
+
+
+#######################################################$$
+
+def test_cadastre():
+    print "test_cadastre"
+    cadastre = CadastreWebsite()
+    list_dep = cadastre.get_liste_departements()
+    assert(list_dep["081"] == "81 - TARN")
+    cadastre.set_departement("081")
+    list_communes = cadastre.get_liste_communes()
+    code_commune = [code for code in list_communes.keys() if code.endswith("020")][0]
+    assert(list_communes[code_commune] == "AUSSAC (81600)")
+    cadastre.set_commune(code_commune)
+    pdf_file = cadastre.open_pdf(cadastre.get_bbox(), 100, 100)
+    pdf_data = pdf_file.read(4)
+    pdf_file.close()
+    assert(pdf_data[0:4] == "%PDF")
+    assert(cadastre.get_parcelle_lon_lat("2.0307573", "43.8645129") == "UK0200000A1149")
+    assert(cadastre.get_parcelle("1621947.6513530577","3185210.5969969486", "3944") == "UK0200000A1267")
+
+if __name__ == '__main__':
+    test_cadastre()
 
