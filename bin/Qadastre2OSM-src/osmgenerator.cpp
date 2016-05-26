@@ -454,10 +454,10 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
 
     QList<QPointF> boundsLatLon = convertToEPSG4326(QList<QPointF>() << m_pdfBoundingBox.topLeft() << m_pdfBoundingBox.bottomRight());
     writer.writeEmptyElement("bounds");
-    writer.writeAttribute("minlat", QString::number(boundsLatLon[1].y(), 'f'));
-    writer.writeAttribute("maxlat", QString::number(boundsLatLon[0].y(), 'f'));
-    writer.writeAttribute("minlon", QString::number(boundsLatLon[0].x(), 'f'));
-    writer.writeAttribute("maxlon", QString::number(boundsLatLon[1].x(), 'f'));
+    writer.writeAttribute("minlat", QString::number(boundsLatLon[1].y(), 'f', 8));
+    writer.writeAttribute("maxlat", QString::number(boundsLatLon[0].y(), 'f', 8));
+    writer.writeAttribute("minlon", QString::number(boundsLatLon[0].x(), 'f', 8));
+    writer.writeAttribute("maxlon", QString::number(boundsLatLon[1].x(), 'f', 8));
 
     QList<OSMPath> goodPaths;
     qDebug() << "Extracting nodes...";
@@ -507,8 +507,8 @@ void OSMGenerator::dumpOSM(const QString &fileName, QList<OSMPath> *paths, bool 
     foreach (const QPointF &node, tNodes) {
         writer.writeEmptyElement("node");
         writer.writeAttribute("id", QString::number(-i));
-        writer.writeAttribute("lat", QString::number(node.y(), 'f'));
-        writer.writeAttribute("lon", QString::number(node.x(), 'f'));
+        writer.writeAttribute("lat", QString::number(node.y(), 'f', 8));
+        writer.writeAttribute("lon", QString::number(node.x(), 'f', 8));
         i++;
     }
 
