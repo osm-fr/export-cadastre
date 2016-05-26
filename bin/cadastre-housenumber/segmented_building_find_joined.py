@@ -24,7 +24,6 @@ dans le deuxième fichier)
 
 import re
 import sys
-import cv2
 import copy
 import math
 import numpy
@@ -33,7 +32,6 @@ import operator
 import itertools
 import rtree.index
 from glob import glob
-from matplotlib                     import pyplot
 from shapely.geometry.polygon       import Polygon
 from shapely.geometry.linestring    import LineString
 from shapely.geometry.point         import Point

@@ -2,6 +2,8 @@
 
 . config || exit -1
 
+export MPLCONFIGDIR="$work_dir/tmp"
+
 if [[ $# != 3 && $# != 4 ]] ; then
     echo "ERREUR: mauvais nombre d'arguments"
     exit -1

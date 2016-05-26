@@ -22,7 +22,6 @@ pour détecter si des buildings doivent êtrefusionnés.
 
 import re
 import sys
-import cv2
 import copy
 import math
 import numpy

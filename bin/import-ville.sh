@@ -10,6 +10,7 @@ bbox="$4"
 
 . `dirname $0`/config
 cd $data_dir || exit -1
+export MPLCONFIGDIR="$work_dir/tmp"
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
 cadastre_vers_pdf="$bin_dir/cadastre-housenumber/cadastre_vers_pdf.py"
