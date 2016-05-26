@@ -77,8 +77,11 @@ def main(argv):
 
     output_osm = filter_buildings_junction(osm, buildings)
     
-    if VERBOSE: print "save ", output_filename 
-    OsmWriter(output_osm).write_to_file(output_filename)
+    if len(output_osm.nodes) > 0:
+        if VERBOSE: print "save ", output_filename 
+        OsmWriter(output_osm).write_to_file(output_filename)
+    else:
+        print "Nothing detected"
 
     return 0
 
