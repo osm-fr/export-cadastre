@@ -18,6 +18,7 @@ sudo apt-get install qt4-qmake
 sudo apt-get install libqt4-dev
 sudo apt-get install python-gdal
 sudo apt-get install python-numpy
+sudo apt-get install python-sklearn
 sudo apt-get install libspatialindex1
 sudo pip install shapely
 sudo pip install rtree
@@ -59,7 +60,7 @@ Utilisation:
     CELLES DEJA PRÉSENTES DANS OSM !
     IL NE FAUT PAS PAS IMPORTER DES ADRESSES QUI Y ETAIENT DÉJA !
 
-    ATTENTION AUSSI A VÉRIFIER ET CORRIGER SI NECESSAIRE TOUT LES ELEMENTS
+    ATTENTION AUSSI A VÉRIFIER ET CORRIGER SI NECESSAIRE TOUS LES ELEMENTS
     AYANT UN TAG FIXME.
 
     Il est recommandé de commencer par intégrer les adresses correspondant
@@ -108,6 +109,48 @@ Utilisation:
 
 
 ============================================================================
+Simplification de bâtiments
+---------------------------
+
+Le script simplify_qadastre_houses.py sert a simplifier un fichier de 
+bâtiments tel que le fichier CODE_COMMUNE-houses.osm obtenus par le programme
+Qadastre.
+Il vas:
+ - fusioner les nœeuds proches
+ - joindre les nœeuds aux segments proches
+ - simplifier les chemins en supprimant des noeuds
+
+
+============================================================================
+Prédiction de bâtiments segmentés
+---------------------------------
+
+La prédiction de buildings potentiellement segmentés par le cadastre 
+(le cadastre découpe les bâtiments aux limites de parcelles)
+est le rôle du script segmented_building_predict.py
+
+Ce script vas utiliser une Machine à Vecteurs de Support (SVM) sur
+un vecteur composé de statistiques sur les angles formés par les 
+segments du bâtiments pour intuiter si chaque couple de 
+bâtiments contigue pourait être le résultat d'une segmentation 
+due au cadasstre.
+
+Les données d'apprentissage du classifier SVM sont présentes dans 
+le répertoire segmented_building_data/
+Ce répertoire contient des fichiers .osm où chaque bâtiments 
+qui devraient être fusionés ensemble doivent avoir
+un tag "joined" de valeur identique.
+Le programme ./segmented_building_classifier.py génère le classifier 
+à partir de tels fichiers .osm.
+
+Le programme segmented_building_find_joined.py peux servir à générer
+un fichier .osm à utiliser pour l'apprentissage en comparant deux fichiers
+.osm (par exemple un extrait du cadastre, et un extrait d'OSM) et annote
+le tag "joined" les bâtiments du premier fichier qui sont joints dans
+le second.
+
+
+============================================================================
 Anciens scripts :
 -----------------
 
@@ -132,8 +175,8 @@ manuellement derrière !
 
 
 ============================================================================
-Le code:
---------
+Le code de récupération des adresses:
+-------------------------------------
 Le code de récupération des pdf est un mix entre le code du programme
 Qadastre de Pierre Ducroquet (https://gitorious.org/qadastre/qadastre2osm)
 et du script import-bati.sh
@@ -143,7 +186,7 @@ La récuparétaion des pdf est morcelée en plusieurs fichiers correspondant
 chacun à une bbox de taille maximale 2000 afin d'avoir une bonne précision 
 et être capable d'en extraire les numéros de rue (dessinés petit).
 
-L'analyse des fichiers pdf a dabord était faites a partir d'une version 
+L'analyse des fichiers pdf a d'abord été faites a partir d'une version 
 svg (voir pdf_vers_svg.py)
 Maintenant le petit programme pdfparser fait l'équivalent, il génère
 les path contenus dans le pdf avec une syntaxe équivalente à celle des

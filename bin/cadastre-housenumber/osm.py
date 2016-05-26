@@ -89,17 +89,47 @@ class Osm(object):
           "maxlat": str(maxlat)})
     def iteritems(self):
         return itertools.chain.from_iterable([self.nodes.itervalues(), self.ways.itervalues(), self.relations.itervalues()])
-    def get(self, item_type, item_id):
-        if item_type == "node":
+    def get(self, item_type_or_textid, item_id=None):
+        if item_type_or_textid in ("n", "node"):
             return self.nodes.get(item_id)
-        elif item_type == "way":
+        elif item_type_or_textid  in ("w",  "way"):
             return self.ways.get(item_id)
-        else:
-            assert(item_type == "relation")
+        elif item_type_or_textid  in ("r", "relation"):
             return self.relations.get(item_id)
+        else: # consider we have a textid
+            assert(item_id == None)
+            item_type = item_type_or_textid[0]
+            item_id = int(item_type_or_textid[1:])
+            return self.get(item_type, item_id)
     def iter_relation_members(self, relation):
         for mtype, mref, mrole in relation.itermembers():
             yield self.get(mtype, int(mref)), mrole
+    def filter(self, items):
+        """ Return a new Osm() file, in which only the listed items 
+            and the dependent ones) are present
+        """
+        result = Osm({})
+        def add_item(i):
+            if i.type() == "node":
+              add_node(i)
+            elif i.type() == "way":
+              add_way(i)
+            elif i.type() == "relation":
+              add_relation(i)
+        def add_node(n):
+            result.nodes[n.id()] = n
+        def add_way(w):
+            result.ways[w.id()] = w
+            for node_id in w.nodes: add_node(self.nodes[node_id])
+        def add_relation(r):
+            result.relations[r.id()] = r
+            for item, role in self.iter_relation_members(r):
+                add_item(i)
+        for i in items:
+            add_item(i)
+        return result
+
+
 
 class Item(object):
     def __init__(self, attrs,tags=None):
@@ -113,6 +143,8 @@ class Item(object):
         Osm.min_id = min(Osm.min_id, id)
     def id(self):
         return int(self.attrs["id"])
+    def textid(self):
+        return self.type()[0] + str(self.id())
 
 class Node(Item):
     def __init__(self, attrs,tags=None):

@@ -1,0 +1,3984 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" upload="true" generator="JOSM">
+	<node lat="44.8283759747" visible="true" lon="-0.69427656518" id="-4539389"/>
+	<node lat="44.8194001007" visible="true" lon="-0.65055109442" id="-4547625"/>
+	<node lat="44.8193890578" visible="true" lon="-0.65074924514" id="-4547596"/>
+	<node lat="44.8297679036" visible="true" lon="-0.6476363972" id="-4538267"/>
+	<node lat="44.8297998669" visible="true" lon="-0.64767082841" id="-4538266"/>
+	<node lat="44.8297990033" visible="true" lon="-0.64764456058" id="-4538265"/>
+	<node lat="44.8297694018" visible="true" lon="-0.64760951934" id="-4538264"/>
+	<node lat="44.8457015453" visible="true" lon="-0.67287435758" id="-4538253"/>
+	<node lat="44.8462728438" visible="true" lon="-0.67244517179" id="-4538252"/>
+	<node lat="44.8462021952" visible="true" lon="-0.67225300105" id="-4538251"/>
+	<node lat="44.8464847116" visible="true" lon="-0.67204054309" id="-4538250"/>
+	<node lat="44.8464087369" visible="true" lon="-0.67184068807" id="-4538249"/>
+	<node lat="44.8595316173" visible="true" lon="-0.64342411546" id="-4538248"/>
+	<node lat="44.8595204904" visible="true" lon="-0.64342873115" id="-4538247"/>
+	<node lat="44.8455489751" visible="true" lon="-0.67247386868" id="-4538246"/>
+	<node lat="44.8456178251" visible="true" lon="-0.67265476259" id="-4538245"/>
+	<node lat="44.8457382876" visible="true" lon="-0.67233573862" id="-4538244"/>
+	<node lat="44.814203807" visible="true" lon="-0.71199955632" id="-4538233"/>
+	<node lat="44.8141908217" visible="true" lon="-0.71203049577" id="-4538232"/>
+	<node lat="44.814207909" visible="true" lon="-0.71204538326" id="-4538231"/>
+	<node lat="44.8142122204" visible="true" lon="-0.71204540782" id="-4538230"/>
+	<node lat="44.8142535846" visible="true" lon="-0.71204516944" id="-4538229"/>
+	<node lat="44.8303522649" visible="true" lon="-0.6527143732" id="-4538228"/>
+	<node lat="44.8303416984" visible="true" lon="-0.65271800756" id="-4538227"/>
+	<node lat="44.8303399005" visible="true" lon="-0.65270928516" id="-4538226"/>
+	<node lat="44.8303232436" visible="true" lon="-0.65271481212" id="-4538225"/>
+	<node lat="44.8303160662" visible="true" lon="-0.6526746065" id="-4538224"/>
+	<node lat="44.8302658512" visible="true" lon="-0.65269280919" id="-4538223"/>
+	<node lat="44.8302499811" visible="true" lon="-0.65269852106" id="-4538222"/>
+	<node lat="44.8302466958" visible="true" lon="-0.65268337468" id="-4538221"/>
+	<node lat="44.830150074" visible="true" lon="-0.65271863729" id="-4538220"/>
+	<node lat="44.8301532358" visible="true" lon="-0.65273239173" id="-4538219"/>
+	<node lat="44.8301212649" visible="true" lon="-0.65274314251" id="-4538218"/>
+	<node lat="44.8303663949" visible="true" lon="-0.65279617125" id="-4538217"/>
+	<node lat="44.8333760283" visible="true" lon="-0.68318359781" id="-4538216"/>
+	<node lat="44.8333764391" visible="true" lon="-0.68299537354" id="-4538215"/>
+	<node lat="44.8333956234" visible="true" lon="-0.68296785249" id="-4538214"/>
+	<node lat="44.833526418" visible="true" lon="-0.68297114918" id="-4538213"/>
+	<node lat="44.8335277971" visible="true" lon="-0.68278639619" id="-4538212"/>
+	<node lat="44.8334636976" visible="true" lon="-0.6827851011" id="-4538211"/>
+	<node lat="44.8334475248" visible="true" lon="-0.68276151505" id="-4538210"/>
+	<node lat="44.8334474976" visible="true" lon="-0.68267327923" id="-4538209"/>
+	<node lat="44.8334190951" visible="true" lon="-0.68267424907" id="-4538208"/>
+	<node lat="44.8332762101" visible="true" lon="-0.68318368193" id="-4538207"/>
+	<node lat="44.8300959542" visible="true" lon="-0.63041560108" id="-4538206"/>
+	<node lat="44.8595470791" visible="true" lon="-0.64354340901" id="-4538205"/>
+	<node lat="44.8595588576" visible="true" lon="-0.64353869947" id="-4538204"/>
+	<node lat="44.8595471765" visible="true" lon="-0.64348969534" id="-4538203"/>
+	<node lat="44.8595378837" visible="true" lon="-0.64350418815" id="-4538202"/>
+	<node lat="44.8300965238" visible="true" lon="-0.63039511213" id="-4538201"/>
+	<node lat="44.8300419264" visible="true" lon="-0.63039231358" id="-4538200"/>
+	<node lat="44.8300412691" visible="true" lon="-0.63041291513" id="-4538199"/>
+	<node lat="44.8300874194" visible="true" lon="-0.63041506333" id="-4538198"/>
+	<node lat="44.8300960956" visible="true" lon="-0.63041117081" id="-4538197"/>
+	<node lat="44.8351999197" visible="true" lon="-0.63550053126" id="-4538196"/>
+	<node lat="44.835295892" visible="true" lon="-0.63556698572" id="-4538195"/>
+	<node lat="44.8352924042" visible="true" lon="-0.63557765359" id="-4538194"/>
+	<node lat="44.83535369" visible="true" lon="-0.63561886062" id="-4538193"/>
+	<node lat="44.8353876639" visible="true" lon="-0.63552542667" id="-4538192"/>
+	<node lat="44.8353861194" visible="true" lon="-0.63552038321" id="-4538191"/>
+	<node lat="44.8353280295" visible="true" lon="-0.63548027259" id="-4538190"/>
+	<node lat="44.8353324245" visible="true" lon="-0.63546978012" id="-4538189"/>
+	<node lat="44.8353211472" visible="true" lon="-0.63546147228" id="-4538188"/>
+	<node lat="44.8352371874" visible="true" lon="-0.63540249439" id="-4538187"/>
+	<node lat="44.8352269695" visible="true" lon="-0.63542907793" id="-4538186"/>
+	<node lat="44.8390827332" visible="true" lon="-0.663937797" id="-4538185"/>
+	<node lat="44.8390790733" visible="true" lon="-0.66393693961" id="-4538184"/>
+	<node lat="44.8390733547" visible="true" lon="-0.66399405883" id="-4538183"/>
+	<node lat="44.8390955521" visible="true" lon="-0.66399889761" id="-4538182"/>
+	<node lat="44.8174078669" visible="true" lon="-0.69817820639" id="-4538180"/>
+	<node lat="44.8249117196" visible="true" lon="-0.67300610986" id="-4538174"/>
+	<node lat="44.8248648991" visible="true" lon="-0.67283792521" id="-4538173"/>
+	<node lat="44.8247261109" visible="true" lon="-0.67283110453" id="-4538172"/>
+	<node lat="44.8247238916" visible="true" lon="-0.67291957152" id="-4538171"/>
+	<node lat="44.8248003438" visible="true" lon="-0.67292331369" id="-4538170"/>
+	<node lat="44.8247991537" visible="true" lon="-0.67297133962" id="-4538169"/>
+	<node lat="44.8247636326" visible="true" lon="-0.67296958184" id="-4538168"/>
+	<node lat="44.8247614012" visible="true" lon="-0.67305804812" id="-4538167"/>
+	<node lat="44.8247698562" visible="true" lon="-0.67305845203" id="-4538166"/>
+	<node lat="44.8247695443" visible="true" lon="-0.67307109051" id="-4538165"/>
+	<node lat="44.8247659483" visible="true" lon="-0.67307086129" id="-4538164"/>
+	<node lat="44.8247604955" visible="true" lon="-0.67327584918" id="-4538163"/>
+	<node lat="44.8249858096" visible="true" lon="-0.67328690385" id="-4538162"/>
+	<node lat="44.8173705204" visible="true" lon="-0.69853703825" id="-4538161"/>
+	<node lat="44.8174661325" visible="true" lon="-0.69850306019" id="-4538160"/>
+	<node lat="44.8174879024" visible="true" lon="-0.69863443565" id="-4538159"/>
+	<node lat="44.8175599965" visible="true" lon="-0.69860856765" id="-4538158"/>
+	<node lat="44.8175508006" visible="true" lon="-0.69855632022" id="-4538157"/>
+	<node lat="44.8175833115" visible="true" lon="-0.69854537842" id="-4538156"/>
+	<node lat="44.8176216542" visible="true" lon="-0.6985323976" id="-4538155"/>
+	<node lat="44.8176129698" visible="true" lon="-0.69848399693" id="-4538154"/>
+	<node lat="44.817685834" visible="true" lon="-0.69845956194" id="-4538153"/>
+	<node lat="44.8176810842" visible="true" lon="-0.69843090547" id="-4538152"/>
+	<node lat="44.8177139279" visible="true" lon="-0.69842376516" id="-4538151"/>
+	<node lat="44.8177313482" visible="true" lon="-0.6983837563" id="-4538150"/>
+	<node lat="44.8177234215" visible="true" lon="-0.69837818481" id="-4538149"/>
+	<node lat="44.8177803977" visible="true" lon="-0.69824944891" id="-4538148"/>
+	<node lat="44.8177406503" visible="true" lon="-0.69821437822" id="-4538147"/>
+	<node lat="44.8177335195" visible="true" lon="-0.69816732602" id="-4538146"/>
+	<node lat="44.8176980398" visible="true" lon="-0.69817795942" id="-4538145"/>
+	<node lat="44.8176641618" visible="true" lon="-0.69814782199" id="-4538144"/>
+	<node lat="44.8176433111" visible="true" lon="-0.69819876575" id="-4538143"/>
+	<node lat="44.8175720185" visible="true" lon="-0.69822215434" id="-4538142"/>
+	<node lat="44.8175637447" visible="true" lon="-0.69817479266" id="-4538141"/>
+	<node lat="44.8175265483" visible="true" lon="-0.69818798227" id="-4538140"/>
+	<node lat="44.8174908433" visible="true" lon="-0.69820037313" id="-4538139"/>
+	<node lat="44.8174817104" visible="true" lon="-0.69814877117" id="-4538138"/>
+	<node lat="44.8174318779" visible="true" lon="-0.69816860907" id="-4538137"/>
+	<node lat="44.8174186726" visible="true" lon="-0.69823636223" id="-4538136"/>
+	<node lat="44.8174317301" visible="true" lon="-0.69830580068" id="-4538135"/>
+	<node lat="44.813665781" visible="true" lon="-0.69722619673" id="-4538134"/>
+	<node lat="44.8136770701" visible="true" lon="-0.69725322872" id="-4538133"/>
+	<node lat="44.8136881575" visible="true" lon="-0.69724470946" id="-4538132"/>
+	<node lat="44.8136718526" visible="true" lon="-0.69720569522" id="-4538131"/>
+	<node lat="44.8390326668" visible="true" lon="-0.65773167235" id="-4538126"/>
+	<node lat="44.8390367034" visible="true" lon="-0.65777686811" id="-4538125"/>
+	<node lat="44.8174032992" visible="true" lon="-0.69831612686" id="-4538124"/>
+	<node lat="44.8173603635" visible="true" lon="-0.69833146255" id="-4538123"/>
+	<node lat="44.8173701898" visible="true" lon="-0.69838094882" id="-4538122"/>
+	<node lat="44.817344509" visible="true" lon="-0.69838981447" id="-4538121"/>
+	<node lat="44.8173509847" visible="true" lon="-0.69842339115" id="-4538120"/>
+	<node lat="44.8173366301" visible="true" lon="-0.69842969284" id="-4538119"/>
+	<node lat="44.8173394987" visible="true" lon="-0.69844417079" id="-4538118"/>
+	<node lat="44.8173546385" visible="true" lon="-0.69847135063" id="-4538117"/>
+	<node lat="44.8173588413" visible="true" lon="-0.69847249789" id="-4538116"/>
+	<node lat="44.8173657963" visible="true" lon="-0.69851091496" id="-4538115"/>
+	<node lat="44.8390425649" visible="true" lon="-0.65777686887" id="-4538114"/>
+	<node lat="44.8390925727" visible="true" lon="-0.65776775395" id="-4538113"/>
+	<node lat="44.8390882524" visible="true" lon="-0.65772316477" id="-4538112"/>
+	<node lat="44.8390598241" visible="true" lon="-0.65772757235" id="-4538111"/>
+	<node lat="44.8192744605" visible="true" lon="-0.65046581005" id="-4547617"/>
+	<node lat="44.8192575037" visible="true" lon="-0.65047207701" id="-4547616"/>
+	<node lat="44.8370402362" visible="true" lon="-0.63573175435" id="-4550353"/>
+	<node lat="44.8369509143" visible="true" lon="-0.6358575364" id="-4550351"/>
+	<node lat="44.8370623568" visible="true" lon="-0.63600068137" id="-4550349"/>
+	<node lat="44.8370638218" visible="true" lon="-0.63600595632" id="-4550348"/>
+	<node lat="44.8370344091" visible="true" lon="-0.63571112936" id="-4550344"/>
+	<node lat="44.8369782109" visible="true" lon="-0.63581482815" id="-4550341"/>
+	<node lat="44.8369686798" visible="true" lon="-0.63582028696" id="-4550340"/>
+	<node lat="44.8370410126" visible="true" lon="-0.63592475381" id="-4550338"/>
+	<node lat="44.8370982083" visible="true" lon="-0.63593607807" id="-4550337"/>
+	<node lat="44.8194089352" visible="true" lon="-0.65070811174" id="-4547594"/>
+	<node lat="44.8370516724" visible="true" lon="-0.63596329076" id="-4550331"/>
+	<node lat="44.8370055672" visible="true" lon="-0.63579920083" id="-4550324"/>
+	<node lat="44.8369808931" visible="true" lon="-0.63595944847" id="-4550323"/>
+	<node lat="44.8370133845" visible="true" lon="-0.63594061715" id="-4550322"/>
+	<node lat="44.8371107442" visible="true" lon="-0.63598055743" id="-4550320"/>
+	<node lat="44.8371020871" visible="true" lon="-0.63595001341" id="-4550319"/>
+	<node lat="44.8370265583" visible="true" lon="-0.63568316846" id="-4550317"/>
+	<node lat="44.8369804148" visible="true" lon="-0.63570937635" id="-4550315"/>
+	<node lat="44.8369754371" visible="true" lon="-0.63584262498" id="-4550314"/>
+	<node lat="44.8390700449" visible="true" lon="-0.65929835266" id="-4539334"/>
+	<node lat="44.8436480279" visible="true" lon="-0.64937607818" id="-4539333"/>
+	<node lat="44.83727181347" visible="true" lon="-0.63502033368" id="-4550697"/>
+	<node lat="44.8503507133" visible="true" lon="-0.64743236286" id="-4539533"/>
+	<node lat="44.8192007016" visible="true" lon="-0.65052113204" id="-4547613"/>
+	<node lat="44.8191947468" visible="true" lon="-0.65055810137" id="-4547612"/>
+	<node lat="44.83728523561" visible="true" lon="-0.63506827882" id="-4550703"/>
+	<node action="modify" visible="true" lat="44.83739582538" id="-4550222" lon="-0.63545542281"/>
+	<node action="modify" visible="true" lat="44.83732465663" id="-4550220" lon="-0.63552017776"/>
+	<node action="modify" visible="true" lat="44.83746324845" id="-4550219" lon="-0.63569363269"/>
+	<node action="modify" visible="true" lat="44.83734824211" id="-4550215" lon="-0.63579437972"/>
+	<node action="modify" visible="true" lat="44.8374720725" id="-4550214" lon="-0.63572496381"/>
+	<node lat="44.8191714618" visible="true" lon="-0.65069419925" id="-4547611"/>
+	<node action="modify" visible="true" lat="44.83751675308" id="-4550212" lon="-0.63569942335"/>
+	<node action="modify" visible="true" lat="44.83731882956" id="-4550211" lon="-0.63549955277"/>
+	<node action="modify" visible="true" lat="44.83742990971" id="-4550210" lon="-0.63540363866"/>
+	<node action="modify" visible="true" lat="44.83750352985" id="-4550209" lon="-0.63565390454"/>
+	<node action="modify" visible="true" lat="44.83732543303" id="-4550205" lon="-0.63571317722"/>
+	<node action="modify" visible="true" lat="44.83738262845" id="-4550204" lon="-0.63572450147"/>
+	<node action="modify" visible="true" lat="44.83738805472" id="-4550203" lon="-0.6354275851"/>
+	<node action="modify" visible="true" lat="44.83740189245" id="-4550201" lon="-0.63547680574"/>
+	<node action="modify" visible="true" lat="44.83727656567" id="-4550199" lon="-0.6355396791"/>
+	<node action="modify" visible="true" lat="44.83733609277" id="-4550198" lon="-0.63575171417"/>
+	<node action="modify" visible="true" lat="44.83745926887" id="-4550197" lon="-0.6356798429"/>
+	<node action="modify" visible="true" lat="44.83745561368" id="-4550196" lon="-0.63549273852"/>
+	<node action="modify" visible="true" lat="44.83744581093" id="-4550193" lon="-0.63545857718"/>
+	<node action="modify" visible="true" lat="44.8372899878" id="-4550191" lon="-0.63558762424"/>
+	<node action="modify" visible="true" lat="44.83739516428" id="-4550187" lon="-0.63576898084"/>
+	<node action="modify" visible="true" lat="44.83738650723" id="-4550186" lon="-0.63573843682"/>
+	<node action="modify" visible="true" lat="44.83749173041" id="-4550185" lon="-0.63561720314"/>
+	<node action="modify" visible="true" lat="44.8373109788" id="-4550184" lon="-0.63547159187"/>
+	<node lat="44.8191725015" visible="true" lon="-0.65070109988" id="-4547610"/>
+	<node action="modify" visible="true" lat="44.83726483553" id="-4550182" lon="-0.63549779976"/>
+	<node lat="44.8191770415" visible="true" lon="-0.65071682898" id="-4547609"/>
+	<node lat="44.8191863051" visible="true" lon="-0.65073994522" id="-4547608"/>
+	<node lat="44.8192038535" visible="true" lon="-0.65076839594" id="-4547607"/>
+	<node lat="44.83726008333" visible="true" lon="-0.63497845434" id="-4550702"/>
+	<node lat="44.8192299853" visible="true" lon="-0.65079624286" id="-4547606"/>
+	<node action="modify" visible="true" lat="44.83750922772" id="-4550213" lon="-0.63570375954"/>
+	<node lat="44.8192485118" visible="true" lon="-0.6508084365" id="-4547605"/>
+	<node lat="44.8194178974" visible="true" lon="-0.65063918395" id="-4547592"/>
+	<node lat="44.8524978883" visible="true" lon="-0.65881436108" id="-4539353"/>
+	<node lat="44.8334839235" visible="true" lon="-0.6237001438" id="-4539286"/>
+	<node lat="44.836992145" visible="true" lon="-0.63575125569" id="-4550332"/>
+	<node lat="44.8192656299" visible="true" lon="-0.65081660883" id="-4547604"/>
+	<node lat="44.8192788945" visible="true" lon="-0.65081910297" id="-4547603"/>
+	<node lat="44.8192961561" visible="true" lon="-0.65081980833" id="-4547602"/>
+	<node lat="44.83751200091" visible="true" lon="-0.63518007793" id="-4550701"/>
+	<node lat="44.8193973139" visible="true" lon="-0.65073862997" id="-4547595"/>
+	<node lat="44.8193176267" visible="true" lon="-0.65081624067" id="-4547601"/>
+	<node lat="44.8193332816" visible="true" lon="-0.65080862562" id="-4547600"/>
+	<node lat="44.8282339782" visible="true" lon="-0.61406962768" id="-4539641"/>
+	<node lat="44.828221697" visible="true" lon="-0.61417531545" id="-4539640"/>
+	<node lat="44.8289520111" visible="true" lon="-0.6442965585" id="-4539639"/>
+	<node lat="44.8289825387" visible="true" lon="-0.64432784144" id="-4539638"/>
+	<node lat="44.8289993391" visible="true" lon="-0.64432081908" id="-4539637"/>
+	<node lat="44.8290142613" visible="true" lon="-0.64433568786" id="-4539636"/>
+	<node lat="44.8290186576" visible="true" lon="-0.64436455858" id="-4539635"/>
+	<node lat="44.8290211883" visible="true" lon="-0.64438117545" id="-4539634"/>
+	<node lat="44.8291270744" visible="true" lon="-0.64435470564" id="-4539633"/>
+	<node lat="44.8291154274" visible="true" lon="-0.64426270525" id="-4539632"/>
+	<node lat="44.829101068" visible="true" lon="-0.64424976249" id="-4539631"/>
+	<node lat="44.8290685912" visible="true" lon="-0.64425683991" id="-4539630"/>
+	<node lat="44.8290610222" visible="true" lon="-0.64427940076" id="-4539629"/>
+	<node lat="44.8290422409" visible="true" lon="-0.64428376604" id="-4539628"/>
+	<node lat="44.8290286165" visible="true" lon="-0.64427038029" id="-4539627"/>
+	<node lat="44.8290209949" visible="true" lon="-0.6442353305" id="-4539626"/>
+	<node lat="44.8290034726" visible="true" lon="-0.64421688779" id="-4539625"/>
+	<node lat="44.8289816035" visible="true" lon="-0.64425841053" id="-4539624"/>
+	<node lat="44.8289745901" visible="true" lon="-0.644249747" id="-4539623"/>
+	<node lat="44.8289553869" visible="true" lon="-0.64428941286" id="-4539622"/>
+	<node lat="44.8289566248" visible="true" lon="-0.64430139069" id="-4539621"/>
+	<node lat="44.8193475271" visible="true" lon="-0.65079963871" id="-4547599"/>
+	<node lat="44.8374508615" visible="true" lon="-0.6349733931" id="-4550700"/>
+	<node lat="44.8439041592" visible="true" lon="-0.64977153466" id="-4539189"/>
+	<node lat="44.8140397553" visible="true" lon="-0.69699249031" id="-4539251"/>
+	<node lat="44.8300937166" visible="true" lon="-0.65275381918" id="-4539562"/>
+	<node lat="44.8301017361" visible="true" lon="-0.65279585037" id="-4539561"/>
+	<node lat="44.8301281135" visible="true" lon="-0.65281865532" id="-4539560"/>
+	<node lat="44.8301458407" visible="true" lon="-0.65281383766" id="-4539559"/>
+	<node lat="44.8301619179" visible="true" lon="-0.6529023249" id="-4539558"/>
+	<node lat="44.8302389415" visible="true" lon="-0.65287404031" id="-4539557"/>
+	<node lat="44.8302434053" visible="true" lon="-0.652898123" id="-4539556"/>
+	<node lat="44.830247402" visible="true" lon="-0.65289672222" id="-4539555"/>
+	<node lat="44.830249692" visible="true" lon="-0.65291256508" id="-4539554"/>
+	<node lat="44.8303124124" visible="true" lon="-0.6528894502" id="-4539553"/>
+	<node lat="44.830310552" visible="true" lon="-0.65287706105" id="-4539552"/>
+	<node lat="44.8303098987" visible="true" lon="-0.65287234408" id="-4539551"/>
+	<node lat="44.8303303639" visible="true" lon="-0.65286604584" id="-4539550"/>
+	<node lat="44.8303491419" visible="true" lon="-0.65285356411" id="-4539549"/>
+	<node lat="44.8303440592" visible="true" lon="-0.65282967844" id="-4539548"/>
+	<node lat="44.8303641886" visible="true" lon="-0.65282261622" id="-4539547"/>
+	<node lat="44.8303629698" visible="true" lon="-0.65281568596" id="-4539546"/>
+	<node lat="44.8303693883" visible="true" lon="-0.65281217689" id="-4539545"/>
+	<node lat="44.8418520451" visible="true" lon="-0.65090292205" id="-4539544"/>
+	<node lat="44.8418711199" visible="true" lon="-0.65086994364" id="-4539543"/>
+	<node lat="44.841903314" visible="true" lon="-0.65090539463" id="-4539542"/>
+	<node lat="44.8419270874" visible="true" lon="-0.65086336099" id="-4539541"/>
+	<node lat="44.8418950657" visible="true" lon="-0.65082852869" id="-4539540"/>
+	<node lat="44.8419133769" visible="true" lon="-0.65079688622" id="-4539539"/>
+	<node lat="44.8144688152" visible="true" lon="-0.65584255726" id="-4539538"/>
+	<node lat="44.8144729309" visible="true" lon="-0.65584941631" id="-4539537"/>
+	<node lat="44.8145235539" visible="true" lon="-0.65578490939" id="-4539536"/>
+	<node lat="44.8145145585" visible="true" lon="-0.65577067035" id="-4539535"/>
+	<node lat="44.8145046928" visible="true" lon="-0.65575511051" id="-4539534"/>
+	<node lat="44.8338398551" visible="true" lon="-0.62054981752" id="-4539245"/>
+	<node lat="44.8366546884" visible="true" lon="-0.62482848476" id="-4539532"/>
+	<node lat="44.8366612395" visible="true" lon="-0.62493918651" id="-4539531"/>
+	<node lat="44.8366481575" visible="true" lon="-0.62494000096" id="-4539530"/>
+	<node lat="44.8366168026" visible="true" lon="-0.62473090407" id="-4539529"/>
+	<node lat="44.8365493037" visible="true" lon="-0.62472626913" id="-4539528"/>
+	<node lat="44.8365949907" visible="true" lon="-0.62498882087" id="-4539527"/>
+	<node lat="44.8366143469" visible="true" lon="-0.6249863585" id="-4539526"/>
+	<node lat="44.8366837233" visible="true" lon="-0.62497730246" id="-4539525"/>
+	<node lat="44.8366911065" visible="true" lon="-0.62482469857" id="-4539524"/>
+	<node lat="44.8367046137" visible="true" lon="-0.6249745652" id="-4539523"/>
+	<node lat="44.8366958056" visible="true" lon="-0.62482423453" id="-4539522"/>
+	<node lat="44.8535163671" visible="true" lon="-0.65706005743" id="-4539521"/>
+	<node lat="44.8535335917" visible="true" lon="-0.65699237408" id="-4539520"/>
+	<node lat="44.8533455821" visible="true" lon="-0.65689431788" id="-4539519"/>
+	<node lat="44.8533404795" visible="true" lon="-0.6569099512" id="-4539513"/>
+	<node lat="44.8533246916" visible="true" lon="-0.65695834041" id="-4539512"/>
+	<node lat="44.8533496659" visible="true" lon="-0.65697171255" id="-4539511"/>
+	<node lat="44.8144543704" visible="true" lon="-0.65581848902" id="-4539510"/>
+	<node lat="44.8144615406" visible="true" lon="-0.65583084045" id="-4539509"/>
+	<node lat="44.8144679208" visible="true" lon="-0.65580049956" id="-4539508"/>
+	<node lat="44.8398198651" visible="true" lon="-0.7203961741" id="-4539503"/>
+	<node lat="44.8397318513" visible="true" lon="-0.72037681515" id="-4539502"/>
+	<node lat="44.8397186025" visible="true" lon="-0.72049548863" id="-4539501"/>
+	<node lat="44.8398021417" visible="true" lon="-0.72051393411" id="-4539500"/>
+	<node lat="44.8397909183" visible="true" lon="-0.7206147416" id="-4539499"/>
+	<node lat="44.8397074833" visible="true" lon="-0.72059567805" id="-4539498"/>
+	<node lat="44.8397823478" visible="true" lon="-0.72073359914" id="-4539497"/>
+	<node lat="44.8398347996" visible="true" lon="-0.72083473754" id="-4539496"/>
+	<node lat="44.8399067743" visible="true" lon="-0.72076088175" id="-4539495"/>
+	<node lat="44.8398542265" visible="true" lon="-0.72065973709" id="-4539494"/>
+	<node lat="44.8398724131" visible="true" lon="-0.72049731845" id="-4539493"/>
+	<node lat="44.8399442759" visible="true" lon="-0.72042357315" id="-4539492"/>
+	<node lat="44.8398918275" visible="true" lon="-0.720322317" id="-4539491"/>
+	<node lat="44.8249890923" visible="true" lon="-0.67308179371" id="-4539490"/>
+	<node lat="44.8249854919" visible="true" lon="-0.67308169924" id="-4539489"/>
+	<node lat="44.8249858158" visible="true" lon="-0.67306906148" id="-4539488"/>
+	<node lat="44.8249948103" visible="true" lon="-0.67306949978" id="-4539487"/>
+	<node lat="44.8249969338" visible="true" lon="-0.67298102627" id="-4539486"/>
+	<node lat="44.8249474638" visible="true" lon="-0.67297863255" id="-4539485"/>
+	<node lat="44.8249486659" visible="true" lon="-0.67293060725" id="-4539484"/>
+	<node lat="44.8249576598" visible="true" lon="-0.67293106237" id="-4539483"/>
+	<node lat="44.824959879" visible="true" lon="-0.67284259502" id="-4539482"/>
+	<node lat="44.839978773" visible="true" lon="-0.64781735676" id="-4539481"/>
+	<node lat="44.8391288921" visible="true" lon="-0.66400684229" id="-4539480"/>
+	<node lat="44.839131814" visible="true" lon="-0.66394966332" id="-4539479"/>
+	<node lat="44.8396983293" visible="true" lon="-0.72067764293" id="-4539478"/>
+	<node lat="44.8396942381" visible="true" lon="-0.7207142335" id="-4539477"/>
+	<node lat="44.8397208117" visible="true" lon="-0.72072000163" id="-4539476"/>
+	<node lat="44.8281976801" visible="true" lon="-0.69452388936" id="-4539474"/>
+	<node lat="44.8283667612" visible="true" lon="-0.69445193874" id="-4539473"/>
+	<node lat="44.8299915469" visible="true" lon="-0.63041015367" id="-4539472"/>
+	<node lat="44.8299917266" visible="true" lon="-0.63039623986" id="-4539471"/>
+	<node lat="44.8298808257" visible="true" lon="-0.63039065343" id="-4539470"/>
+	<node lat="44.829880098" visible="true" lon="-0.6304221205" id="-4539469"/>
+	<node lat="44.8330049048" visible="true" lon="-0.63622329245" id="-4539466"/>
+	<node lat="44.8330308261" visible="true" lon="-0.63614770288" id="-4539465"/>
+	<node lat="44.8330195931" visible="true" lon="-0.63613838524" id="-4539464"/>
+	<node lat="44.8330456792" visible="true" lon="-0.63606064539" id="-4539463"/>
+	<node lat="44.8329618381" visible="true" lon="-0.63600623399" id="-4539462"/>
+	<node lat="44.8293469727" visible="true" lon="-0.69432781557" id="-4539233"/>
+	<node lat="44.8329383534" visible="true" lon="-0.63597436821" id="-4539460"/>
+	<node lat="44.8329419769" visible="true" lon="-0.63606132558" id="-4539459"/>
+	<node lat="44.8329539819" visible="true" lon="-0.63606903769" id="-4539458"/>
+	<node lat="44.8329439942" visible="true" lon="-0.63609968576" id="-4539457"/>
+	<node lat="44.8369879172" visible="true" lon="-0.67546083083" id="-4539456"/>
+	<node lat="44.8373374956" visible="true" lon="-0.67542855499" id="-4539455"/>
+	<node lat="44.8373268209" visible="true" lon="-0.67523505337" id="-4539454"/>
+	<node lat="44.8369756577" visible="true" lon="-0.67527139898" id="-4539453"/>
+	<node lat="44.8328430693" visible="true" lon="-0.6357931595" id="-4539452"/>
+	<node lat="44.8328268843" visible="true" lon="-0.63582604975" id="-4539451"/>
+	<node lat="44.8328421587" visible="true" lon="-0.63584158091" id="-4539450"/>
+	<node lat="44.8328217229" visible="true" lon="-0.63588308168" id="-4539449"/>
+	<node lat="44.832831769" visible="true" lon="-0.63589308393" id="-4539448"/>
+	<node lat="44.832811918" visible="true" lon="-0.63593094179" id="-4539447"/>
+	<node lat="44.8327894567" visible="true" lon="-0.63593433511" id="-4539446"/>
+	<node lat="44.8327828229" visible="true" lon="-0.63594760601" id="-4539445"/>
+	<node lat="44.83278923" visible="true" lon="-0.63599255615" id="-4539444"/>
+	<node lat="44.8327999951" visible="true" lon="-0.63600223244" id="-4539443"/>
+	<node lat="44.8328649676" visible="true" lon="-0.63598443947" id="-4539442"/>
+	<node lat="44.8328803745" visible="true" lon="-0.63599883122" id="-4539441"/>
+	<node lat="44.8329043976" visible="true" lon="-0.63594881306" id="-4539440"/>
+	<node lat="44.8328900858" visible="true" lon="-0.63593435539" id="-4539439"/>
+	<node lat="44.8329038843" visible="true" lon="-0.63590548386" id="-4539438"/>
+	<node lat="44.8329098955" visible="true" lon="-0.63591207498" id="-4539437"/>
+	<node lat="44.8194114586" visible="true" lon="-0.6505901731" id="-4547627"/>
+	<node lat="44.8194065008" visible="true" lon="-0.65057062037" id="-4547626"/>
+	<node lat="44.8194165244" visible="true" lon="-0.65066213276" id="-4547593"/>
+	<node lat="44.8193934598" visible="true" lon="-0.65054169571" id="-4547624"/>
+	<node lat="44.8193856752" visible="true" lon="-0.65052601418" id="-4547623"/>
+	<node lat="44.8193764035" visible="true" lon="-0.65051175729" id="-4547622"/>
+	<node lat="44.8193654325" visible="true" lon="-0.65049992418" id="-4547621"/>
+	<node lat="44.8193502626" visible="true" lon="-0.65048718381" id="-4547620"/>
+	<node lat="44.8193245815" visible="true" lon="-0.65047036868" id="-4547619"/>
+	<node lat="44.8192950822" visible="true" lon="-0.65046623873" id="-4547618"/>
+	<node lat="44.8436334897" visible="true" lon="-0.64938820782" id="-4539227"/>
+	<node lat="44.8298753949" visible="true" lon="-0.63060867369" id="-4539424"/>
+	<node lat="44.8299854803" visible="true" lon="-0.63061459737" id="-4539423"/>
+	<node lat="44.8299859767" visible="true" lon="-0.63059602806" id="-4539422"/>
+	<node lat="44.8300348204" visible="true" lon="-0.63059846426" id="-4539421"/>
+	<node lat="44.8300914878" visible="true" lon="-0.63060114025" id="-4539420"/>
+	<node lat="44.8301442827" visible="true" lon="-0.63060358913" id="-4539419"/>
+	<node lat="44.8301964549" visible="true" lon="-0.63060598189" id="-4539418"/>
+	<node lat="44.8302131849" visible="true" lon="-0.63060678286" id="-4539417"/>
+	<node lat="44.8302113622" visible="true" lon="-0.63069477643" id="-4539416"/>
+	<node lat="44.8302784738" visible="true" lon="-0.63069762113" id="-4539415"/>
+	<node lat="44.8302777947" visible="true" lon="-0.63072455103" id="-4539414"/>
+	<node lat="44.8303298706" visible="true" lon="-0.63072732606" id="-4539413"/>
+	<node lat="44.8303821149" visible="true" lon="-0.63073009482" id="-4539412"/>
+	<node lat="44.8304378746" visible="true" lon="-0.63073298382" id="-4539411"/>
+	<node lat="44.830492592" visible="true" lon="-0.63073465938" id="-4539410"/>
+	<node lat="44.8304916752" visible="true" lon="-0.63075510971" id="-4539409"/>
+	<node lat="44.8305972572" visible="true" lon="-0.63076063181" id="-4539408"/>
+	<node lat="44.8305984286" visible="true" lon="-0.63071563837" id="-4539407"/>
+	<node lat="44.8306003638" visible="true" lon="-0.63064068198" id="-4539406"/>
+	<node lat="44.8306023631" visible="true" lon="-0.63056409235" id="-4539405"/>
+	<node lat="44.8306029505" visible="true" lon="-0.63053438835" id="-4539404"/>
+	<node lat="44.8304888099" visible="true" lon="-0.63052869873" id="-4539403"/>
+	<node lat="44.8304883286" visible="true" lon="-0.63054942969" id="-4539402"/>
+	<node lat="44.8304418224" visible="true" lon="-0.63054714078" id="-4539401"/>
+	<node lat="44.8303847159" visible="true" lon="-0.63054430213" id="-4539400"/>
+	<node lat="44.830335337" visible="true" lon="-0.6305416972" id="-4539399"/>
+	<node lat="44.8302793093" visible="true" lon="-0.63053892653" id="-4539398"/>
+	<node lat="44.8302571852" visible="true" lon="-0.6305377857" id="-4539397"/>
+	<node lat="44.8302581663" visible="true" lon="-0.63050138884" id="-4539396"/>
+	<node lat="44.8301998171" visible="true" lon="-0.63049759423" id="-4539395"/>
+	<node lat="44.8302021802" visible="true" lon="-0.63042089302" id="-4539394"/>
+	<node lat="44.8301449777" visible="true" lon="-0.63041804846" id="-4539393"/>
+	<node lat="44.8525811939" visible="true" lon="-0.65899163516" id="-4539392"/>
+	<node lat="44.8282310277" visible="true" lon="-0.69431514097" id="-4539391"/>
+	<node lat="44.8284217288" visible="true" lon="-0.6943016609" id="-4539390"/>
+	<node lat="44.8390962925" visible="true" lon="-0.6578063626" id="-4539221"/>
+	<node lat="44.8284761135" visible="true" lon="-0.69402245662" id="-4539388"/>
+	<node lat="44.8283874474" visible="true" lon="-0.69397018603" id="-4539387"/>
+	<node lat="44.8283436705" visible="true" lon="-0.69409472507" id="-4539386"/>
+	<node lat="44.8283001036" visible="true" lon="-0.69421866681" id="-4539385"/>
+	<node lat="44.8282613605" visible="true" lon="-0.69418554742" id="-4539384"/>
+	<node lat="44.8282842483" visible="true" lon="-0.69413801496" id="-4539383"/>
+	<node lat="44.8282173123" visible="true" lon="-0.694099198" id="-4539382"/>
+	<node lat="44.8282000823" visible="true" lon="-0.69408920612" id="-4539381"/>
+	<node lat="44.8281757055" visible="true" lon="-0.69415448418" id="-4539380"/>
+	<node lat="44.8281354987" visible="true" lon="-0.6941276007" id="-4539379"/>
+	<node lat="44.828082491" visible="true" lon="-0.69425636474" id="-4539378"/>
+	<node lat="44.8281270616" visible="true" lon="-0.69447328177" id="-4539377"/>
+	<node lat="44.8281632447" visible="true" lon="-0.69449941802" id="-4539376"/>
+	<node lat="44.8329309945" visible="true" lon="-0.63614001847" id="-4539375"/>
+	<node lat="44.8329220914" visible="true" lon="-0.63616754468" id="-4539374"/>
+	<node lat="44.8329324938" visible="true" lon="-0.63617466615" id="-4539373"/>
+	<node lat="44.8475422688" visible="true" lon="-0.65530567737" id="-4539372"/>
+	<node lat="44.8475360998" visible="true" lon="-0.65532946423" id="-4539371"/>
+	<node lat="44.8475522219" visible="true" lon="-0.6553716344" id="-4539370"/>
+	<node lat="44.8475685743" visible="true" lon="-0.6553755931" id="-4539369"/>
+	<node lat="44.847610267" visible="true" lon="-0.65548587653" id="-4539368"/>
+	<node lat="44.8436443153" visible="true" lon="-0.64009639978" id="-4539367"/>
+	<node lat="44.8436779987" visible="true" lon="-0.64008801009" id="-4539366"/>
+	<node lat="44.8476153355" visible="true" lon="-0.65548214594" id="-4539365"/>
+	<node lat="44.8476653608" visible="true" lon="-0.65544479817" id="-4539364"/>
+	<node lat="44.8475462252" visible="true" lon="-0.65513497476" id="-4539363"/>
+	<node lat="44.8474934575" visible="true" lon="-0.65517618404" id="-4539362"/>
+	<node lat="44.8525841962" visible="true" lon="-0.6589430765" id="-4539357"/>
+	<node lat="44.8525641948" visible="true" lon="-0.65894053944" id="-4539356"/>
+	<node lat="44.8525661895" visible="true" lon="-0.65890912345" id="-4539355"/>
+	<node lat="44.8525717611" visible="true" lon="-0.65882248164" id="-4539354"/>
+	<node lat="44.8294952229" visible="true" lon="-0.69437617719" id="-4539215"/>
+	<node lat="44.8524871592" visible="true" lon="-0.65901923031" id="-4539352"/>
+	<node lat="44.8525578281" visible="true" lon="-0.65902650594" id="-4539351"/>
+	<node lat="44.8525602974" visible="true" lon="-0.65898892301" id="-4539350"/>
+	<node lat="44.8525793158" visible="true" lon="-0.65899139764" id="-4539349"/>
+	<node lat="44.8436756844" visible="true" lon="-0.64005634321" id="-4539346"/>
+	<node lat="44.8436740633" visible="true" lon="-0.64004205903" id="-4539345"/>
+	<node lat="44.8436409315" visible="true" lon="-0.64004972387" id="-4539344"/>
+	<node lat="44.8436438933" visible="true" lon="-0.64009269262" id="-4539343"/>
+	<node lat="44.8310190366" visible="true" lon="-0.68522245141" id="-4539342"/>
+	<node lat="44.8336883927" visible="true" lon="-0.62337561919" id="-4539341"/>
+	<node lat="44.8336710976" visible="true" lon="-0.62338125019" id="-4539340"/>
+	<node lat="44.8336858882" visible="true" lon="-0.62351915305" id="-4539339"/>
+	<node lat="44.8337068074" visible="true" lon="-0.62351287219" id="-4539338"/>
+	<node lat="44.8337291602" visible="true" lon="-0.62365695659" id="-4539337"/>
+	<node lat="44.8336852435" visible="true" lon="-0.62335833754" id="-4539336"/>
+	<node lat="44.8390828788" visible="true" lon="-0.6593362742" id="-4539335"/>
+	<node action="modify" visible="true" lat="44.84910096986" id="-3048390" lon="-0.61379496472"/>
+	<node action="modify" visible="true" lat="44.84914411049" id="-3048389" lon="-0.61379909157"/>
+	<node action="modify" visible="true" lat="44.84911001346" id="-3048388" lon="-0.61384040125"/>
+	<node action="modify" visible="true" lat="44.84912366672" id="-3048387" lon="-0.61376750769"/>
+	<node action="modify" visible="true" lat="44.8491454186" id="-3048386" lon="-0.61379750386"/>
+	<node action="modify" visible="true" lat="44.84908882407" id="-3048385" lon="-0.61380965703"/>
+	<node lat="44.8185753889" visible="true" lon="-0.6492756977" id="-4539325"/>
+	<node lat="44.8185956971" visible="true" lon="-0.64924358647" id="-4539324"/>
+	<node lat="44.8185957146" visible="true" lon="-0.64923180828" id="-4539323"/>
+	<node lat="44.8186072878" visible="true" lon="-0.64922786651" id="-4539322"/>
+	<node lat="44.8186135364" visible="true" lon="-0.64922103934" id="-4539321"/>
+	<node lat="44.818617843" visible="true" lon="-0.64921334666" id="-4539320"/>
+	<node lat="44.8186211647" visible="true" lon="-0.64920228396" id="-4539319"/>
+	<node lat="44.8186193185" visible="true" lon="-0.64918382309" id="-4539318"/>
+	<node lat="44.8186118573" visible="true" lon="-0.64916966438" id="-4539317"/>
+	<node lat="44.8186055058" visible="true" lon="-0.64916509388" id="-4539316"/>
+	<node lat="44.8185980393" visible="true" lon="-0.64916195474" id="-4539315"/>
+	<node lat="44.8185908104" visible="true" lon="-0.64916264457" id="-4539314"/>
+	<node lat="44.8185819396" visible="true" lon="-0.64922575518" id="-4539313"/>
+	<node lat="44.8337284886" visible="true" lon="-0.62382212918" id="-4539312"/>
+	<node lat="44.8624373375" visible="true" lon="-0.65088268619" id="-4539311"/>
+	<node lat="44.8624307602" visible="true" lon="-0.65088289408" id="-4539310"/>
+	<node lat="44.8624334596" visible="true" lon="-0.65093918616" id="-4539309"/>
+	<node lat="44.8624398615" visible="true" lon="-0.65093883204" id="-4539308"/>
+	<node lat="44.8624542728" visible="true" lon="-0.6509363173" id="-4539307"/>
+	<node lat="44.862456012" visible="true" lon="-0.65097760207" id="-4539306"/>
+	<node lat="44.8624924217" visible="true" lon="-0.6509741947" id="-4539305"/>
+	<node lat="44.8625592909" visible="true" lon="-0.65096793678" id="-4539304"/>
+	<node lat="44.8322976963" visible="true" lon="-0.63600458081" id="-4539303"/>
+	<node lat="44.8322747912" visible="true" lon="-0.6360083343" id="-4539302"/>
+	<node lat="44.8322713476" visible="true" lon="-0.63594394052" id="-4539301"/>
+	<node lat="44.8321254768" visible="true" lon="-0.63596182719" id="-4539300"/>
+	<node lat="44.8321319377" visible="true" lon="-0.63607237443" id="-4539299"/>
+	<node lat="44.832169003" visible="true" lon="-0.63607128694" id="-4539298"/>
+	<node lat="44.8323007856" visible="true" lon="-0.63605187003" id="-4539297"/>
+	<node lat="44.8336782626" visible="true" lon="-0.62367375952" id="-4539296"/>
+	<node lat="44.8336456748" visible="true" lon="-0.62368437075" id="-4539295"/>
+	<node lat="44.8336419906" visible="true" lon="-0.6236669204" id="-4539294"/>
+	<node lat="44.8335730992" visible="true" lon="-0.62368904016" id="-4539293"/>
+	<node lat="44.8335379701" visible="true" lon="-0.62370025117" id="-4539292"/>
+	<node lat="44.8335370843" visible="true" lon="-0.62369411831" id="-4539291"/>
+	<node lat="44.8335084128" visible="true" lon="-0.6237032033" id="-4539290"/>
+	<node lat="44.833515702" visible="true" lon="-0.6237519076" id="-4539289"/>
+	<node lat="44.8334928487" visible="true" lon="-0.62375933277" id="-4539288"/>
+	<node lat="44.8334853997" visible="true" lon="-0.62371036523" id="-4539287"/>
+	<node lat="44.8439234908" visible="true" lon="-0.64985975861" id="-4539187"/>
+	<node lat="44.8334342607" visible="true" lon="-0.62371513362" id="-4539285"/>
+	<node lat="44.8334384976" visible="true" lon="-0.62374615721" id="-4539284"/>
+	<node lat="44.8333878998" visible="true" lon="-0.6237622192" id="-4539283"/>
+	<node lat="44.8334132412" visible="true" lon="-0.62392257844" id="-4539282"/>
+	<node lat="44.8334939138" visible="true" lon="-0.6238956124" id="-4539281"/>
+	<node lat="44.8334964171" visible="true" lon="-0.62390488558" id="-4539280"/>
+	<node lat="44.8335138757" visible="true" lon="-0.62389940009" id="-4539279"/>
+	<node lat="44.8335057841" visible="true" lon="-0.62384534467" id="-4539278"/>
+	<node lat="44.833528562" visible="true" lon="-0.6238372733" id="-4539277"/>
+	<node lat="44.8335368928" visible="true" lon="-0.6238924917" id="-4539276"/>
+	<node lat="44.8335388317" visible="true" lon="-0.62390515622" id="-4539275"/>
+	<node lat="44.8335726106" visible="true" lon="-0.62389372536" id="-4539274"/>
+	<node lat="44.833570241" visible="true" lon="-0.62387497346" id="-4539273"/>
+	<node lat="44.8336799646" visible="true" lon="-0.62383832161" id="-4539272"/>
+	<node lat="44.8337187499" visible="true" lon="-0.62382544994" id="-4539271"/>
+	<node lat="44.8337015712" visible="true" lon="-0.62366599155" id="-4539270"/>
+	<node lat="44.8185668924" visible="true" lon="-0.64925149986" id="-4539269"/>
+	<node lat="44.8185609671" visible="true" lon="-0.6492591069" id="-4539268"/>
+	<node lat="44.8185650449" visible="true" lon="-0.64926378657" id="-4539267"/>
+	<node lat="44.8315380647" visible="true" lon="-0.65822981798" id="-4539266"/>
+	<node lat="44.8258112828" visible="true" lon="-0.63213262414" id="-4539265"/>
+	<node lat="44.8258016241" visible="true" lon="-0.63212214187" id="-4539264"/>
+	<node lat="44.8257831766" visible="true" lon="-0.63216084429" id="-4539263"/>
+	<node lat="44.8257930474" visible="true" lon="-0.63217032727" id="-4539262"/>
+	<node lat="44.8257991323" visible="true" lon="-0.63215768121" id="-4539261"/>
+	<node lat="44.8338402461" visible="true" lon="-0.62055451814" id="-4539260"/>
+	<node lat="44.8315702786" visible="true" lon="-0.65821413963" id="-4539259"/>
+	<node lat="44.8315279729" visible="true" lon="-0.65818206613" id="-4539258"/>
+	<node lat="44.8315347047" visible="true" lon="-0.65821402473" id="-4539257"/>
+	<node lat="44.8140024514" visible="true" lon="-0.69689885492" id="-4539256"/>
+	<node lat="44.8439136084" visible="true" lon="-0.64210874757" id="-4539255"/>
+	<node lat="44.8138647552" visible="true" lon="-0.69700809593" id="-4539254"/>
+	<node lat="44.8139102303" visible="true" lon="-0.69711973769" id="-4539253"/>
+	<node lat="44.814047083" visible="true" lon="-0.69701132024" id="-4539252"/>
+	<node lat="44.8436723409" visible="true" lon="-0.64962922765" id="-4539198"/>
+	<node lat="44.8139518626" visible="true" lon="-0.69693901215" id="-4539250"/>
+	<node lat="44.8338729602" visible="true" lon="-0.620548606" id="-4539249"/>
+	<node lat="44.8338621951" visible="true" lon="-0.62042525489" id="-4539248"/>
+	<node lat="44.833830189" visible="true" lon="-0.62042945425" id="-4539247"/>
+	<node lat="44.8338333383" visible="true" lon="-0.62046809116" id="-4539246"/>
+	<node lat="44.8436820021" visible="true" lon="-0.64962273194" id="-4539197"/>
+	<node lat="44.8436823523" visible="true" lon="-0.64943763062" id="-4539244"/>
+	<node lat="44.843670282" visible="true" lon="-0.64943497503" id="-4539243"/>
+	<node lat="44.8436674561" visible="true" lon="-0.64942758691" id="-4539242"/>
+	<node lat="44.8436963974" visible="true" lon="-0.64962592317" id="-4539196"/>
+	<node lat="44.83734348992" visible="true" lon="-0.6352750343" id="-4550698"/>
+	<node lat="44.8437504545" visible="true" lon="-0.6496373337" id="-4539195"/>
+	<node lat="44.8293905496" visible="true" lon="-0.69448137607" id="-4539232"/>
+	<node lat="44.8295070622" visible="true" lon="-0.6944192192" id="-4539231"/>
+	<node lat="44.824898397" visible="true" lon="-0.67353298049" id="-4539230"/>
+	<node lat="44.8248957456" visible="true" lon="-0.67358332521" id="-4539229"/>
+	<node lat="44.8248860717" visible="true" lon="-0.67376701632" id="-4539228"/>
+	<node lat="44.8438060977" visible="true" lon="-0.64964909799" id="-4539194"/>
+	<node lat="44.8294708789" visible="true" lon="-0.62924057025" id="-4539224"/>
+	<node lat="44.8294422142" visible="true" lon="-0.62914812003" id="-4539223"/>
+	<node lat="44.8390403825" visible="true" lon="-0.65781674028" id="-4539222"/>
+	<node lat="44.8438149635" visible="true" lon="-0.64965092592" id="-4539193"/>
+	<node lat="44.8390378949" visible="true" lon="-0.65779024666" id="-4539220"/>
+	<node lat="44.83732068084" visible="true" lon="-0.6351938318" id="-4550707"/>
+	<node lat="44.8438215248" visible="true" lon="-0.64965981697" id="-4539192"/>
+	<node lat="44.8294666912" visible="true" lon="-0.69427789899" id="-4539214"/>
+	<node lat="44.8293846941" visible="true" lon="-0.69431212256" id="-4539213"/>
+	<node lat="44.829500847" visible="true" lon="-0.6943971813" id="-4539212"/>
+	<node lat="44.8438592581" visible="true" lon="-0.64971094934" id="-4539191"/>
+	<node lat="44.8435452926" visible="true" lon="-0.6494499671" id="-4539200"/>
+	<node lat="44.8436227233" visible="true" lon="-0.64966216333" id="-4539199"/>
+	<node action="modify" visible="true" lat="44.84591863035" id="-3048254" lon="-0.61448470767"/>
+	<node action="modify" visible="true" lat="44.845910825" id="-3048253" lon="-0.61454625558"/>
+	<node action="modify" visible="true" lat="44.84594433994" id="-3048252" lon="-0.6144263068"/>
+	<node action="modify" visible="true" lat="44.84598932644" id="-3048251" lon="-0.61462791928"/>
+	<node action="modify" visible="true" lat="44.84597642767" id="-3048250" lon="-0.61444541718"/>
+	<node action="modify" visible="true" lat="44.84591935689" id="-3048249" lon="-0.61461056157"/>
+	<node action="modify" visible="true" lat="44.84593525359" id="-3048248" lon="-0.61448802277"/>
+	<node action="modify" visible="true" lat="44.84594043015" id="-3048247" lon="-0.61445402515"/>
+	<node lat="44.8438995786" visible="true" lon="-0.64976530156" id="-4539190"/>
+	<node action="modify" visible="true" lat="44.8459122114" id="-3048245" lon="-0.61453514177"/>
+	<node action="modify" visible="true" lat="44.8459263659" id="-3048244" lon="-0.61455216991"/>
+	<node action="modify" visible="true" lat="44.8459520785" id="-3048243" lon="-0.61437074724"/>
+	<node action="modify" visible="true" lat="44.84602199701" id="-3048242" lon="-0.61438998077"/>
+	<node lat="44.8439458595" visible="true" lon="-0.64991207875" id="-4539185"/>
+	<node lat="44.8439475859" visible="true" lon="-0.6499114284" id="-4539184"/>
+	<node lat="44.8440307133" visible="true" lon="-0.64987555095" id="-4539183"/>
+	<node lat="44.8440187828" visible="true" lon="-0.64982097129" id="-4539182"/>
+	<node lat="44.8440372108" visible="true" lon="-0.64981339335" id="-4539181"/>
+	<node lat="44.8440195242" visible="true" lon="-0.64973567354" id="-4539180"/>
+	<node lat="44.8440056547" visible="true" lon="-0.64967376194" id="-4539179"/>
+	<node lat="44.8438536533" visible="true" lon="-0.6494924298" id="-4539178"/>
+	<node lat="44.8436806031" visible="true" lon="-0.64945284968" id="-4539177"/>
+	<node lat="44.84365753" visible="true" lon="-0.64944758925" id="-4539176"/>
+	<node lat="44.8436495153" visible="true" lon="-0.64942783475" id="-4539175"/>
+	<node lat="44.8435750662" visible="true" lon="-0.64942906114" id="-4539174"/>
+	<node lat="44.8329210191" visible="true" lon="-0.63589098505" id="-4539163"/>
+	<node lat="44.8329292669" visible="true" lon="-0.63587531774" id="-4539162"/>
+	<node lat="44.8329200198" visible="true" lon="-0.63586587229" id="-4539161"/>
+	<node lat="44.8420871034" visible="true" lon="-0.62862079098" id="-4539160"/>
+	<node lat="44.8420543873" visible="true" lon="-0.62863277735" id="-4539159"/>
+	<node lat="44.8501589056" visible="true" lon="-0.64149345437" id="-4539158"/>
+	<node lat="44.8501824886" visible="true" lon="-0.64151356942" id="-4539157"/>
+	<node lat="44.8502673204" visible="true" lon="-0.6415399544" id="-4539156"/>
+	<node lat="44.8399251537" visible="true" lon="-0.64784586862" id="-4539155"/>
+	<node lat="44.8399142674" visible="true" lon="-0.64773882264" id="-4539154"/>
+	<node lat="44.8398937123" visible="true" lon="-0.64771383568" id="-4539153"/>
+	<node lat="44.8398542787" visible="true" lon="-0.64777793829" id="-4539152"/>
+	<node lat="44.839939244" visible="true" lon="-0.64788143647" id="-4539151"/>
+	<node lat="44.8399643226" visible="true" lon="-0.64784061683" id="-4539150"/>
+	<node lat="44.8320339393" visible="true" lon="-0.62361237867" id="-4543236"/>
+	<node lat="44.8320410832" visible="true" lon="-0.62365131561" id="-4543235"/>
+	<node lat="44.8320541821" visible="true" lon="-0.62364732845" id="-4543234"/>
+	<node lat="44.8502770436" visible="true" lon="-0.6414725564" id="-4539137"/>
+	<node lat="44.8502792552" visible="true" lon="-0.64145673991" id="-4539136"/>
+	<node lat="44.8502444882" visible="true" lon="-0.64144530585" id="-4539135"/>
+	<node lat="44.8502462266" visible="true" lon="-0.64143339364" id="-4539134"/>
+	<node lat="44.850254968" visible="true" lon="-0.64137415657" id="-4539133"/>
+	<node lat="44.8501799969" visible="true" lon="-0.64134929011" id="-4539132"/>
+	<node lat="44.8501596143" visible="true" lon="-0.6414881973" id="-4539131"/>
+	<node lat="44.8136560743" visible="true" lon="-0.69716747416" id="-4539130"/>
+	<node lat="44.8420949076" visible="true" lon="-0.6288623627" id="-4539129"/>
+	<node lat="44.8421122908" visible="true" lon="-0.62896096023" id="-4539128"/>
+	<node lat="44.8421451831" visible="true" lon="-0.62894947475" id="-4539127"/>
+	<node lat="44.8421317618" visible="true" lon="-0.62887315978" id="-4539126"/>
+	<node lat="44.8341228219" visible="true" lon="-0.66703384025" id="-4539125"/>
+	<node lat="44.8556349275" visible="true" lon="-0.65546555228" id="-4539124"/>
+	<node lat="44.8556552735" visible="true" lon="-0.65546633703" id="-4539123"/>
+	<node lat="44.8556581426" visible="true" lon="-0.65540471384" id="-4539122"/>
+	<node lat="44.8397538377" visible="true" lon="-0.6462679028" id="-4539121"/>
+	<node lat="44.8397521767" visible="true" lon="-0.6462072759" id="-4539120"/>
+	<node lat="44.8555253886" visible="true" lon="-0.65556118629" id="-4539119"/>
+	<node lat="44.8185751678" visible="true" lon="-0.64917886738" id="-4539118"/>
+	<node lat="44.8185724295" visible="true" lon="-0.64919121582" id="-4539117"/>
+	<node lat="44.8185715873" visible="true" lon="-0.64919762591" id="-4539116"/>
+	<node lat="44.8185729602" visible="true" lon="-0.64921099408" id="-4539115"/>
+	<node lat="44.8185787909" visible="true" lon="-0.6491722621" id="-4539114"/>
+	<node lat="44.8293668563" visible="true" lon="-0.62930477861" id="-4539113"/>
+	<node lat="44.8293699898" visible="true" lon="-0.62930256216" id="-4539112"/>
+	<node lat="44.8293398306" visible="true" lon="-0.62920876884" id="-4539111"/>
+	<node lat="44.8555476139" visible="true" lon="-0.65539908343" id="-4539110"/>
+	<node lat="44.8555461359" visible="true" lon="-0.65546194309" id="-4539109"/>
+	<node lat="44.8555274245" visible="true" lon="-0.65546112699" id="-4539108"/>
+	<node lat="44.8555263724" visible="true" lon="-0.65551072387" id="-4539107"/>
+	<node lat="44.8556307147" visible="true" lon="-0.65540336142" id="-4539106"/>
+	<node lat="44.8395927655" visible="true" lon="-0.64628519193" id="-4539105"/>
+	<node lat="44.8395928783" visible="true" lon="-0.64622543714" id="-4539104"/>
+	<node lat="44.8395861937" visible="true" lon="-0.64622601009" id="-4539103"/>
+	<node lat="44.852720771" visible="true" lon="-0.65231156746" id="-4539102"/>
+	<node lat="44.8165114188" visible="true" lon="-0.62907755582" id="-4539101"/>
+	<node lat="44.8250487375" visible="true" lon="-0.62394792298" id="-4539100"/>
+	<node lat="44.8368807268" visible="true" lon="-0.67525963712" id="-4539099"/>
+	<node lat="44.8366160237" visible="true" lon="-0.67522451916" id="-4539098"/>
+	<node lat="44.8366125097" visible="true" lon="-0.67541105283" id="-4539097"/>
+	<node lat="44.8368283377" visible="true" lon="-0.67543949163" id="-4539096"/>
+	<node lat="44.8250522401" visible="true" lon="-0.62390017453" id="-4539095"/>
+	<node lat="44.8250068134" visible="true" lon="-0.62389529234" id="-4539094"/>
+	<node lat="44.8250133972" visible="true" lon="-0.62379040143" id="-4539093"/>
+	<node lat="44.8249008194" visible="true" lon="-0.62377825839" id="-4539092"/>
+	<node lat="44.8248919443" visible="true" lon="-0.62394641739" id="-4539091"/>
+	<node lat="44.8250016095" visible="true" lon="-0.62395685853" id="-4539090"/>
+	<node lat="44.8250495589" visible="true" lon="-0.62393646349" id="-4539089"/>
+	<node lat="44.8275743524" visible="true" lon="-0.62096173783" id="-4539088"/>
+	<node lat="44.8276399182" visible="true" lon="-0.62096484517" id="-4539087"/>
+	<node lat="44.8275304805" visible="true" lon="-0.62101518872" id="-4539086"/>
+	<node lat="44.8341983875" visible="true" lon="-0.66712360943" id="-4539085"/>
+	<node lat="44.8341934158" visible="true" lon="-0.66713811408" id="-4539084"/>
+	<node lat="44.8342362833" visible="true" lon="-0.66716386759" id="-4539083"/>
+	<node lat="44.834249158" visible="true" lon="-0.66711657754" id="-4539082"/>
+	<node lat="44.834277793" visible="true" lon="-0.66713372766" id="-4539081"/>
+	<node lat="44.8343207337" visible="true" lon="-0.66700327323" id="-4539080"/>
+	<node lat="44.8343046649" visible="true" lon="-0.666993135" id="-4539079"/>
+	<node lat="44.8343461243" visible="true" lon="-0.66686093185" id="-4539078"/>
+	<node lat="44.8342403376" visible="true" lon="-0.66679204505" id="-4539077"/>
+	<node lat="44.8342286251" visible="true" lon="-0.66683420992" id="-4539076"/>
+	<node lat="44.834193623" visible="true" lon="-0.66681299168" id="-4539075"/>
+	<node lat="44.8341314448" visible="true" lon="-0.6670066713" id="-4539074"/>
+	<node lat="44.8341391583" visible="true" lon="-0.6670442487" id="-4539073"/>
+	<node lat="44.8341564494" visible="true" lon="-0.66705522432" id="-4539072"/>
+	<node lat="44.8276418" visible="true" lon="-0.62088306535" id="-4539071"/>
+	<node lat="44.8276434324" visible="true" lon="-0.62081214008" id="-4539070"/>
+	<node lat="44.8275348889" visible="true" lon="-0.62080607915" id="-4539069"/>
+	<node lat="44.8275321386" visible="true" lon="-0.62095478095" id="-4539068"/>
+	<node lat="44.8398038764" visible="true" lon="-0.64623041811" id="-4539067"/>
+	<node lat="44.8397669793" visible="true" lon="-0.64625998972" id="-4539066"/>
+	<node lat="44.853483781" visible="true" lon="-0.65226381979" id="-4539065"/>
+	<node lat="44.8534814534" visible="true" lon="-0.6521738892" id="-4539064"/>
+	<node lat="44.8527210462" visible="true" lon="-0.65225245083" id="-4539063"/>
+	<node lat="44.8527245631" visible="true" lon="-0.65231130135" id="-4539062"/>
+	<node lat="44.8398343385" visible="true" lon="-0.64644330323" id="-4539061"/>
+	<node lat="44.8398769657" visible="true" lon="-0.6465666569" id="-4539060"/>
+	<node lat="44.8399153762" visible="true" lon="-0.64654008493" id="-4539059"/>
+	<node lat="44.8398798912" visible="true" lon="-0.6464416115" id="-4539058"/>
+	<node lat="44.8341469145" visible="true" lon="-0.66708311173" id="-4539057"/>
+	<node lat="44.8341443165" visible="true" lon="-0.66709104902" id="-4539056"/>
+	<node lat="44.8341492614" visible="true" lon="-0.66709414903" id="-4539055"/>
+	<node lat="44.8625567608" visible="true" lon="-0.6509258418" id="-4539054"/>
+	<node lat="44.8625474112" visible="true" lon="-0.6509139843" id="-4539053"/>
+	<node lat="44.8625405738" visible="true" lon="-0.65090544426" id="-4539052"/>
+	<node lat="44.8625222433" visible="true" lon="-0.65090656211" id="-4539051"/>
+	<node lat="44.8625213479" visible="true" lon="-0.65088129058" id="-4539050"/>
+	<node lat="44.862540545" visible="true" lon="-0.65088086943" id="-4539049"/>
+	<node lat="44.8625460177" visible="true" lon="-0.65086753656" id="-4539048"/>
+	<node lat="44.8625522745" visible="true" lon="-0.65085222677" id="-4539047"/>
+	<node lat="44.8625500621" visible="true" lon="-0.65081445855" id="-4539046"/>
+	<node lat="44.8624348188" visible="true" lon="-0.65082375406" id="-4539045"/>
+	<node lat="44.8624368424" visible="true" lon="-0.65085617342" id="-4539044"/>
+	<node lat="44.8625574787" visible="true" lon="-0.65093716895" id="-4539043"/>
+	<node lat="44.8320738086" visible="true" lon="-0.63608199034" id="-4539042"/>
+	<node lat="44.8320821569" visible="true" lon="-0.63620113017" id="-4539041"/>
+	<node lat="44.8321751505" visible="true" lon="-0.63618600064" id="-4539040"/>
+	<node lat="44.8321727516" visible="true" lon="-0.63611748674" id="-4539039"/>
+	<node lat="44.8320999783" visible="true" lon="-0.63607756517" id="-4539038"/>
+	<node lat="44.8260000195" visible="true" lon="-0.64937842847" id="-4539037"/>
+	<node lat="44.826014442" visible="true" lon="-0.64943731764" id="-4539036"/>
+	<node lat="44.8260252764" visible="true" lon="-0.64943356491" id="-4539035"/>
+	<node lat="44.8260417616" visible="true" lon="-0.64949817136" id="-4539034"/>
+	<node lat="44.8261157035" visible="true" lon="-0.64946258348" id="-4539033"/>
+	<node lat="44.8260497337" visible="true" lon="-0.64935372829" id="-4539032"/>
+	<node lat="44.8320811987" visible="true" lon="-0.6679677235" id="-4539031"/>
+	<node lat="44.8319204067" visible="true" lon="-0.6683003173" id="-4539030"/>
+	<node lat="44.8318767143" visible="true" lon="-0.66838958137" id="-4539029"/>
+	<node lat="44.8337880538" visible="true" lon="-0.62363761792" id="-4539028"/>
+	<node lat="44.833777736" visible="true" lon="-0.6235686007" id="-4539027"/>
+	<node lat="44.8337872981" visible="true" lon="-0.6235651675" id="-4539026"/>
+	<node lat="44.8337628366" visible="true" lon="-0.62341676389" id="-4539025"/>
+	<node lat="44.8337518838" visible="true" lon="-0.62341860725" id="-4539024"/>
+	<node lat="44.8337392059" visible="true" lon="-0.62334147384" id="-4539023"/>
+	<node lat="44.8337710344" visible="true" lon="-0.62364326619" id="-4539022"/>
+	<node lat="44.8136511546" visible="true" lon="-0.69719134014" id="-4539021"/>
+	<node lat="44.8136022743" visible="true" lon="-0.69722882213" id="-4539020"/>
+	<node lat="44.8135966575" visible="true" lon="-0.69721315641" id="-4539019"/>
+	<node lat="44.8135430669" visible="true" lon="-0.69725438613" id="-4539018"/>
+	<node lat="44.8135823213" visible="true" lon="-0.69734639117" id="-4539017"/>
+	<node lat="44.8318120554" visible="true" lon="-0.66852598926" id="-4539016"/>
+	<node lat="44.8317758481" visible="true" lon="-0.66860102727" id="-4539015"/>
+	<node lat="44.8322238573" visible="true" lon="-0.66902808873" id="-4539014"/>
+	<node lat="44.8323252374" visible="true" lon="-0.66882047261" id="-4539013"/>
+	<node lat="44.8319910545" visible="true" lon="-0.66849788731" id="-4539012"/>
+	<node lat="44.8136510402" visible="true" lon="-0.69729168717" id="-4539011"/>
+	<node lat="44.8136635909" visible="true" lon="-0.69732425066" id="-4539010"/>
+	<node lat="44.8137078001" visible="true" lon="-0.69729153149" id="-4539009"/>
+	<node lat="44.8136448346" visible="true" lon="-0.69729672276" id="-4539008"/>
+	<node lat="44.8322820354" visible="true" lon="-0.66843626811" id="-4539007"/>
+	<node lat="44.832106099" visible="true" lon="-0.66848077011" id="-4539006"/>
+	<node lat="44.8323723274" visible="true" lon="-0.66874281849" id="-4539005"/>
+	<node lat="44.8325373069" visible="true" lon="-0.66841226226" id="-4539004"/>
+	<node lat="44.8325305164" visible="true" lon="-0.66840195509" id="-4539003"/>
+	<node lat="44.8559986548" visible="true" lon="-0.65548926295" id="-4539002"/>
+	<node lat="44.855980425" visible="true" lon="-0.65548761618" id="-4539001"/>
+	<node lat="44.8169366745" visible="true" lon="-0.62932151617" id="-4539000"/>
+	<node lat="44.8167446637" visible="true" lon="-0.6292861372" id="-4538999"/>
+	<node lat="44.8149916445" visible="true" lon="-0.70236824421" id="-4538998"/>
+	<node lat="44.8150523444" visible="true" lon="-0.70242123365" id="-4538997"/>
+	<node lat="44.8150638317" visible="true" lon="-0.70239527495" id="-4538996"/>
+	<node lat="44.8150726791" visible="true" lon="-0.7024028128" id="-4538995"/>
+	<node lat="44.8150943611" visible="true" lon="-0.70235406926" id="-4538994"/>
+	<node lat="44.8150854052" visible="true" lon="-0.70234654133" id="-4538993"/>
+	<node lat="44.8150982502" visible="true" lon="-0.7023176154" id="-4538992"/>
+	<node lat="44.8151068932" visible="true" lon="-0.70232589949" id="-4538991"/>
+	<node lat="44.8151251673" visible="true" lon="-0.70228480085" id="-4538990"/>
+	<node lat="44.8151161192" visible="true" lon="-0.70227752014" id="-4538989"/>
+	<node lat="44.8151457812" visible="true" lon="-0.70221055759" id="-4538988"/>
+	<node lat="44.8151541359" visible="true" lon="-0.70221958253" id="-4538987"/>
+	<node lat="44.8151727141" visible="true" lon="-0.70217762585" id="-4538986"/>
+	<node lat="44.8151637631" visible="true" lon="-0.70216994638" id="-4538985"/>
+	<node lat="44.8151803991" visible="true" lon="-0.70213230312" id="-4538984"/>
+	<node lat="44.8151897109" visible="true" lon="-0.70213960076" id="-4538983"/>
+	<node lat="44.8152073161" visible="true" lon="-0.70209985969" id="-4538982"/>
+	<node lat="44.8151983847" visible="true" lon="-0.70209194524" id="-4538981"/>
+	<node lat="44.8152267772" visible="true" lon="-0.70202782037" id="-4538980"/>
+	<node lat="44.8152356044" visible="true" lon="-0.70203598127" id="-4538979"/>
+	<node lat="44.8152531016" visible="true" lon="-0.70199660446" id="-4538978"/>
+	<node lat="44.8152445589" visible="true" lon="-0.70198782058" id="-4538977"/>
+	<node lat="44.8152607027" visible="true" lon="-0.70195127625" id="-4538976"/>
+	<node lat="44.8152693374" visible="true" lon="-0.70196018416" id="-4538975"/>
+	<node lat="44.8560976403" visible="true" lon="-0.6551838656" id="-4538972"/>
+	<node lat="44.8560623462" visible="true" lon="-0.65517794431" id="-4538971"/>
+	<node lat="44.8560641728" visible="true" lon="-0.65515173371" id="-4538970"/>
+	<node lat="44.8560366541" visible="true" lon="-0.65514757242" id="-4538969"/>
+	<node lat="44.8560256865" visible="true" lon="-0.65529835095" id="-4538968"/>
+	<node lat="44.8560537284" visible="true" lon="-0.65530305211" id="-4538967"/>
+	<node lat="44.856051991" visible="true" lon="-0.65532648205" id="-4538966"/>
+	<node lat="44.8350543202" visible="true" lon="-0.66614726544" id="-4538957"/>
+	<node lat="44.8559805673" visible="true" lon="-0.65548318399" id="-4538955"/>
+	<node lat="44.8559818364" visible="true" lon="-0.65544628247" id="-4538954"/>
+	<node lat="44.855874808" visible="true" lon="-0.65544100921" id="-4538953"/>
+	<node lat="44.8558737659" visible="true" lon="-0.65547907336" id="-4538952"/>
+	<node lat="44.8558915603" visible="true" lon="-0.65548043919" id="-4538951"/>
+	<node lat="44.8167441433" visible="true" lon="-0.62929077881" id="-4538950"/>
+	<node lat="44.8165347599" visible="true" lon="-0.62924951359" id="-4538949"/>
+	<node lat="44.8165216709" visible="true" lon="-0.6293804324" id="-4538948"/>
+	<node lat="44.8167310537" visible="true" lon="-0.62942171493" id="-4538947"/>
+	<node lat="44.8169258976" visible="true" lon="-0.62945563588" id="-4538946"/>
+	<node lat="44.8169271409" visible="true" lon="-0.6294396322" id="-4538945"/>
+	<node lat="44.8152819952" visible="true" lon="-0.70190341865" id="-4538944"/>
+	<node lat="44.8152940438" visible="true" lon="-0.70187607828" id="-4538943"/>
+	<node lat="44.8152343813" visible="true" lon="-0.70182442149" id="-4538942"/>
+	<node lat="44.8151963924" visible="true" lon="-0.70190956417" id="-4538941"/>
+	<node lat="44.8152897766" visible="true" lon="-0.70191049984" id="-4538940"/>
+	<node lat="44.8399615328" visible="true" lon="-0.64788006229" id="-4538939"/>
+	<node lat="44.8399793965" visible="true" lon="-0.64790170509" id="-4538938"/>
+	<node lat="44.8400088538" visible="true" lon="-0.64785393717" id="-4538937"/>
+	<node lat="44.8164753702" visible="true" lon="-0.62907238341" id="-4538934"/>
+	<node lat="44.8164616418" visible="true" lon="-0.62907048959" id="-4538933"/>
+	<node lat="44.8164556298" visible="true" lon="-0.62913226237" id="-4538932"/>
+	<node lat="44.8164513319" visible="true" lon="-0.62917642269" id="-4538931"/>
+	<node lat="44.8164283609" visible="true" lon="-0.62941379066" id="-4538930"/>
+	<node lat="44.8164758645" visible="true" lon="-0.62942133838" id="-4538929"/>
+	<node lat="44.8165091793" visible="true" lon="-0.6290999429" id="-4538928"/>
+	<node lat="44.8439073604" visible="true" lon="-0.649786696" id="-4539188"/>
+	<node lat="44.8560854112" visible="true" lon="-0.65533203119" id="-4538911"/>
+	<node lat="44.856087747" visible="true" lon="-0.65530418109" id="-4538910"/>
+	<node lat="44.8560723294" visible="true" lon="-0.65532979931" id="-4538909"/>
+	<node lat="44.8558899221" visible="true" lon="-0.65552846249" id="-4538906"/>
+	<node lat="44.8558883349" visible="true" lon="-0.65557789061" id="-4538905"/>
+	<node lat="44.8558708926" visible="true" lon="-0.65557678351" id="-4538904"/>
+	<node lat="44.8558698504" visible="true" lon="-0.65561484766" id="-4538903"/>
+	<node lat="44.8555438286" visible="true" lon="-0.65556185011" id="-4538902"/>
+	<node lat="44.8555429587" visible="true" lon="-0.65560029648" id="-4538901"/>
+	<node lat="44.8556484851" visible="true" lon="-0.65560446147" id="-4538900"/>
+	<node lat="44.8556504857" visible="true" lon="-0.6555649385" id="-4538899"/>
+	<node lat="44.8556324727" visible="true" lon="-0.65556443688" id="-4538898"/>
+	<node lat="44.8556335473" visible="true" lon="-0.65551713793" id="-4538897"/>
+	<node lat="44.8555654796" visible="true" lon="-0.65551320602" id="-4538896"/>
+	<node lat="44.8555366327" visible="true" lon="-0.65556151158" id="-4538895"/>
+	<node lat="44.8415409337" visible="true" lon="-0.65059274176" id="-4538894"/>
+	<node lat="44.8415220784" visible="true" lon="-0.65062711834" id="-4538893"/>
+	<node lat="44.8320458557" visible="true" lon="-0.62360894171" id="-4543233"/>
+	<node lat="44.8320439413" visible="true" lon="-0.62360946278" id="-4543232"/>
+	<node lat="44.8320490874" visible="true" lon="-0.62364889867" id="-4543231"/>
+	<node lat="44.8439336054" visible="true" lon="-0.64985597607" id="-4539186"/>
+	<node lat="44.8416081222" visible="true" lon="-0.65046962077" id="-4538860"/>
+	<node lat="44.8415515673" visible="true" lon="-0.65057315659" id="-4538859"/>
+	<node lat="44.8559758443" visible="true" lon="-0.65561904238" id="-4538858"/>
+	<node lat="44.8559770647" visible="true" lon="-0.65558365758" id="-4538857"/>
+	<node lat="44.8559956698" visible="true" lon="-0.65558483849" id="-4538856"/>
+	<node lat="44.8559971975" visible="true" lon="-0.65553464659" id="-4538855"/>
+	<node lat="44.8559514317" visible="true" lon="-0.65553199507" id="-4538854"/>
+	<node lat="44.8559010797" visible="true" lon="-0.65561605308" id="-4538853"/>
+	<node lat="44.835280084" visible="true" lon="-0.6659791835" id="-4538852"/>
+	<node lat="44.8351225107" visible="true" lon="-0.66649951746" id="-4538851"/>
+	<node lat="44.835123347" visible="true" lon="-0.6665041285" id="-4538850"/>
+	<node lat="44.8353431976" visible="true" lon="-0.66641632811" id="-4538849"/>
+	<node lat="44.8563772807" visible="true" lon="-0.65571936565" id="-4538848"/>
+	<node lat="44.8563883271" visible="true" lon="-0.65570081575" id="-4538847"/>
+	<node lat="44.8261043078" visible="true" lon="-0.64941605492" id="-4538846"/>
+	<node lat="44.8261172293" visible="true" lon="-0.64940939631" id="-4538845"/>
+	<node lat="44.8563318341" visible="true" lon="-0.65583021415" id="-4538844"/>
+	<node lat="44.8563899447" visible="true" lon="-0.65573460781" id="-4538843"/>
+	<node lat="44.8563846491" visible="true" lon="-0.65572819238" id="-4538842"/>
+	<node lat="44.8260913453" visible="true" lon="-0.64936257469" id="-4538841"/>
+	<node lat="44.8261064604" visible="true" lon="-0.64936579359" id="-4538840"/>
+	<node lat="44.8260978649" visible="true" lon="-0.64933044684" id="-4538839"/>
+	<node lat="44.8260847717" visible="true" lon="-0.64933684142" id="-4538838"/>
+	<node lat="44.8261548216" visible="true" lon="-0.64860239301" id="-4538837"/>
+	<node lat="44.8416121123" visible="true" lon="-0.65064030278" id="-4538836"/>
+	<node lat="44.8416365705" visible="true" lon="-0.65066678821" id="-4538835"/>
+	<node lat="44.8418812305" visible="true" lon="-0.65076256943" id="-4538834"/>
+	<node lat="44.8416703017" visible="true" lon="-0.65053636402" id="-4538833"/>
+	<node lat="44.8415845235" visible="true" lon="-0.65060993858" id="-4538832"/>
+	<node lat="44.8415876546" visible="true" lon="-0.65061342909" id="-4538831"/>
+	<node lat="44.8415759994" visible="true" lon="-0.65063115998" id="-4538830"/>
+	<node lat="44.84156877" visible="true" lon="-0.65062362808" id="-4538829"/>
+	<node lat="44.8415525692" visible="true" lon="-0.6506374074" id="-4538828"/>
+	<node lat="44.8416034513" visible="true" lon="-0.6506545599" id="-4538827"/>
+	<node lat="44.8562928472" visible="true" lon="-0.65578442453" id="-4538822"/>
+	<node lat="44.8261569142" visible="true" lon="-0.64859594309" id="-4538821"/>
+	<node lat="44.8261837222" visible="true" lon="-0.64851282858" id="-4538820"/>
+	<node lat="44.8261690577" visible="true" lon="-0.64850379864" id="-4538819"/>
+	<node lat="44.8261408969" visible="true" lon="-0.64859276853" id="-4538818"/>
+	<node lat="44.8563621877" visible="true" lon="-0.65567016175" id="-4538817"/>
+	<node lat="44.8563385887" visible="true" lon="-0.65564232027" id="-4538816"/>
+	<node lat="44.8563273874" visible="true" lon="-0.65566008354" id="-4538815"/>
+	<node lat="44.8563282172" visible="true" lon="-0.65572663679" id="-4538814"/>
+	<node lat="44.8562557052" visible="true" lon="-0.65574066029" id="-4538806"/>
+	<node lat="44.8399876751" visible="true" lon="-0.64783753736" id="-4538805"/>
+	<node lat="44.8399946321" visible="true" lon="-0.64783671172" id="-4538804"/>
+	<node lat="44.8399909939" visible="true" lon="-0.64783217643" id="-4538803"/>
+	<node lat="44.8562666622" visible="true" lon="-0.6557248911" id="-4538802"/>
+	<node lat="44.856313677" visible="true" lon="-0.65564376178" id="-4538801"/>
+	<node lat="44.8563009127" visible="true" lon="-0.6556286484" id="-4538800"/>
+	<node lat="44.8563114993" visible="true" lon="-0.65561057592" id="-4538799"/>
+	<node lat="44.856283631" visible="true" lon="-0.65557765074" id="-4538798"/>
+	<node lat="44.8562145663" visible="true" lon="-0.65569193098" id="-4538797"/>
+	<node lat="44.8562420034" visible="true" lon="-0.6557240689" id="-4538796"/>
+	<node lat="44.8329660581" visible="true" lon="-0.63599257441" id="-4539461"/>
+	<node lat="44.8419296089" visible="true" lon="-0.66863872002" id="-4538761"/>
+	<node lat="44.8419671357" visible="true" lon="-0.6686203609" id="-4538760"/>
+	<node lat="44.8419636821" visible="true" lon="-0.66859074799" id="-4538759"/>
+	<node lat="44.8322369568" visible="true" lon="-0.64209579732" id="-4538758"/>
+	<node lat="44.8418801326" visible="true" lon="-0.66857504442" id="-4538757"/>
+	<node lat="44.8418888866" visible="true" lon="-0.66864740438" id="-4538756"/>
+	<node lat="44.8419468571" visible="true" lon="-0.66859550109" id="-4538755"/>
+	<node lat="44.8419342625" visible="true" lon="-0.66847758308" id="-4538754"/>
+	<node lat="44.8418151114" visible="true" lon="-0.66849317548" id="-4538753"/>
+	<node lat="44.8418376573" visible="true" lon="-0.66858221591" id="-4538752"/>
+	<node lat="44.8303752824" visible="true" lon="-0.68607859563" id="-4538743"/>
+	<node lat="44.8303814855" visible="true" lon="-0.68612367271" id="-4538742"/>
+	<node lat="44.8302640333" visible="true" lon="-0.68615084623" id="-4538741"/>
+	<node lat="44.8302326599" visible="true" lon="-0.68607110885" id="-4538740"/>
+	<node lat="44.8301130246" visible="true" lon="-0.68616270683" id="-4538739"/>
+	<node lat="44.8302249271" visible="true" lon="-0.68645143334" id="-4538738"/>
+	<node lat="44.8303436276" visible="true" lon="-0.68636051866" id="-4538737"/>
+	<node lat="44.8302957187" visible="true" lon="-0.68623504298" id="-4538736"/>
+	<node lat="44.8303274741" visible="true" lon="-0.68622809465" id="-4538735"/>
+	<node lat="44.8303318624" visible="true" lon="-0.6862483608" id="-4538734"/>
+	<node lat="44.8303352634" visible="true" lon="-0.68625720385" id="-4538733"/>
+	<node lat="44.8303402975" visible="true" lon="-0.68626346752" id="-4538732"/>
+	<node lat="44.830349798" visible="true" lon="-0.68626496995" id="-4538731"/>
+	<node lat="44.8303603232" visible="true" lon="-0.68625968483" id="-4538730"/>
+	<node lat="44.8303659727" visible="true" lon="-0.68624954717" id="-4538729"/>
+	<node lat="44.8303644012" visible="true" lon="-0.68621982298" id="-4538728"/>
+	<node lat="44.8297254915" visible="true" lon="-0.64746179944" id="-4538723"/>
+	<node lat="44.8297287736" visible="true" lon="-0.64751416339" id="-4538722"/>
+	<node lat="44.8297528009" visible="true" lon="-0.6475121398" id="-4538721"/>
+	<node lat="44.8297551717" visible="true" lon="-0.64755583778" id="-4538720"/>
+	<node lat="44.8297314568" visible="true" lon="-0.64755673335" id="-4538719"/>
+	<node lat="44.8297349658" visible="true" lon="-0.64761025946" id="-4538718"/>
+	<node lat="44.8142063042" visible="true" lon="-0.71206401125" id="-4538717"/>
+	<node lat="44.8142352468" visible="true" lon="-0.71209105302" id="-4538716"/>
+	<node lat="44.8298000675" visible="true" lon="-0.64767880802" id="-4538715"/>
+	<node lat="44.8298759211" visible="true" lon="-0.64767311122" id="-4538714"/>
+	<node lat="44.8298757086" visible="true" lon="-0.64766550219" id="-4538713"/>
+	<node lat="44.829874988" visible="true" lon="-0.64764001982" id="-4538712"/>
+	<node lat="44.8299024504" visible="true" lon="-0.64759566158" id="-4538711"/>
+	<node lat="44.8299225097" visible="true" lon="-0.64759377503" id="-4538710"/>
+	<node lat="44.8299358042" visible="true" lon="-0.64759233796" id="-4538709"/>
+	<node lat="44.8299331182" visible="true" lon="-0.64753823925" id="-4538708"/>
+	<node lat="44.8299110363" visible="true" lon="-0.64754139874" id="-4538707"/>
+	<node lat="44.8299089211" visible="true" lon="-0.64749759866" id="-4538706"/>
+	<node lat="44.8299309668" visible="true" lon="-0.64749556777" id="-4538705"/>
+	<node lat="44.8299282685" visible="true" lon="-0.64744222785" id="-4538704"/>
+	<node lat="44.8299143345" visible="true" lon="-0.64744413085" id="-4538703"/>
+	<node lat="44.829896604" visible="true" lon="-0.64744643493" id="-4538702"/>
+	<node lat="44.8298630781" visible="true" lon="-0.6474045456" id="-4538701"/>
+	<node lat="44.8298618263" visible="true" lon="-0.64737914777" id="-4538700"/>
+	<node lat="44.8298613428" visible="true" lon="-0.64736912476" id="-4538699"/>
+	<node lat="44.8297864111" visible="true" lon="-0.64737678764" id="-4538698"/>
+	<node lat="44.83744105875" visible="true" lon="-0.63493923176" id="-4550710"/>
+	<node lat="44.83739714026" visible="true" lon="-0.63495746032" id="-4550705"/>
+	<node lat="44.832236489" visible="true" lon="-0.64221135999" id="-4538679"/>
+	<node lat="44.8322232556" visible="true" lon="-0.64221126617" id="-4538678"/>
+	<node lat="44.8322233348" visible="true" lon="-0.64238065902" id="-4538677"/>
+	<node lat="44.8323895632" visible="true" lon="-0.64237712347" id="-4538676"/>
+	<node lat="44.8323888829" visible="true" lon="-0.64209704536" id="-4538675"/>
+	<node lat="44.8323526775" visible="true" lon="-0.64209678232" id="-4538674"/>
+	<node lat="44.8322367253" visible="true" lon="-0.64214768779" id="-4538673"/>
+	<node lat="44.8297672288" visible="true" lon="-0.64760723814" id="-4538668"/>
+	<node lat="44.82974842" visible="true" lon="-0.64760908569" id="-4538667"/>
+	<node lat="44.8258602103" visible="true" lon="-0.654394101" id="-4538666"/>
+	<node lat="44.8258592938" visible="true" lon="-0.65440580682" id="-4538665"/>
+	<node lat="44.8258331117" visible="true" lon="-0.65440198601" id="-4538664"/>
+	<node lat="44.825834116" visible="true" lon="-0.65439053894" id="-4538663"/>
+	<node lat="44.8257667685" visible="true" lon="-0.65438081633" id="-4538662"/>
+	<node lat="44.8257566786" visible="true" lon="-0.65449600965" id="-4538661"/>
+	<node lat="44.8257892529" visible="true" lon="-0.65450237939" id="-4538660"/>
+	<node lat="44.825787465" visible="true" lon="-0.65452999645" id="-4538659"/>
+	<node lat="44.825899055" visible="true" lon="-0.65439933246" id="-4538658"/>
+	<node lat="44.825867566" visible="true" lon="-0.65439507383" id="-4538657"/>
+	<node lat="44.8258903005" visible="true" lon="-0.65454549742" id="-4538656"/>
+	<node lat="44.8557376454" visible="true" lon="-0.65503006203" id="-4538655"/>
+	<node lat="44.8557305958" visible="true" lon="-0.65512054958" id="-4538654"/>
+	<node lat="44.8557415647" visible="true" lon="-0.65512124571" id="-4538653"/>
+	<node lat="44.8557404152" visible="true" lon="-0.6551345977" id="-4538652"/>
+	<node lat="44.8557294507" visible="true" lon="-0.65513376675" id="-4538651"/>
+	<node lat="44.8557144223" visible="true" lon="-0.65513080347" id="-4538650"/>
+	<node lat="44.8557060221" visible="true" lon="-0.65524651843" id="-4538649"/>
+	<node lat="44.8503893166" visible="true" lon="-0.64716923897" id="-4538648"/>
+	<node lat="44.8503728196" visible="true" lon="-0.64718403258" id="-4538647"/>
+	<node lat="44.850354225" visible="true" lon="-0.64714283757" id="-4538646"/>
+	<node lat="44.8503707334" visible="true" lon="-0.64712806157" id="-4538645"/>
+	<node lat="44.850296949" visible="true" lon="-0.64696534561" id="-4538644"/>
+	<node lat="44.8502025263" visible="true" lon="-0.64704976951" id="-4538643"/>
+	<node lat="44.8502783425" visible="true" lon="-0.64721691965" id="-4538642"/>
+	<node lat="44.8502883591" visible="true" lon="-0.64720794632" id="-4538641"/>
+	<node lat="44.8503050183" visible="true" lon="-0.64724469618" id="-4538640"/>
+	<node lat="44.8502950006" visible="true" lon="-0.6472537032" id="-4538639"/>
+	<node lat="44.8503494236" visible="true" lon="-0.64737402773" id="-4538638"/>
+	<node lat="44.8503500479" visible="true" lon="-0.6473999014" id="-4538637"/>
+	<node lat="44.8503638832" visible="true" lon="-0.64743181226" id="-4538636"/>
+	<node lat="44.8504632119" visible="true" lon="-0.6474274477" id="-4538635"/>
+	<node lat="44.8504609211" visible="true" lon="-0.64732725845" id="-4538634"/>
+	<node lat="44.8253439972" visible="true" lon="-0.67357949769" id="-4538632"/>
+	<node lat="44.8250993416" visible="true" lon="-0.67355402712" id="-4538631"/>
+	<node lat="44.8251771228" visible="true" lon="-0.67374241514" id="-4538630"/>
+	<node lat="44.8252044396" visible="true" lon="-0.67380036025" id="-4538629"/>
+	<node lat="44.8253325551" visible="true" lon="-0.67381370978" id="-4538628"/>
+	<node lat="44.832037387" visible="true" lon="-0.62356068779" id="-4538627"/>
+	<node lat="44.8320252868" visible="true" lon="-0.62356461961" id="-4538626"/>
+	<node lat="44.8373904121" visible="true" lon="-0.63524963542" id="-4550699"/>
+	<node lat="44.8302842246" visible="true" lon="-0.66798586676" id="-4538623"/>
+	<node lat="44.8302426115" visible="true" lon="-0.6679547422" id="-4538622"/>
+	<node lat="44.8302430501" visible="true" lon="-0.66792995745" id="-4538621"/>
+	<node lat="44.830218406" visible="true" lon="-0.66790116225" id="-4538620"/>
+	<node lat="44.8302015053" visible="true" lon="-0.6678914948" id="-4538619"/>
+	<node lat="44.8301901333" visible="true" lon="-0.66789215499" id="-4538618"/>
+	<node lat="44.8301826704" visible="true" lon="-0.66789711507" id="-4538617"/>
+	<node lat="44.8301786647" visible="true" lon="-0.66790698768" id="-4538616"/>
+	<node lat="44.8301354779" visible="true" lon="-0.66787475031" id="-4538615"/>
+	<node lat="44.8272079812" visible="true" lon="-0.66266146024" id="-4538614"/>
+	<node lat="44.8558384071" visible="true" lon="-0.65504569367" id="-4538613"/>
+	<node lat="44.8468518351" visible="true" lon="-0.66235724022" id="-4538612"/>
+	<node lat="44.8468214186" visible="true" lon="-0.66237303473" id="-4538611"/>
+	<node lat="44.8468242616" visible="true" lon="-0.66238285634" id="-4538610"/>
+	<node lat="44.8271776968" visible="true" lon="-0.66261978658" id="-4538609"/>
+	<node lat="44.8271595341" visible="true" lon="-0.66261610035" id="-4538608"/>
+	<node lat="44.827161144" visible="true" lon="-0.66265303138" id="-4538607"/>
+	<node lat="44.8272069068" visible="true" lon="-0.66266125692" id="-4538606"/>
+	<node lat="44.8272086888" visible="true" lon="-0.66262567232" id="-4538605"/>
+	<node lat="44.8558375592" visible="true" lon="-0.65505526531" id="-4538604"/>
+	<node lat="44.8558309138" visible="true" lon="-0.65513578172" id="-4538603"/>
+	<node lat="44.8558410714" visible="true" lon="-0.65513667966" id="-4538602"/>
+	<node lat="44.8558402182" visible="true" lon="-0.65514903727" id="-4538601"/>
+	<node lat="44.8558300297" visible="true" lon="-0.65514648246" id="-4538600"/>
+	<node lat="44.8558152579" visible="true" lon="-0.65526422496" id="-4538599"/>
+	<node lat="44.8558162585" visible="true" lon="-0.65525288991" id="-4538598"/>
+	<node lat="44.8558543106" visible="true" lon="-0.65525746645" id="-4538597"/>
+	<node lat="44.8558710283" visible="true" lon="-0.65505068532" id="-4538596"/>
+	<node lat="44.8558430823" visible="true" lon="-0.65504599038" id="-4538595"/>
+	<node lat="44.8300946982" visible="true" lon="-0.6679854484" id="-4538594"/>
+	<node lat="44.8300145451" visible="true" lon="-0.66820568461" id="-4538593"/>
+	<node lat="44.8301535797" visible="true" lon="-0.66831328013" id="-4538592"/>
+	<node lat="44.830272815" visible="true" lon="-0.66802122853" id="-4538591"/>
+	<node lat="44.8558018335" visible="true" lon="-0.65503996149" id="-4538590"/>
+	<node lat="44.8557706464" visible="true" lon="-0.65503482446" id="-4538589"/>
+	<node lat="44.8557524647" visible="true" lon="-0.6552617595" id="-4538588"/>
+	<node lat="44.8557173628" visible="true" lon="-0.65523825445" id="-4538587"/>
+	<node lat="44.8557168068" visible="true" lon="-0.65524733799" id="-4538586"/>
+	<node lat="44.8557163266" visible="true" lon="-0.65525630813" id="-4538585"/>
+	<node lat="44.8557179412" visible="true" lon="-0.65525652881" id="-4538584"/>
+	<node lat="44.8557279477" visible="true" lon="-0.65523968614" id="-4538583"/>
+	<node lat="44.8557592711" visible="true" lon="-0.65518707935" id="-4538581"/>
+	<node lat="44.8557543041" visible="true" lon="-0.65524375679" id="-4538580"/>
+	<node lat="44.8557893101" visible="true" lon="-0.6552504197" id="-4538579"/>
+	<node lat="44.8557884666" visible="true" lon="-0.6552598565" id="-4538578"/>
+	<node lat="44.8558037019" visible="true" lon="-0.65526236012" id="-4538577"/>
+	<node lat="44.8558141294" visible="true" lon="-0.65514523694" id="-4538576"/>
+	<node lat="44.8557955615" visible="true" lon="-0.65514252184" id="-4538575"/>
+	<node lat="44.855796317" visible="true" lon="-0.65512460231" id="-4538574"/>
+	<node lat="44.826936991" visible="true" lon="-0.61440043309" id="-4538573"/>
+	<node lat="44.8438296189" visible="true" lon="-0.64205304131" id="-4538572"/>
+	<node lat="44.8438435294" visible="true" lon="-0.64213369346" id="-4538571"/>
+	<node lat="44.8438951053" visible="true" lon="-0.64211531019" id="-4538570"/>
+	<node lat="44.8439093899" visible="true" lon="-0.64208555358" id="-4538569"/>
+	<node lat="44.8439003251" visible="true" lon="-0.64202838823" id="-4538568"/>
+	<node lat="44.8269363777" visible="true" lon="-0.61435735323" id="-4538567"/>
+	<node lat="44.8268964405" visible="true" lon="-0.61435245142" id="-4538566"/>
+	<node lat="44.8268942611" visible="true" lon="-0.6143957274" id="-4538565"/>
+	<node lat="44.8269236212" visible="true" lon="-0.61439896995" id="-4538564"/>
+	<node lat="44.826936595" visible="true" lon="-0.61437319934" id="-4538563"/>
+	<node lat="44.8259814522" visible="true" lon="-0.67837776231" id="-4538562"/>
+	<node lat="44.8260016066" visible="true" lon="-0.67839525196" id="-4538561"/>
+	<node lat="44.8260495486" visible="true" lon="-0.67842855818" id="-4538560"/>
+	<node lat="44.8262075784" visible="true" lon="-0.67799029151" id="-4538559"/>
+	<node lat="44.8261468537" visible="true" lon="-0.67794590771" id="-4538558"/>
+	<node lat="44.8260419218" visible="true" lon="-0.67822679835" id="-4538557"/>
+	<node lat="44.8259974413" visible="true" lon="-0.6783405538" id="-4538556"/>
+	<node lat="44.8192398939" visible="true" lon="-0.65048184657" id="-4547615"/>
+	<node lat="44.819220767" visible="true" lon="-0.65049697096" id="-4547614"/>
+	<node lat="44.8390146985" visible="true" lon="-0.65930763361" id="-4538545"/>
+	<node lat="44.8389664258" visible="true" lon="-0.6593158276" id="-4538544"/>
+	<node lat="44.8389702316" visible="true" lon="-0.65935697404" id="-4538543"/>
+	<node lat="44.8390277479" visible="true" lon="-0.6593470713" id="-4538542"/>
+	<node lat="44.8303868075" visible="true" lon="-0.68621225964" id="-4538541"/>
+	<node lat="44.8303927126" visible="true" lon="-0.68621351516" id="-4538540"/>
+	<node lat="44.8303984999" visible="true" lon="-0.68626845711" id="-4538539"/>
+	<node lat="44.8306123975" visible="true" lon="-0.6862259325" id="-4538538"/>
+	<node lat="44.8306045329" visible="true" lon="-0.68615428164" id="-4538537"/>
+	<node lat="44.8305970539" visible="true" lon="-0.68608518742" id="-4538536"/>
+	<node lat="44.8305911334" visible="true" lon="-0.68603138461" id="-4538535"/>
+	<node lat="44.830475163" visible="true" lon="-0.6860543489" id="-4538534"/>
+	<node lat="44.8309840259" visible="true" lon="-0.68514892896" id="-4538533"/>
+	<node lat="44.8309854078" visible="true" lon="-0.68522308568" id="-4538532"/>
+	<node lat="44.8310177178" visible="true" lon="-0.68514894012" id="-4538531"/>
+	<node lat="44.8452207991" visible="true" lon="-0.67012234234" id="-4538530"/>
+	<node lat="44.8453452238" visible="true" lon="-0.67005719671" id="-4538529"/>
+	<node lat="44.8452820658" visible="true" lon="-0.6697391343" id="-4538528"/>
+	<node lat="44.8378782203" visible="true" lon="-0.65143125631" id="-4538527"/>
+	<node lat="44.828239786" visible="true" lon="-0.61405694421" id="-4538526"/>
+	<node lat="44.828267851" visible="true" lon="-0.61418302094" id="-4538525"/>
+	<node lat="44.8282718965" visible="true" lon="-0.61414073869" id="-4538524"/>
+	<node lat="44.8282894854" visible="true" lon="-0.61414550471" id="-4538523"/>
+	<node lat="44.8283023492" visible="true" lon="-0.61401580025" id="-4538522"/>
+	<node lat="44.8282734605" visible="true" lon="-0.6140090596" id="-4538521"/>
+	<node lat="44.8282742904" visible="true" lon="-0.61398860323" id="-4538520"/>
+	<node lat="44.8282464046" visible="true" lon="-0.61398432237" id="-4538519"/>
+	<node lat="44.8282406261" visible="true" lon="-0.61404751071" id="-4538518"/>
+	<node lat="44.8282416557" visible="true" lon="-0.6140574497" id="-4538517"/>
+	<node lat="44.8282545098" visible="true" lon="-0.61406115916" id="-4538516"/>
+	<node lat="44.8282539367" visible="true" lon="-0.61407352955" id="-4538515"/>
+	<node lat="44.8282431922" visible="true" lon="-0.61407147154" id="-4538514"/>
+	<node lat="44.8282547652" visible="true" lon="-0.61418093421" id="-4538513"/>
+	<node lat="44.8298780423" visible="true" lon="-0.63050047791" id="-4538512"/>
+	<node lat="44.8298629344" visible="true" lon="-0.63049966102" id="-4538511"/>
+	<node lat="44.8489394477" visible="true" lon="-0.67636655783" id="-4538510"/>
+	<node lat="44.8489751323" visible="true" lon="-0.67635767449" id="-4538509"/>
+	<node lat="44.8378781188" visible="true" lon="-0.65142618544" id="-4538508"/>
+	<node lat="44.8378754795" visible="true" lon="-0.65130891158" id="-4538507"/>
+	<node lat="44.8378848155" visible="true" lon="-0.65130432067" id="-4538506"/>
+	<node lat="44.8378919847" visible="true" lon="-0.6512942579" id="-4538505"/>
+	<node lat="44.8378952074" visible="true" lon="-0.65128104139" id="-4538504"/>
+	<node lat="44.8378939392" visible="true" lon="-0.65126703382" id="-4538503"/>
+	<node lat="44.8378885504" visible="true" lon="-0.65125529731" id="-4538502"/>
+	<node lat="44.8378799551" visible="true" lon="-0.65124803376" id="-4538501"/>
+	<node lat="44.8378699944" visible="true" lon="-0.65124664281" id="-4538500"/>
+	<node lat="44.8378606618" visible="true" lon="-0.65125150404" id="-4538499"/>
+	<node lat="44.8378537567" visible="true" lon="-0.65126156668" id="-4538498"/>
+	<node lat="44.8378506219" visible="true" lon="-0.65127504196" id="-4538497"/>
+	<node lat="44.8377692084" visible="true" lon="-0.65129116967" id="-4538496"/>
+	<node lat="44.8377706078" visible="true" lon="-0.65135986443" id="-4538495"/>
+	<node lat="44.8377850879" visible="true" lon="-0.65137762981" id="-4538494"/>
+	<node lat="44.8377743554" visible="true" lon="-0.65139467509" id="-4538493"/>
+	<node lat="44.8377794701" visible="true" lon="-0.65141233647" id="-4538492"/>
+	<node lat="44.837785467" visible="true" lon="-0.65142196757" id="-4538491"/>
+	<node lat="44.8377929676" visible="true" lon="-0.65142927993" id="-4538490"/>
+	<node lat="44.8378061472" visible="true" lon="-0.65143442002" id="-4538489"/>
+	<node lat="44.8378176437" visible="true" lon="-0.65141565061" id="-4538488"/>
+	<node lat="44.8378312052" visible="true" lon="-0.65143359415" id="-4538487"/>
+	<node lat="44.8378750673" visible="true" lon="-0.65143144475" id="-4538486"/>
+	<node lat="44.8297887995" visible="true" lon="-0.64741731349" id="-4538481"/>
+	<node lat="44.8297871557" visible="true" lon="-0.64739290362" id="-4538480"/>
+	<node lat="44.8489682246" visible="true" lon="-0.67630936482" id="-4538479"/>
+	<node lat="44.8489326914" visible="true" lon="-0.67631876441" id="-4538478"/>
+	<node lat="44.8489377457" visible="true" lon="-0.6763549168" id="-4538477"/>
+	<node lat="44.8489701413" visible="true" lon="-0.67632253921" id="-4538476"/>
+	<node lat="44.8468687192" visible="true" lon="-0.66240364775" id="-4538475"/>
+	<node lat="44.8298624332" visible="true" lon="-0.63052101502" id="-4538474"/>
+	<node lat="44.8298609243" visible="true" lon="-0.63057395346" id="-4538473"/>
+	<node lat="44.8298761314" visible="true" lon="-0.63057467534" id="-4538472"/>
+	<node lat="44.8298777033" visible="true" lon="-0.63051374024" id="-4538471"/>
+	<node lat="44.825450753" visible="true" lon="-0.66814301617" id="-4538470"/>
+	<node lat="44.8254558627" visible="true" lon="-0.6681439828" id="-4538469"/>
+	<node lat="44.8254577665" visible="true" lon="-0.66813485487" id="-4538468"/>
+	<node lat="44.8254100008" visible="true" lon="-0.66810232848" id="-4538467"/>
+	<node lat="44.8253645278" visible="true" lon="-0.66808475005" id="-4538466"/>
+	<node lat="44.8253559165" visible="true" lon="-0.66813129134" id="-4538465"/>
+	<node lat="44.8468369666" visible="true" lon="-0.66242177171" id="-4538464"/>
+	<node lat="44.8468572939" visible="true" lon="-0.66248435372" id="-4538463"/>
+	<node lat="44.8468886248" visible="true" lon="-0.6624625391" id="-4538462"/>
+	<node lat="44.8468756322" visible="true" lon="-0.66242397685" id="-4538461"/>
+	<node lat="44.8468571883" visible="true" lon="-0.66240924617" id="-4538460"/>
+	<node lat="44.8333160164" visible="true" lon="-0.68267449705" id="-4538459"/>
+	<node lat="44.8333153529" visible="true" lon="-0.68285941325" id="-4538458"/>
+	<node lat="44.8332937924" visible="true" lon="-0.68289095187" id="-4538457"/>
+	<node lat="44.8331666815" visible="true" lon="-0.68288814405" id="-4538456"/>
+	<node lat="44.8331658455" visible="true" lon="-0.68307244107" id="-4538455"/>
+	<node lat="44.8332294623" visible="true" lon="-0.68307232143" id="-4538454"/>
+	<node lat="44.8332459075" visible="true" lon="-0.6830956548" id="-4538453"/>
+	<node lat="44.8332459381" visible="true" lon="-0.6831837724" id="-4538452"/>
+	<node lat="44.8193625409" visible="true" lon="-0.65078654896" id="-4547598"/>
+	<node lat="44.8193779443" visible="true" lon="-0.65076955178" id="-4547597"/>
+	<node lat="44.8449044647" visible="true" lon="-0.66989705109" id="-4538442"/>
+	<node lat="44.8449302332" visible="true" lon="-0.67003102711" id="-4538441"/>
+	<node lat="44.8448845003" visible="true" lon="-0.67009191682" id="-4538440"/>
+	<node lat="44.844820439" visible="true" lon="-0.67017027823" id="-4538439"/>
+	<node lat="44.8447955954" visible="true" lon="-0.67021137723" id="-4538438"/>
+	<node lat="44.8447888959" visible="true" lon="-0.67023512776" id="-4538437"/>
+	<node lat="44.844785615" visible="true" lon="-0.6702612572" id="-4538436"/>
+	<node lat="44.8447861712" visible="true" lon="-0.67029168321" id="-4538435"/>
+	<node lat="44.8447902924" visible="true" lon="-0.67031473872" id="-4538434"/>
+	<node lat="44.8448051431" visible="true" lon="-0.67034848988" id="-4538433"/>
+	<node lat="44.8448189773" visible="true" lon="-0.67036645762" id="-4538432"/>
+	<node lat="44.8448427659" visible="true" lon="-0.67038303358" id="-4538431"/>
+	<node lat="44.8448772743" visible="true" lon="-0.67039980297" id="-4538430"/>
+	<node lat="44.8449284492" visible="true" lon="-0.67041040812" id="-4538429"/>
+	<node lat="44.8449778332" visible="true" lon="-0.67041546262" id="-4538428"/>
+	<node lat="44.8450320734" visible="true" lon="-0.67040699879" id="-4538427"/>
+	<node lat="44.8451030742" visible="true" lon="-0.67039279875" id="-4538426"/>
+	<node lat="44.8451551452" visible="true" lon="-0.67037040263" id="-4538425"/>
+	<node lat="44.8452127952" visible="true" lon="-0.67033963304" id="-4538424"/>
+	<node lat="44.8452476104" visible="true" lon="-0.67031336841" id="-4538423"/>
+	<node lat="44.8452810304" visible="true" lon="-0.67028269261" id="-4538422"/>
+	<node lat="44.8452342221" visible="true" lon="-0.67015828204" id="-4538421"/>
+	<node lat="44.8449833614" visible="true" lon="-0.66986408919" id="-4538420"/>
+	<node lat="44.8329271395" visible="true" lon="-0.63605166235" id="-4538419"/>
+	<node lat="44.8329255771" visible="true" lon="-0.63601598102" id="-4538418"/>
+	<node lat="44.8329166414" visible="true" lon="-0.63604490622" id="-4538417"/>
+	<node lat="44.8297450796" visible="true" lon="-0.64746037252" id="-4538416"/>
+	<node lat="44.8297622252" visible="true" lon="-0.64745944927" id="-4538415"/>
+	<node lat="44.8297787908" visible="true" lon="-0.6474346561" id="-4538414"/>
+	<node lat="44.8297804247" visible="true" lon="-0.64740616644" id="-4538413"/>
+	<node lat="44.8254457718" visible="true" lon="-0.66816637887" id="-4538412"/>
+	<node lat="44.8254463005" visible="true" lon="-0.66816376269" id="-4538411"/>
+	<node lat="44.8254438184" visible="true" lon="-0.66816549501" id="-4538410"/>
+	<node lat="44.8194169211" visible="true" lon="-0.65062469309" id="-4547591"/>
+	<node lat="44.83731990444" visible="true" lon="-0.63500083234" id="-4550696"/>
+	<node lat="44.83731407737" visible="true" lon="-0.63498020735" id="-4550695"/>
+	<node lat="44.83737787626" visible="true" lon="-0.63520515605" id="-4550694"/>
+	<node lat="44.83748077886" visible="true" lon="-0.63495617166" id="-4550693"/>
+	<node lat="44.83738175504" visible="true" lon="-0.63521909139" id="-4550692"/>
+	<node lat="44.83746059296" visible="true" lon="-0.6349676768" id="-4550691"/>
+	<node lat="44.83746732032" visible="true" lon="-0.63520561839" id="-4550690"/>
+	<node lat="44.83733134058" visible="true" lon="-0.63523236875" id="-4550689"/>
+	<node lat="44.83745849627" visible="true" lon="-0.63517428726" id="-4550688"/>
+	<node lat="44.83742515753" visible="true" lon="-0.63488429324" id="-4550687"/>
+	<node lat="44.83738330253" visible="true" lon="-0.63490823968" id="-4550686"/>
+	<node lat="44.83748697823" visible="true" lon="-0.63509785772" id="-4550685"/>
+	<node lat="44.83730622661" visible="true" lon="-0.63495224645" id="-4550684"/>
+	<node lat="44.83739107319" visible="true" lon="-0.63493607739" id="-4550683"/>
+	<node lat="44.83750447554" visible="true" lon="-0.63518441412" id="-4550682"/>
+	<node lat="44.83745451669" visible="true" lon="-0.63516049748" id="-4550681"/>
+	<node lat="44.83749877767" visible="true" lon="-0.63513455912" id="-4550680"/>
+	<node lat="44.83751588509" visible="true" lon="-0.63508106212" id="-4550706"/>
+	<way action="modify" visible="true" id="-4537856">
+		<nd ref="-4538207"/>
+		<nd ref="-4538452"/>
+		<nd ref="-4538453"/>
+		<nd ref="-4538454"/>
+		<nd ref="-4538455"/>
+		<nd ref="-4538456"/>
+		<nd ref="-4538457"/>
+		<nd ref="-4538458"/>
+		<nd ref="-4538459"/>
+		<nd ref="-4538208"/>
+		<nd ref="-4538207"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537856"/>
+	</way>
+	<way action="modify" visible="true" id="-4537854">
+		<nd ref="-4538420"/>
+		<nd ref="-4538421"/>
+		<nd ref="-4538422"/>
+		<nd ref="-4538423"/>
+		<nd ref="-4538424"/>
+		<nd ref="-4538425"/>
+		<nd ref="-4538426"/>
+		<nd ref="-4538427"/>
+		<nd ref="-4538428"/>
+		<nd ref="-4538429"/>
+		<nd ref="-4538430"/>
+		<nd ref="-4538431"/>
+		<nd ref="-4538432"/>
+		<nd ref="-4538433"/>
+		<nd ref="-4538434"/>
+		<nd ref="-4538435"/>
+		<nd ref="-4538436"/>
+		<nd ref="-4538437"/>
+		<nd ref="-4538438"/>
+		<nd ref="-4538439"/>
+		<nd ref="-4538440"/>
+		<nd ref="-4538441"/>
+		<nd ref="-4538442"/>
+		<nd ref="-4538420"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557258"/>
+	</way>
+	<way action="modify" visible="true" id="-4537853">
+		<nd ref="-4538417"/>
+		<nd ref="-4538418"/>
+		<nd ref="-4538419"/>
+		<nd ref="-4538417"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558324"/>
+	</way>
+	<way action="modify" visible="true" id="-4537852">
+		<nd ref="-4538413"/>
+		<nd ref="-4538414"/>
+		<nd ref="-4538415"/>
+		<nd ref="-4538416"/>
+		<nd ref="-4538413"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559421"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537851">
+		<nd ref="-4538410"/>
+		<nd ref="-4538411"/>
+		<nd ref="-4538412"/>
+		<nd ref="-4538410"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537858"/>
+	</way>
+	<way action="modify" visible="true" id="-4537849">
+		<nd ref="-4538264"/>
+		<nd ref="-4538265"/>
+		<nd ref="-4538266"/>
+		<nd ref="-4538267"/>
+		<nd ref="-4538264"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537849"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537847">
+		<nd ref="-4538244"/>
+		<nd ref="-4538249"/>
+		<nd ref="-4538250"/>
+		<nd ref="-4538251"/>
+		<nd ref="-4538252"/>
+		<nd ref="-4538253"/>
+		<nd ref="-4538245"/>
+		<nd ref="-4538244"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557232"/>
+	</way>
+	<way action="modify" visible="true" id="-4537846">
+		<nd ref="-4538202"/>
+		<nd ref="-4538247"/>
+		<nd ref="-4538248"/>
+		<nd ref="-4538203"/>
+		<nd ref="-4538202"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558044"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537845">
+		<nd ref="-4538244"/>
+		<nd ref="-4538245"/>
+		<nd ref="-4538246"/>
+		<nd ref="-4538244"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557232"/>
+	</way>
+	<way action="modify" visible="true" id="-4537842">
+		<nd ref="-4538229"/>
+		<nd ref="-4538230"/>
+		<nd ref="-4538231"/>
+		<nd ref="-4538232"/>
+		<nd ref="-4538233"/>
+		<nd ref="-4538229"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4556714"/>
+	</way>
+	<way action="modify" visible="true" id="-4537841">
+		<nd ref="-4538217"/>
+		<nd ref="-4538218"/>
+		<nd ref="-4538219"/>
+		<nd ref="-4538220"/>
+		<nd ref="-4538221"/>
+		<nd ref="-4538222"/>
+		<nd ref="-4538223"/>
+		<nd ref="-4538224"/>
+		<nd ref="-4538225"/>
+		<nd ref="-4538226"/>
+		<nd ref="-4538227"/>
+		<nd ref="-4538228"/>
+		<nd ref="-4538217"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538075"/>
+	</way>
+	<way action="modify" visible="true" id="-4537840">
+		<nd ref="-4538207"/>
+		<nd ref="-4538208"/>
+		<nd ref="-4538209"/>
+		<nd ref="-4538210"/>
+		<nd ref="-4538211"/>
+		<nd ref="-4538212"/>
+		<nd ref="-4538213"/>
+		<nd ref="-4538214"/>
+		<nd ref="-4538215"/>
+		<nd ref="-4538216"/>
+		<nd ref="-4538207"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537856"/>
+	</way>
+	<way action="modify" visible="true" id="-4537839">
+		<nd ref="-4538197"/>
+		<nd ref="-4538206"/>
+		<nd ref="-4538198"/>
+		<nd ref="-4538197"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537839"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537838">
+		<nd ref="-4538202"/>
+		<nd ref="-4538203"/>
+		<nd ref="-4538204"/>
+		<nd ref="-4538205"/>
+		<nd ref="-4538202"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558044"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537837">
+		<nd ref="-4538197"/>
+		<nd ref="-4538198"/>
+		<nd ref="-4538199"/>
+		<nd ref="-4538200"/>
+		<nd ref="-4538201"/>
+		<nd ref="-4538197"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537839"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537835">
+		<nd ref="-4538186"/>
+		<nd ref="-4538188"/>
+		<nd ref="-4538189"/>
+		<nd ref="-4538190"/>
+		<nd ref="-4538191"/>
+		<nd ref="-4538192"/>
+		<nd ref="-4538193"/>
+		<nd ref="-4538194"/>
+		<nd ref="-4538195"/>
+		<nd ref="-4538196"/>
+		<nd ref="-4538186"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558278"/>
+	</way>
+	<way action="modify" visible="true" id="-4537834">
+		<nd ref="-4538186"/>
+		<nd ref="-4538187"/>
+		<nd ref="-4538188"/>
+		<nd ref="-4538186"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558278"/>
+	</way>
+	<way action="modify" visible="true" id="-4537833">
+		<nd ref="-4538182"/>
+		<nd ref="-4538183"/>
+		<nd ref="-4538184"/>
+		<nd ref="-4538185"/>
+		<nd ref="-4538182"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537833"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537831">
+		<nd ref="-4538137"/>
+		<nd ref="-4538136"/>
+		<nd ref="-4538180"/>
+		<nd ref="-4538137"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559702"/>
+	</way>
+	<way action="modify" visible="true" id="-4537829">
+		<nd ref="-4538162"/>
+		<nd ref="-4538163"/>
+		<nd ref="-4538164"/>
+		<nd ref="-4538165"/>
+		<nd ref="-4538166"/>
+		<nd ref="-4538167"/>
+		<nd ref="-4538168"/>
+		<nd ref="-4538169"/>
+		<nd ref="-4538170"/>
+		<nd ref="-4538171"/>
+		<nd ref="-4538172"/>
+		<nd ref="-4538173"/>
+		<nd ref="-4538174"/>
+		<nd ref="-4538162"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559555"/>
+	</way>
+	<way action="modify" visible="true" id="-4537828">
+		<nd ref="-4538115"/>
+		<nd ref="-4538124"/>
+		<nd ref="-4538135"/>
+		<nd ref="-4538136"/>
+		<nd ref="-4538137"/>
+		<nd ref="-4538138"/>
+		<nd ref="-4538139"/>
+		<nd ref="-4538140"/>
+		<nd ref="-4538141"/>
+		<nd ref="-4538142"/>
+		<nd ref="-4538143"/>
+		<nd ref="-4538144"/>
+		<nd ref="-4538145"/>
+		<nd ref="-4538146"/>
+		<nd ref="-4538147"/>
+		<nd ref="-4538148"/>
+		<nd ref="-4538149"/>
+		<nd ref="-4538150"/>
+		<nd ref="-4538151"/>
+		<nd ref="-4538152"/>
+		<nd ref="-4538153"/>
+		<nd ref="-4538154"/>
+		<nd ref="-4538155"/>
+		<nd ref="-4538156"/>
+		<nd ref="-4538157"/>
+		<nd ref="-4538158"/>
+		<nd ref="-4538159"/>
+		<nd ref="-4538160"/>
+		<nd ref="-4538161"/>
+		<nd ref="-4538115"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559702"/>
+	</way>
+	<way action="modify" visible="true" id="-4537827">
+		<nd ref="-4538131"/>
+		<nd ref="-4538132"/>
+		<nd ref="-4538133"/>
+		<nd ref="-4538134"/>
+		<nd ref="-4538131"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4556836"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537825">
+		<nd ref="-4538111"/>
+		<nd ref="-4538114"/>
+		<nd ref="-4538125"/>
+		<nd ref="-4538126"/>
+		<nd ref="-4538111"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537823"/>
+	</way>
+	<way action="modify" visible="true" id="-4537824">
+		<nd ref="-4538115"/>
+		<nd ref="-4538116"/>
+		<nd ref="-4538117"/>
+		<nd ref="-4538118"/>
+		<nd ref="-4538119"/>
+		<nd ref="-4538120"/>
+		<nd ref="-4538121"/>
+		<nd ref="-4538122"/>
+		<nd ref="-4538123"/>
+		<nd ref="-4538124"/>
+		<nd ref="-4538115"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559702"/>
+	</way>
+	<way action="modify" visible="true" id="-4537823">
+		<nd ref="-4538111"/>
+		<nd ref="-4538112"/>
+		<nd ref="-4538113"/>
+		<nd ref="-4538114"/>
+		<nd ref="-4538111"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537823"/>
+	</way>
+	<way action="modify" visible="true" id="-4547590">
+		<nd ref="-4547591"/>
+		<nd ref="-4547612"/>
+		<nd ref="-4547613"/>
+		<nd ref="-4547614"/>
+		<nd ref="-4547615"/>
+		<nd ref="-4547616"/>
+		<nd ref="-4547617"/>
+		<nd ref="-4547618"/>
+		<nd ref="-4547619"/>
+		<nd ref="-4547620"/>
+		<nd ref="-4547621"/>
+		<nd ref="-4547622"/>
+		<nd ref="-4547623"/>
+		<nd ref="-4547624"/>
+		<nd ref="-4547625"/>
+		<nd ref="-4547626"/>
+		<nd ref="-4547627"/>
+		<nd ref="-4547591"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4547589"/>
+	</way>
+	<way action="modify" visible="true" id="-3048392">
+		<nd ref="-3048389"/>
+		<nd ref="-3048390"/>
+		<nd ref="-3048387"/>
+		<nd ref="-3048386"/>
+		<nd ref="-3048389"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-3048391"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-3048391">
+		<nd ref="-3048389"/>
+		<nd ref="-3048388"/>
+		<nd ref="-3048385"/>
+		<nd ref="-3048390"/>
+		<nd ref="-3048389"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-3048391"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4547589">
+		<nd ref="-4547591"/>
+		<nd ref="-4547592"/>
+		<nd ref="-4547593"/>
+		<nd ref="-4547594"/>
+		<nd ref="-4547595"/>
+		<nd ref="-4547596"/>
+		<nd ref="-4547597"/>
+		<nd ref="-4547598"/>
+		<nd ref="-4547599"/>
+		<nd ref="-4547600"/>
+		<nd ref="-4547601"/>
+		<nd ref="-4547602"/>
+		<nd ref="-4547603"/>
+		<nd ref="-4547604"/>
+		<nd ref="-4547605"/>
+		<nd ref="-4547606"/>
+		<nd ref="-4547607"/>
+		<nd ref="-4547608"/>
+		<nd ref="-4547609"/>
+		<nd ref="-4547610"/>
+		<nd ref="-4547611"/>
+		<nd ref="-4547612"/>
+		<nd ref="-4547591"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4547589"/>
+	</way>
+	<way action="modify" visible="true" id="-4550229">
+		<nd ref="-4550213"/>
+		<nd ref="-4550185"/>
+		<nd ref="-4550209"/>
+		<nd ref="-4550212"/>
+		<nd ref="-4550213"/>
+		<tag k="building" v="yes"/>
+		<tag k="joined" v="w-4558196"/>
+	</way>
+	<way action="modify" visible="true" id="-4550357">
+		<nd ref="-4550349"/>
+		<nd ref="-4550331"/>
+		<nd ref="-4550338"/>
+		<nd ref="-4550322"/>
+		<nd ref="-4550323"/>
+		<nd ref="-4550351"/>
+		<nd ref="-4550314"/>
+		<nd ref="-4550340"/>
+		<nd ref="-4550341"/>
+		<nd ref="-4550324"/>
+		<nd ref="-4550332"/>
+		<nd ref="-4550315"/>
+		<nd ref="-4550317"/>
+		<nd ref="-4550344"/>
+		<nd ref="-4550353"/>
+		<nd ref="-4550337"/>
+		<nd ref="-4550319"/>
+		<nd ref="-4550320"/>
+		<nd ref="-4550349"/>
+		<tag k="building" v="yes"/>
+		<tag k="joined" v="w-4550357"/>
+	</way>
+	<way action="modify" visible="true" id="-4550714">
+		<nd ref="-4550685"/>
+		<nd ref="-4550691"/>
+		<nd ref="-4550693"/>
+		<nd ref="-4550706"/>
+		<nd ref="-4550685"/>
+		<tag k="building" v="yes"/>
+		<tag k="joined" v="w-4550858"/>
+	</way>
+	<way action="modify" visible="true" id="-3048256">
+		<nd ref="-3048252"/>
+		<nd ref="-3048243"/>
+		<nd ref="-3048242"/>
+		<nd ref="-3048251"/>
+		<nd ref="-3048249"/>
+		<nd ref="-3048244"/>
+		<nd ref="-3048253"/>
+		<nd ref="-3048245"/>
+		<nd ref="-3048250"/>
+		<nd ref="-3048252"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-3048256"/>
+	</way>
+	<way action="modify" visible="true" id="-3048255">
+		<nd ref="-3048252"/>
+		<nd ref="-3048250"/>
+		<nd ref="-3048245"/>
+		<nd ref="-3048254"/>
+		<nd ref="-3048248"/>
+		<nd ref="-3048247"/>
+		<nd ref="-3048252"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-3048256"/>
+	</way>
+	<way action="modify" visible="true" id="-4543230">
+		<nd ref="-4543231"/>
+		<nd ref="-4543235"/>
+		<nd ref="-4543236"/>
+		<nd ref="-4543232"/>
+		<nd ref="-4543231"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4543230"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4543229">
+		<nd ref="-4543231"/>
+		<nd ref="-4543232"/>
+		<nd ref="-4543233"/>
+		<nd ref="-4543234"/>
+		<nd ref="-4543231"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4543230"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538083">
+		<nd ref="-4538513"/>
+		<nd ref="-4539640"/>
+		<nd ref="-4539641"/>
+		<nd ref="-4538514"/>
+		<nd ref="-4538513"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558852"/>
+	</way>
+	<way action="modify" visible="true" id="-4538082">
+		<nd ref="-4539621"/>
+		<nd ref="-4539639"/>
+		<nd ref="-4539622"/>
+		<nd ref="-4539621"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538082"/>
+	</way>
+	<way action="modify" visible="true" id="-4538080">
+		<nd ref="-4539621"/>
+		<nd ref="-4539622"/>
+		<nd ref="-4539623"/>
+		<nd ref="-4539624"/>
+		<nd ref="-4539625"/>
+		<nd ref="-4539626"/>
+		<nd ref="-4539627"/>
+		<nd ref="-4539628"/>
+		<nd ref="-4539629"/>
+		<nd ref="-4539630"/>
+		<nd ref="-4539631"/>
+		<nd ref="-4539632"/>
+		<nd ref="-4539633"/>
+		<nd ref="-4539634"/>
+		<nd ref="-4539635"/>
+		<nd ref="-4539636"/>
+		<nd ref="-4539637"/>
+		<nd ref="-4539638"/>
+		<nd ref="-4539621"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538082"/>
+	</way>
+	<way action="modify" visible="true" id="-4550365">
+		<nd ref="-4550349"/>
+		<nd ref="-4550320"/>
+		<nd ref="-4550348"/>
+		<nd ref="-4550349"/>
+		<tag k="building" v="yes"/>
+		<tag k="joined" v="w-4550357"/>
+	</way>
+	<way action="modify" visible="true" id="-4538075">
+		<nd ref="-4538217"/>
+		<nd ref="-4539545"/>
+		<nd ref="-4539546"/>
+		<nd ref="-4539547"/>
+		<nd ref="-4539548"/>
+		<nd ref="-4539549"/>
+		<nd ref="-4539550"/>
+		<nd ref="-4539551"/>
+		<nd ref="-4539552"/>
+		<nd ref="-4539553"/>
+		<nd ref="-4539554"/>
+		<nd ref="-4539555"/>
+		<nd ref="-4539556"/>
+		<nd ref="-4539557"/>
+		<nd ref="-4539558"/>
+		<nd ref="-4539559"/>
+		<nd ref="-4539560"/>
+		<nd ref="-4539561"/>
+		<nd ref="-4539562"/>
+		<nd ref="-4538218"/>
+		<nd ref="-4538217"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538075"/>
+	</way>
+	<way action="modify" visible="true" id="-4538074">
+		<nd ref="-4538835"/>
+		<nd ref="-4538834"/>
+		<nd ref="-4539539"/>
+		<nd ref="-4539540"/>
+		<nd ref="-4539541"/>
+		<nd ref="-4539542"/>
+		<nd ref="-4539543"/>
+		<nd ref="-4539544"/>
+		<nd ref="-4538835"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561156"/>
+	</way>
+	<way action="modify" visible="true" id="-4538073">
+		<nd ref="-4539508"/>
+		<nd ref="-4539534"/>
+		<nd ref="-4539535"/>
+		<nd ref="-4539536"/>
+		<nd ref="-4539537"/>
+		<nd ref="-4539538"/>
+		<nd ref="-4539509"/>
+		<nd ref="-4539508"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560276"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538072">
+		<nd ref="-4538636"/>
+		<nd ref="-4539533"/>
+		<nd ref="-4538637"/>
+		<nd ref="-4538636"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558086"/>
+	</way>
+	<way action="modify" visible="true" id="-4538071">
+		<nd ref="-4539524"/>
+		<nd ref="-4539523"/>
+		<nd ref="-4539525"/>
+		<nd ref="-4539526"/>
+		<nd ref="-4539527"/>
+		<nd ref="-4539528"/>
+		<nd ref="-4539529"/>
+		<nd ref="-4539530"/>
+		<nd ref="-4539531"/>
+		<nd ref="-4539532"/>
+		<nd ref="-4539524"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560798"/>
+	</way>
+	<way action="modify" visible="true" id="-4538070">
+		<nd ref="-4539522"/>
+		<nd ref="-4539523"/>
+		<nd ref="-4539524"/>
+		<nd ref="-4539522"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560798"/>
+	</way>
+	<way action="modify" visible="true" id="-4538069">
+		<nd ref="-4539511"/>
+		<nd ref="-4539513"/>
+		<nd ref="-4539519"/>
+		<nd ref="-4539520"/>
+		<nd ref="-4539521"/>
+		<nd ref="-4539511"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561569"/>
+	</way>
+	<way action="modify" visible="true" id="-4538067">
+		<nd ref="-4539511"/>
+		<nd ref="-4539512"/>
+		<nd ref="-4539513"/>
+		<nd ref="-4539511"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561569"/>
+	</way>
+	<way action="modify" visible="true" id="-4538066">
+		<nd ref="-4539508"/>
+		<nd ref="-4539509"/>
+		<nd ref="-4539510"/>
+		<nd ref="-4539508"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560276"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538064">
+		<nd ref="-4539491"/>
+		<nd ref="-4539492"/>
+		<nd ref="-4539493"/>
+		<nd ref="-4539494"/>
+		<nd ref="-4539495"/>
+		<nd ref="-4539496"/>
+		<nd ref="-4539497"/>
+		<nd ref="-4539476"/>
+		<nd ref="-4539478"/>
+		<nd ref="-4539498"/>
+		<nd ref="-4539499"/>
+		<nd ref="-4539500"/>
+		<nd ref="-4539501"/>
+		<nd ref="-4539502"/>
+		<nd ref="-4539503"/>
+		<nd ref="-4539491"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538064"/>
+	</way>
+	<way action="modify" visible="true" id="-4538063">
+		<nd ref="-4538162"/>
+		<nd ref="-4538174"/>
+		<nd ref="-4538173"/>
+		<nd ref="-4539482"/>
+		<nd ref="-4539483"/>
+		<nd ref="-4539484"/>
+		<nd ref="-4539485"/>
+		<nd ref="-4539486"/>
+		<nd ref="-4539487"/>
+		<nd ref="-4539488"/>
+		<nd ref="-4539489"/>
+		<nd ref="-4539490"/>
+		<nd ref="-4538162"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559555"/>
+	</way>
+	<way action="modify" visible="true" id="-4538062">
+		<nd ref="-4539481"/>
+		<nd ref="-4539150"/>
+		<nd ref="-4539155"/>
+		<nd ref="-4539154"/>
+		<nd ref="-4539481"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538062"/>
+	</way>
+	<way action="modify" visible="true" id="-4538061">
+		<nd ref="-4538182"/>
+		<nd ref="-4538185"/>
+		<nd ref="-4539479"/>
+		<nd ref="-4539480"/>
+		<nd ref="-4538182"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537833"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538060">
+		<nd ref="-4539476"/>
+		<nd ref="-4539477"/>
+		<nd ref="-4539478"/>
+		<nd ref="-4539476"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538064"/>
+	</way>
+	<way action="modify" visible="true" id="-4550858">
+		<nd ref="-4550685"/>
+		<nd ref="-4550680"/>
+		<nd ref="-4550701"/>
+		<nd ref="-4550682"/>
+		<nd ref="-4550690"/>
+		<nd ref="-4550688"/>
+		<nd ref="-4550681"/>
+		<nd ref="-4550694"/>
+		<nd ref="-4550692"/>
+		<nd ref="-4550699"/>
+		<nd ref="-4550698"/>
+		<nd ref="-4550689"/>
+		<nd ref="-4550707"/>
+		<nd ref="-4550703"/>
+		<nd ref="-4550697"/>
+		<nd ref="-4550702"/>
+		<nd ref="-4550684"/>
+		<nd ref="-4550695"/>
+		<nd ref="-4550696"/>
+		<nd ref="-4550705"/>
+		<nd ref="-4550683"/>
+		<nd ref="-4550686"/>
+		<nd ref="-4550687"/>
+		<nd ref="-4550710"/>
+		<nd ref="-4550700"/>
+		<nd ref="-4550691"/>
+		<nd ref="-4550685"/>
+		<tag k="building" v="yes"/>
+		<tag k="joined" v="w-4550858"/>
+	</way>
+	<way action="modify" visible="true" id="-4538057">
+		<nd ref="-4539376"/>
+		<nd ref="-4539391"/>
+		<nd ref="-4539390"/>
+		<nd ref="-4539473"/>
+		<nd ref="-4539474"/>
+		<nd ref="-4539376"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538046"/>
+	</way>
+	<way action="modify" visible="true" id="-4538056">
+		<nd ref="-4538198"/>
+		<nd ref="-4538471"/>
+		<nd ref="-4538512"/>
+		<nd ref="-4539469"/>
+		<nd ref="-4539470"/>
+		<nd ref="-4539471"/>
+		<nd ref="-4539472"/>
+		<nd ref="-4538199"/>
+		<nd ref="-4538198"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558469"/>
+	</way>
+	<way action="modify" visible="true" id="-4538054">
+		<nd ref="-4539373"/>
+		<nd ref="-4539375"/>
+		<nd ref="-4539457"/>
+		<nd ref="-4539458"/>
+		<nd ref="-4539459"/>
+		<nd ref="-4538419"/>
+		<nd ref="-4538418"/>
+		<nd ref="-4539460"/>
+		<nd ref="-4539461"/>
+		<nd ref="-4539462"/>
+		<nd ref="-4539463"/>
+		<nd ref="-4539464"/>
+		<nd ref="-4539465"/>
+		<nd ref="-4539466"/>
+		<nd ref="-4539373"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558324"/>
+	</way>
+	<way action="modify" visible="true" id="-4538053">
+		<nd ref="-4539096"/>
+		<nd ref="-4539099"/>
+		<nd ref="-4539453"/>
+		<nd ref="-4539454"/>
+		<nd ref="-4539455"/>
+		<nd ref="-4539456"/>
+		<nd ref="-4539096"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537979"/>
+	</way>
+	<way action="modify" visible="true" id="-4538052">
+		<nd ref="-4539161"/>
+		<nd ref="-4539163"/>
+		<nd ref="-4539437"/>
+		<nd ref="-4539438"/>
+		<nd ref="-4539439"/>
+		<nd ref="-4539440"/>
+		<nd ref="-4539441"/>
+		<nd ref="-4539442"/>
+		<nd ref="-4539443"/>
+		<nd ref="-4539444"/>
+		<nd ref="-4539445"/>
+		<nd ref="-4539446"/>
+		<nd ref="-4539447"/>
+		<nd ref="-4539448"/>
+		<nd ref="-4539449"/>
+		<nd ref="-4539450"/>
+		<nd ref="-4539451"/>
+		<nd ref="-4539452"/>
+		<nd ref="-4539161"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558374"/>
+	</way>
+	<way action="modify" visible="true" id="-4538049">
+		<nd ref="-4538206"/>
+		<nd ref="-4539393"/>
+		<nd ref="-4539394"/>
+		<nd ref="-4539395"/>
+		<nd ref="-4539396"/>
+		<nd ref="-4539397"/>
+		<nd ref="-4539398"/>
+		<nd ref="-4539399"/>
+		<nd ref="-4539400"/>
+		<nd ref="-4539401"/>
+		<nd ref="-4539402"/>
+		<nd ref="-4539403"/>
+		<nd ref="-4539404"/>
+		<nd ref="-4539405"/>
+		<nd ref="-4539406"/>
+		<nd ref="-4539407"/>
+		<nd ref="-4539408"/>
+		<nd ref="-4539409"/>
+		<nd ref="-4539410"/>
+		<nd ref="-4539411"/>
+		<nd ref="-4539412"/>
+		<nd ref="-4539413"/>
+		<nd ref="-4539414"/>
+		<nd ref="-4539415"/>
+		<nd ref="-4539416"/>
+		<nd ref="-4539417"/>
+		<nd ref="-4539418"/>
+		<nd ref="-4539419"/>
+		<nd ref="-4539420"/>
+		<nd ref="-4539421"/>
+		<nd ref="-4539422"/>
+		<nd ref="-4539423"/>
+		<nd ref="-4539424"/>
+		<nd ref="-4538472"/>
+		<nd ref="-4538471"/>
+		<nd ref="-4538198"/>
+		<nd ref="-4538206"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558469"/>
+	</way>
+	<way action="modify" visible="true" id="-4538048">
+		<nd ref="-4539349"/>
+		<nd ref="-4539357"/>
+		<nd ref="-4539392"/>
+		<nd ref="-4539349"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561533"/>
+	</way>
+	<way action="modify" visible="true" id="-4538046">
+		<nd ref="-4539376"/>
+		<nd ref="-4539377"/>
+		<nd ref="-4539378"/>
+		<nd ref="-4539379"/>
+		<nd ref="-4539380"/>
+		<nd ref="-4539381"/>
+		<nd ref="-4539382"/>
+		<nd ref="-4539383"/>
+		<nd ref="-4539384"/>
+		<nd ref="-4539385"/>
+		<nd ref="-4539386"/>
+		<nd ref="-4539387"/>
+		<nd ref="-4539388"/>
+		<nd ref="-4539389"/>
+		<nd ref="-4539390"/>
+		<nd ref="-4539391"/>
+		<nd ref="-4539376"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538046"/>
+	</way>
+	<way action="modify" visible="true" id="-4538045">
+		<nd ref="-4539373"/>
+		<nd ref="-4539374"/>
+		<nd ref="-4539375"/>
+		<nd ref="-4539373"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558324"/>
+	</way>
+	<way action="modify" visible="true" id="-4538044">
+		<nd ref="-4539362"/>
+		<nd ref="-4539365"/>
+		<nd ref="-4539368"/>
+		<nd ref="-4539369"/>
+		<nd ref="-4539370"/>
+		<nd ref="-4539371"/>
+		<nd ref="-4539372"/>
+		<nd ref="-4539362"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561331"/>
+	</way>
+	<way action="modify" visible="true" id="-4538043">
+		<nd ref="-4539343"/>
+		<nd ref="-4539346"/>
+		<nd ref="-4539366"/>
+		<nd ref="-4539367"/>
+		<nd ref="-4539343"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561738"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538042">
+		<nd ref="-4539362"/>
+		<nd ref="-4539363"/>
+		<nd ref="-4539364"/>
+		<nd ref="-4539365"/>
+		<nd ref="-4539362"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561331"/>
+	</way>
+	<way action="modify" visible="true" id="-4538039">
+		<nd ref="-4539349"/>
+		<nd ref="-4539350"/>
+		<nd ref="-4539351"/>
+		<nd ref="-4539352"/>
+		<nd ref="-4539353"/>
+		<nd ref="-4539354"/>
+		<nd ref="-4539355"/>
+		<nd ref="-4539356"/>
+		<nd ref="-4539357"/>
+		<nd ref="-4539349"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561533"/>
+	</way>
+	<way action="modify" visible="true" id="-4538037">
+		<nd ref="-4539343"/>
+		<nd ref="-4539344"/>
+		<nd ref="-4539345"/>
+		<nd ref="-4539346"/>
+		<nd ref="-4539343"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561738"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538036">
+		<nd ref="-4538531"/>
+		<nd ref="-4539342"/>
+		<nd ref="-4538532"/>
+		<nd ref="-4538531"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557094"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538035">
+		<nd ref="-4539336"/>
+		<nd ref="-4539023"/>
+		<nd ref="-4539022"/>
+		<nd ref="-4539337"/>
+		<nd ref="-4539338"/>
+		<nd ref="-4539339"/>
+		<nd ref="-4539340"/>
+		<nd ref="-4539341"/>
+		<nd ref="-4539336"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559132"/>
+	</way>
+	<way action="modify" visible="true" id="-4538034">
+		<nd ref="-4538542"/>
+		<nd ref="-4538545"/>
+		<nd ref="-4539334"/>
+		<nd ref="-4539335"/>
+		<nd ref="-4538542"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537873"/>
+	</way>
+	<way action="modify" visible="true" id="-4538033">
+		<nd ref="-4539242"/>
+		<nd ref="-4539175"/>
+		<nd ref="-4539227"/>
+		<nd ref="-4539333"/>
+		<nd ref="-4539242"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561284"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538031">
+		<nd ref="-4539267"/>
+		<nd ref="-4539269"/>
+		<nd ref="-4539313"/>
+		<nd ref="-4539115"/>
+		<nd ref="-4539114"/>
+		<nd ref="-4539314"/>
+		<nd ref="-4539315"/>
+		<nd ref="-4539316"/>
+		<nd ref="-4539317"/>
+		<nd ref="-4539318"/>
+		<nd ref="-4539319"/>
+		<nd ref="-4539320"/>
+		<nd ref="-4539321"/>
+		<nd ref="-4539322"/>
+		<nd ref="-4539323"/>
+		<nd ref="-4539324"/>
+		<nd ref="-4539325"/>
+		<nd ref="-4539267"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560360"/>
+	</way>
+	<way action="modify" visible="true" id="-4538030">
+		<nd ref="-4539270"/>
+		<nd ref="-4539312"/>
+		<nd ref="-4539271"/>
+		<nd ref="-4539270"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538030"/>
+	</way>
+	<way action="modify" visible="true" id="-4538029">
+		<nd ref="-4539043"/>
+		<nd ref="-4539304"/>
+		<nd ref="-4539305"/>
+		<nd ref="-4539306"/>
+		<nd ref="-4539307"/>
+		<nd ref="-4539308"/>
+		<nd ref="-4539309"/>
+		<nd ref="-4539310"/>
+		<nd ref="-4539311"/>
+		<nd ref="-4539044"/>
+		<nd ref="-4539043"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557978"/>
+	</way>
+	<way action="modify" visible="true" id="-4538028">
+		<nd ref="-4539297"/>
+		<nd ref="-4539298"/>
+		<nd ref="-4539039"/>
+		<nd ref="-4539038"/>
+		<nd ref="-4539299"/>
+		<nd ref="-4539300"/>
+		<nd ref="-4539301"/>
+		<nd ref="-4539302"/>
+		<nd ref="-4539303"/>
+		<nd ref="-4539297"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538028"/>
+	</way>
+	<way action="modify" visible="true" id="-4538027">
+		<nd ref="-4539270"/>
+		<nd ref="-4539271"/>
+		<nd ref="-4539272"/>
+		<nd ref="-4539273"/>
+		<nd ref="-4539274"/>
+		<nd ref="-4539275"/>
+		<nd ref="-4539276"/>
+		<nd ref="-4539277"/>
+		<nd ref="-4539278"/>
+		<nd ref="-4539279"/>
+		<nd ref="-4539280"/>
+		<nd ref="-4539281"/>
+		<nd ref="-4539282"/>
+		<nd ref="-4539283"/>
+		<nd ref="-4539284"/>
+		<nd ref="-4539285"/>
+		<nd ref="-4539286"/>
+		<nd ref="-4539287"/>
+		<nd ref="-4539288"/>
+		<nd ref="-4539289"/>
+		<nd ref="-4539290"/>
+		<nd ref="-4539291"/>
+		<nd ref="-4539292"/>
+		<nd ref="-4539293"/>
+		<nd ref="-4539294"/>
+		<nd ref="-4539295"/>
+		<nd ref="-4539296"/>
+		<nd ref="-4539270"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538030"/>
+	</way>
+	<way action="modify" visible="true" id="-4538026">
+		<nd ref="-4539267"/>
+		<nd ref="-4539268"/>
+		<nd ref="-4539269"/>
+		<nd ref="-4539267"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560360"/>
+	</way>
+	<way action="modify" visible="true" id="-4538025">
+		<nd ref="-4539257"/>
+		<nd ref="-4539259"/>
+		<nd ref="-4539266"/>
+		<nd ref="-4539257"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538020"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538024">
+		<nd ref="-4539261"/>
+		<nd ref="-4539263"/>
+		<nd ref="-4539264"/>
+		<nd ref="-4539265"/>
+		<nd ref="-4539261"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538023"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538023">
+		<nd ref="-4539261"/>
+		<nd ref="-4539262"/>
+		<nd ref="-4539263"/>
+		<nd ref="-4539261"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538023"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538021">
+		<nd ref="-4539260"/>
+		<nd ref="-4539245"/>
+		<nd ref="-4539249"/>
+		<nd ref="-4539260"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560757"/>
+	</way>
+	<way action="modify" visible="true" id="-4538020">
+		<nd ref="-4539257"/>
+		<nd ref="-4539258"/>
+		<nd ref="-4539259"/>
+		<nd ref="-4539257"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538020"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538018">
+		<nd ref="-4539250"/>
+		<nd ref="-4539256"/>
+		<nd ref="-4539251"/>
+		<nd ref="-4539250"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538018"/>
+	</way>
+	<way action="modify" visible="true" id="-4538017">
+		<nd ref="-4538569"/>
+		<nd ref="-4539255"/>
+		<nd ref="-4538570"/>
+		<nd ref="-4538569"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561699"/>
+	</way>
+	<way action="modify" visible="true" id="-4538016">
+		<nd ref="-4539250"/>
+		<nd ref="-4539251"/>
+		<nd ref="-4539252"/>
+		<nd ref="-4539253"/>
+		<nd ref="-4539254"/>
+		<nd ref="-4539250"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538018"/>
+	</way>
+	<way action="modify" visible="true" id="-4538015">
+		<nd ref="-4539245"/>
+		<nd ref="-4539246"/>
+		<nd ref="-4539247"/>
+		<nd ref="-4539248"/>
+		<nd ref="-4539249"/>
+		<nd ref="-4539245"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560757"/>
+	</way>
+	<way action="modify" visible="true" id="-4538014">
+		<nd ref="-4539242"/>
+		<nd ref="-4539243"/>
+		<nd ref="-4539244"/>
+		<nd ref="-4539177"/>
+		<nd ref="-4539176"/>
+		<nd ref="-4539175"/>
+		<nd ref="-4539242"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561284"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538012">
+		<nd ref="-4539220"/>
+		<nd ref="-4538125"/>
+		<nd ref="-4538114"/>
+		<nd ref="-4539220"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538012"/>
+	</way>
+	<way action="modify" visible="true" id="-4538011">
+		<nd ref="-4539212"/>
+		<nd ref="-4539231"/>
+		<nd ref="-4539232"/>
+		<nd ref="-4539233"/>
+		<nd ref="-4539213"/>
+		<nd ref="-4539212"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538011"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538010">
+		<nd ref="-4539228"/>
+		<nd ref="-4539229"/>
+		<nd ref="-4539230"/>
+		<nd ref="-4538631"/>
+		<nd ref="-4538630"/>
+		<nd ref="-4538629"/>
+		<nd ref="-4539228"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559592"/>
+	</way>
+	<way action="modify" visible="true" id="-4538009">
+		<nd ref="-4539174"/>
+		<nd ref="-4539227"/>
+		<nd ref="-4539175"/>
+		<nd ref="-4539174"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561261"/>
+	</way>
+	<way action="modify" visible="true" id="-4538007">
+		<nd ref="-4539111"/>
+		<nd ref="-4539223"/>
+		<nd ref="-4539224"/>
+		<nd ref="-4539112"/>
+		<nd ref="-4539111"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538007"/>
+	</way>
+	<way action="modify" visible="true" id="-4538006">
+		<nd ref="-4539220"/>
+		<nd ref="-4538114"/>
+		<nd ref="-4538113"/>
+		<nd ref="-4539221"/>
+		<nd ref="-4539222"/>
+		<nd ref="-4539220"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538012"/>
+	</way>
+	<way action="modify" visible="true" id="-4538004">
+		<nd ref="-4539212"/>
+		<nd ref="-4539213"/>
+		<nd ref="-4539214"/>
+		<nd ref="-4539215"/>
+		<nd ref="-4539212"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538011"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4538002">
+		<nd ref="-4539174"/>
+		<nd ref="-4539175"/>
+		<nd ref="-4539176"/>
+		<nd ref="-4539177"/>
+		<nd ref="-4539178"/>
+		<nd ref="-4539179"/>
+		<nd ref="-4539180"/>
+		<nd ref="-4539181"/>
+		<nd ref="-4539182"/>
+		<nd ref="-4539183"/>
+		<nd ref="-4539184"/>
+		<nd ref="-4539185"/>
+		<nd ref="-4539186"/>
+		<nd ref="-4539187"/>
+		<nd ref="-4539188"/>
+		<nd ref="-4539189"/>
+		<nd ref="-4539190"/>
+		<nd ref="-4539191"/>
+		<nd ref="-4539192"/>
+		<nd ref="-4539193"/>
+		<nd ref="-4539194"/>
+		<nd ref="-4539195"/>
+		<nd ref="-4539196"/>
+		<nd ref="-4539197"/>
+		<nd ref="-4539198"/>
+		<nd ref="-4539199"/>
+		<nd ref="-4539200"/>
+		<nd ref="-4539174"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561261"/>
+	</way>
+	<way action="modify" visible="true" id="-4538000">
+		<nd ref="-4539161"/>
+		<nd ref="-4539162"/>
+		<nd ref="-4539163"/>
+		<nd ref="-4539161"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558374"/>
+	</way>
+	<way action="modify" visible="true" id="-4537999">
+		<nd ref="-4539126"/>
+		<nd ref="-4539129"/>
+		<nd ref="-4539159"/>
+		<nd ref="-4539160"/>
+		<nd ref="-4539126"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560845"/>
+	</way>
+	<way action="modify" visible="true" id="-4537998">
+		<nd ref="-4539131"/>
+		<nd ref="-4539137"/>
+		<nd ref="-4539156"/>
+		<nd ref="-4539157"/>
+		<nd ref="-4539158"/>
+		<nd ref="-4539131"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537995"/>
+	</way>
+	<way action="modify" visible="true" id="-4537997">
+		<nd ref="-4539150"/>
+		<nd ref="-4539151"/>
+		<nd ref="-4539152"/>
+		<nd ref="-4539153"/>
+		<nd ref="-4539154"/>
+		<nd ref="-4539155"/>
+		<nd ref="-4539150"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538062"/>
+	</way>
+	<way action="modify" visible="true" id="-4537995">
+		<nd ref="-4539131"/>
+		<nd ref="-4539132"/>
+		<nd ref="-4539133"/>
+		<nd ref="-4539134"/>
+		<nd ref="-4539135"/>
+		<nd ref="-4539136"/>
+		<nd ref="-4539137"/>
+		<nd ref="-4539131"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537995"/>
+	</way>
+	<way action="modify" visible="true" id="-4537994">
+		<nd ref="-4538131"/>
+		<nd ref="-4538134"/>
+		<nd ref="-4539021"/>
+		<nd ref="-4539020"/>
+		<nd ref="-4539019"/>
+		<nd ref="-4539130"/>
+		<nd ref="-4538131"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4556836"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537993">
+		<nd ref="-4539126"/>
+		<nd ref="-4539127"/>
+		<nd ref="-4539128"/>
+		<nd ref="-4539129"/>
+		<nd ref="-4539126"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560845"/>
+	</way>
+	<way action="modify" visible="true" id="-4537992">
+		<nd ref="-4539074"/>
+		<nd ref="-4539073"/>
+		<nd ref="-4539125"/>
+		<nd ref="-4539074"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559898"/>
+	</way>
+	<way action="modify" visible="true" id="-4537991">
+		<nd ref="-4539106"/>
+		<nd ref="-4539122"/>
+		<nd ref="-4539123"/>
+		<nd ref="-4539124"/>
+		<nd ref="-4538897"/>
+		<nd ref="-4538896"/>
+		<nd ref="-4539106"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537991"/>
+	</way>
+	<way action="modify" visible="true" id="-4537990">
+		<nd ref="-4539120"/>
+		<nd ref="-4539121"/>
+		<nd ref="-4539105"/>
+		<nd ref="-4539104"/>
+		<nd ref="-4539120"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537984"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537988">
+		<nd ref="-4538895"/>
+		<nd ref="-4539119"/>
+		<nd ref="-4539107"/>
+		<nd ref="-4538896"/>
+		<nd ref="-4538895"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557668"/>
+	</way>
+	<way action="modify" visible="true" id="-4537987">
+		<nd ref="-4539114"/>
+		<nd ref="-4539115"/>
+		<nd ref="-4539116"/>
+		<nd ref="-4539117"/>
+		<nd ref="-4539118"/>
+		<nd ref="-4539114"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560360"/>
+	</way>
+	<way action="modify" visible="true" id="-4537986">
+		<nd ref="-4539111"/>
+		<nd ref="-4539112"/>
+		<nd ref="-4539113"/>
+		<nd ref="-4539111"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538007"/>
+	</way>
+	<way action="modify" visible="true" id="-4537985">
+		<nd ref="-4539106"/>
+		<nd ref="-4538896"/>
+		<nd ref="-4539107"/>
+		<nd ref="-4539108"/>
+		<nd ref="-4539109"/>
+		<nd ref="-4539110"/>
+		<nd ref="-4539106"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537991"/>
+	</way>
+	<way action="modify" visible="true" id="-4537984">
+		<nd ref="-4539103"/>
+		<nd ref="-4539104"/>
+		<nd ref="-4539105"/>
+		<nd ref="-4539103"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537984"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537983">
+		<nd ref="-4539062"/>
+		<nd ref="-4539102"/>
+		<nd ref="-4539063"/>
+		<nd ref="-4539062"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537983"/>
+	</way>
+	<way action="modify" visible="true" id="-4537982">
+		<nd ref="-4539032"/>
+		<nd ref="-4538838"/>
+		<nd ref="-4538841"/>
+		<nd ref="-4539032"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537982"/>
+	</way>
+	<way action="modify" visible="true" id="-4537981">
+		<nd ref="-4538928"/>
+		<nd ref="-4538934"/>
+		<nd ref="-4539101"/>
+		<nd ref="-4538928"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558634"/>
+	</way>
+	<way action="modify" visible="true" id="-4537980">
+		<nd ref="-4539089"/>
+		<nd ref="-4539100"/>
+		<nd ref="-4539090"/>
+		<nd ref="-4539089"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537980"/>
+	</way>
+	<way action="modify" visible="true" id="-4537979">
+		<nd ref="-4539096"/>
+		<nd ref="-4539097"/>
+		<nd ref="-4539098"/>
+		<nd ref="-4539099"/>
+		<nd ref="-4539096"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537979"/>
+	</way>
+	<way action="modify" visible="true" id="-4537978">
+		<nd ref="-4539089"/>
+		<nd ref="-4539090"/>
+		<nd ref="-4539091"/>
+		<nd ref="-4539092"/>
+		<nd ref="-4539093"/>
+		<nd ref="-4539094"/>
+		<nd ref="-4539095"/>
+		<nd ref="-4539089"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537980"/>
+	</way>
+	<way action="modify" visible="true" id="-4537977">
+		<nd ref="-4539086"/>
+		<nd ref="-4539068"/>
+		<nd ref="-4539071"/>
+		<nd ref="-4539087"/>
+		<nd ref="-4539088"/>
+		<nd ref="-4539086"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537975"/>
+	</way>
+	<way action="modify" visible="true" id="-4537976">
+		<nd ref="-4539055"/>
+		<nd ref="-4539057"/>
+		<nd ref="-4539072"/>
+		<nd ref="-4539073"/>
+		<nd ref="-4539074"/>
+		<nd ref="-4539075"/>
+		<nd ref="-4539076"/>
+		<nd ref="-4539077"/>
+		<nd ref="-4539078"/>
+		<nd ref="-4539079"/>
+		<nd ref="-4539080"/>
+		<nd ref="-4539081"/>
+		<nd ref="-4539082"/>
+		<nd ref="-4539083"/>
+		<nd ref="-4539084"/>
+		<nd ref="-4539085"/>
+		<nd ref="-4539055"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559898"/>
+	</way>
+	<way action="modify" visible="true" id="-4537975">
+		<nd ref="-4539068"/>
+		<nd ref="-4539069"/>
+		<nd ref="-4539070"/>
+		<nd ref="-4539071"/>
+		<nd ref="-4539068"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537975"/>
+	</way>
+	<way action="modify" visible="true" id="-4537974">
+		<nd ref="-4539058"/>
+		<nd ref="-4539061"/>
+		<nd ref="-4539066"/>
+		<nd ref="-4539067"/>
+		<nd ref="-4539058"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560940"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537973">
+		<nd ref="-4539062"/>
+		<nd ref="-4539063"/>
+		<nd ref="-4539064"/>
+		<nd ref="-4539065"/>
+		<nd ref="-4539062"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537983"/>
+	</way>
+	<way action="modify" visible="true" id="-4537972">
+		<nd ref="-4539058"/>
+		<nd ref="-4539059"/>
+		<nd ref="-4539060"/>
+		<nd ref="-4539061"/>
+		<nd ref="-4539058"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560940"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537971">
+		<nd ref="-4539055"/>
+		<nd ref="-4539056"/>
+		<nd ref="-4539057"/>
+		<nd ref="-4539055"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559898"/>
+	</way>
+	<way action="modify" visible="true" id="-4537970">
+		<nd ref="-4539043"/>
+		<nd ref="-4539044"/>
+		<nd ref="-4539045"/>
+		<nd ref="-4539046"/>
+		<nd ref="-4539047"/>
+		<nd ref="-4539048"/>
+		<nd ref="-4539049"/>
+		<nd ref="-4539050"/>
+		<nd ref="-4539051"/>
+		<nd ref="-4539052"/>
+		<nd ref="-4539053"/>
+		<nd ref="-4539054"/>
+		<nd ref="-4539043"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557978"/>
+	</way>
+	<way action="modify" visible="true" id="-4537969">
+		<nd ref="-4539038"/>
+		<nd ref="-4539039"/>
+		<nd ref="-4539040"/>
+		<nd ref="-4539041"/>
+		<nd ref="-4539042"/>
+		<nd ref="-4539038"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4538028"/>
+	</way>
+	<way action="modify" visible="true" id="-4537968">
+		<nd ref="-4539032"/>
+		<nd ref="-4538841"/>
+		<nd ref="-4538846"/>
+		<nd ref="-4539033"/>
+		<nd ref="-4539034"/>
+		<nd ref="-4539035"/>
+		<nd ref="-4539036"/>
+		<nd ref="-4539037"/>
+		<nd ref="-4539032"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537982"/>
+	</way>
+	<way action="modify" visible="true" id="-4537967">
+		<nd ref="-4539003"/>
+		<nd ref="-4539007"/>
+		<nd ref="-4539006"/>
+		<nd ref="-4539030"/>
+		<nd ref="-4539031"/>
+		<nd ref="-4539003"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537961"/>
+	</way>
+	<way action="modify" visible="true" id="-4537966">
+		<nd ref="-4539012"/>
+		<nd ref="-4539016"/>
+		<nd ref="-4539029"/>
+		<nd ref="-4539012"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537963"/>
+	</way>
+	<way action="modify" visible="true" id="-4537965">
+		<nd ref="-4539022"/>
+		<nd ref="-4539023"/>
+		<nd ref="-4539024"/>
+		<nd ref="-4539025"/>
+		<nd ref="-4539026"/>
+		<nd ref="-4539027"/>
+		<nd ref="-4539028"/>
+		<nd ref="-4539022"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559132"/>
+	</way>
+	<way action="modify" visible="true" id="-4537964">
+		<nd ref="-4539008"/>
+		<nd ref="-4539017"/>
+		<nd ref="-4539018"/>
+		<nd ref="-4539019"/>
+		<nd ref="-4539020"/>
+		<nd ref="-4539021"/>
+		<nd ref="-4538134"/>
+		<nd ref="-4539008"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537964"/>
+	</way>
+	<way action="modify" visible="true" id="-4537963">
+		<nd ref="-4539012"/>
+		<nd ref="-4539013"/>
+		<nd ref="-4539014"/>
+		<nd ref="-4539015"/>
+		<nd ref="-4539016"/>
+		<nd ref="-4539012"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537963"/>
+	</way>
+	<way action="modify" visible="true" id="-4537962">
+		<nd ref="-4539008"/>
+		<nd ref="-4538134"/>
+		<nd ref="-4538133"/>
+		<nd ref="-4538132"/>
+		<nd ref="-4539009"/>
+		<nd ref="-4539010"/>
+		<nd ref="-4539011"/>
+		<nd ref="-4539008"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537964"/>
+	</way>
+	<way action="modify" visible="true" id="-4537961">
+		<nd ref="-4539003"/>
+		<nd ref="-4539004"/>
+		<nd ref="-4539005"/>
+		<nd ref="-4539006"/>
+		<nd ref="-4539007"/>
+		<nd ref="-4539003"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537961"/>
+	</way>
+	<way action="modify" visible="true" id="-4537960">
+		<nd ref="-4538854"/>
+		<nd ref="-4538955"/>
+		<nd ref="-4539001"/>
+		<nd ref="-4539002"/>
+		<nd ref="-4538855"/>
+		<nd ref="-4538854"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557752"/>
+	</way>
+	<way action="modify" visible="true" id="-4537959">
+		<nd ref="-4538945"/>
+		<nd ref="-4538950"/>
+		<nd ref="-4538999"/>
+		<nd ref="-4539000"/>
+		<nd ref="-4538945"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537950"/>
+	</way>
+	<way action="modify" visible="true" id="-4537958">
+		<nd ref="-4538940"/>
+		<nd ref="-4538975"/>
+		<nd ref="-4538976"/>
+		<nd ref="-4538977"/>
+		<nd ref="-4538978"/>
+		<nd ref="-4538979"/>
+		<nd ref="-4538980"/>
+		<nd ref="-4538981"/>
+		<nd ref="-4538982"/>
+		<nd ref="-4538983"/>
+		<nd ref="-4538984"/>
+		<nd ref="-4538985"/>
+		<nd ref="-4538986"/>
+		<nd ref="-4538987"/>
+		<nd ref="-4538988"/>
+		<nd ref="-4538989"/>
+		<nd ref="-4538990"/>
+		<nd ref="-4538991"/>
+		<nd ref="-4538992"/>
+		<nd ref="-4538993"/>
+		<nd ref="-4538994"/>
+		<nd ref="-4538995"/>
+		<nd ref="-4538996"/>
+		<nd ref="-4538997"/>
+		<nd ref="-4538998"/>
+		<nd ref="-4538941"/>
+		<nd ref="-4538940"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4556753"/>
+	</way>
+	<way action="modify" visible="true" id="-4537956">
+		<nd ref="-4538909"/>
+		<nd ref="-4538966"/>
+		<nd ref="-4538967"/>
+		<nd ref="-4538968"/>
+		<nd ref="-4538969"/>
+		<nd ref="-4538970"/>
+		<nd ref="-4538971"/>
+		<nd ref="-4538972"/>
+		<nd ref="-4538910"/>
+		<nd ref="-4538909"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557782"/>
+	</way>
+	<way action="modify" visible="true" id="-4537953">
+		<nd ref="-4538852"/>
+		<nd ref="-4538851"/>
+		<nd ref="-4538957"/>
+		<nd ref="-4538852"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559945"/>
+	</way>
+	<way action="modify" visible="true" id="-4537951">
+		<nd ref="-4538906"/>
+		<nd ref="-4538951"/>
+		<nd ref="-4538952"/>
+		<nd ref="-4538953"/>
+		<nd ref="-4538954"/>
+		<nd ref="-4538955"/>
+		<nd ref="-4538854"/>
+		<nd ref="-4538906"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557752"/>
+	</way>
+	<way action="modify" visible="true" id="-4537950">
+		<nd ref="-4538945"/>
+		<nd ref="-4538946"/>
+		<nd ref="-4538947"/>
+		<nd ref="-4538948"/>
+		<nd ref="-4538949"/>
+		<nd ref="-4538950"/>
+		<nd ref="-4538945"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537950"/>
+	</way>
+	<way action="modify" visible="true" id="-4537949">
+		<nd ref="-4538940"/>
+		<nd ref="-4538941"/>
+		<nd ref="-4538942"/>
+		<nd ref="-4538943"/>
+		<nd ref="-4538944"/>
+		<nd ref="-4538940"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4556753"/>
+	</way>
+	<way action="modify" visible="true" id="-4537948">
+		<nd ref="-4538937"/>
+		<nd ref="-4538938"/>
+		<nd ref="-4538939"/>
+		<nd ref="-4538805"/>
+		<nd ref="-4538804"/>
+		<nd ref="-4538937"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537948"/>
+	</way>
+	<way action="modify" visible="true" id="-4537946">
+		<nd ref="-4538928"/>
+		<nd ref="-4538929"/>
+		<nd ref="-4538930"/>
+		<nd ref="-4538931"/>
+		<nd ref="-4538932"/>
+		<nd ref="-4538933"/>
+		<nd ref="-4538934"/>
+		<nd ref="-4538928"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558634"/>
+	</way>
+	<way action="modify" visible="true" id="-4537944">
+		<nd ref="-4538909"/>
+		<nd ref="-4538910"/>
+		<nd ref="-4538911"/>
+		<nd ref="-4538909"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557782"/>
+	</way>
+	<way action="modify" visible="true" id="-4537942">
+		<nd ref="-4538853"/>
+		<nd ref="-4538903"/>
+		<nd ref="-4538904"/>
+		<nd ref="-4538905"/>
+		<nd ref="-4538906"/>
+		<nd ref="-4538854"/>
+		<nd ref="-4538853"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557718"/>
+	</way>
+	<way action="modify" visible="true" id="-4537941">
+		<nd ref="-4538895"/>
+		<nd ref="-4538896"/>
+		<nd ref="-4538897"/>
+		<nd ref="-4538898"/>
+		<nd ref="-4538899"/>
+		<nd ref="-4538900"/>
+		<nd ref="-4538901"/>
+		<nd ref="-4538902"/>
+		<nd ref="-4538895"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557668"/>
+	</way>
+	<way action="modify" visible="true" id="-4537940">
+		<nd ref="-4538893"/>
+		<nd ref="-4538894"/>
+		<nd ref="-4538829"/>
+		<nd ref="-4538828"/>
+		<nd ref="-4538893"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561156"/>
+	</way>
+	<way action="modify" visible="true" id="-4550224">
+		<nd ref="-4550187"/>
+		<nd ref="-4550215"/>
+		<nd ref="-4550198"/>
+		<nd ref="-4550205"/>
+		<nd ref="-4550191"/>
+		<nd ref="-4550199"/>
+		<nd ref="-4550182"/>
+		<nd ref="-4550184"/>
+		<nd ref="-4550211"/>
+		<nd ref="-4550220"/>
+		<nd ref="-4550201"/>
+		<nd ref="-4550222"/>
+		<nd ref="-4550203"/>
+		<nd ref="-4550210"/>
+		<nd ref="-4550193"/>
+		<nd ref="-4550196"/>
+		<nd ref="-4550185"/>
+		<nd ref="-4550213"/>
+		<nd ref="-4550214"/>
+		<nd ref="-4550219"/>
+		<nd ref="-4550197"/>
+		<nd ref="-4550204"/>
+		<nd ref="-4550186"/>
+		<nd ref="-4550187"/>
+		<tag k="building" v="yes"/>
+		<tag k="joined" v="w-4558196"/>
+	</way>
+	<way action="modify" visible="true" id="-4537935">
+		<nd ref="-4538833"/>
+		<nd ref="-4538832"/>
+		<nd ref="-4538859"/>
+		<nd ref="-4538860"/>
+		<nd ref="-4538833"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561156"/>
+	</way>
+	<way action="modify" visible="true" id="-4537934">
+		<nd ref="-4538853"/>
+		<nd ref="-4538854"/>
+		<nd ref="-4538855"/>
+		<nd ref="-4538856"/>
+		<nd ref="-4538857"/>
+		<nd ref="-4538858"/>
+		<nd ref="-4538853"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557718"/>
+	</way>
+	<way action="modify" visible="true" id="-4537933">
+		<nd ref="-4538849"/>
+		<nd ref="-4538850"/>
+		<nd ref="-4538851"/>
+		<nd ref="-4538852"/>
+		<nd ref="-4538849"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559945"/>
+	</way>
+	<way action="modify" visible="true" id="-4537932">
+		<nd ref="-4538842"/>
+		<nd ref="-4538814"/>
+		<nd ref="-4538817"/>
+		<nd ref="-4538847"/>
+		<nd ref="-4538848"/>
+		<nd ref="-4538842"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557861"/>
+	</way>
+	<way action="modify" visible="true" id="-4537931">
+		<nd ref="-4538841"/>
+		<nd ref="-4538840"/>
+		<nd ref="-4538845"/>
+		<nd ref="-4538846"/>
+		<nd ref="-4538841"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560451"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537930">
+		<nd ref="-4538842"/>
+		<nd ref="-4538843"/>
+		<nd ref="-4538844"/>
+		<nd ref="-4538822"/>
+		<nd ref="-4538814"/>
+		<nd ref="-4538842"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557861"/>
+	</way>
+	<way action="modify" visible="true" id="-4537929">
+		<nd ref="-4538838"/>
+		<nd ref="-4538839"/>
+		<nd ref="-4538840"/>
+		<nd ref="-4538841"/>
+		<nd ref="-4538838"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560451"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537928">
+		<nd ref="-4538818"/>
+		<nd ref="-4538821"/>
+		<nd ref="-4538837"/>
+		<nd ref="-4538818"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537924"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537927">
+		<nd ref="-4538827"/>
+		<nd ref="-4538828"/>
+		<nd ref="-4538829"/>
+		<nd ref="-4538830"/>
+		<nd ref="-4538831"/>
+		<nd ref="-4538832"/>
+		<nd ref="-4538833"/>
+		<nd ref="-4538834"/>
+		<nd ref="-4538835"/>
+		<nd ref="-4538836"/>
+		<nd ref="-4538827"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561156"/>
+	</way>
+	<way action="modify" visible="true" id="-4537925">
+		<nd ref="-4538814"/>
+		<nd ref="-4538822"/>
+		<nd ref="-4538806"/>
+		<nd ref="-4538802"/>
+		<nd ref="-4538814"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557879"/>
+	</way>
+	<way action="modify" visible="true" id="-4537924">
+		<nd ref="-4538818"/>
+		<nd ref="-4538819"/>
+		<nd ref="-4538820"/>
+		<nd ref="-4538821"/>
+		<nd ref="-4538818"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537924"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537923">
+		<nd ref="-4538814"/>
+		<nd ref="-4538802"/>
+		<nd ref="-4538801"/>
+		<nd ref="-4538815"/>
+		<nd ref="-4538816"/>
+		<nd ref="-4538817"/>
+		<nd ref="-4538814"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557879"/>
+	</way>
+	<way action="modify" visible="true" id="-4537919">
+		<nd ref="-4538796"/>
+		<nd ref="-4538802"/>
+		<nd ref="-4538806"/>
+		<nd ref="-4538796"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537917"/>
+	</way>
+	<way action="modify" visible="true" id="-4537918">
+		<nd ref="-4538803"/>
+		<nd ref="-4538804"/>
+		<nd ref="-4538805"/>
+		<nd ref="-4538803"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537948"/>
+	</way>
+	<way action="modify" visible="true" id="-4537917">
+		<nd ref="-4538796"/>
+		<nd ref="-4538797"/>
+		<nd ref="-4538798"/>
+		<nd ref="-4538799"/>
+		<nd ref="-4538800"/>
+		<nd ref="-4538801"/>
+		<nd ref="-4538802"/>
+		<nd ref="-4538796"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537917"/>
+	</way>
+	<way action="modify" visible="true" id="-4537914">
+		<nd ref="-4538756"/>
+		<nd ref="-4538755"/>
+		<nd ref="-4538759"/>
+		<nd ref="-4538760"/>
+		<nd ref="-4538761"/>
+		<nd ref="-4538756"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559991"/>
+	</way>
+	<way action="modify" visible="true" id="-4537913">
+		<nd ref="-4538673"/>
+		<nd ref="-4538758"/>
+		<nd ref="-4538674"/>
+		<nd ref="-4538673"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559315"/>
+	</way>
+	<way action="modify" visible="true" id="-4537912">
+		<nd ref="-4538752"/>
+		<nd ref="-4538753"/>
+		<nd ref="-4538754"/>
+		<nd ref="-4538755"/>
+		<nd ref="-4538756"/>
+		<nd ref="-4538757"/>
+		<nd ref="-4538752"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559991"/>
+	</way>
+	<way action="modify" visible="true" id="-4537910">
+		<nd ref="-4538534"/>
+		<nd ref="-4538541"/>
+		<nd ref="-4538728"/>
+		<nd ref="-4538729"/>
+		<nd ref="-4538730"/>
+		<nd ref="-4538731"/>
+		<nd ref="-4538732"/>
+		<nd ref="-4538733"/>
+		<nd ref="-4538734"/>
+		<nd ref="-4538735"/>
+		<nd ref="-4538736"/>
+		<nd ref="-4538737"/>
+		<nd ref="-4538738"/>
+		<nd ref="-4538739"/>
+		<nd ref="-4538740"/>
+		<nd ref="-4538741"/>
+		<nd ref="-4538742"/>
+		<nd ref="-4538743"/>
+		<nd ref="-4538534"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537872"/>
+	</way>
+	<way action="modify" visible="true" id="-4537908">
+		<nd ref="-4538414"/>
+		<nd ref="-4538264"/>
+		<nd ref="-4538668"/>
+		<nd ref="-4538667"/>
+		<nd ref="-4538718"/>
+		<nd ref="-4538719"/>
+		<nd ref="-4538720"/>
+		<nd ref="-4538721"/>
+		<nd ref="-4538722"/>
+		<nd ref="-4538723"/>
+		<nd ref="-4538416"/>
+		<nd ref="-4538415"/>
+		<nd ref="-4538414"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559446"/>
+	</way>
+	<way action="modify" visible="true" id="-4537907">
+		<nd ref="-4538229"/>
+		<nd ref="-4538716"/>
+		<nd ref="-4538717"/>
+		<nd ref="-4538230"/>
+		<nd ref="-4538229"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4556714"/>
+	</way>
+	<way action="modify" visible="true" id="-4537905">
+		<nd ref="-4538414"/>
+		<nd ref="-4538481"/>
+		<nd ref="-4538480"/>
+		<nd ref="-4538698"/>
+		<nd ref="-4538699"/>
+		<nd ref="-4538700"/>
+		<nd ref="-4538701"/>
+		<nd ref="-4538702"/>
+		<nd ref="-4538703"/>
+		<nd ref="-4538704"/>
+		<nd ref="-4538705"/>
+		<nd ref="-4538706"/>
+		<nd ref="-4538707"/>
+		<nd ref="-4538708"/>
+		<nd ref="-4538709"/>
+		<nd ref="-4538710"/>
+		<nd ref="-4538711"/>
+		<nd ref="-4538712"/>
+		<nd ref="-4538713"/>
+		<nd ref="-4538714"/>
+		<nd ref="-4538715"/>
+		<nd ref="-4538266"/>
+		<nd ref="-4538265"/>
+		<nd ref="-4538264"/>
+		<nd ref="-4538414"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559446"/>
+	</way>
+	<way action="modify" visible="true" id="-4537903">
+		<nd ref="-4538673"/>
+		<nd ref="-4538674"/>
+		<nd ref="-4538675"/>
+		<nd ref="-4538676"/>
+		<nd ref="-4538677"/>
+		<nd ref="-4538678"/>
+		<nd ref="-4538679"/>
+		<nd ref="-4538673"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559315"/>
+	</way>
+	<way action="modify" visible="true" id="-4537901">
+		<nd ref="-4538264"/>
+		<nd ref="-4538267"/>
+		<nd ref="-4538667"/>
+		<nd ref="-4538668"/>
+		<nd ref="-4538264"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537849"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537900">
+		<nd ref="-4538656"/>
+		<nd ref="-4538659"/>
+		<nd ref="-4538660"/>
+		<nd ref="-4538661"/>
+		<nd ref="-4538662"/>
+		<nd ref="-4538663"/>
+		<nd ref="-4538664"/>
+		<nd ref="-4538665"/>
+		<nd ref="-4538666"/>
+		<nd ref="-4538657"/>
+		<nd ref="-4538656"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537900"/>
+	</way>
+	<way action="modify" visible="true" id="-4537899">
+		<nd ref="-4538656"/>
+		<nd ref="-4538657"/>
+		<nd ref="-4538658"/>
+		<nd ref="-4538656"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537900"/>
+	</way>
+	<way action="modify" visible="true" id="-4537898">
+		<nd ref="-4538581"/>
+		<nd ref="-4538583"/>
+		<nd ref="-4538587"/>
+		<nd ref="-4538586"/>
+		<nd ref="-4538649"/>
+		<nd ref="-4538650"/>
+		<nd ref="-4538651"/>
+		<nd ref="-4538652"/>
+		<nd ref="-4538653"/>
+		<nd ref="-4538654"/>
+		<nd ref="-4538655"/>
+		<nd ref="-4538589"/>
+		<nd ref="-4538581"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557648"/>
+	</way>
+	<way action="modify" visible="true" id="-4537897">
+		<nd ref="-4538634"/>
+		<nd ref="-4538635"/>
+		<nd ref="-4538636"/>
+		<nd ref="-4538637"/>
+		<nd ref="-4538638"/>
+		<nd ref="-4538639"/>
+		<nd ref="-4538640"/>
+		<nd ref="-4538641"/>
+		<nd ref="-4538642"/>
+		<nd ref="-4538643"/>
+		<nd ref="-4538644"/>
+		<nd ref="-4538645"/>
+		<nd ref="-4538646"/>
+		<nd ref="-4538647"/>
+		<nd ref="-4538648"/>
+		<nd ref="-4538634"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558086"/>
+	</way>
+	<way action="modify" visible="true" id="-4537896">
+		<nd ref="-4543232"/>
+		<nd ref="-4538627"/>
+		<nd ref="-4543233"/>
+		<nd ref="-4543232"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559228"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537895">
+		<nd ref="-4538628"/>
+		<nd ref="-4538629"/>
+		<nd ref="-4538630"/>
+		<nd ref="-4538631"/>
+		<nd ref="-4538632"/>
+		<nd ref="-4538628"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559592"/>
+	</way>
+	<way action="modify" visible="true" id="-4537894">
+		<nd ref="-4543232"/>
+		<nd ref="-4543236"/>
+		<nd ref="-4538626"/>
+		<nd ref="-4538627"/>
+		<nd ref="-4543232"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559228"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537893">
+		<nd ref="-4538591"/>
+		<nd ref="-4538594"/>
+		<nd ref="-4538615"/>
+		<nd ref="-4538616"/>
+		<nd ref="-4538617"/>
+		<nd ref="-4538618"/>
+		<nd ref="-4538619"/>
+		<nd ref="-4538620"/>
+		<nd ref="-4538621"/>
+		<nd ref="-4538622"/>
+		<nd ref="-4538623"/>
+		<nd ref="-4538591"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559763"/>
+	</way>
+	<way action="modify" visible="true" id="-4537892">
+		<nd ref="-4538581"/>
+		<nd ref="-4538580"/>
+		<nd ref="-4538583"/>
+		<nd ref="-4538581"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557648"/>
+	</way>
+	<way action="modify" visible="true" id="-4537891">
+		<nd ref="-4538605"/>
+		<nd ref="-4538614"/>
+		<nd ref="-4538606"/>
+		<nd ref="-4538605"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560577"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537890">
+		<nd ref="-4538595"/>
+		<nd ref="-4538604"/>
+		<nd ref="-4538613"/>
+		<nd ref="-4538595"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557541"/>
+	</way>
+	<way action="modify" visible="true" id="-4537889">
+		<nd ref="-4538610"/>
+		<nd ref="-4538611"/>
+		<nd ref="-4538612"/>
+		<nd ref="-4538475"/>
+		<nd ref="-4538460"/>
+		<nd ref="-4538610"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537889"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537888">
+		<nd ref="-4538610"/>
+		<nd ref="-4538460"/>
+		<nd ref="-4538464"/>
+		<nd ref="-4538610"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537889"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537887">
+		<nd ref="-4538605"/>
+		<nd ref="-4538606"/>
+		<nd ref="-4538607"/>
+		<nd ref="-4538608"/>
+		<nd ref="-4538609"/>
+		<nd ref="-4538605"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4560577"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537886">
+		<nd ref="-4538595"/>
+		<nd ref="-4538596"/>
+		<nd ref="-4538597"/>
+		<nd ref="-4538598"/>
+		<nd ref="-4538599"/>
+		<nd ref="-4538577"/>
+		<nd ref="-4538576"/>
+		<nd ref="-4538600"/>
+		<nd ref="-4538601"/>
+		<nd ref="-4538602"/>
+		<nd ref="-4538603"/>
+		<nd ref="-4538604"/>
+		<nd ref="-4538595"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557541"/>
+	</way>
+	<way action="modify" visible="true" id="-4537885">
+		<nd ref="-4538591"/>
+		<nd ref="-4538592"/>
+		<nd ref="-4538593"/>
+		<nd ref="-4538594"/>
+		<nd ref="-4538591"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559763"/>
+	</way>
+	<way action="modify" visible="true" id="-4537884">
+		<nd ref="-4538574"/>
+		<nd ref="-4538581"/>
+		<nd ref="-4538589"/>
+		<nd ref="-4538590"/>
+		<nd ref="-4538574"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537880"/>
+	</way>
+	<way action="modify" visible="true" id="-4537883">
+		<nd ref="-4538580"/>
+		<nd ref="-4538588"/>
+		<nd ref="-4538584"/>
+		<nd ref="-4538583"/>
+		<nd ref="-4538580"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557625"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537882">
+		<nd ref="-4538583"/>
+		<nd ref="-4538584"/>
+		<nd ref="-4538585"/>
+		<nd ref="-4538586"/>
+		<nd ref="-4538587"/>
+		<nd ref="-4538583"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557625"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537880">
+		<nd ref="-4538574"/>
+		<nd ref="-4538575"/>
+		<nd ref="-4538576"/>
+		<nd ref="-4538577"/>
+		<nd ref="-4538578"/>
+		<nd ref="-4538579"/>
+		<nd ref="-4538580"/>
+		<nd ref="-4538581"/>
+		<nd ref="-4538574"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537880"/>
+	</way>
+	<way action="modify" visible="true" id="-4537879">
+		<nd ref="-4538563"/>
+		<nd ref="-4538573"/>
+		<nd ref="-4538564"/>
+		<nd ref="-4538563"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558794"/>
+	</way>
+	<way action="modify" visible="true" id="-4537878">
+		<nd ref="-4538568"/>
+		<nd ref="-4538569"/>
+		<nd ref="-4538570"/>
+		<nd ref="-4538571"/>
+		<nd ref="-4538572"/>
+		<nd ref="-4538568"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561699"/>
+	</way>
+	<way action="modify" visible="true" id="-4537877">
+		<nd ref="-4538563"/>
+		<nd ref="-4538564"/>
+		<nd ref="-4538565"/>
+		<nd ref="-4538566"/>
+		<nd ref="-4538567"/>
+		<nd ref="-4538563"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558794"/>
+	</way>
+	<way action="modify" visible="true" id="-4537876">
+		<nd ref="-4538556"/>
+		<nd ref="-4538561"/>
+		<nd ref="-4538562"/>
+		<nd ref="-4538556"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559649"/>
+	</way>
+	<way action="modify" visible="true" id="-4537875">
+		<nd ref="-4538556"/>
+		<nd ref="-4538557"/>
+		<nd ref="-4538558"/>
+		<nd ref="-4538559"/>
+		<nd ref="-4538560"/>
+		<nd ref="-4538561"/>
+		<nd ref="-4538556"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559649"/>
+	</way>
+	<way action="modify" visible="true" id="-4537873">
+		<nd ref="-4538542"/>
+		<nd ref="-4538543"/>
+		<nd ref="-4538544"/>
+		<nd ref="-4538545"/>
+		<nd ref="-4538542"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537873"/>
+	</way>
+	<way action="modify" visible="true" id="-4537872">
+		<nd ref="-4538534"/>
+		<nd ref="-4538535"/>
+		<nd ref="-4538536"/>
+		<nd ref="-4538537"/>
+		<nd ref="-4538538"/>
+		<nd ref="-4538539"/>
+		<nd ref="-4538540"/>
+		<nd ref="-4538541"/>
+		<nd ref="-4538534"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537872"/>
+	</way>
+	<way action="modify" visible="true" id="-4537871">
+		<nd ref="-4538531"/>
+		<nd ref="-4538532"/>
+		<nd ref="-4538533"/>
+		<nd ref="-4538531"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557094"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537870">
+		<nd ref="-4538420"/>
+		<nd ref="-4538528"/>
+		<nd ref="-4538529"/>
+		<nd ref="-4538530"/>
+		<nd ref="-4538421"/>
+		<nd ref="-4538420"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557258"/>
+	</way>
+	<way action="modify" visible="true" id="-4537869">
+		<nd ref="-4538486"/>
+		<nd ref="-4538508"/>
+		<nd ref="-4538527"/>
+		<nd ref="-4538486"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537864"/>
+	</way>
+	<way action="modify" visible="true" id="-4537868">
+		<nd ref="-4538518"/>
+		<nd ref="-4538517"/>
+		<nd ref="-4538526"/>
+		<nd ref="-4538518"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558852"/>
+	</way>
+	<way action="modify" visible="true" id="-4537867">
+		<nd ref="-4538513"/>
+		<nd ref="-4538514"/>
+		<nd ref="-4538515"/>
+		<nd ref="-4538516"/>
+		<nd ref="-4538517"/>
+		<nd ref="-4538518"/>
+		<nd ref="-4538519"/>
+		<nd ref="-4538520"/>
+		<nd ref="-4538521"/>
+		<nd ref="-4538522"/>
+		<nd ref="-4538523"/>
+		<nd ref="-4538524"/>
+		<nd ref="-4538525"/>
+		<nd ref="-4538513"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558852"/>
+	</way>
+	<way action="modify" visible="true" id="-4537866">
+		<nd ref="-4538471"/>
+		<nd ref="-4538474"/>
+		<nd ref="-4538511"/>
+		<nd ref="-4538512"/>
+		<nd ref="-4538471"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558532"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537865">
+		<nd ref="-4538476"/>
+		<nd ref="-4538509"/>
+		<nd ref="-4538510"/>
+		<nd ref="-4538477"/>
+		<nd ref="-4538476"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557332"/>
+	</way>
+	<way action="modify" visible="true" id="-4537864">
+		<nd ref="-4538486"/>
+		<nd ref="-4538487"/>
+		<nd ref="-4538488"/>
+		<nd ref="-4538489"/>
+		<nd ref="-4538490"/>
+		<nd ref="-4538491"/>
+		<nd ref="-4538492"/>
+		<nd ref="-4538493"/>
+		<nd ref="-4538494"/>
+		<nd ref="-4538495"/>
+		<nd ref="-4538496"/>
+		<nd ref="-4538497"/>
+		<nd ref="-4538498"/>
+		<nd ref="-4538499"/>
+		<nd ref="-4538500"/>
+		<nd ref="-4538501"/>
+		<nd ref="-4538502"/>
+		<nd ref="-4538503"/>
+		<nd ref="-4538504"/>
+		<nd ref="-4538505"/>
+		<nd ref="-4538506"/>
+		<nd ref="-4538507"/>
+		<nd ref="-4538508"/>
+		<nd ref="-4538486"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537864"/>
+	</way>
+	<way action="modify" visible="true" id="-4537862">
+		<nd ref="-4538413"/>
+		<nd ref="-4538480"/>
+		<nd ref="-4538481"/>
+		<nd ref="-4538414"/>
+		<nd ref="-4538413"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4559421"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537861">
+		<nd ref="-4538476"/>
+		<nd ref="-4538477"/>
+		<nd ref="-4538478"/>
+		<nd ref="-4538479"/>
+		<nd ref="-4538476"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4557332"/>
+	</way>
+	<way action="modify" visible="true" id="-4537860">
+		<nd ref="-4538475"/>
+		<nd ref="-4538461"/>
+		<nd ref="-4538460"/>
+		<nd ref="-4538475"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561398"/>
+	</way>
+	<way action="modify" visible="true" id="-4537859">
+		<nd ref="-4538471"/>
+		<nd ref="-4538472"/>
+		<nd ref="-4538473"/>
+		<nd ref="-4538474"/>
+		<nd ref="-4538471"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4558532"/>
+		<tag k="wall" v="no"/>
+	</way>
+	<way action="modify" visible="true" id="-4537858">
+		<nd ref="-4538410"/>
+		<nd ref="-4538465"/>
+		<nd ref="-4538466"/>
+		<nd ref="-4538467"/>
+		<nd ref="-4538468"/>
+		<nd ref="-4538469"/>
+		<nd ref="-4538470"/>
+		<nd ref="-4538411"/>
+		<nd ref="-4538410"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4537858"/>
+	</way>
+	<way action="modify" visible="true" id="-4537857">
+		<nd ref="-4538460"/>
+		<nd ref="-4538461"/>
+		<nd ref="-4538462"/>
+		<nd ref="-4538463"/>
+		<nd ref="-4538464"/>
+		<nd ref="-4538460"/>
+		<tag k="building" v="yes"/>
+		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
+		<tag k="joined" v="w-4561398"/>
+	</way>
+</osm>

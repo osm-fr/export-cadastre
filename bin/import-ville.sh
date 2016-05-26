@@ -14,7 +14,7 @@ cd $data_dir || exit -1
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
 cadastre_vers_pdf="$bin_dir/cadastre-housenumber/cadastre_vers_pdf.py"
 simplify_qadastre_houses="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/simplify_qadastre_houses.py"
-
+segmented_building_predict="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/segmented_building_predict.py"
 
 [ -d $dep ] || mkdir $dep
 chmod 777 $dep
@@ -38,17 +38,24 @@ else
   mv -f "$code-0-0.pdf" "$code-$name.pdf"
 fi
 
+rm -f "$code-$name.tar.bz2"
 
 $Qadastre2OSM --convert $code "$name"
 
-$simplify_qadastre_houses "$code-$name-houses.osm"
+# Création du eau dossier si celui-ci n'existe pas
+mkdir ../eau 2>/dev/null
+chmod 777 ../eau
+mv -f *.pdf *-water.osm ../eau/
 
-rm -f "$code-$name.tar.bz2"
+# Simplification
+if [ -f "$code-$name-houses.osm" ] ; then
+  $simplify_qadastre_houses "$code-$name-houses.osm"
+
+  # Prédiction bâtiments segmentés
+  $segmented_building_predict "$code-$name-houses-simplifie.osm" "$code-$name-houses-prediction_segmente.osm"
+fi
+
 tar cvf "$code-$name.tar" --exclude="*-water.osm" $code-"$name"*.osm
 bzip2 -f "$code-$name.tar"
-cd ..
-# Création du dossier si celui-ci n'existe pas
-mkdir eau 2>/dev/null
-chmod 777 eau 
-mv -f $dep/*.pdf $dep/*-water.osm eau
+
 date
