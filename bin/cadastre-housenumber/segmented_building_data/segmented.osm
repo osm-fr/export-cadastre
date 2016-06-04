@@ -1195,7 +1195,7 @@
 		<nd ref="-4538207"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537856"/>
+		<tag k="segmented" v="w-4537856"/>
 	</way>
 	<way action="modify" visible="true" id="-4537854">
 		<nd ref="-4538420"/>
@@ -1224,7 +1224,7 @@
 		<nd ref="-4538420"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557258"/>
+		<tag k="segmented" v="w-4557258"/>
 	</way>
 	<way action="modify" visible="true" id="-4537853">
 		<nd ref="-4538417"/>
@@ -1233,7 +1233,7 @@
 		<nd ref="-4538417"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558324"/>
+		<tag k="segmented" v="w-4558324"/>
 	</way>
 	<way action="modify" visible="true" id="-4537852">
 		<nd ref="-4538413"/>
@@ -1243,7 +1243,7 @@
 		<nd ref="-4538413"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559421"/>
+		<tag k="segmented" v="w-4559421"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537851">
@@ -1253,7 +1253,7 @@
 		<nd ref="-4538410"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537858"/>
+		<tag k="segmented" v="w-4537858"/>
 	</way>
 	<way action="modify" visible="true" id="-4537849">
 		<nd ref="-4538264"/>
@@ -1263,7 +1263,7 @@
 		<nd ref="-4538264"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537849"/>
+		<tag k="segmented" v="w-4537849"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537847">
@@ -1277,7 +1277,7 @@
 		<nd ref="-4538244"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557232"/>
+		<tag k="segmented" v="w-4557232"/>
 	</way>
 	<way action="modify" visible="true" id="-4537846">
 		<nd ref="-4538202"/>
@@ -1287,7 +1287,7 @@
 		<nd ref="-4538202"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558044"/>
+		<tag k="segmented" v="w-4558044"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537845">
@@ -1297,7 +1297,7 @@
 		<nd ref="-4538244"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557232"/>
+		<tag k="segmented" v="w-4557232"/>
 	</way>
 	<way action="modify" visible="true" id="-4537842">
 		<nd ref="-4538229"/>
@@ -1308,7 +1308,7 @@
 		<nd ref="-4538229"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4556714"/>
+		<tag k="segmented" v="w-4556714"/>
 	</way>
 	<way action="modify" visible="true" id="-4537841">
 		<nd ref="-4538217"/>
@@ -1326,7 +1326,7 @@
 		<nd ref="-4538217"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538075"/>
+		<tag k="segmented" v="w-4538075"/>
 	</way>
 	<way action="modify" visible="true" id="-4537840">
 		<nd ref="-4538207"/>
@@ -1342,7 +1342,7 @@
 		<nd ref="-4538207"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537856"/>
+		<tag k="segmented" v="w-4537856"/>
 	</way>
 	<way action="modify" visible="true" id="-4537839">
 		<nd ref="-4538197"/>
@@ -1351,7 +1351,7 @@
 		<nd ref="-4538197"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537839"/>
+		<tag k="segmented" v="w-4537839"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537838">
@@ -1362,7 +1362,7 @@
 		<nd ref="-4538202"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558044"/>
+		<tag k="segmented" v="w-4558044"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537837">
@@ -1374,7 +1374,7 @@
 		<nd ref="-4538197"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537839"/>
+		<tag k="segmented" v="w-4537839"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537835">
@@ -1391,7 +1391,7 @@
 		<nd ref="-4538186"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558278"/>
+		<tag k="segmented" v="w-4558278"/>
 	</way>
 	<way action="modify" visible="true" id="-4537834">
 		<nd ref="-4538186"/>
@@ -1400,7 +1400,7 @@
 		<nd ref="-4538186"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558278"/>
+		<tag k="segmented" v="w-4558278"/>
 	</way>
 	<way action="modify" visible="true" id="-4537833">
 		<nd ref="-4538182"/>
@@ -1410,7 +1410,7 @@
 		<nd ref="-4538182"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537833"/>
+		<tag k="segmented" v="w-4537833"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537831">
@@ -1420,7 +1420,7 @@
 		<nd ref="-4538137"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559702"/>
+		<tag k="segmented" v="w-4559702"/>
 	</way>
 	<way action="modify" visible="true" id="-4537829">
 		<nd ref="-4538162"/>
@@ -1439,7 +1439,7 @@
 		<nd ref="-4538162"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559555"/>
+		<tag k="segmented" v="w-4559555"/>
 	</way>
 	<way action="modify" visible="true" id="-4537828">
 		<nd ref="-4538115"/>
@@ -1474,7 +1474,7 @@
 		<nd ref="-4538115"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559702"/>
+		<tag k="segmented" v="w-4559702"/>
 	</way>
 	<way action="modify" visible="true" id="-4537827">
 		<nd ref="-4538131"/>
@@ -1484,7 +1484,7 @@
 		<nd ref="-4538131"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4556836"/>
+		<tag k="segmented" v="w-4556836"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537825">
@@ -1495,7 +1495,7 @@
 		<nd ref="-4538111"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537823"/>
+		<tag k="segmented" v="w-4537823"/>
 	</way>
 	<way action="modify" visible="true" id="-4537824">
 		<nd ref="-4538115"/>
@@ -1511,7 +1511,7 @@
 		<nd ref="-4538115"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559702"/>
+		<tag k="segmented" v="w-4559702"/>
 	</way>
 	<way action="modify" visible="true" id="-4537823">
 		<nd ref="-4538111"/>
@@ -1521,7 +1521,7 @@
 		<nd ref="-4538111"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537823"/>
+		<tag k="segmented" v="w-4537823"/>
 	</way>
 	<way action="modify" visible="true" id="-4547590">
 		<nd ref="-4547591"/>
@@ -1544,7 +1544,7 @@
 		<nd ref="-4547591"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4547589"/>
+		<tag k="segmented" v="w-4547589"/>
 	</way>
 	<way action="modify" visible="true" id="-3048392">
 		<nd ref="-3048389"/>
@@ -1554,7 +1554,7 @@
 		<nd ref="-3048389"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-3048391"/>
+		<tag k="segmented" v="w-3048391"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-3048391">
@@ -1565,7 +1565,7 @@
 		<nd ref="-3048389"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-3048391"/>
+		<tag k="segmented" v="w-3048391"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4547589">
@@ -1594,7 +1594,7 @@
 		<nd ref="-4547591"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4547589"/>
+		<tag k="segmented" v="w-4547589"/>
 	</way>
 	<way action="modify" visible="true" id="-4550229">
 		<nd ref="-4550213"/>
@@ -1603,7 +1603,7 @@
 		<nd ref="-4550212"/>
 		<nd ref="-4550213"/>
 		<tag k="building" v="yes"/>
-		<tag k="joined" v="w-4558196"/>
+		<tag k="segmented" v="w-4558196"/>
 	</way>
 	<way action="modify" visible="true" id="-4550357">
 		<nd ref="-4550349"/>
@@ -1626,7 +1626,7 @@
 		<nd ref="-4550320"/>
 		<nd ref="-4550349"/>
 		<tag k="building" v="yes"/>
-		<tag k="joined" v="w-4550357"/>
+		<tag k="segmented" v="w-4550357"/>
 	</way>
 	<way action="modify" visible="true" id="-4550714">
 		<nd ref="-4550685"/>
@@ -1635,7 +1635,7 @@
 		<nd ref="-4550706"/>
 		<nd ref="-4550685"/>
 		<tag k="building" v="yes"/>
-		<tag k="joined" v="w-4550858"/>
+		<tag k="segmented" v="w-4550858"/>
 	</way>
 	<way action="modify" visible="true" id="-3048256">
 		<nd ref="-3048252"/>
@@ -1650,7 +1650,7 @@
 		<nd ref="-3048252"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-3048256"/>
+		<tag k="segmented" v="w-3048256"/>
 	</way>
 	<way action="modify" visible="true" id="-3048255">
 		<nd ref="-3048252"/>
@@ -1662,7 +1662,7 @@
 		<nd ref="-3048252"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-3048256"/>
+		<tag k="segmented" v="w-3048256"/>
 	</way>
 	<way action="modify" visible="true" id="-4543230">
 		<nd ref="-4543231"/>
@@ -1672,7 +1672,7 @@
 		<nd ref="-4543231"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4543230"/>
+		<tag k="segmented" v="w-4543230"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4543229">
@@ -1683,7 +1683,7 @@
 		<nd ref="-4543231"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4543230"/>
+		<tag k="segmented" v="w-4543230"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538083">
@@ -1694,7 +1694,7 @@
 		<nd ref="-4538513"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558852"/>
+		<tag k="segmented" v="w-4558852"/>
 	</way>
 	<way action="modify" visible="true" id="-4538082">
 		<nd ref="-4539621"/>
@@ -1703,7 +1703,7 @@
 		<nd ref="-4539621"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538082"/>
+		<tag k="segmented" v="w-4538082"/>
 	</way>
 	<way action="modify" visible="true" id="-4538080">
 		<nd ref="-4539621"/>
@@ -1727,7 +1727,7 @@
 		<nd ref="-4539621"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538082"/>
+		<tag k="segmented" v="w-4538082"/>
 	</way>
 	<way action="modify" visible="true" id="-4550365">
 		<nd ref="-4550349"/>
@@ -1735,7 +1735,7 @@
 		<nd ref="-4550348"/>
 		<nd ref="-4550349"/>
 		<tag k="building" v="yes"/>
-		<tag k="joined" v="w-4550357"/>
+		<tag k="segmented" v="w-4550357"/>
 	</way>
 	<way action="modify" visible="true" id="-4538075">
 		<nd ref="-4538217"/>
@@ -1761,7 +1761,7 @@
 		<nd ref="-4538217"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538075"/>
+		<tag k="segmented" v="w-4538075"/>
 	</way>
 	<way action="modify" visible="true" id="-4538074">
 		<nd ref="-4538835"/>
@@ -1775,7 +1775,7 @@
 		<nd ref="-4538835"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561156"/>
+		<tag k="segmented" v="w-4561156"/>
 	</way>
 	<way action="modify" visible="true" id="-4538073">
 		<nd ref="-4539508"/>
@@ -1788,7 +1788,7 @@
 		<nd ref="-4539508"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560276"/>
+		<tag k="segmented" v="w-4560276"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538072">
@@ -1798,7 +1798,7 @@
 		<nd ref="-4538636"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558086"/>
+		<tag k="segmented" v="w-4558086"/>
 	</way>
 	<way action="modify" visible="true" id="-4538071">
 		<nd ref="-4539524"/>
@@ -1814,7 +1814,7 @@
 		<nd ref="-4539524"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560798"/>
+		<tag k="segmented" v="w-4560798"/>
 	</way>
 	<way action="modify" visible="true" id="-4538070">
 		<nd ref="-4539522"/>
@@ -1823,7 +1823,7 @@
 		<nd ref="-4539522"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560798"/>
+		<tag k="segmented" v="w-4560798"/>
 	</way>
 	<way action="modify" visible="true" id="-4538069">
 		<nd ref="-4539511"/>
@@ -1834,7 +1834,7 @@
 		<nd ref="-4539511"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561569"/>
+		<tag k="segmented" v="w-4561569"/>
 	</way>
 	<way action="modify" visible="true" id="-4538067">
 		<nd ref="-4539511"/>
@@ -1843,7 +1843,7 @@
 		<nd ref="-4539511"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561569"/>
+		<tag k="segmented" v="w-4561569"/>
 	</way>
 	<way action="modify" visible="true" id="-4538066">
 		<nd ref="-4539508"/>
@@ -1852,7 +1852,7 @@
 		<nd ref="-4539508"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560276"/>
+		<tag k="segmented" v="w-4560276"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538064">
@@ -1874,7 +1874,7 @@
 		<nd ref="-4539491"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538064"/>
+		<tag k="segmented" v="w-4538064"/>
 	</way>
 	<way action="modify" visible="true" id="-4538063">
 		<nd ref="-4538162"/>
@@ -1892,7 +1892,7 @@
 		<nd ref="-4538162"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559555"/>
+		<tag k="segmented" v="w-4559555"/>
 	</way>
 	<way action="modify" visible="true" id="-4538062">
 		<nd ref="-4539481"/>
@@ -1902,7 +1902,7 @@
 		<nd ref="-4539481"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538062"/>
+		<tag k="segmented" v="w-4538062"/>
 	</way>
 	<way action="modify" visible="true" id="-4538061">
 		<nd ref="-4538182"/>
@@ -1912,7 +1912,7 @@
 		<nd ref="-4538182"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537833"/>
+		<tag k="segmented" v="w-4537833"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538060">
@@ -1922,7 +1922,7 @@
 		<nd ref="-4539476"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538064"/>
+		<tag k="segmented" v="w-4538064"/>
 	</way>
 	<way action="modify" visible="true" id="-4550858">
 		<nd ref="-4550685"/>
@@ -1953,7 +1953,7 @@
 		<nd ref="-4550691"/>
 		<nd ref="-4550685"/>
 		<tag k="building" v="yes"/>
-		<tag k="joined" v="w-4550858"/>
+		<tag k="segmented" v="w-4550858"/>
 	</way>
 	<way action="modify" visible="true" id="-4538057">
 		<nd ref="-4539376"/>
@@ -1964,7 +1964,7 @@
 		<nd ref="-4539376"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538046"/>
+		<tag k="segmented" v="w-4538046"/>
 	</way>
 	<way action="modify" visible="true" id="-4538056">
 		<nd ref="-4538198"/>
@@ -1978,7 +1978,7 @@
 		<nd ref="-4538198"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558469"/>
+		<tag k="segmented" v="w-4558469"/>
 	</way>
 	<way action="modify" visible="true" id="-4538054">
 		<nd ref="-4539373"/>
@@ -1998,7 +1998,7 @@
 		<nd ref="-4539373"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558324"/>
+		<tag k="segmented" v="w-4558324"/>
 	</way>
 	<way action="modify" visible="true" id="-4538053">
 		<nd ref="-4539096"/>
@@ -2010,7 +2010,7 @@
 		<nd ref="-4539096"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537979"/>
+		<tag k="segmented" v="w-4537979"/>
 	</way>
 	<way action="modify" visible="true" id="-4538052">
 		<nd ref="-4539161"/>
@@ -2034,7 +2034,7 @@
 		<nd ref="-4539161"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558374"/>
+		<tag k="segmented" v="w-4558374"/>
 	</way>
 	<way action="modify" visible="true" id="-4538049">
 		<nd ref="-4538206"/>
@@ -2076,7 +2076,7 @@
 		<nd ref="-4538206"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558469"/>
+		<tag k="segmented" v="w-4558469"/>
 	</way>
 	<way action="modify" visible="true" id="-4538048">
 		<nd ref="-4539349"/>
@@ -2085,7 +2085,7 @@
 		<nd ref="-4539349"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561533"/>
+		<tag k="segmented" v="w-4561533"/>
 	</way>
 	<way action="modify" visible="true" id="-4538046">
 		<nd ref="-4539376"/>
@@ -2107,7 +2107,7 @@
 		<nd ref="-4539376"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538046"/>
+		<tag k="segmented" v="w-4538046"/>
 	</way>
 	<way action="modify" visible="true" id="-4538045">
 		<nd ref="-4539373"/>
@@ -2116,7 +2116,7 @@
 		<nd ref="-4539373"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558324"/>
+		<tag k="segmented" v="w-4558324"/>
 	</way>
 	<way action="modify" visible="true" id="-4538044">
 		<nd ref="-4539362"/>
@@ -2129,7 +2129,7 @@
 		<nd ref="-4539362"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561331"/>
+		<tag k="segmented" v="w-4561331"/>
 	</way>
 	<way action="modify" visible="true" id="-4538043">
 		<nd ref="-4539343"/>
@@ -2139,7 +2139,7 @@
 		<nd ref="-4539343"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561738"/>
+		<tag k="segmented" v="w-4561738"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538042">
@@ -2150,7 +2150,7 @@
 		<nd ref="-4539362"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561331"/>
+		<tag k="segmented" v="w-4561331"/>
 	</way>
 	<way action="modify" visible="true" id="-4538039">
 		<nd ref="-4539349"/>
@@ -2165,7 +2165,7 @@
 		<nd ref="-4539349"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561533"/>
+		<tag k="segmented" v="w-4561533"/>
 	</way>
 	<way action="modify" visible="true" id="-4538037">
 		<nd ref="-4539343"/>
@@ -2175,7 +2175,7 @@
 		<nd ref="-4539343"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561738"/>
+		<tag k="segmented" v="w-4561738"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538036">
@@ -2185,7 +2185,7 @@
 		<nd ref="-4538531"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557094"/>
+		<tag k="segmented" v="w-4557094"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538035">
@@ -2200,7 +2200,7 @@
 		<nd ref="-4539336"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559132"/>
+		<tag k="segmented" v="w-4559132"/>
 	</way>
 	<way action="modify" visible="true" id="-4538034">
 		<nd ref="-4538542"/>
@@ -2210,7 +2210,7 @@
 		<nd ref="-4538542"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537873"/>
+		<tag k="segmented" v="w-4537873"/>
 	</way>
 	<way action="modify" visible="true" id="-4538033">
 		<nd ref="-4539242"/>
@@ -2220,7 +2220,7 @@
 		<nd ref="-4539242"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561284"/>
+		<tag k="segmented" v="w-4561284"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538031">
@@ -2244,7 +2244,7 @@
 		<nd ref="-4539267"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560360"/>
+		<tag k="segmented" v="w-4560360"/>
 	</way>
 	<way action="modify" visible="true" id="-4538030">
 		<nd ref="-4539270"/>
@@ -2253,7 +2253,7 @@
 		<nd ref="-4539270"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538030"/>
+		<tag k="segmented" v="w-4538030"/>
 	</way>
 	<way action="modify" visible="true" id="-4538029">
 		<nd ref="-4539043"/>
@@ -2269,7 +2269,7 @@
 		<nd ref="-4539043"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557978"/>
+		<tag k="segmented" v="w-4557978"/>
 	</way>
 	<way action="modify" visible="true" id="-4538028">
 		<nd ref="-4539297"/>
@@ -2284,7 +2284,7 @@
 		<nd ref="-4539297"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538028"/>
+		<tag k="segmented" v="w-4538028"/>
 	</way>
 	<way action="modify" visible="true" id="-4538027">
 		<nd ref="-4539270"/>
@@ -2317,7 +2317,7 @@
 		<nd ref="-4539270"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538030"/>
+		<tag k="segmented" v="w-4538030"/>
 	</way>
 	<way action="modify" visible="true" id="-4538026">
 		<nd ref="-4539267"/>
@@ -2326,7 +2326,7 @@
 		<nd ref="-4539267"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560360"/>
+		<tag k="segmented" v="w-4560360"/>
 	</way>
 	<way action="modify" visible="true" id="-4538025">
 		<nd ref="-4539257"/>
@@ -2335,7 +2335,7 @@
 		<nd ref="-4539257"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538020"/>
+		<tag k="segmented" v="w-4538020"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538024">
@@ -2346,7 +2346,7 @@
 		<nd ref="-4539261"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538023"/>
+		<tag k="segmented" v="w-4538023"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538023">
@@ -2356,7 +2356,7 @@
 		<nd ref="-4539261"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538023"/>
+		<tag k="segmented" v="w-4538023"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538021">
@@ -2366,7 +2366,7 @@
 		<nd ref="-4539260"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560757"/>
+		<tag k="segmented" v="w-4560757"/>
 	</way>
 	<way action="modify" visible="true" id="-4538020">
 		<nd ref="-4539257"/>
@@ -2375,7 +2375,7 @@
 		<nd ref="-4539257"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538020"/>
+		<tag k="segmented" v="w-4538020"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538018">
@@ -2385,7 +2385,7 @@
 		<nd ref="-4539250"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538018"/>
+		<tag k="segmented" v="w-4538018"/>
 	</way>
 	<way action="modify" visible="true" id="-4538017">
 		<nd ref="-4538569"/>
@@ -2394,7 +2394,7 @@
 		<nd ref="-4538569"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561699"/>
+		<tag k="segmented" v="w-4561699"/>
 	</way>
 	<way action="modify" visible="true" id="-4538016">
 		<nd ref="-4539250"/>
@@ -2405,7 +2405,7 @@
 		<nd ref="-4539250"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538018"/>
+		<tag k="segmented" v="w-4538018"/>
 	</way>
 	<way action="modify" visible="true" id="-4538015">
 		<nd ref="-4539245"/>
@@ -2416,7 +2416,7 @@
 		<nd ref="-4539245"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560757"/>
+		<tag k="segmented" v="w-4560757"/>
 	</way>
 	<way action="modify" visible="true" id="-4538014">
 		<nd ref="-4539242"/>
@@ -2428,7 +2428,7 @@
 		<nd ref="-4539242"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561284"/>
+		<tag k="segmented" v="w-4561284"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538012">
@@ -2438,7 +2438,7 @@
 		<nd ref="-4539220"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538012"/>
+		<tag k="segmented" v="w-4538012"/>
 	</way>
 	<way action="modify" visible="true" id="-4538011">
 		<nd ref="-4539212"/>
@@ -2449,7 +2449,7 @@
 		<nd ref="-4539212"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538011"/>
+		<tag k="segmented" v="w-4538011"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538010">
@@ -2462,7 +2462,7 @@
 		<nd ref="-4539228"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559592"/>
+		<tag k="segmented" v="w-4559592"/>
 	</way>
 	<way action="modify" visible="true" id="-4538009">
 		<nd ref="-4539174"/>
@@ -2471,7 +2471,7 @@
 		<nd ref="-4539174"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561261"/>
+		<tag k="segmented" v="w-4561261"/>
 	</way>
 	<way action="modify" visible="true" id="-4538007">
 		<nd ref="-4539111"/>
@@ -2481,7 +2481,7 @@
 		<nd ref="-4539111"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538007"/>
+		<tag k="segmented" v="w-4538007"/>
 	</way>
 	<way action="modify" visible="true" id="-4538006">
 		<nd ref="-4539220"/>
@@ -2492,7 +2492,7 @@
 		<nd ref="-4539220"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538012"/>
+		<tag k="segmented" v="w-4538012"/>
 	</way>
 	<way action="modify" visible="true" id="-4538004">
 		<nd ref="-4539212"/>
@@ -2502,7 +2502,7 @@
 		<nd ref="-4539212"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538011"/>
+		<tag k="segmented" v="w-4538011"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4538002">
@@ -2536,7 +2536,7 @@
 		<nd ref="-4539174"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561261"/>
+		<tag k="segmented" v="w-4561261"/>
 	</way>
 	<way action="modify" visible="true" id="-4538000">
 		<nd ref="-4539161"/>
@@ -2545,7 +2545,7 @@
 		<nd ref="-4539161"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558374"/>
+		<tag k="segmented" v="w-4558374"/>
 	</way>
 	<way action="modify" visible="true" id="-4537999">
 		<nd ref="-4539126"/>
@@ -2555,7 +2555,7 @@
 		<nd ref="-4539126"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560845"/>
+		<tag k="segmented" v="w-4560845"/>
 	</way>
 	<way action="modify" visible="true" id="-4537998">
 		<nd ref="-4539131"/>
@@ -2566,7 +2566,7 @@
 		<nd ref="-4539131"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537995"/>
+		<tag k="segmented" v="w-4537995"/>
 	</way>
 	<way action="modify" visible="true" id="-4537997">
 		<nd ref="-4539150"/>
@@ -2578,7 +2578,7 @@
 		<nd ref="-4539150"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538062"/>
+		<tag k="segmented" v="w-4538062"/>
 	</way>
 	<way action="modify" visible="true" id="-4537995">
 		<nd ref="-4539131"/>
@@ -2591,7 +2591,7 @@
 		<nd ref="-4539131"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537995"/>
+		<tag k="segmented" v="w-4537995"/>
 	</way>
 	<way action="modify" visible="true" id="-4537994">
 		<nd ref="-4538131"/>
@@ -2603,7 +2603,7 @@
 		<nd ref="-4538131"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4556836"/>
+		<tag k="segmented" v="w-4556836"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537993">
@@ -2614,7 +2614,7 @@
 		<nd ref="-4539126"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560845"/>
+		<tag k="segmented" v="w-4560845"/>
 	</way>
 	<way action="modify" visible="true" id="-4537992">
 		<nd ref="-4539074"/>
@@ -2623,7 +2623,7 @@
 		<nd ref="-4539074"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559898"/>
+		<tag k="segmented" v="w-4559898"/>
 	</way>
 	<way action="modify" visible="true" id="-4537991">
 		<nd ref="-4539106"/>
@@ -2635,7 +2635,7 @@
 		<nd ref="-4539106"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537991"/>
+		<tag k="segmented" v="w-4537991"/>
 	</way>
 	<way action="modify" visible="true" id="-4537990">
 		<nd ref="-4539120"/>
@@ -2645,7 +2645,7 @@
 		<nd ref="-4539120"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537984"/>
+		<tag k="segmented" v="w-4537984"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537988">
@@ -2656,7 +2656,7 @@
 		<nd ref="-4538895"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557668"/>
+		<tag k="segmented" v="w-4557668"/>
 	</way>
 	<way action="modify" visible="true" id="-4537987">
 		<nd ref="-4539114"/>
@@ -2667,7 +2667,7 @@
 		<nd ref="-4539114"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560360"/>
+		<tag k="segmented" v="w-4560360"/>
 	</way>
 	<way action="modify" visible="true" id="-4537986">
 		<nd ref="-4539111"/>
@@ -2676,7 +2676,7 @@
 		<nd ref="-4539111"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538007"/>
+		<tag k="segmented" v="w-4538007"/>
 	</way>
 	<way action="modify" visible="true" id="-4537985">
 		<nd ref="-4539106"/>
@@ -2688,7 +2688,7 @@
 		<nd ref="-4539106"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537991"/>
+		<tag k="segmented" v="w-4537991"/>
 	</way>
 	<way action="modify" visible="true" id="-4537984">
 		<nd ref="-4539103"/>
@@ -2697,7 +2697,7 @@
 		<nd ref="-4539103"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537984"/>
+		<tag k="segmented" v="w-4537984"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537983">
@@ -2707,7 +2707,7 @@
 		<nd ref="-4539062"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537983"/>
+		<tag k="segmented" v="w-4537983"/>
 	</way>
 	<way action="modify" visible="true" id="-4537982">
 		<nd ref="-4539032"/>
@@ -2716,7 +2716,7 @@
 		<nd ref="-4539032"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537982"/>
+		<tag k="segmented" v="w-4537982"/>
 	</way>
 	<way action="modify" visible="true" id="-4537981">
 		<nd ref="-4538928"/>
@@ -2725,7 +2725,7 @@
 		<nd ref="-4538928"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558634"/>
+		<tag k="segmented" v="w-4558634"/>
 	</way>
 	<way action="modify" visible="true" id="-4537980">
 		<nd ref="-4539089"/>
@@ -2734,7 +2734,7 @@
 		<nd ref="-4539089"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537980"/>
+		<tag k="segmented" v="w-4537980"/>
 	</way>
 	<way action="modify" visible="true" id="-4537979">
 		<nd ref="-4539096"/>
@@ -2744,7 +2744,7 @@
 		<nd ref="-4539096"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537979"/>
+		<tag k="segmented" v="w-4537979"/>
 	</way>
 	<way action="modify" visible="true" id="-4537978">
 		<nd ref="-4539089"/>
@@ -2757,7 +2757,7 @@
 		<nd ref="-4539089"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537980"/>
+		<tag k="segmented" v="w-4537980"/>
 	</way>
 	<way action="modify" visible="true" id="-4537977">
 		<nd ref="-4539086"/>
@@ -2768,7 +2768,7 @@
 		<nd ref="-4539086"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537975"/>
+		<tag k="segmented" v="w-4537975"/>
 	</way>
 	<way action="modify" visible="true" id="-4537976">
 		<nd ref="-4539055"/>
@@ -2790,7 +2790,7 @@
 		<nd ref="-4539055"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559898"/>
+		<tag k="segmented" v="w-4559898"/>
 	</way>
 	<way action="modify" visible="true" id="-4537975">
 		<nd ref="-4539068"/>
@@ -2800,7 +2800,7 @@
 		<nd ref="-4539068"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537975"/>
+		<tag k="segmented" v="w-4537975"/>
 	</way>
 	<way action="modify" visible="true" id="-4537974">
 		<nd ref="-4539058"/>
@@ -2810,7 +2810,7 @@
 		<nd ref="-4539058"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560940"/>
+		<tag k="segmented" v="w-4560940"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537973">
@@ -2821,7 +2821,7 @@
 		<nd ref="-4539062"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537983"/>
+		<tag k="segmented" v="w-4537983"/>
 	</way>
 	<way action="modify" visible="true" id="-4537972">
 		<nd ref="-4539058"/>
@@ -2831,7 +2831,7 @@
 		<nd ref="-4539058"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560940"/>
+		<tag k="segmented" v="w-4560940"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537971">
@@ -2841,7 +2841,7 @@
 		<nd ref="-4539055"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559898"/>
+		<tag k="segmented" v="w-4559898"/>
 	</way>
 	<way action="modify" visible="true" id="-4537970">
 		<nd ref="-4539043"/>
@@ -2859,7 +2859,7 @@
 		<nd ref="-4539043"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557978"/>
+		<tag k="segmented" v="w-4557978"/>
 	</way>
 	<way action="modify" visible="true" id="-4537969">
 		<nd ref="-4539038"/>
@@ -2870,7 +2870,7 @@
 		<nd ref="-4539038"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4538028"/>
+		<tag k="segmented" v="w-4538028"/>
 	</way>
 	<way action="modify" visible="true" id="-4537968">
 		<nd ref="-4539032"/>
@@ -2884,7 +2884,7 @@
 		<nd ref="-4539032"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537982"/>
+		<tag k="segmented" v="w-4537982"/>
 	</way>
 	<way action="modify" visible="true" id="-4537967">
 		<nd ref="-4539003"/>
@@ -2895,7 +2895,7 @@
 		<nd ref="-4539003"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537961"/>
+		<tag k="segmented" v="w-4537961"/>
 	</way>
 	<way action="modify" visible="true" id="-4537966">
 		<nd ref="-4539012"/>
@@ -2904,7 +2904,7 @@
 		<nd ref="-4539012"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537963"/>
+		<tag k="segmented" v="w-4537963"/>
 	</way>
 	<way action="modify" visible="true" id="-4537965">
 		<nd ref="-4539022"/>
@@ -2917,7 +2917,7 @@
 		<nd ref="-4539022"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559132"/>
+		<tag k="segmented" v="w-4559132"/>
 	</way>
 	<way action="modify" visible="true" id="-4537964">
 		<nd ref="-4539008"/>
@@ -2930,7 +2930,7 @@
 		<nd ref="-4539008"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537964"/>
+		<tag k="segmented" v="w-4537964"/>
 	</way>
 	<way action="modify" visible="true" id="-4537963">
 		<nd ref="-4539012"/>
@@ -2941,7 +2941,7 @@
 		<nd ref="-4539012"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537963"/>
+		<tag k="segmented" v="w-4537963"/>
 	</way>
 	<way action="modify" visible="true" id="-4537962">
 		<nd ref="-4539008"/>
@@ -2954,7 +2954,7 @@
 		<nd ref="-4539008"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537964"/>
+		<tag k="segmented" v="w-4537964"/>
 	</way>
 	<way action="modify" visible="true" id="-4537961">
 		<nd ref="-4539003"/>
@@ -2965,7 +2965,7 @@
 		<nd ref="-4539003"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537961"/>
+		<tag k="segmented" v="w-4537961"/>
 	</way>
 	<way action="modify" visible="true" id="-4537960">
 		<nd ref="-4538854"/>
@@ -2976,7 +2976,7 @@
 		<nd ref="-4538854"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557752"/>
+		<tag k="segmented" v="w-4557752"/>
 	</way>
 	<way action="modify" visible="true" id="-4537959">
 		<nd ref="-4538945"/>
@@ -2986,7 +2986,7 @@
 		<nd ref="-4538945"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537950"/>
+		<tag k="segmented" v="w-4537950"/>
 	</way>
 	<way action="modify" visible="true" id="-4537958">
 		<nd ref="-4538940"/>
@@ -3018,7 +3018,7 @@
 		<nd ref="-4538940"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4556753"/>
+		<tag k="segmented" v="w-4556753"/>
 	</way>
 	<way action="modify" visible="true" id="-4537956">
 		<nd ref="-4538909"/>
@@ -3033,7 +3033,7 @@
 		<nd ref="-4538909"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557782"/>
+		<tag k="segmented" v="w-4557782"/>
 	</way>
 	<way action="modify" visible="true" id="-4537953">
 		<nd ref="-4538852"/>
@@ -3042,7 +3042,7 @@
 		<nd ref="-4538852"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559945"/>
+		<tag k="segmented" v="w-4559945"/>
 	</way>
 	<way action="modify" visible="true" id="-4537951">
 		<nd ref="-4538906"/>
@@ -3055,7 +3055,7 @@
 		<nd ref="-4538906"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557752"/>
+		<tag k="segmented" v="w-4557752"/>
 	</way>
 	<way action="modify" visible="true" id="-4537950">
 		<nd ref="-4538945"/>
@@ -3067,7 +3067,7 @@
 		<nd ref="-4538945"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537950"/>
+		<tag k="segmented" v="w-4537950"/>
 	</way>
 	<way action="modify" visible="true" id="-4537949">
 		<nd ref="-4538940"/>
@@ -3078,7 +3078,7 @@
 		<nd ref="-4538940"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4556753"/>
+		<tag k="segmented" v="w-4556753"/>
 	</way>
 	<way action="modify" visible="true" id="-4537948">
 		<nd ref="-4538937"/>
@@ -3089,7 +3089,7 @@
 		<nd ref="-4538937"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537948"/>
+		<tag k="segmented" v="w-4537948"/>
 	</way>
 	<way action="modify" visible="true" id="-4537946">
 		<nd ref="-4538928"/>
@@ -3102,7 +3102,7 @@
 		<nd ref="-4538928"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558634"/>
+		<tag k="segmented" v="w-4558634"/>
 	</way>
 	<way action="modify" visible="true" id="-4537944">
 		<nd ref="-4538909"/>
@@ -3111,7 +3111,7 @@
 		<nd ref="-4538909"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557782"/>
+		<tag k="segmented" v="w-4557782"/>
 	</way>
 	<way action="modify" visible="true" id="-4537942">
 		<nd ref="-4538853"/>
@@ -3123,7 +3123,7 @@
 		<nd ref="-4538853"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557718"/>
+		<tag k="segmented" v="w-4557718"/>
 	</way>
 	<way action="modify" visible="true" id="-4537941">
 		<nd ref="-4538895"/>
@@ -3137,7 +3137,7 @@
 		<nd ref="-4538895"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557668"/>
+		<tag k="segmented" v="w-4557668"/>
 	</way>
 	<way action="modify" visible="true" id="-4537940">
 		<nd ref="-4538893"/>
@@ -3147,7 +3147,7 @@
 		<nd ref="-4538893"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561156"/>
+		<tag k="segmented" v="w-4561156"/>
 	</way>
 	<way action="modify" visible="true" id="-4550224">
 		<nd ref="-4550187"/>
@@ -3175,7 +3175,7 @@
 		<nd ref="-4550186"/>
 		<nd ref="-4550187"/>
 		<tag k="building" v="yes"/>
-		<tag k="joined" v="w-4558196"/>
+		<tag k="segmented" v="w-4558196"/>
 	</way>
 	<way action="modify" visible="true" id="-4537935">
 		<nd ref="-4538833"/>
@@ -3185,7 +3185,7 @@
 		<nd ref="-4538833"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561156"/>
+		<tag k="segmented" v="w-4561156"/>
 	</way>
 	<way action="modify" visible="true" id="-4537934">
 		<nd ref="-4538853"/>
@@ -3197,7 +3197,7 @@
 		<nd ref="-4538853"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557718"/>
+		<tag k="segmented" v="w-4557718"/>
 	</way>
 	<way action="modify" visible="true" id="-4537933">
 		<nd ref="-4538849"/>
@@ -3207,7 +3207,7 @@
 		<nd ref="-4538849"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559945"/>
+		<tag k="segmented" v="w-4559945"/>
 	</way>
 	<way action="modify" visible="true" id="-4537932">
 		<nd ref="-4538842"/>
@@ -3218,7 +3218,7 @@
 		<nd ref="-4538842"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557861"/>
+		<tag k="segmented" v="w-4557861"/>
 	</way>
 	<way action="modify" visible="true" id="-4537931">
 		<nd ref="-4538841"/>
@@ -3228,7 +3228,7 @@
 		<nd ref="-4538841"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560451"/>
+		<tag k="segmented" v="w-4560451"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537930">
@@ -3240,7 +3240,7 @@
 		<nd ref="-4538842"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557861"/>
+		<tag k="segmented" v="w-4557861"/>
 	</way>
 	<way action="modify" visible="true" id="-4537929">
 		<nd ref="-4538838"/>
@@ -3250,7 +3250,7 @@
 		<nd ref="-4538838"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560451"/>
+		<tag k="segmented" v="w-4560451"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537928">
@@ -3260,7 +3260,7 @@
 		<nd ref="-4538818"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537924"/>
+		<tag k="segmented" v="w-4537924"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537927">
@@ -3277,7 +3277,7 @@
 		<nd ref="-4538827"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561156"/>
+		<tag k="segmented" v="w-4561156"/>
 	</way>
 	<way action="modify" visible="true" id="-4537925">
 		<nd ref="-4538814"/>
@@ -3287,7 +3287,7 @@
 		<nd ref="-4538814"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557879"/>
+		<tag k="segmented" v="w-4557879"/>
 	</way>
 	<way action="modify" visible="true" id="-4537924">
 		<nd ref="-4538818"/>
@@ -3297,7 +3297,7 @@
 		<nd ref="-4538818"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537924"/>
+		<tag k="segmented" v="w-4537924"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537923">
@@ -3310,7 +3310,7 @@
 		<nd ref="-4538814"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557879"/>
+		<tag k="segmented" v="w-4557879"/>
 	</way>
 	<way action="modify" visible="true" id="-4537919">
 		<nd ref="-4538796"/>
@@ -3319,7 +3319,7 @@
 		<nd ref="-4538796"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537917"/>
+		<tag k="segmented" v="w-4537917"/>
 	</way>
 	<way action="modify" visible="true" id="-4537918">
 		<nd ref="-4538803"/>
@@ -3328,7 +3328,7 @@
 		<nd ref="-4538803"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537948"/>
+		<tag k="segmented" v="w-4537948"/>
 	</way>
 	<way action="modify" visible="true" id="-4537917">
 		<nd ref="-4538796"/>
@@ -3341,7 +3341,7 @@
 		<nd ref="-4538796"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537917"/>
+		<tag k="segmented" v="w-4537917"/>
 	</way>
 	<way action="modify" visible="true" id="-4537914">
 		<nd ref="-4538756"/>
@@ -3352,7 +3352,7 @@
 		<nd ref="-4538756"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559991"/>
+		<tag k="segmented" v="w-4559991"/>
 	</way>
 	<way action="modify" visible="true" id="-4537913">
 		<nd ref="-4538673"/>
@@ -3361,7 +3361,7 @@
 		<nd ref="-4538673"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559315"/>
+		<tag k="segmented" v="w-4559315"/>
 	</way>
 	<way action="modify" visible="true" id="-4537912">
 		<nd ref="-4538752"/>
@@ -3373,7 +3373,7 @@
 		<nd ref="-4538752"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559991"/>
+		<tag k="segmented" v="w-4559991"/>
 	</way>
 	<way action="modify" visible="true" id="-4537910">
 		<nd ref="-4538534"/>
@@ -3397,7 +3397,7 @@
 		<nd ref="-4538534"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537872"/>
+		<tag k="segmented" v="w-4537872"/>
 	</way>
 	<way action="modify" visible="true" id="-4537908">
 		<nd ref="-4538414"/>
@@ -3415,7 +3415,7 @@
 		<nd ref="-4538414"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559446"/>
+		<tag k="segmented" v="w-4559446"/>
 	</way>
 	<way action="modify" visible="true" id="-4537907">
 		<nd ref="-4538229"/>
@@ -3425,7 +3425,7 @@
 		<nd ref="-4538229"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4556714"/>
+		<tag k="segmented" v="w-4556714"/>
 	</way>
 	<way action="modify" visible="true" id="-4537905">
 		<nd ref="-4538414"/>
@@ -3455,7 +3455,7 @@
 		<nd ref="-4538414"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559446"/>
+		<tag k="segmented" v="w-4559446"/>
 	</way>
 	<way action="modify" visible="true" id="-4537903">
 		<nd ref="-4538673"/>
@@ -3468,7 +3468,7 @@
 		<nd ref="-4538673"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559315"/>
+		<tag k="segmented" v="w-4559315"/>
 	</way>
 	<way action="modify" visible="true" id="-4537901">
 		<nd ref="-4538264"/>
@@ -3478,7 +3478,7 @@
 		<nd ref="-4538264"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537849"/>
+		<tag k="segmented" v="w-4537849"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537900">
@@ -3495,7 +3495,7 @@
 		<nd ref="-4538656"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537900"/>
+		<tag k="segmented" v="w-4537900"/>
 	</way>
 	<way action="modify" visible="true" id="-4537899">
 		<nd ref="-4538656"/>
@@ -3504,7 +3504,7 @@
 		<nd ref="-4538656"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537900"/>
+		<tag k="segmented" v="w-4537900"/>
 	</way>
 	<way action="modify" visible="true" id="-4537898">
 		<nd ref="-4538581"/>
@@ -3522,7 +3522,7 @@
 		<nd ref="-4538581"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557648"/>
+		<tag k="segmented" v="w-4557648"/>
 	</way>
 	<way action="modify" visible="true" id="-4537897">
 		<nd ref="-4538634"/>
@@ -3543,7 +3543,7 @@
 		<nd ref="-4538634"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558086"/>
+		<tag k="segmented" v="w-4558086"/>
 	</way>
 	<way action="modify" visible="true" id="-4537896">
 		<nd ref="-4543232"/>
@@ -3552,7 +3552,7 @@
 		<nd ref="-4543232"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559228"/>
+		<tag k="segmented" v="w-4559228"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537895">
@@ -3564,7 +3564,7 @@
 		<nd ref="-4538628"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559592"/>
+		<tag k="segmented" v="w-4559592"/>
 	</way>
 	<way action="modify" visible="true" id="-4537894">
 		<nd ref="-4543232"/>
@@ -3574,7 +3574,7 @@
 		<nd ref="-4543232"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559228"/>
+		<tag k="segmented" v="w-4559228"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537893">
@@ -3592,7 +3592,7 @@
 		<nd ref="-4538591"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559763"/>
+		<tag k="segmented" v="w-4559763"/>
 	</way>
 	<way action="modify" visible="true" id="-4537892">
 		<nd ref="-4538581"/>
@@ -3601,7 +3601,7 @@
 		<nd ref="-4538581"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557648"/>
+		<tag k="segmented" v="w-4557648"/>
 	</way>
 	<way action="modify" visible="true" id="-4537891">
 		<nd ref="-4538605"/>
@@ -3610,7 +3610,7 @@
 		<nd ref="-4538605"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560577"/>
+		<tag k="segmented" v="w-4560577"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537890">
@@ -3620,7 +3620,7 @@
 		<nd ref="-4538595"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557541"/>
+		<tag k="segmented" v="w-4557541"/>
 	</way>
 	<way action="modify" visible="true" id="-4537889">
 		<nd ref="-4538610"/>
@@ -3631,7 +3631,7 @@
 		<nd ref="-4538610"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537889"/>
+		<tag k="segmented" v="w-4537889"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537888">
@@ -3641,7 +3641,7 @@
 		<nd ref="-4538610"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537889"/>
+		<tag k="segmented" v="w-4537889"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537887">
@@ -3653,7 +3653,7 @@
 		<nd ref="-4538605"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4560577"/>
+		<tag k="segmented" v="w-4560577"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537886">
@@ -3672,7 +3672,7 @@
 		<nd ref="-4538595"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557541"/>
+		<tag k="segmented" v="w-4557541"/>
 	</way>
 	<way action="modify" visible="true" id="-4537885">
 		<nd ref="-4538591"/>
@@ -3682,7 +3682,7 @@
 		<nd ref="-4538591"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559763"/>
+		<tag k="segmented" v="w-4559763"/>
 	</way>
 	<way action="modify" visible="true" id="-4537884">
 		<nd ref="-4538574"/>
@@ -3692,7 +3692,7 @@
 		<nd ref="-4538574"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537880"/>
+		<tag k="segmented" v="w-4537880"/>
 	</way>
 	<way action="modify" visible="true" id="-4537883">
 		<nd ref="-4538580"/>
@@ -3702,7 +3702,7 @@
 		<nd ref="-4538580"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557625"/>
+		<tag k="segmented" v="w-4557625"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537882">
@@ -3714,7 +3714,7 @@
 		<nd ref="-4538583"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557625"/>
+		<tag k="segmented" v="w-4557625"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537880">
@@ -3729,7 +3729,7 @@
 		<nd ref="-4538574"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537880"/>
+		<tag k="segmented" v="w-4537880"/>
 	</way>
 	<way action="modify" visible="true" id="-4537879">
 		<nd ref="-4538563"/>
@@ -3738,7 +3738,7 @@
 		<nd ref="-4538563"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558794"/>
+		<tag k="segmented" v="w-4558794"/>
 	</way>
 	<way action="modify" visible="true" id="-4537878">
 		<nd ref="-4538568"/>
@@ -3749,7 +3749,7 @@
 		<nd ref="-4538568"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561699"/>
+		<tag k="segmented" v="w-4561699"/>
 	</way>
 	<way action="modify" visible="true" id="-4537877">
 		<nd ref="-4538563"/>
@@ -3760,7 +3760,7 @@
 		<nd ref="-4538563"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558794"/>
+		<tag k="segmented" v="w-4558794"/>
 	</way>
 	<way action="modify" visible="true" id="-4537876">
 		<nd ref="-4538556"/>
@@ -3769,7 +3769,7 @@
 		<nd ref="-4538556"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559649"/>
+		<tag k="segmented" v="w-4559649"/>
 	</way>
 	<way action="modify" visible="true" id="-4537875">
 		<nd ref="-4538556"/>
@@ -3781,7 +3781,7 @@
 		<nd ref="-4538556"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559649"/>
+		<tag k="segmented" v="w-4559649"/>
 	</way>
 	<way action="modify" visible="true" id="-4537873">
 		<nd ref="-4538542"/>
@@ -3791,7 +3791,7 @@
 		<nd ref="-4538542"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537873"/>
+		<tag k="segmented" v="w-4537873"/>
 	</way>
 	<way action="modify" visible="true" id="-4537872">
 		<nd ref="-4538534"/>
@@ -3805,7 +3805,7 @@
 		<nd ref="-4538534"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537872"/>
+		<tag k="segmented" v="w-4537872"/>
 	</way>
 	<way action="modify" visible="true" id="-4537871">
 		<nd ref="-4538531"/>
@@ -3814,7 +3814,7 @@
 		<nd ref="-4538531"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557094"/>
+		<tag k="segmented" v="w-4557094"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537870">
@@ -3826,7 +3826,7 @@
 		<nd ref="-4538420"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557258"/>
+		<tag k="segmented" v="w-4557258"/>
 	</way>
 	<way action="modify" visible="true" id="-4537869">
 		<nd ref="-4538486"/>
@@ -3835,7 +3835,7 @@
 		<nd ref="-4538486"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537864"/>
+		<tag k="segmented" v="w-4537864"/>
 	</way>
 	<way action="modify" visible="true" id="-4537868">
 		<nd ref="-4538518"/>
@@ -3844,7 +3844,7 @@
 		<nd ref="-4538518"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558852"/>
+		<tag k="segmented" v="w-4558852"/>
 	</way>
 	<way action="modify" visible="true" id="-4537867">
 		<nd ref="-4538513"/>
@@ -3863,7 +3863,7 @@
 		<nd ref="-4538513"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558852"/>
+		<tag k="segmented" v="w-4558852"/>
 	</way>
 	<way action="modify" visible="true" id="-4537866">
 		<nd ref="-4538471"/>
@@ -3873,7 +3873,7 @@
 		<nd ref="-4538471"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558532"/>
+		<tag k="segmented" v="w-4558532"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537865">
@@ -3884,7 +3884,7 @@
 		<nd ref="-4538476"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557332"/>
+		<tag k="segmented" v="w-4557332"/>
 	</way>
 	<way action="modify" visible="true" id="-4537864">
 		<nd ref="-4538486"/>
@@ -3913,7 +3913,7 @@
 		<nd ref="-4538486"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537864"/>
+		<tag k="segmented" v="w-4537864"/>
 	</way>
 	<way action="modify" visible="true" id="-4537862">
 		<nd ref="-4538413"/>
@@ -3923,7 +3923,7 @@
 		<nd ref="-4538413"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4559421"/>
+		<tag k="segmented" v="w-4559421"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537861">
@@ -3934,7 +3934,7 @@
 		<nd ref="-4538476"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4557332"/>
+		<tag k="segmented" v="w-4557332"/>
 	</way>
 	<way action="modify" visible="true" id="-4537860">
 		<nd ref="-4538475"/>
@@ -3943,7 +3943,7 @@
 		<nd ref="-4538475"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561398"/>
+		<tag k="segmented" v="w-4561398"/>
 	</way>
 	<way action="modify" visible="true" id="-4537859">
 		<nd ref="-4538471"/>
@@ -3953,7 +3953,7 @@
 		<nd ref="-4538471"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4558532"/>
+		<tag k="segmented" v="w-4558532"/>
 		<tag k="wall" v="no"/>
 	</way>
 	<way action="modify" visible="true" id="-4537858">
@@ -3968,7 +3968,7 @@
 		<nd ref="-4538410"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4537858"/>
+		<tag k="segmented" v="w-4537858"/>
 	</way>
 	<way action="modify" visible="true" id="-4537857">
 		<nd ref="-4538460"/>
@@ -3979,6 +3979,6 @@
 		<nd ref="-4538460"/>
 		<tag k="building" v="yes"/>
 		<tag k="source" v="cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2016"/>
-		<tag k="joined" v="w-4561398"/>
+		<tag k="segmented" v="w-4561398"/>
 	</way>
 </osm>

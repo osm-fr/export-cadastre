@@ -1,0 +1,9 @@
+
+
+C code to quickly generate statistic vector
+from two WKT polygons representing two contiguous building 
+to try to detect with a classifier if the two buildings
+may have been segmented by the French cadastre.
+
+
+Used by analyser_osmosis_building_overlap.FrSegmentedBuildingDetector

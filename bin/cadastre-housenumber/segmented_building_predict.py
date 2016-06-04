@@ -35,8 +35,8 @@ from osm                            import Osm,Node,Way,Relation,OsmParser,OsmWr
 from simplify_qadastre_houses       import simplify
 from simplify_qadastre_houses       import get_centered_metric_equirectangular_transformation
 from segmented_building_find_joined import compute_transformed_position_and_annotate
-from segmented_building_classifier  import get_segmented_analysis_vector_from_osm
-from segmented_building_classifier  import get_external1_common_external2_ways
+from segmented_building_train       import get_segmented_analysis_vector_from_osm
+from segmented_building_train       import get_external1_common_external2_ways
 from pdf_vers_osm_housenumbers      import Point
 
 VERBOSE=False
@@ -72,7 +72,8 @@ def main(argv):
     compute_transformed_position_and_annotate(osm, inputTransform)
 
     if VERBOSE: print "detect..."
-    buildings = get_predicted_segmented_buildings(osm, get_classifier())
+    classifier, scaler = get_classifier_and_scaler()
+    buildings = get_predicted_segmented_buildings(classifier, scaler, osm)
     if VERBOSE: print " -> ", len(buildings), "cas"
 
     output_osm = filter_buildings_junction(osm, buildings)
@@ -85,48 +86,77 @@ def main(argv):
 
     return 0
 
+#min_segmented_analysis_vector = []
+#max_segmented_analysis_vector = []
 
-def get_classifier():
+def get_classifier_and_scaler():
     segmented_data_dir=os.path.join(os.path.dirname(sys.argv[0]), "segmented_building_data")
     os.system("cd " + segmented_data_dir  +"; make -s")
     classifier = pickle.load(open(os.path.join(segmented_data_dir, "classifier.pickle")))
-    return classifier
+    scaler = pickle.load(open(os.path.join(segmented_data_dir, "scaler.pickle")))
+
+    #global min_segmented_analysis_vector
+    #global max_segmented_analysis_vector
+    #min_segmented_analysis_vector = eval(open(os.path.join(segmented_data_dir, "classifier.min")).read())
+    #max_segmented_analysis_vector = eval(open(os.path.join(segmented_data_dir, "classifier.max")).read())
+
+    return classifier, scaler
 
 
-
-def get_predicted_segmented_buildings(osm_data, classifier):
-    buildings = []
+def get_predicted_segmented_buildings(classifier, scaler, osm_data):
     segmented_buildings_couples = []
+    for building in get_buildings_ways(osm_data):
+        for way in iter_contigous_ways(osm_data, building):
+            if way.isBuilding and way.hasWall == building.hasWall and way.id() > building.id():
+                if predict_segmented(classifier, scaler, osm_data, building, way):
+                    segmented_buildings_couples.append( (building, way) )
+    return segmented_buildings_couples
+
+
+def iter_contigous_ways(osm_data, way):
+    way_id = way.id()
+    nodes = [osm_data.nodes[i] for i in way.nodes]
+    contiguous_id = reduce(operator.or_, [node.ways for node in nodes], set())
+    for i in contiguous_id:
+        if i != way_id:
+            yield osm_data.ways[i]
+
+def normalize(vector):
+    if vector != None:
+        return map(lambda v, minn, maxx: (v - minn) / (maxx-minn), vector, min_segmented_analysis_vector, max_segmented_analysis_vector)
+    else:
+        return None
+
+def predict_segmented(classifier, scaler, osm_data, way1, way2):
+    vector1 = get_segmented_analysis_vector_from_osm(osm_data, way1, way2)
+    vector2 = get_segmented_analysis_vector_from_osm(osm_data, way2, way1)
+    if vector1 != None and scaler != None:
+        vector1 = scaler.transform(vector1)
+    if vector2 != None and scaler != None:
+        vector2 = scaler.transform(vector2)
+    return (vector1 != None and classifier.predict(vector1) == [1]) or \
+       (vector2 != None and classifier.predict(vector2) == [1])
+
+def get_buildings_ways(osm_data):
+    result = []
     for way in osm_data.ways.itervalues():
         if way.isBuilding:
-            buildings.append(way)
-            way.isJoined = way.tags.get("joined") not in (None, "?", "no")
+            way.isSegmented = way.tags.get("segmented") not in (None, "?", "no")
             way.hasWall = way.tags.get("wall") != "no" # default (None) is yes
+            result.append(way)
     for rel in osm_data.relations.itervalues():
         if rel.isBuilding:
-            rel.isJoined = rel.tags.get("joined") not in (None, "?", "no")
+            rel.isSegmented = rel.tags.get("segmented") not in (None, "?", "no")
             rel.hasWall = rel.tags.get("wall") != "no" # default (None) is yes
             for item, role in osm_data.iter_relation_members(rel):
                 if item != None: # not downloaded
                     if role in ("inner", "outer"):
                         item.hasWall = rel.hasWall
-                        item.isJoined = rel.isJoined
-                        if "joined" in rel.tags:
-                            item.tags["joined"] = rel.tags["joined"]
-                        buildings.append(item)
-    number = 0
-    for building in buildings:
-        nodes = [osm_data.nodes[i] for i in building.nodes]
-        ways_id = reduce(operator.or_, [node.ways for node in nodes], set())
-        ways = [osm_data.ways[i] for i in ways_id if i != building.id()]
-        for way in ways:
-            if way.isBuilding and way.hasWall == building.hasWall and way.id() > building.id():
-                vector1 = get_segmented_analysis_vector_from_osm(osm_data, building, way)
-                vector2 = get_segmented_analysis_vector_from_osm(osm_data, way, building)
-                if (vector1 != None and classifier.predict(vector1) == [1]) or \
-                   (vector2 != None and classifier.predict(vector2) == [1]):
-                   segmented_buildings_couples.append( (building, way) )
-    return segmented_buildings_couples
+                        item.isSegmented = rel.isSegmented
+                        if "segmented" in rel.tags:
+                            item.tags["segmented"] = rel.tags["segmented"]
+                        result.append(item)
+    return result
 
 
 def filter_buildings_junction(osm_data, buildings_couples):

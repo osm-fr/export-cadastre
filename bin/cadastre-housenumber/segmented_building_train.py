@@ -14,12 +14,24 @@
 
 """
 Prends en entrée des fichier osm contenant des building avec
-un tag "joined" conetant des valeurs égales pour les buildings à fusionnés,
-(tel que généré par le programme  segmented_building_find_joined.py)
+un tag "segmented" contenant des valeurs égales pour les buildings à fusionner,
+ou rien ou "segmented"="no" pour ceux à ne pas fusioner,
+et "segmented"="?" pour ceux pour lequel c'est ambigue.
 
-Génère un fichier classifier.pickle 
+De tels fichiers d'entrée peuvent être générés par le programme 
+segmented_building_find_joined.py
+
+La sortie de ce programme est la gérération d'un fichier 
+    classifier.pickle 
 dump d'une instance de classifier pour prédire deux bâtiments fractionnés
-avec la fonction get_segmented_analysis_vector définie ici.
+avec la fonction 
+    fr_cadastre_segmented.get_classifier_vector(wkt1, wkt2)
+
+Il y a aussi la génération de fichiers:
+    classifier.mean 
+    classifier.scale
+Contenant une liste de float à passer en parramètre à la fonction
+    fr_cadastre_segmented.set_vector_mean_and_scale(mean_list, scale_list)
 """
 
 
@@ -27,27 +39,20 @@ import re
 import sys
 import copy
 import math
-import numpy
+import numpy as np
 import pickle
 import os.path
 import zipfile
 import operator
 import itertools
-#import cv2
-#import rtree.index
-#from matplotlib                     import pyplot
-#from shapely.geometry.polygon       import Polygon
-from shapely.geometry.linestring    import LineString
-#from shapely.geometry.point         import Point
-#import shapely.affinity
-from sklearn import svm
+from sklearn import svm, grid_search
+from sklearn import preprocessing
+
 
 from osm                            import Osm,Node,Way,Relation,OsmParser,OsmWriter
 from simplify_qadastre_houses       import get_centered_metric_equirectangular_transformation
 from segmented_building_find_joined import compute_transformed_position_and_annotate
-from pdf_vers_osm_housenumbers      import Point as MyPoint
-
-#IMG_SIZE = 256
+from fr_cadastre_segmented          import get_classifier_vector
 
 
 def main(argv):
@@ -61,47 +66,128 @@ def main(argv):
     all_data = []
     all_result = []
 
-    for name, stream in open_zip_files_with_extension(osm_args, ".osm"):
+    for name, stream in open_zip_and_files_with_extension(osm_args, ".osm"):
         print "load " + name
         osm = OsmParser().parse_stream(stream)
         inputTransform, outputTransform = get_centered_metric_equirectangular_transformation(osm)
         compute_transformed_position_and_annotate(osm, inputTransform)
 
-        data, result = get_joined_buildings_classifier_data(osm)
+        data, result = get_segmented_buildings_data(osm)
 
         print " ->", len(result), "cas", result.count(1), " positif"
         all_data.extend(data)
         all_result.extend(result)
 
-    print "create classifier"
+    scaler, classifier = train(all_data, all_result)
+    with open("classifier.pickle", "w") as f:
+        pickle.dump(classifier, f)
+    with open("scaler.pickle", "w") as f:
+        pickle.dump(scaler, f)
 
-    # default 'rbf' kernel is bad for the data
+    #for positive_weight in 1,2,5:
+    #    print "-------------------------------------------------------------"
+    #    print "Train with scoring for positive segemented building weighted %d over non segmented ones" % positive_weight
+    #    scaler, classifier = train(all_data, all_result, weighted_scoring([1,positive_weight]))
+    #    with open("classifier_%d.txt" % positive_weight, "w") as f:
+    #        f.write(str(classifier))
+    #        f.write("\n")
+    #    with open("classifier_%d.pickle" % positive_weight, "w") as f:
+    #        pickle.dump(classifier, f)
+    #    with open("scaler_%d.pickle" % positive_weight, "w") as f:
+    #        pickle.dump(scaler, f)
+
+    return 1
+
+
+def train(data, result, scoring=None):
+    data = np.array(data)
+    result = np.array(result)
+
+    #-------------------------------------------------------------
+    # Basic score without any data treatment
+    #-------------------------------------------------------------
+
     #classifier = svm.SVC(kernel='rbf')
+    #classifier.fit(data, result)
+    #print "initial score rbf: ", classifier.score(data, result), "custom=", scoring(classifier, data, result)
 
-    # 'linear' kernel is good
-    classifier = svm.SVC(kernel='linear')
-    #classifier = svm.LinearSVC(dual=False)
+    #classifier = svm.SVC(kernel="linear")
+    #classifier.fit(data, result)
+    #print "initial score linear: ", classifier.score(data, result)
 
-    # 'poly' is too slow and not really better
-    #classifier = svm.SVC(kernel='poly', degree=3)
+    #scaler = preprocessing.StandardScaler()
+    scaler = preprocessing.MinMaxScaler()
+    #scaler = preprocessing.RobustScaler()
 
-    classifier.fit(all_data, all_result)
+    print "Scale: ", type(scaler)
+    if scaler != None:
+        data = scaler.fit_transform(data)
 
-    classifier_file = open("classifier.pickle", "w")
-    pickle.dump(classifier, classifier_file)
-    classifier_file.close()
+    #classifier = svm.SVC()
+    #classifier.fit(data, result)
+    #print "initial score: ", classifier.score(data, result), "custom=", scoring(classifier, data, result)
 
-    return 0
+    parameters = {
+        #'kernel':('linear', 'rbf'),
+        'kernel':('rbf',),
+        # Attention: ca peux marcher mieux si on laisse sans preciser de valeur
+        # pour gamma qui prendra la valeur 'auto'
+        'gamma': [10**x for x in xrange(-4,2)],
+        #'C': [1]
+        #'C': [10**x for x in xrange(-5,5)]
+        'C': [10**x for x in xrange(0,5)]
+    }
+    print parameters
+    search = grid_search.GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
+    search.fit(data, result)
+    print "best params:", search.best_params_
+    print "best score:", search.best_score_
+    print
+
+
+    C   = search.best_params_['C']
+    gamma = search.best_params_['gamma']
+    parameters = {
+        #'kernel':('linear', 'rbf'),
+        'kernel':('rbf',),
+        'gamma': [gamma/10.0 + gamma/10.0*i for i in range(1,10)]
+             + [gamma + gamma*i for i in range(2,9)],
+        'C': [C/10.0 + C/10.0*i for i in range(1,10)]
+             + [C + C*i for i in range(1,9)]
+    }
+    print parameters
+    search = grid_search.GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
+    search.fit(data, result)
+    print "best params:", search.best_params_
+    print "best score:", search.best_score_
+    print
+
+    return scaler, search.best_estimator_.fit(data,result)
+
+
+def weighted_scoring(y_weights):
+    """Return a scoring function that give more weight to some classes"""
+    def scoring(estimator, X, y):
+        total = 0.0
+        ok = 0.0
+        for i in xrange(len(X)):
+            weight = y_weights[y[i]]
+            total = total + weight
+            if estimator.predict(X[i]) == y[i]:
+                ok = ok + weight
+        return ok / total
+    return scoring
+
 
 def print_usage(error=""):
     if error: print "ERROR:", error
-    print "USAGE: %s buildins-with-joined-tag.osm" % (sys.argv[0],)
+    print "USAGE: %s buildins-with-segmented-tag.osm" % (sys.argv[0],)
     if error:
         return -1
     else:
         return 0
 
-def open_zip_files_with_extension(file_list, extension):
+def open_zip_and_files_with_extension(file_list, extension):
     for name in file_list:
         if name.endswith(".zip"):
             inputzip = zipfile.ZipFile(name, "r")
@@ -117,21 +203,21 @@ def open_zip_files_with_extension(file_list, extension):
             f.close()
 
 
-def get_joined_buildings_classifier_data(osm_data):
+def get_segmented_buildings_data(osm_data):
     buildings = []
     for way in osm_data.ways.itervalues():
         if way.isBuilding:
-            way.isJoined = way.tags.get("joined") not in (None, "?", "no")
+            way.isSegmented = way.tags.get("segmented") not in (None, "?", "no")
             buildings.append(way)
     for rel in osm_data.relations.itervalues():
         if rel.isBuilding:
-            rel.isJoined = rel.tags.get("joined") not in (None, "?", "no")
+            rel.isSegmented = rel.tags.get("segmented") not in (None, "?", "no")
             for item, role in osm_data.iter_relation_members(rel):
                 if role in ("inner", "outer"):
                     item.hasWall = rel.hasWall
-                    item.isJoined = rel.isJoined
-                    if "joined" in rel.tags:
-                        item.tags["joined"] = rel.tags["joined"]
+                    item.isSegmented = rel.isSegmented
+                    if "segmented" in rel.tags:
+                        item.tags["segmented"] = rel.tags["segmented"]
                     buildings.append(item)
     data = []
     result = []
@@ -143,7 +229,7 @@ def get_joined_buildings_classifier_data(osm_data):
             if way.isBuilding and way.id() > building.id():
                 vector = get_segmented_analysis_vector_from_osm(osm_data, building, way)
                 if vector != None:
-                    if building.isJoined and way.isJoined and building.tags["joined"] == way.tags["joined"]:
+                    if building.isSegmented and way.isSegmented and building.tags["segmented"] == way.tags["segmented"]:
                         data.append(vector)
                         result.append(1)
                         # Consider also the switched comparison vector:
@@ -151,129 +237,30 @@ def get_joined_buildings_classifier_data(osm_data):
                         if switched_vector != None:
                             data.append(switched_vector)
                             result.append(1)
-                    elif (building.hasWall == way.hasWall) and ((building.tags.get("joined") != "?") or (way.tags.get("joined") != "?")):
+                    elif (building.hasWall == way.hasWall) and ((building.tags.get("segmented") != "?") or (way.tags.get("segmented") != "?")):
                         data.append(vector)
                         result.append(0)
     return data, result
 
 
 
-
-
 def get_segmented_analysis_vector_from_polygons(p1, p2):
     assert(len(p1.interiors) == 0)
     assert(len(p2.interiors) == 0)
-    return get_segmented_analysis_vector(p1.exterior.coords, p2.exterior.coords)
+    return get_classifier_vector(p1.wkt, p2.wkt)
+
+def osm_way_polygon_wkt(osm_data, way):
+    return "POLYGON ((" + ", ".join(
+                map(lambda p: str(p[0]) + " " + str(p[1]), 
+                    [osm_data.nodes[i].position for i in way.nodes])
+            ) + "))"
+
 
 def get_segmented_analysis_vector_from_osm(osm_data, way1, way2):
-    return get_segmented_analysis_vector(
-            [osm_data.nodes[i].position for i in way1.nodes],
-            [osm_data.nodes[i].position for i in way2.nodes])
-
-def get_segmented_analysis_vector(way1, way2):
-    result = None
-    if way1[-1] == way1[0] and way2[-1] == way2[0]:
-        external1, common, external2 = get_external1_common_external2_ways(way1, way2)
-        if len(common)>1:
-            assert(external1[-1] == common[0])
-            assert(external2[-1] == common[0])
-            assert(common[-1] == external1[0])
-            assert(common[-1] == external2[0])
-
-            #        a-----------b-------------c
-            #        |            \            |
-            #        |             d           |
-            #  way1 ...            ...        ... way2
-            #        |               e         |
-            #        |                \        |
-            #        f-----------------g-------h
-            a = external1[-2]
-            b = common[0]
-            c = external2[-2]
-            d = common[1]
-            e = common[-2]
-            f = external1[1]
-            g = common[-1]
-            h = external2[1]
-
-            data = [ angle_abc(a,b,c),
-                     angle_abc(f,g,h),
-                     angle_abc(a,b,d),
-                     angle_abc(e,g,f),
-                     angle_abc(c,b,d),
-                     angle_abc(e,g,h)]
-
-            data = [angle * 180 / math.pi for angle in data]
-            data.extend([diff_to_90(angle) for angle in data])
-
-            # Compare common length ratio 
-            common_length = LineString(common).length
-            external1_length = LineString(external1).length
-            external2_length = LineString(external2).length
-            ratio1 = common_length / external1_length
-            ratio2 = common_length / external2_length
-            data.extend([ratio1 + ratio2 / 2, min(ratio1, ratio2), max(ratio1, ratio2)])
-
-            # Extended common part as they are with the cut on each side:
-            common1_extd = [a] + common + [f]
-            common2_extd = [c] + common + [h]
-            # Consider extended ways, as they would be without the cut:
-            external1_extd = [h] + external1 + [c]
-            external2_extd = [f] + external2 + [a]
-
-            external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles = \
-                [ numpy.array([angle_abc(nodes[i-1], nodes[i], nodes[i+1]) * 180 / math.pi for i in xrange(1, len(nodes)-1)])
-                  for nodes in external1_extd, external2_extd, common1_extd, common2_extd]
-
-            data.extend(
-                [external1_extd_angles.mean(), external1_extd_angles.std(), external1_extd_angles.min(), external1_extd_angles.max(),
-                 external2_extd_angles.mean(), external2_extd_angles.std(), external2_extd_angles.min(), external2_extd_angles.max(),
-                 common1_extd_angles.mean() - external1_extd_angles.mean(),
-                 common1_extd_angles.std(), 
-                 common1_extd_angles.min() - external1_extd_angles.min(),
-                 common1_extd_angles.max() - external1_extd_angles.max(),
-                 common2_extd_angles.mean() - external2_extd_angles.mean(),
-                 common2_extd_angles.std(),
-                 common2_extd_angles.min() - external2_extd_angles.min(),
-                 common2_extd_angles.max() - external2_extd_angles.max()])
-
-            external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles = \
-                [numpy.array([diff_to_90(angle) for angle in angles]) for angles in 
-                    external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles ]
-
-            data.extend(
-                [external1_extd_angles.mean(), external1_extd_angles.std(), external1_extd_angles.min(), external1_extd_angles.max(),
-                 external2_extd_angles.mean(), external2_extd_angles.std(), external2_extd_angles.min(), external2_extd_angles.max(),
-                 common1_extd_angles.mean() - external1_extd_angles.mean(),
-                 common1_extd_angles.std(), 
-                 common1_extd_angles.min() - external1_extd_angles.min(),
-                 common1_extd_angles.max() - external1_extd_angles.max(),
-                 common2_extd_angles.mean() - external2_extd_angles.mean(),
-                 common2_extd_angles.std(),
-                 common2_extd_angles.min() - external2_extd_angles.min(),
-                 common2_extd_angles.max() - external2_extd_angles.max()])
-
-            result = data
-    return result 
-
-def length(way):
-    Shapely
-
-def diff_to_90(a):
-    return abs(45-abs(45-(a%90)))
-
-
-def nodes_angle(a,b,c):
-    return angle_abc(a.position, b.position, c.position)
-
-def angle_abc(a,b,c):
-    v1 = numpy.array([a[0]-b[0], a[1]-b[1]])
-    v2 = numpy.array([c[0]-b[0], c[1]-b[1]])
-    d = numpy.linalg.norm(v1) * numpy.linalg.norm(v2)
-    if d == 0:
-        return 0
-    else:
-        return numpy.arccos(numpy.clip(numpy.dot(v1, v2) / d, -1.0, 1.0))
+    way1_wkt = osm_way_polygon_wkt(osm_data, way1)
+    way2_wkt = osm_way_polygon_wkt(osm_data, way2)
+    vector = get_classifier_vector(way1_wkt, way2_wkt)
+    return vector
 
 
 def get_external1_common_external2_ways(nodes1, nodes2):
@@ -304,6 +291,114 @@ def get_external1_common_external2_ways(nodes1, nodes2):
        return nodes1[i-1:]+nodes1[0:1], nodes1[:i], nodes2[i-1:] + nodes2[0:1]
 
 
+
+
+#def get_segmented_analysis_vector(way1, way2):
+#    result = None
+#    if way1[-1] == way1[0] and way2[-1] == way2[0]:
+#        external1, common, external2 = get_external1_common_external2_ways(way1, way2)
+#        if len(common)>1:
+#            assert(external1[-1] == common[0])
+#            assert(external2[-1] == common[0])
+#            assert(common[-1] == external1[0])
+#            assert(common[-1] == external2[0])
+#
+#            #        a-----------b-------------c
+#            #        |            \            |
+#            #        |             d           |
+#            #  way1 ...            ...        ... way2
+#            #        |               e         |
+#            #        |                \        |
+#            #        f-----------------g-------h
+#            a = external1[-2]
+#            b = common[0]
+#            c = external2[-2]
+#            d = common[1]
+#            e = common[-2]
+#            f = external1[1]
+#            g = common[-1]
+#            h = external2[1]
+#
+#            data = [ angle_abc(a,b,c),
+#                     angle_abc(f,g,h),
+#                     angle_abc(a,b,d),
+#                     angle_abc(e,g,f),
+#                     angle_abc(c,b,d),
+#                     angle_abc(e,g,h)]
+#
+#            data = [angle * 180 / math.pi for angle in data]
+#            data.extend([diff_to_90(angle) for angle in data])
+#
+#            # Compare common length ratio 
+#            common_length = LineString(common).length
+#            external1_length = LineString(external1).length
+#            external2_length = LineString(external2).length
+#            ratio1 = common_length / external1_length
+#            ratio2 = common_length / external2_length
+#            data.extend([ratio1 + ratio2 / 2, min(ratio1, ratio2), max(ratio1, ratio2)])
+#
+#            # Extended common part as they are with the cut on each side:
+#            common1_extd = [a] + common + [f]
+#            common2_extd = [c] + common + [h]
+#            # Consider extended ways, as they would be without the cut:
+#            external1_extd = [h] + external1 + [c]
+#            external2_extd = [f] + external2 + [a]
+#
+#            external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles = \
+#                [ numpy.array([angle_abc(nodes[i-1], nodes[i], nodes[i+1]) * 180 / math.pi for i in xrange(1, len(nodes)-1)])
+#                  for nodes in external1_extd, external2_extd, common1_extd, common2_extd]
+#
+#            data.extend(
+#                [external1_extd_angles.mean(), external1_extd_angles.std(), external1_extd_angles.min(), external1_extd_angles.max(),
+#                 external2_extd_angles.mean(), external2_extd_angles.std(), external2_extd_angles.min(), external2_extd_angles.max(),
+#                 common1_extd_angles.mean() - external1_extd_angles.mean(),
+#                 common1_extd_angles.std(), 
+#                 common1_extd_angles.min() - external1_extd_angles.min(),
+#                 common1_extd_angles.max() - external1_extd_angles.max(),
+#                 common2_extd_angles.mean() - external2_extd_angles.mean(),
+#                 common2_extd_angles.std(),
+#                 common2_extd_angles.min() - external2_extd_angles.min(),
+#                 common2_extd_angles.max() - external2_extd_angles.max()])
+#
+#            external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles = \
+#                [numpy.array([diff_to_90(angle) for angle in angles]) for angles in 
+#                    external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles ]
+#
+#            data.extend(
+#                [external1_extd_angles.mean(), external1_extd_angles.std(), external1_extd_angles.min(), external1_extd_angles.max(),
+#                 external2_extd_angles.mean(), external2_extd_angles.std(), external2_extd_angles.min(), external2_extd_angles.max(),
+#                 common1_extd_angles.mean() - external1_extd_angles.mean(),
+#                 common1_extd_angles.std(), 
+#                 common1_extd_angles.min() - external1_extd_angles.min(),
+#                 common1_extd_angles.max() - external1_extd_angles.max(),
+#                 common2_extd_angles.mean() - external2_extd_angles.mean(),
+#                 common2_extd_angles.std(),
+#                 common2_extd_angles.min() - external2_extd_angles.min(),
+#                 common2_extd_angles.max() - external2_extd_angles.max()])
+#
+#            result = data
+#    return result 
+#
+#def length(way):
+#    Shapely
+#
+#def diff_to_90(a):
+#    return abs(45-abs(45-(a%90)))
+#
+#
+#def nodes_angle(a,b,c):
+#    return angle_abc(a.position, b.position, c.position)
+#
+#def angle_abc(a,b,c):
+#    v1 = numpy.array([a[0]-b[0], a[1]-b[1]])
+#    v2 = numpy.array([c[0]-b[0], c[1]-b[1]])
+#    d = numpy.linalg.norm(v1) * numpy.linalg.norm(v2)
+#    if d == 0:
+#        return 0
+#    else:
+#        return numpy.arccos(numpy.clip(numpy.dot(v1, v2) / d, -1.0, 1.0))
+#
+#
 #def main2(argv):
 #    """display buildings of an osm file"""
 #    osm = OsmParser().parse(argv[1])
@@ -320,8 +415,9 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #            if key in (1048689, 1048603):
 #                break
 #    cv2.destroyAllWindows()
-
-
+#
+#IMG_SIZE = 256
+#
 #def affine_transform_matrix(angle, scale, tx, ty):
 #    """Return a matirx to be used with shapely.affinity.affine_transform"""
 #    cos = math.cos(angle)
@@ -385,7 +481,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #def draw_building(img, building, transformation, joined_pos_list, image_mid_polygon, image_polygon):
 #    polygon = shapely.affinity.affine_transform(building.polygon, transformation)
 #    draw_polygon(img, polygon, building.hasWall)
-#    if building.isJoined:
+#    if building.isSegmented:
 #        try:
 #          if not image_mid_polygon.intersection(polygon).is_empty:
 #            bounds = polygon.intersection(image_polygon).bounds
@@ -427,10 +523,10 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #            search_bbox = search_bbox_for_drawing(building.polygon)
 #            other_buildings = [osm_data.get(e.object) for e in rtree.intersection(search_bbox, objects=True)]
 #            other_buildings = [b for b in other_buildings  if b.isBuilding and (b.id() != building.id())]
-#            if building.isJoined:
+#            if building.isSegmented:
 #                filename = "positive/%s-%d.png" % (prefix, building.id())
 #            else:
-#                other_buildings_joined = [b.isJoined for b in other_buildings]
+#                other_buildings_joined = [b.isSegmented for b in other_buildings]
 #                if any(other_buildings_joined):
 #                    filename = None
 #                else:

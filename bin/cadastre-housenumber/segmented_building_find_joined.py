@@ -16,7 +16,7 @@
 Compare deux fichiers .osm pour trouver les buildings du premier
 qui sont fusionés dans le deuxième.
 Génère un trosième fichier, copie du premier avec un nouveau tag
-"joined" contenant l'id de building fusionné dans le deuxième.
+"segmented" contenant l'id de building fusionné dans le deuxième.
 (ou "no" si non fusioné ou "?" si building pas clairement trouvé 
 dans le deuxième fichier)
 """
@@ -104,7 +104,7 @@ def find_joined_and_unmodified_buildings(segmented_osm, corrected_osm, tolerance
     """Find buildings from segmented_osm osm representation that
        have either been joined or unmodified in corrected_osm"""
     for cadastre_way in itertools.chain(segmented_osm.ways.itervalues(), segmented_osm.relations.itervalues()):
-        cadastre_way.isJoined = False
+        cadastre_way.isSegmented = False
     inputTransform, outputTransform = get_centered_metric_equirectangular_transformation(segmented_osm)
     compute_transformed_position_and_annotate(segmented_osm, inputTransform)
     compute_transformed_position_and_annotate(corrected_osm, inputTransform)
@@ -115,13 +115,13 @@ def find_joined_and_unmodified_buildings(segmented_osm, corrected_osm, tolerance
     joined_buildings = []
     unmodified_buildings = []
     for segmented_way in itertools.chain(segmented_osm.ways.itervalues(), segmented_osm.relations.itervalues()):
-        if segmented_way.isBuilding and ("joined" not in segmented_way.tags):
-            segmented_way.tags["joined"] = "?"
+        if segmented_way.isBuilding and ("segmented" not in segmented_way.tags):
+            segmented_way.tags["segmented"] = "?"
             for corrected_way in [corrected_osm.get(e.object) for e in corrected_rtree.intersection(segmented_way.bbox, objects=True)]:
                 if corrected_way.isBuilding:
                     if ways_equals(segmented_way, corrected_way, tolerance):
                         unmodified_buildings.append(segmented_way)
-                        segmented_way.tags["joined"] = "no"
+                        segmented_way.tags["segmented"] = "no"
                     elif corrected_way.tolerance_polygon.contains(segmented_way.polygon):
                         composed_tolerance_polygon = segmented_way.tolerance_polygon
                         composed_ways = [segmented_way]
@@ -133,8 +133,8 @@ def find_joined_and_unmodified_buildings(segmented_osm, corrected_osm, tolerance
                         if composed_tolerance_polygon.contains(corrected_way.polygon):
                             joined_buildings.append(composed_ways)
                             for way in composed_ways:
-                                way.tags["joined"] = corrected_way.textid()
-                                way.isJoined = True
+                                way.tags["segmented"] = corrected_way.textid()
+                                way.isSegmented = True
     return joined_buildings, unmodified_buildings
 
 

@@ -23,7 +23,10 @@ import copy
 import os.path
 import operator
 import itertools
+import rtree.index
+
 from glob import glob
+from shapely.geometry.polygon import Polygon
 
 from osm                            import Osm,Node,Way,Relation,OsmParser,OsmWriter
 from pdf_vers_osm_housenumbers      import CadastreParser
@@ -61,12 +64,43 @@ def main(argv):
         OsmWriter(cadastre_buildings).write_to_file(prefix + "-houses.osm")
     return 0
 
+
+def bounds_center(bounds):
+    minx, miny, maxx, maxy = bounds
+    centerx = (minx + maxx) / 2
+    centery = (miny + maxy) / 2
+    return (centerx, centery)
+
+class SimilarPolygonsDetector(object):
+    def __init__(self, precision_decimal=1):
+        self.index= rtree.index.Index()
+        self.precision = precision_decimal
+        self.polygons = []
+    def contains(self, polygon):
+        center = bounds_center(polygon.bounds)
+        for i in self.index.intersection(center):
+            if polygon.almost_equals(self.polygons[i], self.precision):
+                return True
+        return False
+    def test_and_add(self, polygon):
+        if self.contains(polygon):
+            return True
+        else:
+            i = len(self.polygons)
+            self.polygons.append(polygon)
+            self.index.insert(i, polygon.bounds)
+            return False
+
 def pdf_vers_osm_buildings(pdf_filename_list):
     projection, buildings, light_buildings = \
         pdf_vers_buildings(pdf_filename_list)
     cadastre_to_osm_transform = CadastreToOSMTransform(projection)
     all_nodes = {}
+    similar_polygons_detector = SimilarPolygonsDetector()
     def add_building(osm, building, isLight):
+        polygon = Polygon(building[0], building[1:])
+        if similar_polygons_detector.test_and_add(polygon):
+            return
         tags = {"building":"yes", "source":SOURCE_TAG}
         if isLight:
             tags["wall"] = "no"
@@ -89,11 +123,11 @@ def pdf_vers_osm_buildings(pdf_filename_list):
                 osm.add_way(way)
             for p in linear_ring:
                 p = cadastre_to_osm_transform.transform_point(p)
-                key = (p.x, p.y)
+                key = "%.7f %.7f" % (p.x, p.y)
                 if key in all_nodes:
                     n = all_nodes[key]
                 else:
-                    n = Node({'lon':str(p.x), 'lat':str(p.y)})
+                    n = Node({'lon':"%.7f" % p.x, 'lat':"%.7f" % p.y})
                     osm.add_node(n)
                     all_nodes[key] = n
                 way.add_node(n)

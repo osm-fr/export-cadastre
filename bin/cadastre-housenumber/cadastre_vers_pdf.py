@@ -53,8 +53,8 @@ BBOX_OPTION_FORMAT = re.compile("^(-?[0-9]*(\\.[0-9]*)?,){3}-?[0-9]*(\\.[0-9]*)?
 
 
 def decoupage_bbox_cadastre_forced(bbox, nb_x, x_bbox_size, x_pixels_ratio, nb_y, y_bbox_size, y_pixels_ratio):
-  sys.stdout.write((u"Découpe la bbox en %d * %d [%d pdfs]\n" % (nb_x,nb_y,nb_x*nb_y)).encode("utf-8"))
-  sys.stdout.flush()
+  sys.stderr.write((u"Découpe la bbox en %d * %d [%d pdfs]\n" % (nb_x,nb_y,nb_x*nb_y)).encode("utf-8"))
+  sys.stderr.flush()
   xmin, ymin, xmax, ymax = bbox
   for i in xrange(nb_x):
     x1 = xmin + i * x_bbox_size
@@ -210,10 +210,16 @@ def cadastre_vers_pdfs(argv):
           code_departement = cadastreWebsite.code_departement
           code_commune = cadastreWebsite.code_commune
           nom_commune = cadastreWebsite.communes[code_commune] 
-          sys.stdout.write((u"Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n").encode("utf-8"))
-          sys.stdout.flush()
+          sys.stderr.write((u"Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n").encode("utf-8"))
+          sys.stderr.flush()
           write_string_to_file("", code_commune + "-" + nom_commune + ".txt")
-          return list(iter_download_pdfs(cadastreWebsite, code_departement, code_commune,mode=mode,size=size,nb=nb,ratio=ratio,wait=wait,force_bbox=bbox))
+          result = []
+          for f in iter_download_pdfs(cadastreWebsite, code_departement, code_commune,mode=mode,size=size,nb=nb,ratio=ratio,wait=wait,force_bbox=bbox):
+              sys.stdout.write(f)
+              sys.stdout.write("\n")
+              sys.stdout.flush()
+              result.append(f)
+          return result
 
 if __name__ == '__main__':
     cadastre_vers_pdfs(sys.argv)
