@@ -130,12 +130,16 @@ def normalize(vector):
 def predict_segmented(classifier, scaler, osm_data, way1, way2):
     vector1 = get_segmented_analysis_vector_from_osm(osm_data, way1, way2)
     vector2 = get_segmented_analysis_vector_from_osm(osm_data, way2, way1)
-    if vector1 != None and scaler != None:
-        vector1 = scaler.transform(vector1)
-    if vector2 != None and scaler != None:
-        vector2 = scaler.transform(vector2)
-    return (vector1 != None and classifier.predict(vector1) == [1]) or \
-       (vector2 != None and classifier.predict(vector2) == [1])
+    if not vector1 is None:
+        vector1 = [vector1]
+        if not scaler is None:
+            vector1 = scaler.transform(vector1)
+    if not vector2 is None:
+        vector2 = [vector2]
+        if not scaler is None:
+            vector2 = scaler.transform(vector2)
+    return ((not vector1 is None) and classifier.predict(vector1) == [1]) or \
+       ((not vector2 is None) and classifier.predict(vector2) == [1])
 
 def get_buildings_ways(osm_data):
     result = []

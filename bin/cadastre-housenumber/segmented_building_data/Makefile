@@ -1,7 +1,7 @@
 
 
 
-OSM=segmented.osm not_segmented.osm
+OSM=segmented.osm
 
 .PHONY:all test clean
 
@@ -19,3 +19,9 @@ clean:
 	rm -f *-prediction_segmente.osm
 	rm -f *-missed.osm
 	rm -f *-false.osm
+
+zip:
+	for f in *-segmented.osm; do zip `basename "$$f" .osm`.zip "$$f" && rm -f "$$f"; done
+
+unzip:
+	for f in *.zip; do unzip "$$f" && rm -f "$$f"; done

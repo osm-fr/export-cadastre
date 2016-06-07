@@ -13,25 +13,50 @@
 # along with it. If not, see <http://www.gnu.org/licenses/>.
 
 """
-Prends en entrée des fichier osm contenant des building avec
+Prend en entrée des fichiers osm contenant des bâtiments (buildings) avec
 un tag "segmented" contenant des valeurs égales pour les buildings à fusionner,
 ou rien ou "segmented"="no" pour ceux à ne pas fusioner,
 et "segmented"="?" pour ceux pour lequel c'est ambigue.
 
-De tels fichiers d'entrée peuvent être générés par le programme 
+De tels fichiers d'entrée peuvent être générés par le programme
 segmented_building_find_joined.py
 
-La sortie de ce programme est la gérération d'un fichier 
-    classifier.pickle 
-dump d'une instance de classifier pour prédire deux bâtiments fractionnés
-avec la fonction 
+La sortie de ce programme est la gérération de deux fichiers
+    scaler.pickle
+    classifier.pickle
+dump d'une instance de Scaler pour mettre à l'échelle les valeurs
+et d'un classifier pour prédire à partir de ces valeurs
+deux bâtiments fractionnés.
+
+Les valeurs (features) d'un couple de bâtiment doivent être obtenus
+en appelant la fonction
     fr_cadastre_segmented.get_classifier_vector(wkt1, wkt2)
 
-Il y a aussi la génération de fichiers:
-    classifier.mean 
-    classifier.scale
-Contenant une liste de float à passer en parramètre à la fonction
-    fr_cadastre_segmented.set_vector_mean_and_scale(mean_list, scale_list)
+
+Plusieurs classifiers ont été expérimentés.
+
+ - KNeighborsClassifier
+   meilleur équilibre entre nombre de correcte / faux négatifs / faux positifs.
+   (peut être car on a beaucoup plus de données d'apperntissage négatives, il faudrait jouer sur les weight pour rééquilibrer)
+   meilleurs résultats avec
+    MinMaxScaler()
+    KNeighborsClassifier(weights="distance", k = 8)
+   La grid search cross validation donne k=4 mais en fait avec k=8 c'est bien mieux.
+
+
+ - DecisionTreeClassifier
+    peu de manqués (faux négatifs), mais beaucoup de faux positifs
+    je ne sais pas utiliser Scaler améliore vraiment ou pas.
+
+ - SVM
+    peu de faux positifs, mais beaucoup de faux négatifs (manqués).
+    meilleurs résultats avec:
+        MinMaxScaler()
+        SVC(kernel="rbf",C=500 ou plus, gamma=0.05)
+
+ - SGDClassifier
+    mauvais résultats
+
 """
 
 
@@ -45,7 +70,10 @@ import os.path
 import zipfile
 import operator
 import itertools
-from sklearn import svm, grid_search
+from sklearn import svm
+from sklearn import tree
+from sklearn import neighbors
+from sklearn import grid_search
 from sklearn import preprocessing
 
 
@@ -78,7 +106,10 @@ def main(argv):
         all_data.extend(data)
         all_result.extend(result)
 
-    scaler, classifier = train(all_data, all_result)
+    scaler, classifier = train_kneighbors(all_data, all_result)
+    #scaler, classifier = train_svm(all_data, all_result)
+    #scaler, classifier = train_tree(all_data, all_result)
+    #scaler, classifier = train_sgd(all_data, all_result)
     with open("classifier.pickle", "w") as f:
         pickle.dump(classifier, f)
     with open("scaler.pickle", "w") as f:
@@ -96,10 +127,60 @@ def main(argv):
     #    with open("scaler_%d.pickle" % positive_weight, "w") as f:
     #        pickle.dump(scaler, f)
 
-    return 1
+    return 0
+
+def train_kneighbors(data, result, scoring=None):
+    #scaler = None
+    scaler = preprocessing.MinMaxScaler()
+    print "Scale: ", type(scaler)
+    if scaler != None:
+        data = scaler.fit_transform(data)
+
+    classifier = neighbors.KNeighborsClassifier(weights = 'distance', n_neighbors=8)
+    classifier.fit(data, result)
+
+    # GridSearchCV says best is with n_neighbors=4, but my observations show that n_neighbors=8 is way better.
+
+    return scaler, classifier
+
+    #parameters = {
+    #    'weights': ('uniform', 'distance'),
+    #    'n_neighbors': (8,) #range(3,11)
+    #}
+    #print parameters
+    #search = grid_search.GridSearchCV(neighbors.KNeighborsClassifier(), parameters, scoring=scoring, n_jobs=1)
+    #search.fit(data, result)
+    #print "best params:", search.best_params_
+    #print "best score:", search.best_score_
+    ##print
+    #return scaler, search.best_estimator_.fit(data,result)
 
 
-def train(data, result, scoring=None):
+def train_tree(data, result, scoring=None):
+    scaler = None
+    scaler = preprocessing.MinMaxScaler()
+    print "Scale: ", type(scaler)
+    if scaler != None:
+        data = scaler.fit_transform(data)
+
+    #classifier = tree.DecisionTreeClassifier()
+    #classifier.fit(data, result)
+    #return scaler, classifier
+
+    parameters = {
+            'criterion':('gini', 'entropy'),
+            'splitter':('best','random'),
+    }
+    print parameters
+    search = grid_search.GridSearchCV(tree.DecisionTreeClassifier(), parameters, scoring=scoring, n_jobs=1)
+    search.fit(data, result)
+    print "best params:", search.best_params_
+    print "best score:", search.best_score_
+    print
+    return scaler, search.best_estimator_.fit(data,result)
+
+
+def train_svm(data, result, scoring=None):
     data = np.array(data)
     result = np.array(result)
 
@@ -162,6 +243,32 @@ def train(data, result, scoring=None):
     print "best score:", search.best_score_
     print
 
+    return scaler, search.best_estimator_.fit(data,result)
+
+
+def train_sgd(data, result, scoring=None):
+    #scaler = None
+    #scaler = preprocessing.MinMaxScaler()
+    print "Scale: ", type(scaler)
+    if scaler != None:
+        data = scaler.fit_transform(data)
+
+    #classifier = SGDClassifier(loss="hinge", penalty="l2")
+    #classifier.fit(data, result)
+    #return scaler, classifier
+
+    parameters = {
+        'loss': ('hinge', 'log', 'modified_huber', 'squared_hinge', 'perceptron',
+                 'squared_loss', 'huber', 'epsilon_insensitive',
+                 'squared_epsilon_insensitive'),
+        'penalty': ('none', 'l2', 'l1', 'elasticnet')
+    }
+    print parameters
+    search = grid_search.GridSearchCV(SGDClassifier(), parameters, scoring=scoring, n_jobs=1)
+    search.fit(data, result)
+    print "best params:", search.best_params_
+    print "best score:", search.best_score_
+    print
     return scaler, search.best_estimator_.fit(data,result)
 
 
@@ -251,7 +358,7 @@ def get_segmented_analysis_vector_from_polygons(p1, p2):
 
 def osm_way_polygon_wkt(osm_data, way):
     return "POLYGON ((" + ", ".join(
-                map(lambda p: str(p[0]) + " " + str(p[1]), 
+                map(lambda p: str(p[0]) + " " + str(p[1]),
                     [osm_data.nodes[i].position for i in way.nodes])
             ) + "))"
 
