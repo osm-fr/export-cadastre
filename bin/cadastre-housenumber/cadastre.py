@@ -122,8 +122,8 @@ class CadastreWebsite(object):
   def check_session_timeout(self):
     if time.time() > (self.session_start_time +
         CADASTRE_TIMEOUT_SESSION_SECONDES):
-      sys.stdout.write((u"Réinitialise la connexion avec le site du cadastre.\n").encode("utf-8"))
-      sys.stdout.flush()
+      sys.stderr.write((u"Réinitialise la connexion avec le site du cadastre.\n").encode("utf-8"))
+      sys.stderr.flush()
       self.reinit_session()
 
   def __parse_liste_departements(self, html):

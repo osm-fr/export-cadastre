@@ -72,7 +72,7 @@ def bounds_center(bounds):
     return (centerx, centery)
 
 class SimilarPolygonsDetector(object):
-    def __init__(self, precision_decimal=1):
+    def __init__(self, precision_decimal=0.5):
         self.index= rtree.index.Index()
         self.precision = precision_decimal
         self.polygons = []
@@ -131,7 +131,7 @@ def pdf_vers_osm_buildings(pdf_filename_list):
                     osm.add_node(n)
                     all_nodes[key] = n
                 way.add_node(n)
-    osm = Osm({'upload':'false'})
+    osm = Osm({})
     for building in buildings:
         add_building(osm, building, False)
     for building in light_buildings:

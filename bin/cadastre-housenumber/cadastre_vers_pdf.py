@@ -120,8 +120,8 @@ def iter_download_pdfs(cadastreWebsite, code_departement, code_commune, ratio=PD
         pdf_filename = code_commune + ("-%d-%d" % (i,j)) + ".pdf"
         bbox_filename = code_commune + ("-%d-%d" % (i,j)) + ".bbox"
         sous_bbox_str = projection + (":%f,%f,%f,%f" % sous_bbox)
-        #sys.stdout.write((pdf_filename + " " + sous_bbox_str + "\n").encode("utf-8"))
-        #sys.stdout.flush();
+        #sys.stderr.write((pdf_filename + " " + sous_bbox_str + "\n").encode("utf-8"))
+        #sys.stderr.flush();
         write_string_to_file(sous_bbox_str,  bbox_filename)
         if not (os.path.exists(pdf_filename) and os.path.exists(pdf_filename + ".ok")):
             if os.path.exists(pdf_filename + ".ok"): os.remove(pdf_filename + ".ok")
