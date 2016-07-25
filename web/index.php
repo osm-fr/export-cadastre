@@ -119,20 +119,21 @@ if( $dep && $ville && $type )
 			}
 			else
 			{
-				if ($type == "adresses") { 
+				//if ($type == "adresses") { 
 					$log_cmd="2>&1";
-				} else {
-					$log_cmd="> /dev/null 2>&1";
-				}
+				//} else {
+				//	$log_cmd="> /dev/null 2>&1";
+				//}
 			}
 			$v = explode( '-', $ville, 2 );
 			if ($type == "adresses") { 
 				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 			} else {
-				$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $bbox $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
-				exec( $command );
-				echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
-				$command = '';
+				$command = sprintf( "cd %s && ./import-ville2.sh %s %s \"%s\" $bbox $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+				//$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $bbox $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+				//exec( $command );
+				//echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
+				//$command = '';
 			}
 		}
 		else
@@ -306,55 +307,59 @@ if ($command) {
     }
     $process->print_error_and_close();
 
-    $associatedStreet_files = array (
-        "Mix en façade proche ou point isolé" => "/data/$dep/$ville-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
-        "Toujours en façade de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
-        "Toujours comme attribut de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip",
-        "Toujours comme point isolés" => "/data/$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
-    );
-    $addrstreet_files = array();
-    foreach($associatedStreet_files as $key => $val) {
-        $addrstreet_files[$key] = str_replace("associatedStreet","addrstreet",$associatedStreet_files[$key]);
-    }
-    print "</pre>\n";
+    if ($type == "adresses") { 
+      $associatedStreet_files = array (
+          "Mix en façade proche ou point isolé" => "/data/$dep/$ville-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
+          "Toujours en façade de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
+          "Toujours comme attribut de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip",
+          "Toujours comme point isolés" => "/data/$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
+      );
+      $addrstreet_files = array();
+      foreach($associatedStreet_files as $key => $val) {
+          $addrstreet_files[$key] = str_replace("associatedStreet","addrstreet",$associatedStreet_files[$key]);
+      }
+      print "</pre>\n";
 
-    print "<fieldset>\n";
-    echo "<legend>Résultat avec tag addr:street:</legend>\n";
-    echo "<table class=\"result\">\n";
-    foreach($addrstreet_files as $key => $val) {
-        echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
-    }
-    echo "</table>\n";
-    print "</fieldset>\n";
-    print "<fieldset>\n";
-    echo "<legend>Résultat avec relation associatedStreet:</legend>\n";
-    echo "<table class=\"result\">\n";
-    foreach($associatedStreet_files as $key => $val) {
-        echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
-    }
-    echo "</table>\n";
-    print "</fieldset>\n";
+      print "<fieldset>\n";
+      echo "<legend>Résultat avec tag addr:street:</legend>\n";
+      echo "<table class=\"result\">\n";
+      foreach($addrstreet_files as $key => $val) {
+          echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+      }
+      echo "</table>\n";
+      print "</fieldset>\n";
+      print "<fieldset>\n";
+      echo "<legend>Résultat avec relation associatedStreet:</legend>\n";
+      echo "<table class=\"result\">\n";
+      foreach($associatedStreet_files as $key => $val) {
+          echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+      }
+      echo "</table>\n";
+      print "</fieldset>\n";
 
-    print "<fieldset>\n";
-    echo "<legend>Résultat de Lieux-Dits, tag place=...</legend>\n";
-    echo "<table class=\"result\">\n";
-    $key = "Lieux-Dits";
-    $val = "/data/$dep/$ville-adresses-lieux-dits.zip";
-    echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
-    echo "</table>\n";
-    print "</fieldset>\n";
+      print "<fieldset>\n";
+      echo "<legend>Résultat de Lieux-Dits, tag place=...</legend>\n";
+      echo "<table class=\"result\">\n";
+      $key = "Lieux-Dits";
+      $val = "/data/$dep/$ville-adresses-lieux-dits.zip";
+      echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+      echo "</table>\n";
+      print "</fieldset>\n";
 
-    print "<fieldset>\n";
-    echo "<legend>Liste de mots dessinés sur le cadastre (noms de rues, de lieux-dits ou autre)</legend>\n";
-    echo "<table class=\"result\">\n";
-    $key = "Lieux-Dits";
-    $val = "/data/$dep/$ville-mots.zip";
-    echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
-    echo "</table>\n";
-    print "</fieldset>\n";
+      print "<fieldset>\n";
+      echo "<legend>Liste de mots dessinés sur le cadastre (noms de rues, de lieux-dits ou autre)</legend>\n";
+      echo "<table class=\"result\">\n";
+      $key = "Lieux-Dits";
+      $val = "/data/$dep/$ville-mots.zip";
+      echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+      echo "</table>\n";
+      print "</fieldset>\n";
+    } else {
+      echo "Terminé.<br/>";
+    }
     ?>
     <script type='text/javascript'>
-    	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="/data/<?php echo $dep;?>">aux fichiers</a>';
+	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="/data/<?php echo $dep;?>">aux fichiers</a>';
     </script>
     <?php
 } else if ($confirmAlreadyGenerated) {

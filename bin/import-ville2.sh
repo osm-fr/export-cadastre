@@ -14,9 +14,9 @@ cd $data_dir || exit -1
 export MPLCONFIGDIR="$work_dir/tmp"
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
-cadastre_vers_pdf="$bin_dir/cadastre-housenumber/bin/cadastre_2_pdf.py"
-simplify_qadastre_houses="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_houses_simplify.py"
-pdf_vers_osm_houses="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/pdf_2_osm_houses.py "
+cadastre_2_pdf="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/cadastre_2_pdf.py"
+osm_houses_simplify="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_houses_simplify.py"
+pdf_2_osm_houses="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/pdf_2_osm_houses.py "
 segmented_building_predict="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_segmented_building_predict.py"
 
 [ -d $dep ] || mkdir $dep
@@ -44,7 +44,7 @@ cd $download_dir || exit -1
 
 city_limit_top_size=0
 
-$cadastre_vers_pdf $bboxargs -size 200 $dep $code | while read pdf; do
+$cadastre_2_pdf $bboxargs -size 200 $dep $code | while read pdf; do
   echo $pdf
   basename=`basename "$pdf" .pdf`
   index=`echo "$basename" |cut -c 7-`
@@ -66,9 +66,9 @@ $cadastre_vers_pdf $bboxargs -size 200 $dep $code | while read pdf; do
   
 done
 
-$pdf_vers_osm_houses $code
+$pdf_2_osm_houses $code
 mv $code-houses.osm "$dest_dir/$code-$name-houses.osm"
-cd "$dest_dir" && $simplify_qadastre_houses "$code-$name-houses.osm"
+cd "$dest_dir" && $osm_houses_simplify "$code-$name-houses.osm"
 cd "$dest_dir" && $segmented_building_predict "$code-$name-houses-simplifie.osm" "$code-$name-houses-prediction_segmente.osm"
 cd "$dest_dir" && tar jcf "$code-$name.tar.bz2" --exclude="*-water.osm" $code-"$name"*.osm
 

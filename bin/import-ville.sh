@@ -13,8 +13,8 @@ cd $data_dir || exit -1
 export MPLCONFIGDIR="$work_dir/tmp"
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
-cadastre_vers_pdf="$bin_dir/cadastre-housenumber/bin/cadastre_2_pdf.py"
-simplify_qadastre_houses="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_houses_simplify.py"
+cadastre_2_pdf="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/cadastre_2_pdf.py"
+osm_houses_simplify="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_houses_simplify.py"
 segmented_building_predict="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_segmented_building_predict.py"
 
 [ -d $dep ] || mkdir $dep
@@ -30,7 +30,7 @@ if [ "$bbox" = "" ] ; then
 else
   # Téléchargement alternatif, qui nxtrait seulement une zone (bbox)
   name=$name-extrait-`date +"%Y-%m-%d_%Hh%Mm%Ss"`
-  $cadastre_vers_pdf -bbox "$bbox" -nb 1 -wait 0 $dep $code
+  $cadastre_2_pdf -bbox "$bbox" -nb 1 -wait 0 $dep $code
   # renomme les fichiers générés:
   rm -f $code-*.txt
   rm -f $code-*.ok
@@ -50,7 +50,7 @@ mv -f *.pdf *-water.osm ../eau/
 
 # Simplification
 if [ -f "$code-$name-houses.osm" ] ; then
-  $simplify_qadastre_houses "$code-$name-houses.osm"
+  $osm_houses_simplify "$code-$name-houses.osm"
 
   # Prédiction bâtiments segmentés
   $segmented_building_predict "$code-$name-houses-simplifie.osm" "$code-$name-houses-prediction_segmente.osm"
