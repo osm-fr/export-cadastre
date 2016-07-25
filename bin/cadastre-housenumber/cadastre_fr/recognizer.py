@@ -22,6 +22,7 @@ Reconnaisseur de Path extrait des PDF du cadastre, pour pouvoir identifier:
 """
 
 import re
+import sys
 import math
 import os.path
 import xml.etree.ElementTree as ET
@@ -38,86 +39,94 @@ REFERENCE_HOUSENUMBERS = os.path.join(TEXT_PATH_DATA_DIR , "reference-housenumbe
 
 
 # distance max en mètres pour considérer qu'un polygon est fermé:
-TOLERANFCE_FERMETURE_POLYGON_PARCELLES_METRES = 0.5
+TOLERANFCE_FERMETURE_POLYGON_METRES = 0.5
 
 
 class PathRecognizer(object):
-  def handle_path(self, path, transform):
-      """Return true if the given path has been recognized."""
-      return false
+    def handle_path(self, path, transform):
+        return False
 
-
-class ParcelPathRecognizer(PathRecognizer):
-  def __init__(self):
-      self.commands_re = re.compile("^(MLLLL*Z)+$")
-      self.parcels = []
-  def handle_path(self, path, transform):
-      #style="fill:none;stroke:#000000;stroke-width:0.76063001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"
-      if self.commands_re.match(path.commands) and path.style:
-          style = dict([v.split(':') for v in path.style.split(';')])
-          if (style.get('fill') == "none") and \
-                  (style.get('stroke') == "#000000") and \
-                  (style.get('stroke-opacity') == "1") and \
-                  (style.get('stroke-dasharray') == "none") and \
-                  style.has_key('stroke-width'):
-              stroke_width = float(style["stroke-width"])
-              if stroke_width > 0.7 and stroke_width < 0.8:
-                  # dans certasns cas path le path ne correspond pas à une limite de parcelle, mais
-                  # a une fleche qui fait le lien entre la parcelle et sont label, dans ce cas la
-                  # la flèche n'est pas un polygone fermé, donc on ne garde que les polygones fermés
-                  # dans le cas de limites imbriqués, il vas y avoir plusieurs limites
-                  # différents dans le meme path, on découpe donc chaque polygones:
-                  points = map(transform, path.points)
-                  linear_rings = []
-                  for commands_ring in path.commands[:-1].split('Z'):
+class LinesPathRecognizer(PathRecognizer):
+    commands_re = re.compile("^(MLLLL*Z)+$")
+    def __init__(self, name_closed_styletest_list):
+        self.name_closed_styletest_list = name_closed_styletest_list
+        for name, foo, bar in name_closed_styletest_list: 
+            setattr(self, name, [])
+    def handle_path(self, path, transform):
+        if LinesPathRecognizer.commands_re.match(path.commands) and path.style:
+            style = dict([v.split(':') for v in path.style.split(';')])
+            for name, closed, styletest in self.name_closed_styletest_list:
+                if styletest(style):
+                    points = map(transform, path.points)
+                    linear_rings = []
+                    for commands_ring in path.commands[:-1].split('Z'):
                         first = points[0]
                         last = points[len(commands_ring)-1]
-                        if max(abs(first[0]-last[0]), abs(first[1]-last[1])) \
-                                < TOLERANFCE_FERMETURE_POLYGON_PARCELLES_METRES: 
-                            linear_rings.append(points[:len(commands_ring)])
-                        else:
-                            # Ce n'est pas un polygone fermé mais une ligne 
-                            # brisée, probablement une flèche entre le numéro
-                            # d'une petite parcelle et sa position
+                        if closed and (first.distance(last) > TOLERANFCE_FERMETURE_POLYGON_METRES):
+                            # Ce n'est pas un polygone fermé mais une ligne brisée.
                             break
+                        linear_rings.append(points[:len(commands_ring)])
                         points = points[len(commands_ring):]
-                  if len(linear_rings) > 0:
-                      self.parcels.append(linear_rings)
-                      ##Polygon(linear_rings[0], linear_rings[1:]))
-                      return True
-      return False
-
-
-class BuildingPathRecognizer(PathRecognizer):
-    def __init__(self):
-        self.commands_re = re.compile("^(MLLLL*Z)+$")
-        self.buildings = []
-        self.light_buildings = []
-    def handle_path(self, path, transform):
-        # style="fill:#ffcc33;fill-opacity:1;fill-rule:evenodd;stroke:none"
-        # style="fill:#ffe599;fill-opacity:1;fill-rule:evenodd;stroke:none"
-        if self.commands_re.match(path.commands) and path.style:
-            is_building = path.style.find("fill:#ffcc33") >= 0
-            is_light_building = path.style.find("fill:#ffe599;") >= 0
-            if is_building or is_light_building:
-                points = map(transform, path.points)
-                linear_rings = []
-                for commands_ring in path.commands[:-1].split('Z'):
-                    first = points[0]
-                    last = points[len(commands_ring)-1]
-                    linear_rings.append(points[:len(commands_ring)])
-                    points = points[len(commands_ring):]
-                if len(linear_rings) > 0:
-                    #print linear_rings
-                    if is_light_building:
-                        self.light_buildings.append(linear_rings)
-                    else:
-                        self.buildings.append(linear_rings)
-                    ##Polygon(linear_rings[0], linear_rings[1:]))
-                    return True
+                    if len(linear_rings) > 0:
+                        getattr(self, name).append(linear_rings)
+                        return True
         return False
 
 
+PARCEL_LINE_PATH_RECOGNIZER = [
+        ['parcels', True, lambda style: 
+            style.has_key('stroke-width') and
+            (float(style["stroke-width"]) > 0.7) and
+            (float(style["stroke-width"]) < 0.8) and
+            (style.get('fill') == "none") and 
+            (style.get('stroke') == "#000000") and 
+            (style.get('stroke-opacity') == "1") and 
+            (style.get('stroke-dasharray') == "none")
+        ]
+    ]
+BUILDING_LINE_PATH_RECOGNIZER = [
+        ['buildings',       True, lambda style: style.get('fill') == "#ffcc33"],
+        ['light_buildings', True, lambda style: style.get('fill') == "#ffe599;"]
+    ]
+
+WATER_LINE_PATH_RECOGNIZER = [
+        ['waters',     True, lambda style: style.get('fill') == "#98c3d9"],
+        ['riverbanks', True, lambda style: style.get('fill') == "#1979ac"]
+    ]
+
+LIMIT_LINE_PATH_RECOGNIZER = [
+        ['limit', False, lambda style: 
+            (style.get('fill') == "none") and
+            (style.get('stroke') == "#ffffff") and
+            (style.get('stroke-opacity') == "1") and
+            (style.get('stroke-dasharray') == "none") and
+            style.has_key('stroke-width') and
+            (((float(style["stroke-width"]) > 17.8) and (float(style["stroke-width"]) < 17.9))
+             or
+             ((float(style["stroke-width"]) > 8.4) and (float(style["stroke-width"]) < 8.6)))
+        ]
+    ]
+
+class ParcelPathRecognizer(LinesPathRecognizer):
+    def __init__(self):
+        LinesPathRecognizer.__init__(self, PARCEL_LINE_PATH_RECOGNIZER)
+
+class BuildingPathRecognizer(LinesPathRecognizer):
+    def __init__(self):
+        LinesPathRecognizer.__init__(self, BUILDING_LINE_PATH_RECOGNIZER)
+
+class WaterPathRecognizer(LinesPathRecognizer):
+    def __init__(self):
+        LinesPathRecognizer.__init__(self, WATER_LINE_PATH_RECOGNIZER)
+
+class LimitPathRecognizer(LinesPathRecognizer):
+    def __init__(self):
+        LinesPathRecognizer.__init__(self, LIMIT_LINE_PATH_RECOGNIZER)
+
+class StandardPathRecognizer(LinesPathRecognizer):
+    def __init__(self):
+        LinesPathRecognizer.__init__(self, 
+                BUILDING_LINE_PATH_RECOGNIZER + LIMIT_LINE_PATH_RECOGNIZER + WATER_LINE_PATH_RECOGNIZER)
 
 class NamePathRecognizer(PathRecognizer):
     def __init__(self):

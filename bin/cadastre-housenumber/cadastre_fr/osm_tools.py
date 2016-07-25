@@ -26,14 +26,21 @@ from cadastre_fr.geometry import orthoprojection_on_segment_ab_of_point_c
 
 
 
-def osm_add_point(osm, point, transform):
+def osm_add_point(osm, point, transform, same_nodes_set = None):
     if type(point) == ShapelyPoint:
-      point = point.coords[0]
+        point = point.coords[0]
     lon,lat = transform(point)
-    n = Node({'lon':str(lon),'lat':str(lat)})
-    n.position = point # concerve les coordonées du point dans la projection originale, pas très propre...
-    osm.add_node(n)
-    return n
+    lon,lat = "%.7f" % lon, "%.7f" % lat 
+    key = lon + "," + lat
+    if same_nodes_set != None and key in same_nodes_set:
+        return same_nodes_set[key]
+    else:
+        n = Node({'lon':lon,'lat':lat})
+        n.position = point # concerve les coordonées du point dans la projection originale, pas très propre...
+        osm.add_node(n)
+        if same_nodes_set != None:
+            same_nodes_set[key] = n
+        return n
 
 def osm_add_nodes_way(osm, nodes):
     way = Way({})
@@ -42,21 +49,27 @@ def osm_add_nodes_way(osm, nodes):
         way.add_node(node)
     return way
     
-def osm_add_line_way(osm, line, transform):
+def osm_add_line_way(osm, line, transform, same_nodes_set = None):
     way = Way({})
     osm.add_way(way)
     for point in line.coords:
-        way.add_node(osm_add_point(osm, point, transform))
+        way.add_node(osm_add_point(osm, point, transform, same_nodes_set))
     return way
 
-def osm_add_polygon(osm, polygon, transform):
+def osm_add_polygon(osm, polygon, transform, same_nodes_set = None):
     assert(type(polygon) == Polygon)
     for ring in polygon.interiors:
-        osm_add_line_way(osm, ring, transform)
-    way = osm_add_line_way(osm, polygon.exterior, transform)
+        osm_add_line_way(osm, ring, transform, same_nodes_set)
+    way = osm_add_line_way(osm, polygon.exterior, transform, same_nodes_set)
     return way
 
-def osm_add_multipolygon(osm, polygon, transform):
+def osm_add_polygon_or_multipolygon(osm, polygon, transform, same_nodes_set = None):
+    if (type(polygon) == MultiPolygon) or (len(polygon.interiors) > 0):
+        return osm_add_multipolygon(osm, polygon, transform, same_nodes_set)
+    else:
+        return osm_add_polygon(osm, polygon, transform, same_nodes_set)
+
+def osm_add_multipolygon(osm, polygon, transform, same_nodes_set = None):
     if type(polygon) == Polygon:
         geoms = [polygon]
     elif type(polygon) == MultiPolygon:
@@ -70,21 +83,21 @@ def osm_add_multipolygon(osm, polygon, transform):
     osm.add_relation(r)
     r.tags["type"] = "multipolygon"
     for g in geoms:
-        way = osm_add_line_way(osm, g.exterior, transform)
+        way = osm_add_line_way(osm, g.exterior, transform, same_nodes_set)
         r.add_member(way, "outer")
         for ring in g.interiors:
-            way = osm_add_line_way(osm, ring, transform)
+            way = osm_add_line_way(osm, ring, transform, same_nodes_set)
             r.add_member(way, "inner")
     return r
      
 
-def osm_add_way_direction(osm, node, position, angle, taille, transform):
+def osm_add_way_direction(osm, node, position, angle, taille, transform, same_nodes_set = None):
     """ Ajoute un chemin (way) pour indiquer la direction associé a un noeud)"""
     pos1 = (position[0] - taille * math.cos(angle), 
             position[1] - taille * math.sin(angle))
     #pos2 = (position[0] + taille * math.cos(angle), 
     #        position[1] + taille * math.sin(angle))
-    p1 = osm_add_point(osm, pos1, transform)
+    p1 = osm_add_point(osm, pos1, transform, same_nodes_set)
     #p2 = osm_add_point(osm, pos2, transform)
     #return osm_add_nodes_way(osm, [p1, node, p2])
     return osm_add_nodes_way(osm, [p1, node])

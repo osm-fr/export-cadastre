@@ -14,6 +14,7 @@
 
 # Partitionne les noeuds d'un fichier osm en groupes de taille équivalente.
 
+import math
 from numpy import vstack
 from scipy.cluster.vq import kmeans,vq
 

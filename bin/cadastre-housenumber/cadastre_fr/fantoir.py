@@ -200,8 +200,8 @@ def open_osm_ways_commune(code_departement, code_commune, type_way, filtre="", n
     cache_filename = code_commune + "-" + type_way + "s.osm"
     insee = code_insee(code_departement, code_commune)
     area = 3600000000 + addr_fantoir_building.dicts.osm_insee[insee]
-    requete_overpass = 'way(area:%d)["%s"]%s;' % (area, type_way, filtre)
-    if nodes: requete_overpass += "(._;>;);"
+    #requete_overpass = 'way(area:%d)["%s"]%s;%s' % (area, type_way, filtre, "(._;>;);" if node else "")  # Cette version marche moins bien que la suivante équivalente
+    requete_overpass = 'node(area:%d);way(bn);(way._["%s"]%s;%s);' % (area, type_way, filtre, "node(w);" if nodes else "")
     requete_overpass += "out meta;"
     print_flush(u"Récupération des " + type_way + " de la commune")
     return open_osm_overpass(requete_overpass, cache_filename, metropole=code_departement.startswith("0"))

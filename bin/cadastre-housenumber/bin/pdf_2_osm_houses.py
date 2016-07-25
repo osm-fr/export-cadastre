@@ -24,7 +24,7 @@ from glob import glob
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from cadastre_fr.osm       import OsmWriter
-from cadastre_fr.building  import pdf_2_osm_buildings
+from cadastre_fr.building  import pdf_2_osm_buildings_water_and_limit
 
 
 def main(argv):
@@ -48,9 +48,13 @@ def main(argv):
         print "ERROR: too many .osm arguments"
         return -1
     else:
-        cadastre_buildings = pdf_2_osm_buildings(pdf_args)
-        cadastre_buildings.update_bbox()
-        OsmWriter(cadastre_buildings).write_to_file(prefix + "-houses.osm")
+        osm_buildings, osm_water, osm_limit = pdf_2_osm_buildings_water_and_limit(pdf_args)
+        osm_buildings.update_bbox()
+        osm_water.update_bbox()
+        osm_limit.update_bbox()
+        OsmWriter(osm_buildings).write_to_file(prefix + "-houses.osm")
+        OsmWriter(osm_water).write_to_file(prefix + "-water.osm")
+        OsmWriter(osm_limit).write_to_file(prefix + "-city-limit.osm")
     return 0
 
 

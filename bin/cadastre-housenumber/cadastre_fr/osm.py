@@ -73,20 +73,24 @@ class Osm(object):
             minlat = min([float(b["minlat"]) for b in self.bounds])
             maxlon = max([float(b["maxlon"]) for b in self.bounds])
             maxlat = max([float(b["maxlat"]) for b in self.bounds])
-        else:
+            return minlon,minlat,maxlon,maxlat
+        elif len(self.nodes):
             minlon = min([n.lon() for n in self.nodes.itervalues()])
             minlat = min([n.lat() for n in self.nodes.itervalues()])
             maxlon = max([n.lon() for n in self.nodes.itervalues()])
             maxlat = max([n.lat() for n in self.nodes.itervalues()])
-        return minlon,minlat,maxlon,maxlat
+            return minlon,minlat,maxlon,maxlat
+        else:
+            return None
     def set_bbox(self,bbox):
-        minlon,minlat,maxlon,maxlat = bbox
         self.bounds = []
-        self.bounds.append({
-          "minlon": str(minlon),
-          "minlat": str(minlat),
-          "maxlon": str(maxlon),
-          "maxlat": str(maxlat)})
+        if bbox != None:
+            minlon,minlat,maxlon,maxlat = bbox
+            self.bounds.append({
+              "minlon": str(minlon),
+              "minlat": str(minlat),
+              "maxlon": str(maxlon),
+              "maxlat": str(maxlat)})
     def update_bbox(self):
         self.bounds = []
         self.set_bbox(self.bbox())

@@ -50,24 +50,29 @@ $cadastre_2_pdf $bboxargs -size 200 $dep $code | while read pdf; do
   index=`echo "$basename" |cut -c 7-`
   
   $($Qadastre2OSM --convert $code "$index" > /dev/null 2>&1)
-  mv -f *-water.osm $water_dir/ > /dev/null 2>&1
+  #mv -f *-water.osm $water_dir/ > /dev/null 2>&1
   
-  city_limit_size=`stat -c%s "$code-$index-city-limit.osm" 2> /dev/null || echo 0` 
-  if [ "$city_limit_size" -gt "$city_limit_top_size" ] ; then
-    city_limit_top_size="$city_limit_size"
-    mv -f "$code-$index-city-limit.osm" "$dest_dir/$code-$name-city-limit.osm"
-  else
-    rm -f "$code-$index-city-limit.osm"
-  fi
+  #city_limit_size=`stat -c%s "$code-$index-city-limit.osm" 2> /dev/null || echo 0` 
+  #if [ "$city_limit_size" -gt "$city_limit_top_size" ] ; then
+  #  city_limit_top_size="$city_limit_size"
+  #  mv -f "$code-$index-city-limit.osm" "$dest_dir/$code-$name-city-limit.osm"
+  #else
+  #  rm -f "$code-$index-city-limit.osm"
+  #fi
 
   if [ -f "$code-$index-cemeteries.osm" ] ; then
     mv -f "$code-$index-cemeteries.osm" "$dest_dir/$code-$name-$index-cemeteries.osm"
+  fi
+  if [ -f "$code-$index-rails.osm" ] ; then
+    mv -f "$code-$index-rails.osm" "$dest_dir/$code-$name-$index-rails.osm"
   fi
   
 done
 
 $pdf_2_osm_houses $code
 mv $code-houses.osm "$dest_dir/$code-$name-houses.osm"
+mv $code-city-limit.osm "$dest_dir/$code-$name-city-limit.osm"
+mv $code-water.osm "$water_dir/$code-$name-water.osm"
 cd "$dest_dir" && $osm_houses_simplify "$code-$name-houses.osm"
 cd "$dest_dir" && $segmented_building_predict "$code-$name-houses-simplifie.osm" "$code-$name-houses-prediction_segmente.osm"
 cd "$dest_dir" && tar jcf "$code-$name.tar.bz2" --exclude="*-water.osm" $code-"$name"*.osm

@@ -15,7 +15,7 @@
 
 import sys
 import math
-import rtree
+import rtree.index
 from tools import peek
 
 try:

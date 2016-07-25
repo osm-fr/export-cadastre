@@ -15,6 +15,7 @@
 
 """Parser for PDF files from the cadastre."""
 
+import sys
 import os.path
 import subprocess
 
