@@ -3,11 +3,9 @@
 /*.zip
 /*.bbox
 /*.xml
-/*.ok
 /*-*.txt
+*.ok
 *.swp
 *.pyc
 *.log
 *~
-/data
-/FANTOIR.zip

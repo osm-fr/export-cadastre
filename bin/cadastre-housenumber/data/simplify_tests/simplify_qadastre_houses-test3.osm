@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' upload='true' generator='JOSM'>
+  <bounds minlat='47.297278' minlon='-1.640454' maxlat='47.175711' maxlon='-1.484688' origin='JOSM' />
+  <node id='-5552308' visible='true' lat='47.241337' lon='-1.574286' />
+  <node id='-5552307' visible='true' lat='47.241347' lon='-1.574287' />
+  <node id='-5552306' visible='true' lat='47.241459' lon='-1.574342' />
+  <node id='-5552305' visible='true' lat='47.241426' lon='-1.574377' />
+  <node id='-5552304' visible='true' lat='47.241329' lon='-1.57444' />
+  <node id='-5552303' visible='true' lat='47.24135' lon='-1.574389' />
+  <node id='-5552302' visible='true' lat='47.241336' lon='-1.574182' />
+  <node id='-5552301' visible='true' lat='47.241417' lon='-1.574275' />
+  <node id='-5552300' visible='true' lat='47.241412' lon='-1.574375' />
+  <node id='-5552299' visible='true' lat='47.241324' lon='-1.574439' />
+  <node id='-5552298' visible='true' lat='47.241369' lon='-1.574179' />
+  <node id='-5552297' visible='true' lat='47.241361' lon='-1.574286' />
+  <node id='-5552296' visible='true' lat='47.24136' lon='-1.574181' />
+  <node id='-5552295' visible='true' lat='47.241417' lon='-1.574219' />
+  <node id='-5552294' visible='true' lat='47.241363' lon='-1.574326' />
+  <node id='-5552293' visible='true' lat='47.241328' lon='-1.574385' />
+  <node id='-5552292' visible='true' lat='47.24137' lon='-1.574137' />
+  <node id='-5552291' visible='true' lat='47.241429' lon='-1.574275' />
+  <node id='-5552290' visible='true' lat='47.241428' lon='-1.574219' />
+  <node id='-5552289' visible='true' lat='47.241351' lon='-1.574324' />
+  <node id='-5552288' visible='true' lat='47.24146' lon='-1.574385' />
+  <node id='-5552287' visible='true' lat='47.241429' lon='-1.574137' />
+  <node id='-5552286' visible='true' lat='47.241364' lon='-1.574285' />
+  <node id='-5552285' visible='true' lat='47.241346' lon='-1.574324' />
+  <node id='-5552284' visible='true' lat='47.241338' lon='-1.574322' />
+  <node id='-5552283' visible='true' lat='47.24143' lon='-1.574337' />
+  <node id='-5552282' visible='true' lat='47.241425' lon='-1.574383' />
+  <node id='-5552281' visible='true' lat='47.241407' lon='-1.574461' />
+  <node id='-5552280' visible='true' lat='47.241428' lon='-1.574179' />
+  <node id='-5552267' visible='true' lat='47.212556' lon='-1.583868' />
+  <node id='-5552265' visible='true' lat='47.212532' lon='-1.58385' />
+  <node id='-5552263' visible='true' lat='47.212524' lon='-1.583857' />
+  <node id='-5552261' visible='true' lat='47.212509' lon='-1.583839' />
+  <node id='-5552259' visible='true' lat='47.212528' lon='-1.583802' />
+  <node id='-5552257' visible='true' lat='47.212539' lon='-1.583783' />
+  <node id='-5552255' visible='true' lat='47.212557' lon='-1.583749' />
+  <node id='-5552253' visible='true' lat='47.212606' lon='-1.583662' />
+  <node id='-5552251' visible='true' lat='47.212645' lon='-1.583709' />
+  <node id='-5552249' visible='true' lat='47.212608' lon='-1.583774' />
+  <node id='-5552247' visible='true' lat='47.212586' lon='-1.58375' />
+  <node id='-5552245' visible='true' lat='47.2125468772' lon='-1.58382323682' />
+  <node id='-5552243' visible='true' lat='47.212568' lon='-1.583847' />
+  <node id='-5552241' visible='true' lat='47.212509' lon='-1.583957' />
+  <node id='-5552239' visible='true' lat='47.212466' lon='-1.58392' />
+  <node id='-5552237' visible='true' lat='47.212381' lon='-1.583812' />
+  <node id='-5552235' visible='true' lat='47.212429' lon='-1.583729' />
+  <node id='-5552233' visible='true' lat='47.212475' lon='-1.583784' />
+  <node id='-5552231' visible='true' lat='47.212472' lon='-1.583791' />
+  <node id='-5552229' visible='true' lat='47.212382' lon='-1.583841' />
+  <node id='-5552227' visible='true' lat='47.212512' lon='-1.583716' />
+  <node id='-5552225' visible='true' lat='47.21252' lon='-1.583726' />
+  <node id='-5552223' visible='true' lat='47.212509' lon='-1.583747' />
+  <node id='-5552221' visible='true' lat='47.212521' lon='-1.583703' />
+  <node id='-5552219' visible='true' lat='47.212571' lon='-1.583619' />
+  <way id='-5552314' visible='true'>
+    <nd ref='-5552291' />
+    <nd ref='-5552301' />
+    <nd ref='-5552295' />
+    <nd ref='-5552290' />
+    <nd ref='-5552291' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+    <tag k='wall' v='no' />
+  </way>
+  <way id='-5552313' visible='true'>
+    <nd ref='-5552283' />
+    <nd ref='-5552294' />
+    <nd ref='-5552289' />
+    <nd ref='-5552284' />
+    <nd ref='-5552308' />
+    <nd ref='-5552297' />
+    <nd ref='-5552296' />
+    <nd ref='-5552298' />
+    <nd ref='-5552280' />
+    <nd ref='-5552290' />
+    <nd ref='-5552295' />
+    <nd ref='-5552301' />
+    <nd ref='-5552291' />
+    <nd ref='-5552283' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552312' visible='true'>
+    <nd ref='-5552289' />
+    <nd ref='-5552294' />
+    <nd ref='-5552283' />
+    <nd ref='-5552306' />
+    <nd ref='-5552288' />
+    <nd ref='-5552282' />
+    <nd ref='-5552305' />
+    <nd ref='-5552300' />
+    <nd ref='-5552281' />
+    <nd ref='-5552304' />
+    <nd ref='-5552299' />
+    <nd ref='-5552293' />
+    <nd ref='-5552303' />
+    <nd ref='-5552289' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552311' visible='true'>
+    <nd ref='-5552298' />
+    <nd ref='-5552292' />
+    <nd ref='-5552287' />
+    <nd ref='-5552280' />
+    <nd ref='-5552298' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552310' visible='true'>
+    <nd ref='-5552286' />
+    <nd ref='-5552294' />
+    <nd ref='-5552289' />
+    <nd ref='-5552285' />
+    <nd ref='-5552307' />
+    <nd ref='-5552286' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+    <tag k='wall' v='no' />
+  </way>
+  <way id='-5552309' visible='true'>
+    <nd ref='-5552297' />
+    <nd ref='-5552308' />
+    <nd ref='-5552302' />
+    <nd ref='-5552296' />
+    <nd ref='-5552297' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+    <tag k='wall' v='no' />
+  </way>
+  <way id='-5552279' visible='true'>
+    <nd ref='-5552267' />
+    <nd ref='-5552265' />
+    <nd ref='-5552263' />
+    <nd ref='-5552261' />
+    <nd ref='-5552259' />
+    <nd ref='-5552257' />
+    <nd ref='-5552255' />
+    <nd ref='-5552253' />
+    <nd ref='-5552251' />
+    <nd ref='-5552249' />
+    <nd ref='-5552247' />
+    <nd ref='-5552245' />
+    <nd ref='-5552243' />
+    <nd ref='-5552267' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552277' visible='true'>
+    <nd ref='-5552261' />
+    <nd ref='-5552259' />
+    <nd ref='-5552245' />
+    <nd ref='-5552243' />
+    <nd ref='-5552267' />
+    <nd ref='-5552265' />
+    <nd ref='-5552263' />
+    <nd ref='-5552261' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552275' visible='true'>
+    <nd ref='-5552241' />
+    <nd ref='-5552239' />
+    <nd ref='-5552261' />
+    <nd ref='-5552263' />
+    <nd ref='-5552265' />
+    <nd ref='-5552267' />
+    <nd ref='-5552241' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552273' visible='true'>
+    <nd ref='-5552237' />
+    <nd ref='-5552235' />
+    <nd ref='-5552233' />
+    <nd ref='-5552231' />
+    <nd ref='-5552261' />
+    <nd ref='-5552239' />
+    <nd ref='-5552229' />
+    <nd ref='-5552237' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552271' visible='true'>
+    <nd ref='-5552227' />
+    <nd ref='-5552225' />
+    <nd ref='-5552223' />
+    <nd ref='-5552257' />
+    <nd ref='-5552259' />
+    <nd ref='-5552261' />
+    <nd ref='-5552231' />
+    <nd ref='-5552233' />
+    <nd ref='-5552227' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+  <way id='-5552269' visible='true'>
+    <nd ref='-5552221' />
+    <nd ref='-5552219' />
+    <nd ref='-5552253' />
+    <nd ref='-5552255' />
+    <nd ref='-5552221' />
+    <tag k='building' v='yes' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015' />
+  </way>
+</osm>

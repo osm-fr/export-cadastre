@@ -3,18 +3,13 @@
 
 all:
 	cd pdfparser && qmake && make
-	make fantoir
+	cd cadastre_fr_segmented && make
+	cd data/segmented_building && make
  
-
-fantoir:
-	mkdir -p fantoir
-	for f in  `awk -F/ '//{print $$1}' fantoir.txt |uniq` ; do \
-	    wget "http://www2.impots.gouv.fr/documentation/fantoir/$$f" -O fantoir/$$f; \
-	    touch fantoir/$$f.ok; \
-	done
 
 clean:
 	rm -f *.pyc
+	rm -f cadastre_fr/*.pyc
 	rm -f *-*.txt
 	rm -f *.pdf
 	rm -f *-*.xml
@@ -23,3 +18,6 @@ clean:
 	rm -f *.ok
 	rm -f *.zip
 	rm -f *.log
+	cd pdfparser && make distclean
+	cd cadastre_fr_segmented && make clean
+	cd data/segmented_building && make clean

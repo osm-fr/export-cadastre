@@ -1,0 +1,291 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' upload='false' generator='JOSM'>
+  <node id='-299187' action='modify' visible='true' lat='44.81573970197' lon='-0.65634703242' />
+  <node id='-299188' action='modify' visible='true' lat='44.81556617278' lon='-0.65629723242' />
+  <node id='-299189' action='modify' visible='true' lat='44.81557587505' lon='-0.65622973242' />
+  <node id='-299190' action='modify' visible='true' lat='44.81547996404' lon='-0.65620253242' />
+  <node id='-299191' action='modify' visible='true' lat='44.81551351773' lon='-0.65596223242' />
+  <node id='-299192' action='modify' visible='true' lat='44.81551907633' lon='-0.65595883242' />
+  <node id='-299193' action='modify' visible='true' lat='44.81561569479' lon='-0.65598433242' />
+  <node id='-299194' action='modify' visible='true' lat='44.81561124792' lon='-0.65601893242' />
+  <node id='-299195' action='modify' visible='true' lat='44.81582762883' lon='-0.65607923242' />
+  <node id='-299196' action='modify' visible='true' lat='44.81580953813' lon='-0.65620593242' />
+  <node id='-299197' action='modify' visible='true' lat='44.81576163315' lon='-0.65619233242' />
+  <node id='-299198' action='modify' visible='true' lat='44.81541689927' lon='-0.65593513242' />
+  <node id='-299199' action='modify' visible='true' lat='44.81542215466' lon='-0.65590213242' />
+  <node id='-299200' action='modify' visible='true' lat='44.81520567271' lon='-0.65584023242' />
+  <node id='-299201' action='modify' visible='true' lat='44.81522305595' lon='-0.65571353242' />
+  <node id='-299202' action='modify' visible='true' lat='44.81527096092' lon='-0.65572713242' />
+  <node id='-299203' action='modify' visible='true' lat='44.81529299316' lon='-0.65557403242' />
+  <node id='-299204' action='modify' visible='true' lat='44.81546642128' lon='-0.65562223242' />
+  <node id='-299205' action='modify' visible='true' lat='44.81545671901' lon='-0.65568973242' />
+  <node id='-299206' action='modify' visible='true' lat='44.81555333748' lon='-0.65571683242' />
+  <node id='-300602' visible='true' lat='44.81600232857' lon='-0.65558682965' />
+  <node id='-300603' visible='true' lat='44.8157156201' lon='-0.65519516508' />
+  <node id='-300604' visible='true' lat='44.81575080315' lon='-0.65502856508' />
+  <node id='-300605' visible='true' lat='44.81599277696' lon='-0.65531244495' />
+  <node id='-300606' visible='true' lat='44.81589622959' lon='-0.65572816394' />
+  <node id='-300607' visible='true' lat='44.81587574314' lon='-0.65549980492' />
+  <node id='-300608' visible='true' lat='44.81605385762' lon='-0.65560192965' />
+  <node id='-300609' visible='true' lat='44.81568053816' lon='-0.65537166508' />
+  <node id='-300610' visible='true' lat='44.81594016478' lon='-0.65510596508' />
+  <node id='-300611' visible='true' lat='44.816008896' lon='-0.65554892965' />
+  <node id='-300612' visible='true' lat='44.81557893194' lon='-0.65522646508' />
+  <node id='-300613' visible='true' lat='44.81580266781' lon='-0.65513066508' />
+  <node id='-300614' visible='true' lat='44.81597984212' lon='-0.65528974495' />
+  <node id='-300615' visible='true' lat='44.81603193973' lon='-0.65583646394' />
+  <node id='-300616' visible='true' lat='44.8158584557' lon='-0.65557740492' />
+  <node id='-300617' visible='true' lat='44.81604516841' lon='-0.65563822965' />
+  <node id='-300618' visible='true' lat='44.81577567392' lon='-0.65533816508' />
+  <node id='-300619' visible='true' lat='44.81609079879' lon='-0.65540024495' />
+  <node id='-300620' visible='true' lat='44.81578467189' lon='-0.65504256508' />
+  <node id='-300621' visible='true' lat='44.81595599464' lon='-0.65583836394' />
+  <node id='-300622' visible='true' lat='44.81580600414' lon='-0.65517656508' />
+  <node id='-300623' visible='true' lat='44.81581670297' lon='-0.65555710492' />
+  <node id='-300624' visible='true' lat='44.81589030099' lon='-0.65553880492' />
+  <node id='-300625' visible='true' lat='44.81552059684' lon='-0.65528696508' />
+  <node id='-300626' visible='true' lat='44.81561087977' lon='-0.65547836508' />
+  <node id='-300627' visible='true' lat='44.81599671804' lon='-0.65534354495' />
+  <node id='-300628' visible='true' lat='44.81596914092' lon='-0.65587406394' />
+  <node id='-300629' visible='true' lat='44.81579195114' lon='-0.65517686508' />
+  <node id='-300630' visible='true' lat='44.815951444' lon='-0.65570216394' />
+  <node id='-300631' visible='true' lat='44.81587816945' lon='-0.65541120492' />
+  <node id='-300632' visible='true' lat='44.81551968693' lon='-0.65532146508' />
+  <node id='-300633' visible='true' lat='44.81561714801' lon='-0.65541746508' />
+  <node id='-300634' visible='true' lat='44.8159204227' lon='-0.65525354495' />
+  <node id='-300635' visible='true' lat='44.81593086352' lon='-0.65515046508' />
+  <node id='-300636' visible='true' lat='44.81602405196' lon='-0.65582846394' />
+  <node id='-300637' visible='true' lat='44.8158662401' lon='-0.65558050492' />
+  <node id='-300638' visible='true' lat='44.81582420227' lon='-0.65533526508' />
+  <node id='-300639' visible='true' lat='44.81600445035' lon='-0.65558512965' />
+  <node id='-300640' visible='true' lat='44.81557822424' lon='-0.65522316508' />
+  <node id='-300641' visible='true' lat='44.81573482924' lon='-0.65510286508' />
+  <node id='-300642' visible='true' lat='44.81600965288' lon='-0.65548094495' />
+  <node id='-300643' visible='true' lat='44.81595548901' lon='-0.65580056394' />
+  <node id='-300644' visible='true' lat='44.81586987957' lon='-0.65553280492' />
+  <node id='-300645' visible='true' lat='44.81582207915' lon='-0.65527956508' />
+  <node id='-300646' visible='true' lat='44.81595676072' lon='-0.65553382965' />
+  <node id='-300647' visible='true' lat='44.81558145946' lon='-0.65526246508' />
+  <node id='-300648' visible='true' lat='44.81552625848' lon='-0.65551656508' />
+  <node id='-300649' visible='true' lat='44.81599014957' lon='-0.65532234495' />
+  <node id='-300650' visible='true' lat='44.81589521833' lon='-0.65570526394' />
+  <node id='-300651' visible='true' lat='44.81586664449' lon='-0.65549680492' />
+  <node id='-300652' visible='true' lat='44.81551756382' lon='-0.65532146508' />
+  <node id='-300653' visible='true' lat='44.81568175136' lon='-0.65541426508' />
+  <node id='-300654' visible='true' lat='44.81599813279' lon='-0.65534344495' />
+  <node id='-300655' visible='true' lat='44.81593076242' lon='-0.65514726508' />
+  <node id='-300656' visible='true' lat='44.81596721954' lon='-0.65583806394' />
+  <node id='-300657' visible='true' lat='44.81579336655' lon='-0.65517856508' />
+  <node id='-300658' visible='true' lat='44.81597721473' lon='-0.65530134495' />
+  <node id='-300659' visible='true' lat='44.81603305211' lon='-0.65586926394' />
+  <node id='-300660' visible='true' lat='44.81587311464' lon='-0.65551470492' />
+  <node id='-300661' visible='true' lat='44.81599576114' lon='-0.65562132965' />
+  <node id='-300662' visible='true' lat='44.81577678603' lon='-0.65536596508' />
+  <node id='-300663' visible='true' lat='44.81596286514' lon='-0.65545094495' />
+  <node id='-300664' visible='true' lat='44.8157860873' lon='-0.65504086508' />
+  <node id='-300665' visible='true' lat='44.81600278125' lon='-0.65532854495' />
+  <node id='-300666' visible='true' lat='44.81571622671' lon='-0.65519186508' />
+  <node id='-300667' visible='true' lat='44.81582539725' lon='-0.65552070492' />
+  <node id='-300668' visible='true' lat='44.81595150678' lon='-0.65557002965' />
+  <node id='-300669' visible='true' lat='44.81552049574' lon='-0.65527386508' />
+  <node id='-300670' visible='true' lat='44.81561199188' lon='-0.65550956508' />
+  <node id='-300671' visible='true' lat='44.81590960998' lon='-0.65528824495' />
+  <node id='-300672' visible='true' lat='44.81602293958' lon='-0.65579726394' />
+  <node id='-300673' visible='true' lat='44.81587271026' lon='-0.65553270492' />
+  <node id='-300674' visible='true' lat='44.81582309016' lon='-0.65530246508' />
+  <node id='-300675' visible='true' lat='44.81589936447' lon='-0.65580526394' />
+  <node id='-300676' visible='true' lat='44.81590637529' lon='-0.65541870492' />
+  <node id='-300677' visible='true' lat='44.81551847372' lon='-0.65528706508' />
+  <node id='-300678' visible='true' lat='44.81561927113' lon='-0.65547656508' />
+  <node id='-300679' visible='true' lat='44.81605704694' lon='-0.65550934495' />
+  <node id='-300680' visible='true' lat='44.81588344728' lon='-0.65516046508' />
+  <node id='-300681' visible='true' lat='44.81595417438' lon='-0.65580226394' />
+  <node id='-300682' visible='true' lat='44.81583601234' lon='-0.65552380492' />
+  <node id='-300683' visible='true' lat='44.81580944156' lon='-0.65527986508' />
+  <way id='-299185' action='modify' visible='true'>
+    <nd ref='-299187' />
+    <nd ref='-299188' />
+    <nd ref='-299189' />
+    <nd ref='-299190' />
+    <nd ref='-299191' />
+    <nd ref='-299192' />
+    <nd ref='-299193' />
+    <nd ref='-299194' />
+    <nd ref='-299195' />
+    <nd ref='-299196' />
+    <nd ref='-299197' />
+    <nd ref='-299187' />
+    <tag k='building' v='residential' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-299186' action='modify' visible='true'>
+    <nd ref='-299192' />
+    <nd ref='-299191' />
+    <nd ref='-299198' />
+    <nd ref='-299199' />
+    <nd ref='-299200' />
+    <nd ref='-299201' />
+    <nd ref='-299202' />
+    <nd ref='-299203' />
+    <nd ref='-299204' />
+    <nd ref='-299205' />
+    <nd ref='-299206' />
+    <nd ref='-299192' />
+    <tag k='building' v='residential' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300684' visible='true'>
+    <nd ref='-300606' />
+    <nd ref='-300650' />
+    <nd ref='-300630' />
+    <nd ref='-300643' />
+    <nd ref='-300681' />
+    <nd ref='-300675' />
+    <nd ref='-300606' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300685' visible='true'>
+    <nd ref='-300657' />
+    <nd ref='-300629' />
+    <nd ref='-300613' />
+    <nd ref='-300641' />
+    <nd ref='-300604' />
+    <nd ref='-300620' />
+    <nd ref='-300664' />
+    <nd ref='-300610' />
+    <nd ref='-300655' />
+    <nd ref='-300635' />
+    <nd ref='-300680' />
+    <nd ref='-300657' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300686' visible='true'>
+    <nd ref='-300617' />
+    <nd ref='-300661' />
+    <nd ref='-300602' />
+    <nd ref='-300639' />
+    <nd ref='-300608' />
+    <nd ref='-300617' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300687' visible='true'>
+    <nd ref='-300668' />
+    <nd ref='-300646' />
+    <nd ref='-300611' />
+    <nd ref='-300639' />
+    <nd ref='-300602' />
+    <nd ref='-300668' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300688' visible='true'>
+    <nd ref='-300628' />
+    <nd ref='-300656' />
+    <nd ref='-300621' />
+    <nd ref='-300681' />
+    <nd ref='-300643' />
+    <nd ref='-300672' />
+    <nd ref='-300636' />
+    <nd ref='-300615' />
+    <nd ref='-300659' />
+    <nd ref='-300628' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300689' visible='true'>
+    <nd ref='-300623' />
+    <nd ref='-300667' />
+    <nd ref='-300682' />
+    <nd ref='-300644' />
+    <nd ref='-300673' />
+    <nd ref='-300637' />
+    <nd ref='-300616' />
+    <nd ref='-300623' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300690' visible='true'>
+    <nd ref='-300663' />
+    <nd ref='-300627' />
+    <nd ref='-300654' />
+    <nd ref='-300619' />
+    <nd ref='-300679' />
+    <nd ref='-300642' />
+    <nd ref='-300663' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300691' visible='true'>
+    <nd ref='-300652' />
+    <nd ref='-300632' />
+    <nd ref='-300677' />
+    <nd ref='-300625' />
+    <nd ref='-300669' />
+    <nd ref='-300647' />
+    <nd ref='-300612' />
+    <nd ref='-300640' />
+    <nd ref='-300603' />
+    <nd ref='-300666' />
+    <nd ref='-300629' />
+    <nd ref='-300657' />
+    <nd ref='-300622' />
+    <nd ref='-300683' />
+    <nd ref='-300645' />
+    <nd ref='-300674' />
+    <nd ref='-300638' />
+    <nd ref='-300618' />
+    <nd ref='-300662' />
+    <nd ref='-300609' />
+    <nd ref='-300653' />
+    <nd ref='-300633' />
+    <nd ref='-300678' />
+    <nd ref='-300626' />
+    <nd ref='-300670' />
+    <nd ref='-300648' />
+    <nd ref='-300652' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300692' visible='true'>
+    <nd ref='-300644' />
+    <nd ref='-300660' />
+    <nd ref='-300607' />
+    <nd ref='-300651' />
+    <nd ref='-300631' />
+    <nd ref='-300676' />
+    <nd ref='-300624' />
+    <nd ref='-300673' />
+    <nd ref='-300644' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+  <way id='-300693' visible='true'>
+    <nd ref='-300671' />
+    <nd ref='-300634' />
+    <nd ref='-300614' />
+    <nd ref='-300658' />
+    <nd ref='-300605' />
+    <nd ref='-300649' />
+    <nd ref='-300665' />
+    <nd ref='-300654' />
+    <nd ref='-300627' />
+    <nd ref='-300671' />
+    <tag k='building' v='yes' />
+    <tag k="segmented" v='no' />
+    <tag k='source' v='cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010' />
+  </way>
+</osm>

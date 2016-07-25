@@ -46,13 +46,13 @@ if [ "$bis" = "false" ] ; then
   nobis="-nobis"
 fi
 
-command1="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $PWD/cadastre-housenumber/cadastre_vers_osm_adresses.py $nobis $code_departement $code_commune"
+command1="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $PWD/cadastre-housenumber/bin/cadastre_2_osm_addresses.py $nobis $code_departement $code_commune"
 command1dir="$communedir"
 
 command2="python addr_fantoir_building.py $code_insee $code_commune"
 command2dir=$PWD/cadastre-housenumber/associatedStreet
 
-command3="$PWD/cadastre-housenumber/supprime_relations_associatedStreet.py"
+command3="$PWD/cadastre-housenumber/bin/osm_associatedStreet_remover.py"
 
 file1="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_sans_batiment.zip"
 file2="${depdir}/${code_commune}-${nom_commune}-adresses-associatedStreet_mix_en_facade_ou_isole.zip"
