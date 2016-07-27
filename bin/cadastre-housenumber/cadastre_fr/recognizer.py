@@ -86,7 +86,7 @@ PARCEL_LINE_PATH_RECOGNIZER = [
     ]
 BUILDING_LINE_PATH_RECOGNIZER = [
         ['buildings',       True, lambda style: style.get('fill') == "#ffcc33"],
-        ['light_buildings', True, lambda style: style.get('fill') == "#ffe599;"]
+        ['light_buildings', True, lambda style: style.get('fill') == "#ffe599"]
     ]
 
 WATER_LINE_PATH_RECOGNIZER = [

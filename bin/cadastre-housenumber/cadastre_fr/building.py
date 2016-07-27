@@ -53,7 +53,7 @@ def buildings_to_osm(buildings, light_buildings, transform):
         item = osm_add_polygon_or_multipolygon(osm, polygon, transform, all_nodes_set)
         item.tags["building"] = "yes"
         if isLight:
-            tags["wall"] = "no"
+            item.tags["wall"] = "no"
         item.tags["source"] = SOURCE_TAG
         if type(item) == Relation:
             for elem, role in osm.iter_relation_members(item):
