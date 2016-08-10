@@ -21,7 +21,7 @@ import os.path
 import zipfile
 from cStringIO import StringIO
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 import bbox_2_osm
 from cadastre_fr.osm             import *

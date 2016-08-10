@@ -23,7 +23,7 @@ original un élément provient.
 import sys
 import os.path
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.geometry import Point, BoundingBox
 from cadastre_fr.transform import CadastreToOSMTransform

@@ -21,7 +21,7 @@ import sys
 import os.path
 from glob import glob
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.osm       import OsmWriter
 from cadastre_fr.building  import pdf_2_osm_buildings_water_and_limit

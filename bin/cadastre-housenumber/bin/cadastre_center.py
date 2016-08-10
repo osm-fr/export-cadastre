@@ -20,7 +20,7 @@ Récupération du centre du cadastre d'une commune.
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.website    import CadastreWebsite
 from cadastre_fr.website    import command_line_open_cadastre_website

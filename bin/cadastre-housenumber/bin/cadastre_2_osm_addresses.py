@@ -27,7 +27,7 @@ import sys
 import os.path
 import urllib2
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.tools    import command_line_error
 from cadastre_fr.tools    import write_string_to_file

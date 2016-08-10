@@ -32,7 +32,7 @@ Compte le nombre de cas ok, raté ou de faux positifs.
 import sys
 import os.path
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.osm        import OsmParser
 from cadastre_fr.osm        import OsmWriter

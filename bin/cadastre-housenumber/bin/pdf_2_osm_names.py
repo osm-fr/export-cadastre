@@ -20,7 +20,7 @@
 import sys
 import os.path
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.tools  import command_line_error
 from cadastre_fr.name   import pdf_2_osm_names

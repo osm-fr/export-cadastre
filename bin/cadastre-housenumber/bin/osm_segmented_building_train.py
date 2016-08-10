@@ -64,7 +64,7 @@ import sys
 import pickle
 import os.path
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.osm        import OsmParser
 from cadastre_fr.osm        import OsmWriter
@@ -81,7 +81,7 @@ def main(argv):
     osm_args = [f for f in argv[1:] if os.path.splitext(f)[1] in (".zip", ".osm")]
     other_args = [f for f in argv[1:] if os.path.splitext(f)[1] not in (".zip", ".osm")]
     if len(other_args) != 0:
-        command_line_error(u"invalid argument: " + other_args[0], HELP_MESSAGE)
+        command_line_error("invalid argument: " + str(other_args[0]), HELP_MESSAGE)
     if len(osm_args) == 0:
         command_line_error(u"not enough file.osm args", HELP_MESSAGE)
 

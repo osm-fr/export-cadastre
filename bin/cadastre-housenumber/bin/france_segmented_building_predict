@@ -1,10 +1,8 @@
 #!/bin/bash
 
-"""
-Download all pbf file for France regions
-apply segmented building detection on them
-generate osmose xml.
-"""
+# Download all pbf file for France regions
+# apply segmented building detection on them
+# generate osmose xml.
 
 
 RESULT_DIR=.
@@ -23,7 +21,7 @@ function download_pbfs {
         url="http://download.geofabrik.de/europe/france/${region}-latest.osm.pbf"
         filename=`basename $url`
         filepath="$DOWNLOAD_DIR/$filename"
-        #curl -s "$url" -o "$filepath"
+        curl -s "$url" -o "$filepath"
         sleep 1
         echo $region $filepath $projection
     done) << EOT
@@ -101,7 +99,7 @@ download_pbfs | while read region pbf projection ; do
    echo "| $region $projection"
    echo "| $pbf => $result"
    $PREDICT $pbf $projection | bzip2 > $result
-   #rm -f "$pbf"
+   rm -f "$pbf"
 done
 
 

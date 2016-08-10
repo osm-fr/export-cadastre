@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
+import sys
+import os.path
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 import gc
 import re
-import sys
 import time
 import array
 import pickle
-import os.path
 import datetime
 import multiprocessing as mp
 import multiprocessing.dummy
@@ -18,12 +20,25 @@ if (sys.version_info > (3, 0)):
     from urllib.request import urlopen
 else:
     from urllib2 import urlopen
+import imposm.parser.simple
+if __name__ == '__main__':
+    if (sys.version_info > (3, 4)) and hasattr(imposm.parser.simple, 'process_parse'):
+        # using forkserver make a huge gain in memory usage
+        # due to process created by imposm.parser
+        # but this require using a modified version
+        # of imposm.parser:
+        # https://github.com/tyndare/imposm-parser/commit/0bc32ce2842fc09dd4caa60fafa037a48a551582
+        mp.set_start_method('forkserver')
 
+from cadastre_fr.globals    import VERBOSE
 from cadastre_fr_segmented  import get_classifier_vector_from_coords
+from cadastre_fr.segmented  import load_classifier_and_scaler
+from cadastre_fr.segmented  import SEGMENTED_DATA_DIR
+
+
+
 
 VERBOSE = True
-
-SEGMENTED_DATA_DIR =  "/home/osm/cadastre-housenumber/data/segmented_building/"
 
 WayInfo  = namedtuple('WayInfo', ['wall', 'refs'])
 NodeInfo = namedtuple('NodeInfo', ['lon', 'lat', 'ways'])
@@ -283,17 +298,6 @@ def predict_segmented(scaler, classifier, coords1, coords2):
            ((vector2 is not None) and classifier.predict(vector2) == [1])
 
 
-def load_classifier_and_scaler():
-    os.system("cd " + SEGMENTED_DATA_DIR  +"; make -s")
-    if (sys.version_info > (3, 0)):
-        ext = ".pickle3"
-    else:
-        ext = ".pickle2"
-    classifier = pickle.load(open(os.path.join(SEGMENTED_DATA_DIR, "classifier" + ext), "rb"))
-    scaler = pickle.load(open(os.path.join(SEGMENTED_DATA_DIR, "scaler" + ext), "rb"))
-    return classifier, scaler
-
-
 if (sys.version_info > (3, 4)):
     import statistics
     mean = statistics.mean
@@ -303,28 +307,21 @@ else:
 
 
 def main(args):
+    os.system("cd " + SEGMENTED_DATA_DIR  +"; make -s 3")
     filename = args[0]
     if len(args) > 1:
         projection = int(args[1])
     else:
         projection = 2154
+    output_header()
     predictor = SegmentedBuildingsPredictor(projection=projection)
     buildings = OSMTouchingBuildingsParser()
     buildings.parse(filename)
-    output_header()
     predictor.predict(buildings)
     output_footer()
 
 
 if __name__ == '__main__':
-    import imposm.parser.simple
-    if (sys.version_info > (3, 4)) and hasattr(imposm.parser.simple, 'process_parse'):
-        # using forkserver make a huge gain in memory usage
-        # due to process created by imposm.parser
-        # but this require using a modified version
-        # of imposm.parser:
-        # https://github.com/tyndare/imposm-parser/commit/0bc32ce2842fc09dd4caa60fafa037a48a551582
-        mp.set_start_method('forkserver')
     main(sys.argv[1:])
 
 

@@ -23,7 +23,7 @@ and to simplify ways as JOSM SimplifyWay action do (copied code).
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.osm import OsmParser, OsmWriter
 from cadastre_fr.simplify import simplify

@@ -31,7 +31,7 @@ import sys
 import time
 import os.path
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.tools import write_string_to_file
 from cadastre_fr.tools import write_stream_to_file

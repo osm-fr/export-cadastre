@@ -25,7 +25,7 @@ import zipfile
 import os.path
 from cStringIO import StringIO
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from cadastre_fr.osm import Osm, OsmWriter, OsmParser
 from cadastre_fr.tools import command_line_error
