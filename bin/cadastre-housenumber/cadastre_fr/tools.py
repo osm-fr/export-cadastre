@@ -22,6 +22,7 @@ import os.path
 import itertools
 import unicodedata
 import timeit
+from functools import reduce
 
 def write_string_to_file(string, filename):
   f = open(filename, "w")
@@ -109,24 +110,38 @@ def toposort(data):
        [2, 9, 10]
     """
     def toposort2(data):
-        from functools import reduce
         # Ignore self dependencies.
         for k, v in data.items():
             v.discard(k)
         # Find all items that don't depend on anything.
-        extra_items_in_deps = reduce(set.union, data.itervalues()) - set(data.iterkeys())
+        extra_items_in_deps = reduce(set.union, itervalues(data)) - set(iterkeys(data))
         # Add empty dependences where needed
         data.update({item:set() for item in extra_items_in_deps})
         while True:
-            ordered = set(item for item, dep in data.iteritems() if not dep)
+            ordered = set(item for item, dep in iteritems(data) if not dep)
             if not ordered:
                 break
             yield ordered
             data = {item: (dep - ordered)
-                    for item, dep in data.iteritems()
+                    for item, dep in iteritems(data)
                         if item not in ordered}
-        assert not data, "Cyclic dependencies exist among these items:\n%s" % '\n'.join(repr(x) for x in data.iteritems())
+        assert not data, "Cyclic dependencies exist among these items:\n%s" % '\n'.join(repr(x) for x in iteritems(data))
     return itertools.chain.from_iterable(toposort2(data))
+
+if (sys.version_info > (3, 0)):
+    def iteritems(dictionary):
+        return dictionary.items()
+    def itervalues(dictionary):
+        return dictionary.values()
+    def iterkeys(dictionary):
+        return dictionary.keys()
+else:
+    def iteritems(dictionary):
+        return dictionary.iteritems()
+    def itervalues(dictionary):
+        return dictionary.itervalues()
+    def iterkeys(dictionary):
+        return dictionary.iterkeys()
 
 
 def to_ascii(utf):
@@ -160,11 +175,11 @@ class Timer():
     def __init__(self, msg):
         self.start = timeit.default_timer()
         self.msg = msg
-        print msg
+        print(msg)
     def __call__(self):
         return timeit.default_timer() - self.start
     def prnt(self):
-        print self.msg + " => " + str(round(self(), 4)) +  " s"
+        print(self.msg + " => " + str(round(self(), 4)) +  " s")
 
 
 def open_zip_and_files_with_extension(file_list, extension):
@@ -178,7 +193,7 @@ def open_zip_and_files_with_extension(file_list, extension):
                     f.close()
             inputzip.close()
         elif name.endswith(extension):
-            f = open(name)
+            f = open(name, "rb")
             yield name, f
             f.close()
 

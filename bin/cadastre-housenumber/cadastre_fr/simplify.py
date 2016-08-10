@@ -27,31 +27,33 @@ import os.path
 import operator
 import rtree.index
 from shapely.geometry.polygon import Polygon
+from functools import reduce
 
-from cadastre_fr.osm       import Osm, Node, Way, Relation, OsmParser, OsmWriter
-from cadastre_fr.geometry  import Point
-from cadastre_fr.geometry  import BoundingBox
-from cadastre_fr.transform import LinearTransform
-from cadastre_fr.transform import get_centered_metric_equirectangular_transformation_from_osm
-from cadastre_fr.geometry  import orthoprojection_on_segment_ab_of_point_c
-from cadastre_fr.globals   import VERBOSE
-from cadastre_fr.globals   import EARTH_RADIUS_IN_METTER
-from cadastre_fr.globals   import EARTH_CIRCUMFERENCE_IN_METTER
+from .osm       import Osm, Node, Way, Relation, OsmParser, OsmWriter
+from .tools     import iteritems, itervalues, iterkeys
+from .geometry  import Point
+from .geometry  import BoundingBox
+from .transform import LinearTransform
+from .transform import get_centered_metric_equirectangular_transformation_from_osm
+from .geometry  import orthoprojection_on_segment_ab_of_point_c
+from .globals   import VERBOSE
+from .globals   import EARTH_RADIUS_IN_METTER
+from .globals   import EARTH_CIRCUMFERENCE_IN_METTER
 
 
 def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
   inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(osm_data)
 
-  for node in osm_data.nodes.itervalues():
+  for node in itervalues(osm_data.nodes):
     node.ways = set()
 
-  for way in osm_data.ways.itervalues():
+  for way in itervalues(osm_data.ways):
     way.relations = set()
     for node_id in way.nodes:
         node = osm_data.nodes[node_id]
         node.ways.add(way.id())
 
-  for rel in osm_data.relations.itervalues():
+  for rel in itervalues(osm_data.relations):
      for rtype,rref,rrole in rel.itermembers():
         if rtype == "way":
             osm_data.ways[rref].relations.add(rel.id())
@@ -75,7 +77,7 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
 
   suppress_identical_ways(osm_data)
 
-  for n in osm_data.nodes.itervalues():
+  for n in itervalues(osm_data.nodes):
     lon, lat = outputTransform.transform_point(n.position)
     n.attrs["lon"] = str(lon)
     n.attrs["lat"] = str(lat)
@@ -165,7 +167,7 @@ def join_close_nodes(osm_data, ways_index, distance):
                     closest_index = i+1
                     closest_position = Point(p[0],p[1])
         if closest_way:
-          if VERBOSE: print "Join node ", node_id, " to way ", closest_way.id()
+          if VERBOSE: print("Join node  {} to way {}".format(node_id, closest_way.id()))
           closest_way.nodes.insert(closest_index, node_id)
           node.ways.add(closest_way.id())
           node.position = closest_position
@@ -208,7 +210,7 @@ def remove_inside_ways(osm_data, ways_index):
                     polygon2 =  polygon_of_way(osm_data, way2)
                     try:
                       if polygon2.contains(polygon1):
-                        if VERBOSE: print "way ", way1.id(), " inside ", way2_id
+                        if VERBOSE: print("way  {} inside {}".format(way1.id(), way2_id))
                         ways_index.delete(way1.id(), way1.bbox)
                         delete_way(osm_data, way1)
                         break
@@ -332,7 +334,7 @@ def replace_node(osm_data, src_node, dst_node):
   # We assume that the ways are closed
   src_id = src_node.id()
   dst_id = dst_node.id()
-  if VERBOSE: print "replace node ", src_id, " by ", dst_id
+  if VERBOSE: print("replace node {} by {}".format(src_id, dst_id))
   for way_id in src_node.ways:
     way = osm_data.ways[way_id]
     if dst_id in way.nodes:
@@ -353,10 +355,10 @@ def replace_node(osm_data, src_node, dst_node):
   del(osm_data.nodes[src_id])
 
 def copy_tags(src,dst):
-    for tag,val in src.tags.iteritems():
+    for tag,val in iteritems(src.tags):
         # in case of tag confict keep the longest value
         if (not tag in dst.tags) or (len(dst.tags[tag]) < len(val)):
-            if VERBOSE: print "  copy tag ", tag, " => ", val
+            if VERBOSE: print("  copy tag {} => {}".format(tag, val))
             dst.tags[tag] = val
 
 def delete_node(osm_data, node):
@@ -364,9 +366,9 @@ def delete_node(osm_data, node):
   # and that nodes are part of the ways which ids are listed in node's .ways set attribute
   # We assume that the ways are closed
   node_id = node.id()
-  if VERBOSE: print "delete node ", node_id
+  if VERBOSE: print("delete node  {}".format(node_id))
   for way_id in node.ways:
-    if VERBOSE: print "  from way ", way_id
+    if VERBOSE: print("  from way  {}".format(way_id))
     way = osm_data.ways[way_id]
     if (way.nodes[0] == node_id) and (way.nodes[-1] == node_id):
         del(way.nodes[0])
@@ -391,15 +393,15 @@ def suppress_identical_ways(osm_data):
                 tail.reverse()
                 nodes_ids = [nodes_ids[0]] + tail
         else:
-            if VERBOSE: print "ERROR: way", way.id(), "has only one 1 node ???"
+            if VERBOSE: print("ERROR: way {} has only one 1 node ???".format(way.id()))
         nodes_ids = tuple(nodes_ids) # to be hashable
         if nodes_ids in ways_hashed_by_sorted_node_list:
             keeped_way = ways_hashed_by_sorted_node_list[nodes_ids]
-            if VERBOSE: print "suppress way ", way.id(), " keeping identical way ", keeped_way.id()
+            if VERBOSE: print("suppress way  {} keeping identical way {}".format(way.id(), keeped_way.id()))
             copy_tags(way, keeped_way)
             # Replace in relations
             for rel_id in way.relations:
-                if VERBOSE: print "   replace in relation ", rel_id
+                if VERBOSE: print("   replace in relation  {}".format(rel_id))
                 rel = osm_data.relations[rel_id]
                 for member in rel.members:
                     if (member.get("type") == "way") and (member.get("ref") == str(way.id())):
@@ -409,7 +411,7 @@ def suppress_identical_ways(osm_data):
             ways_hashed_by_sorted_node_list[nodes_ids] = way
 
 def delete_way(osm_data, way):
-    if VERBOSE: print "delete way", way.id()
+    if VERBOSE: print("delete way {}".format(way.id()))
     del(osm_data.ways[way.id()])
     for node_id in way.nodes:
         if node_id in osm_data.nodes:

@@ -18,9 +18,9 @@ import urllib
 import urllib2
 import os.path
 
-from cadastre_fr.osm      import OsmParser
-from cadastre_fr.tools    import print_flush
-from cadastre_fr.tools    import open_cached
+from .osm      import OsmParser
+from .tools    import print_flush
+from .tools    import open_cached
 
 
 def open_osm_overpass(requete, cache_filename, metropole=False):

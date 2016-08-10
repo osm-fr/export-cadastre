@@ -19,10 +19,10 @@ from shapely.geometry.polygon import Polygon
 from shapely.geometry.multipolygon import MultiPolygon
 
 
-from cadastre_fr.osm        import Osm,Node,Way,OsmWriter,Relation
-from cadastre_fr.geometry   import Point
-from cadastre_fr.geometry import  angle_projection_on_segment_ab_of_point_c
-from cadastre_fr.geometry import orthoprojection_on_segment_ab_of_point_c
+from .osm      import Osm,Node,Way,OsmWriter,Relation
+from .geometry import Point
+from .geometry import angle_projection_on_segment_ab_of_point_c
+from .geometry import orthoprojection_on_segment_ab_of_point_c
 
 
 

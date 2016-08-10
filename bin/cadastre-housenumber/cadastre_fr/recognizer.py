@@ -27,9 +27,10 @@ import math
 import os.path
 import xml.etree.ElementTree as ET
 
-from cadastre_fr.geometry import Path
-from cadastre_fr.tools import print_flush
-from cadastre_fr.tools import toposort
+from .geometry import Path
+from .tools    import print_flush
+from .tools    import toposort
+from .tools    import iteritems, itervalues, iterkeys
 
 
 TEXT_PATH_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "text_path_recognizer")
@@ -187,7 +188,7 @@ class TextPathRecognizer(PathRecognizer):
           version="1.1">
         """)
         f.write(u"<!-- inversion de l'axe Y pour remettre à l'endroit:\n<g transform='matrix(1,0,0,-1,0,0)'>-->\n".encode("utf-8"))
-        for elems in self.database.itervalues():
+        for elems in itervalues(self.database):
             for value, path, _ in elems:
                 f.write('    <path style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"\n d="')
                 f.write(path.d)

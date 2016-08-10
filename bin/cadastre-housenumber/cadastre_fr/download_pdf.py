@@ -27,14 +27,14 @@ import sys
 import time
 import os.path
 
-from cadastre_fr.tools import write_string_to_file
-from cadastre_fr.tools import write_stream_to_file
-from cadastre_fr.tools import command_line_error
-from cadastre_fr.website import CadastreWebsite
-from cadastre_fr.website import command_line_open_cadastre_website
-from cadastre_fr.geometry import BoundingBox
-from cadastre_fr.transform import OSMToCadastreTransform
-from cadastre_fr.tools import download_cached
+from .tools import write_string_to_file
+from .tools import write_stream_to_file
+from .tools import command_line_error
+from .website import CadastreWebsite
+from .website import command_line_open_cadastre_website
+from .geometry import BoundingBox
+from .transform import OSMToCadastreTransform
+from .tools import download_cached
 
 
 PDF_DOWNALOD_WAIT_SECONDS = 2

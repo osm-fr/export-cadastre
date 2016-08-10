@@ -17,11 +17,12 @@ import re
 import math
 import rtree.index
 
-from cadastre_fr.osm        import Osm,Node,Way,OsmWriter,Relation
-from cadastre_fr.osm_tools import osm_add_point
-from cadastre_fr.osm_tools import osm_add_way_direction
-from cadastre_fr.geometry import Point
-from cadastre_fr.globals import SOURCE_TAG
+from .osm        import Osm,Node,Way,OsmWriter,Relation
+from .osm_tools  import osm_add_point
+from .osm_tools  import osm_add_way_direction
+from .geometry   import Point
+from .globals    import SOURCE_TAG
+from .tools      import iteritems, itervalues, iterkeys
 
 bis_ter_quater = {
   'B' : "bis",
@@ -39,8 +40,8 @@ DISTANCE_RECHERCHE_VOSINS_ORPHELINS = 100
 
 def determine_osm_parcels_bis_ter_quater(osm):
     series = {}
-    for item in osm.ways.itervalues():
-        for tag, value in item.tags.iteritems():
+    for item in itervalues(osm.ways):
+        for tag, value in iteritems(item.tags):
             if tag.startswith("addr") and tag.endswith(":street"):
                 street = value
                 housenumber = item.tags.get(tag.split(":")[0] + ":housenumber") or ""
@@ -56,11 +57,11 @@ def determine_osm_parcels_bis_ter_quater(osm):
     is_bis_ter_quater = {
         rue: {
             num: all([l in bis_ter_quater for l in lettres])
-            for num,lettres in lettres_numeros.iteritems()
+            for num,lettres in iteritems(lettres_numeros)
         }
-        for rue, lettres_numeros in series.iteritems()
+        for rue, lettres_numeros in iteritems(series)
     }
-    for item in osm.ways.itervalues():
+    for item in itervalues(osm.ways):
         for tag, value in item.tags.items():
             if tag.startswith("addr") and tag.endswith(":street"):
                 street = value
@@ -99,7 +100,7 @@ def determine_osm_addresses_bis_ter_quater(osm):
 
     series = {} # séries d'adresses ayant [même nom de rue][même numéro], mais des suffix A,B,... différents
     housenumber_index = rtree.index.Index()
-    for item in osm.iteritems():
+    for item in iteritems(osm):
         if item.tags.has_key("addr:housenumber"):
             num_match = RE_NUMERO_CADASTRE.match(item.tags["addr:housenumber"])
             if num_match:
@@ -111,7 +112,7 @@ def determine_osm_addresses_bis_ter_quater(osm):
                     if not item.street in series: series[item.street] = {}
                     if not item.numero in series[item.street]: series[item.street][item.numero] = set()
                     series[item.street][item.numero].add(item.lettre)
-    for relation in osm.relations.itervalues():
+    for relation in itervalues(osm.relations):
         #print relation, relation.tags.get("type"), relation.tags.get("name")
         if relation.tags.get("type") == "associatedStreet" and relation.tags.get("name"):
             street = relation.tags.get("name")
@@ -125,7 +126,7 @@ def determine_osm_addresses_bis_ter_quater(osm):
                         series[member.street][member.numero].add(member.lettre)
 
     SQUARE_DISTANCE = DISTANCE_RECHERCHE_VOSINS_ORPHELINS * DISTANCE_RECHERCHE_VOSINS_ORPHELINS
-    for item in osm.iteritems():
+    for item in iteritems(osm):
         if hasattr(item, "lettre") and item.lettre and not item.street:
             # On a affaire à un numéro avec une lettre, mais orphelin (sans rue associée)
             # on vas essyer de chercher dans le coin si il n'y aurait cas des numéros
@@ -151,13 +152,13 @@ def determine_osm_addresses_bis_ter_quater(osm):
     is_bis_ter_quater = {
         rue: {
             num: all([l in bis_ter_quater for l in lettres])
-            for num,lettres in lettres_numeros.iteritems()
+            for num,lettres in iteritems(lettres_numeros)
         }
-        for rue, lettres_numeros in series.iteritems()
+        for rue, lettres_numeros in iteritems(series)
     }
 
     # On corrige les addr:housenumber pour correspondre a nos calculs, et on nettoie les champs qu'on avait ajoutés:
-    for item in osm.iteritems():
+    for item in iteritems(osm):
         if hasattr(item, "lettre"):
             if item.lettre:
                 if item.street and is_bis_ter_quater[item.street][item.numero]:

@@ -18,7 +18,7 @@ import math
 from numpy import vstack
 from scipy.cluster.vq import kmeans,vq
 
-from cadastre_fr.osm        import Osm,Node,Way,OsmWriter,Relation
+from .osm        import Osm,Node,Way,OsmWriter,Relation
 
 
 

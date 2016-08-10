@@ -19,7 +19,11 @@ Fonction de transformation entre différentes projections liées au cadastre.
 
 import sys
 import math
-from geometry import Point, BoundingBox
+
+#sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+
+from .geometry import Point, BoundingBox
 try:
     from osgeo import osr    # apt-get install python-gdal
 except:
@@ -27,7 +31,7 @@ except:
     sys.stderr.write("    sudo apt-get install python-gdal\n")
     sys.exit(-1)
     
-from cadastre_fr.globals import EARTH_CIRCUMFERENCE_IN_METTER
+from .globals import EARTH_CIRCUMFERENCE_IN_METTER
 
 
 class Transform(object):

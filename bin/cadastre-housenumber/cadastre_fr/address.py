@@ -57,55 +57,56 @@ except:
     sys.exit(-1)
 
 
-from cadastre_fr.osm           import Osm, Node, Way, Relation, OsmParser, OsmWriter
-from cadastre_fr.name          import zip_osm_names
-from cadastre_fr.name          import generate_osm_names
-from cadastre_fr.name          import generate_osm_small_names
-from cadastre_fr.name          import generate_osm_street_names
-from cadastre_fr.name          import generate_osm_lieuxdits_names
-from cadastre_fr.tools         import to_ascii
-from cadastre_fr.tools         import print_flush
-from cadastre_fr.tools         import named_chunks
-from cadastre_fr.tools         import download_cached
-from cadastre_fr.tools         import command_line_error
-from cadastre_fr.tools         import write_string_to_file
-from cadastre_fr.tools         import write_stream_to_file
-from cadastre_fr.parcel        import ParcelInfo
-from cadastre_fr.parcel        import generate_osm_parcels
-from cadastre_fr.parcel        import match_parcels_and_limits
-from cadastre_fr.parcel        import MAX_PARCELS_PER_INFO_PDF
-from cadastre_fr.parcel        import iter_download_parcels_info_xml
-from cadastre_fr.parcel        import iter_download_parcels_info_pdf
-from cadastre_fr.parcel        import match_parcels_and_housenumbers
-from cadastre_fr.parcel        import parse_addresses_of_parcels_info_pdfs
-from cadastre_fr.parcel        import polygons_and_index_from_parcels_limits
-from cadastre_fr.parser        import CadastreParser
-from cadastre_fr.fantoir       import cherche_fantoir_et_osm_highways
-from cadastre_fr.fantoir       import get_osm_buildings_and_barrier_ways
-from cadastre_fr.globals       import SOURCE_TAG
-from cadastre_fr.website       import code_insee
-from cadastre_fr.website       import CadastreWebsite
-from cadastre_fr.website       import command_line_open_cadastre_website
-from cadastre_fr.geometry      import incidence
-from cadastre_fr.geometry      import BoundingBox
-from cadastre_fr.geometry      import cartesien_2_polaire
-from cadastre_fr.osm_tools     import osm_add_point
-from cadastre_fr.osm_tools     import osm_add_polygon
-from cadastre_fr.osm_tools     import osm_add_multipolygon
-from cadastre_fr.osm_tools     import nearest_intersection 
-from cadastre_fr.osm_tools     import osm_add_way_direction
-from cadastre_fr.transform     import CadastreToOSMTransform
-from cadastre_fr.transform     import OSMToCadastreTransform
-from cadastre_fr.recognizer    import NamePathRecognizer
-from cadastre_fr.recognizer    import ParcelPathRecognizer
-from cadastre_fr.recognizer    import HousenumberPathRecognizer
-from cadastre_fr.housenumber   import RE_NUMERO_CADASTRE
-from cadastre_fr.housenumber   import generate_osm_housenumbers
-from cadastre_fr.housenumber   import determine_osm_parcels_bis_ter_quater
-from cadastre_fr.housenumber   import determine_osm_addresses_bis_ter_quater
-from cadastre_fr.download_pdf  import download_pdfs
-from cadastre_fr.partitioning  import partition_osm_nodes
-from cadastre_fr.partitioning  import partition_osm_nodes_filename_map
+from .osm           import Osm, Node, Way, Relation, OsmParser, OsmWriter
+from .name          import zip_osm_names
+from .name          import generate_osm_names
+from .name          import generate_osm_small_names
+from .name          import generate_osm_street_names
+from .name          import generate_osm_lieuxdits_names
+from .tools         import to_ascii
+from .tools         import print_flush
+from .tools         import named_chunks
+from .tools         import download_cached
+from .tools         import command_line_error
+from .tools         import write_string_to_file
+from .tools         import write_stream_to_file
+from .tools         import iteritems, itervalues, iterkeys
+from .parcel        import ParcelInfo
+from .parcel        import generate_osm_parcels
+from .parcel        import match_parcels_and_limits
+from .parcel        import MAX_PARCELS_PER_INFO_PDF
+from .parcel        import iter_download_parcels_info_xml
+from .parcel        import iter_download_parcels_info_pdf
+from .parcel        import match_parcels_and_housenumbers
+from .parcel        import parse_addresses_of_parcels_info_pdfs
+from .parcel        import polygons_and_index_from_parcels_limits
+from .parser        import CadastreParser
+from .fantoir       import cherche_fantoir_et_osm_highways
+from .fantoir       import get_osm_buildings_and_barrier_ways
+from .globals       import SOURCE_TAG
+from .website       import code_insee
+from .website       import CadastreWebsite
+from .website       import command_line_open_cadastre_website
+from .geometry      import incidence
+from .geometry      import BoundingBox
+from .geometry      import cartesien_2_polaire
+from .osm_tools     import osm_add_point
+from .osm_tools     import osm_add_polygon
+from .osm_tools     import osm_add_multipolygon
+from .osm_tools     import nearest_intersection 
+from .osm_tools     import osm_add_way_direction
+from .transform     import CadastreToOSMTransform
+from .transform     import OSMToCadastreTransform
+from .recognizer    import NamePathRecognizer
+from .recognizer    import ParcelPathRecognizer
+from .recognizer    import HousenumberPathRecognizer
+from .housenumber   import RE_NUMERO_CADASTRE
+from .housenumber   import generate_osm_housenumbers
+from .housenumber   import determine_osm_parcels_bis_ter_quater
+from .housenumber   import determine_osm_addresses_bis_ter_quater
+from .download_pdf  import download_pdfs
+from .partitioning  import partition_osm_nodes
+from .partitioning  import partition_osm_nodes_filename_map
 
 
 
@@ -148,7 +149,7 @@ def cadastre_2_osm_addresses(cadastreWebsite, code_departement, code_commune,  n
         if len(info_pdfs) == 0:
             command_line_error(u"Aucun info PDF des parcelles n'a été téléchargée")
             return
-    for fid, addresses in parse_addresses_of_parcels_info_pdfs(info_pdfs, code_commune).iteritems():
+    for fid, addresses in iteritems(parse_addresses_of_parcels_info_pdfs(info_pdfs, code_commune)):
         if fid in parcels:
             parcels[fid].addresses = addresses
         else:
@@ -255,7 +256,7 @@ def parse_pdfs_for_parcels_housenumbers_lieuxdits_street_names(pdfs):
 def generate_osm_limit_lieuxdits(parcels, transform):
     osm = Osm({'upload':'false'})
     lieuxdits = {}
-    for parcel in parcels.itervalues():
+    for parcel in itervalues(parcels):
         if hasattr(parcel, 'addresses'):
             if hasattr(parcel,"limit") and parcel.limit != None:
                 limit = parcel.limit
@@ -268,7 +269,7 @@ def generate_osm_limit_lieuxdits(parcels, transform):
                         lieuxdits[addr] = lieuxdits[addr].union(limit)
                     else:
                         lieuxdits[addr] = limit
-    for nom,limit in lieuxdits.iteritems():
+    for nom,limit in iteritems(lieuxdits):
         limit = limit.simplify(0.5, preserve_topology=True)
         o = osm_add_multipolygon(osm, limit, transform)
         o.tags['name'] = nom
@@ -294,7 +295,7 @@ def generate_osm_addresses(parcels, numbers_left, transform):
             node.limit_parcel = None
     associatedStreets = {}
     # Adresse des parcelles:
-    for parcel in parcels.itervalues():
+    for parcel in itervalues(parcels):
         for num in parcel.positions_numbers.keys():
             for i in range(len(parcel.addrs_numbers[num])):
                 #nom_parcele = parcel.fid[5:10].lstrip('0') + " " + parcel.fid[10:].lstrip('0')
@@ -333,7 +334,7 @@ def generate_osm_addresses(parcels, numbers_left, transform):
                 node.tags['source'] = SOURCE_TAG
                 rues = [addr[len(num)+1:].strip() for addr in parcel.addrs_numbers[num]]
                 for rue in rues:
-                    if not associatedStreets.has_key(rue):
+                    if not rue in associatedStreets:
                         rel = Relation({})
                         rel.tags['type'] = 'associatedStreet'
                         rel.tags['name'] = rue
@@ -357,11 +358,11 @@ def generate_osm_addresses(parcels, numbers_left, transform):
 
     # Cherche les nom de lieus: toutes les adresse sans numéro qui ne sont pas des nom de rue:
     positions_des_lieus = {}
-    for parcel in parcels.itervalues():
+    for parcel in itervalues(parcels):
         for addr in parcel.addresses:
             number_match = RE_NUMERO_CADASTRE.match(addr)
-            if addr and (not number_match) and (not associatedStreets.has_key(addr)):
-                if not positions_des_lieus.has_key(addr):
+            if addr and (not number_match) and (not (addr in associatedStreets)):
+                if not (addr in positions_des_lieus):
                     positions_des_lieus[addr] = []
                 if hasattr(parcel,'limit') and parcel.limit != None:
                     centroid = parcel.limit.centroid
@@ -374,7 +375,7 @@ def generate_osm_addresses(parcels, numbers_left, transform):
                     positions_des_lieus[addr].append(centroid)
                 else:
                     positions_des_lieus[addr].append(parcel.box.centroid)
-    for lieu, positions in positions_des_lieus.iteritems():
+    for lieu, positions in iteritems(positions_des_lieus):
         centre = MultiPoint(positions).centroid
         node = osm_add_point(osm, centre, transform)
         node.tags['name'] = lieu
@@ -388,7 +389,7 @@ def generate_osm_addresses(parcels, numbers_left, transform):
 
 def transform_place_into_highway(osm):
     """Transforme les place=* dont le nom ressemble à un nom de rue"""
-    for n in osm.nodes.itervalues():
+    for n in itervalues(osm.nodes):
         if n.id()<0 and "place" in n.tags:
             if "name" in n.tags and n.tags["name"].split()[0].lower() in ["rue","impasse","chemin","passage","route","avenue","boulevard"]:
                 del(n.tags["place"])
@@ -416,7 +417,7 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
     # Cherche la relation associatedStreet de chaque nouveau node
     # addr:housenumber:
     associatedStreet_of_housenumber_node = {}
-    for n in osm.nodes.itervalues():
+    for n in itervalues(osm.nodes):
         if n.id() < 0 :
             if "addr:housenumber" in n.tags:
                 associatedStreet_of_housenumber_node[n.id()] = []
@@ -429,7 +430,7 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             # s'agit bien d'un noeuds déjà existant dans OSM (id >=0) et 
             # non modifié (pas d'attribut action)
             assert(n.id() >= 0 and "action" not in n.attrs)
-    for r in osm.relations.itervalues():
+    for r in itervalues(osm.relations):
         if r.id() < 0 and r.tags.get("type") == "associatedStreet":
             for mtype,mref,mrole in r.itermembers():
                 if mtype == 'node':
@@ -443,7 +444,7 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             assert(r.id() >= 0 and "action" not in r.attrs)
 
     # Cree un fichier par relation associatedStreet:
-    for r in osm.relations.itervalues():
+    for r in itervalues(osm.relations):
         if r.id() < 0 and r.tags.get('type') == "associatedStreet":
             street_osm = Osm({})
             street_relation = Relation(r.attrs.copy(), r.tags.copy())
@@ -460,11 +461,11 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             filename = subdir + to_ascii(r.tags['name']) + ".osm"
             filename_osm_map[filename] = street_osm
     # Partitionne les noeuds ambigus
-    noeuds_ambigus = [osm.nodes[i] for i in associatedStreet_of_housenumber_node.iterkeys() if
+    noeuds_ambigus = [osm.nodes[i] for i in iterkeys(associatedStreet_of_housenumber_node) if
         len(associatedStreet_of_housenumber_node[i]) > 1]
     filename_osm_map.update(partition_osm_nodes_filename_map(noeuds_ambigus, subdir + "_AMBIGUS_"))
     # Partitionne les noeuds orphelins
-    noeuds_orphelins = [osm.nodes[i] for i in associatedStreet_of_housenumber_node.iterkeys() if
+    noeuds_orphelins = [osm.nodes[i] for i in iterkeys(associatedStreet_of_housenumber_node) if
         len(associatedStreet_of_housenumber_node[i]) == 0]
     filename_osm_map.update(partition_osm_nodes_filename_map(noeuds_orphelins, subdir + "_ORPHELINS_"))
 
@@ -474,13 +475,13 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
     # cela est possible que si le way est utilisé dans une seule partition (un
     # seul fichier) sinon cela génèrerais des conflits de version.
     filenames_of_new_nodes = {}
-    for filename, new_osm in filename_osm_map.iteritems():
-        for n in new_osm.nodes.itervalues():
+    for filename, new_osm in iteritems(filename_osm_map):
+        for n in itervalues(new_osm.nodes):
             if n.id() < 0:
                 if not n.id() in filenames_of_new_nodes:
                     filenames_of_new_nodes[n.id()] = set()
                 filenames_of_new_nodes[n.id()].add(filename)
-    for way in osm.ways.itervalues():
+    for way in itervalues(osm.ways):
         assert(way.id() >= 0)
         if "action" in way.attrs:
             filenames_of_way = set()
@@ -508,7 +509,7 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
                             node.tags["fixme"] = FIXME_JOINDRE_NOEUD_AU_WAY
 
     zip_output = zipfile.ZipFile(zip_filename,"w", zipfile.ZIP_DEFLATED)
-    for filename, osm in filename_osm_map.iteritems():
+    for filename, osm in iteritems(filename_osm_map):
         s = StringIO()
         OsmWriter(osm).write_to_stream(s)
         zip_output.writestr(filename, s.getvalue())
@@ -526,25 +527,25 @@ def partition_osm_lieuxdits_zip(osm_addresses, osm_lieuxdits, zip_filename, subd
     # - des node extraits d'osm non modifiés
 
     # Partitionne les noeuds de lieuxdits (place=*):
-    noeuds_lieuxdits = [n for n in osm_addresses.nodes.itervalues()
+    noeuds_lieuxdits = [n for n in itervalues(osm_addresses.nodes)
         if (n.id()<0) and ("place" in n.tags)]
     osms_lieuxdits = partition_osm_nodes_filename_map(noeuds_lieuxdits,
         subdir + "lieux-dits")
     filename_osm_map.update(osms_lieuxdits)
 
     # Partitionne les noeuds de rue (highway=):
-    noeuds_rues = [n for n in osm_addresses.nodes.itervalues() 
+    noeuds_rues = [n for n in itervalues(osm_addresses.nodes) 
         if (n.id()<0) and ("highway" in n.tags)]
     osms_rues = partition_osm_nodes_filename_map(noeuds_rues,
         subdir + "lieux_ressemblants_noms_de_rues_-_NE_PAS_ENVOYER_SUR_OSM")
-    for filename, new_osm in osms_rues.iteritems():
+    for filename, new_osm in iteritems(osms_rues):
         new_osm.attrs["upload"] = "false"
     filename_osm_map.update(osms_rues)
 
     filename_osm_map[subdir + "limites_lieux-dits_-_NE_PAS_ENVOYER_SUR_OSM.osm"] = osm_lieuxdits
 
     zip_output = zipfile.ZipFile(zip_filename,"w", zipfile.ZIP_DEFLATED)
-    for filename, osm in filename_osm_map.iteritems():
+    for filename, osm in iteritems(filename_osm_map):
         s = StringIO()
         OsmWriter(osm).write_to_stream(s)
         zip_output.writestr(filename, s.getvalue())
@@ -566,12 +567,12 @@ def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform
     sys.stdout.flush();
     buildings_osm = get_osm_buildings_and_barrier_ways(code_departement, code_commune)
     for node in itertools.chain.from_iterable(
-            [o.nodes.itervalues() for o in [osm, buildings_osm]]):
+            [itervalues(o.nodes) for o in [osm, buildings_osm]]):
         if not hasattr(node,'xy'):
             node.position = transform_from_osm((float(node.attrs["lon"]), float(node.attrs["lat"])))
     # créé un index spatial de tous les ways:
     ways_index = rtree.index.Index()
-    for way in buildings_osm.ways.itervalues():
+    for way in itervalues(buildings_osm.ways):
         if way.nodes[0] == way.nodes[-1]:
             way.shape = Polygon([buildings_osm.nodes[id].position for id in way.nodes])
         else:

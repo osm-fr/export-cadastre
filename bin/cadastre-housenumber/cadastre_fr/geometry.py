@@ -16,11 +16,12 @@
 import sys
 import math
 import rtree.index
-from tools import peek
+from .tools import peek
 
 try:
     from shapely.geometry.point import Point as ShapelyPoint
 except:
+    import traceback
     traceback.print_exc()
     sys.stderr.write("Please install Shapely (pip install shapely)\n")
     sys.exit(-1)
@@ -115,8 +116,9 @@ class Point(object):
         if key == 0: return self.x
         if key == 1: return self.y
         raise IndexError()
-    def minus(self, (x,y)):
-      return Point(self.x - x, self.y - y)
+    def minus(self, p):
+        x,y = p
+        return Point(self.x - x, self.y - y)
     def norm(self):
       return self.distance(Point.__zero__)
     def square_norm(self):
@@ -133,8 +135,9 @@ class Point(object):
         dx = other.x - self.x
         dy = other.y - self.y
         return dx*dx + dy*dy
-    def dot_product(self, (x,y)):
-      return self.x*x + self.y*y
+    def dot_product(self, p):
+        x,y = p
+        return self.x*x + self.y*y
     def angle(p1, p2):
       if type(p2) != Point: p2 = Point(p2)
       d = p1.norm() * p2.norm()
@@ -185,7 +188,8 @@ class BoundingBox(object):
         self.y1 = min(y1, y2)
         self.x2 = max(x1, x2)
         self.y2 = max(y1, y2)
-    def extend_to_bbox(self, (x1 ,y1, x2, y2)):
+    def extend_to_bbox(self, bbox):
+        x1 ,y1, x2, y2 = bbox
         nx1 = min (self.x1, x1)
         ny1 = min (self.y1, y1)
         nx2 = max (self.x2, x2)

@@ -34,14 +34,15 @@ import subprocess
 import collections
 from zipfile import ZipFile
 
-from cadastre_fr.osm      import Osm, Node, Way, Relation, OsmParser, OsmWriter
-from cadastre_fr.tools    import to_ascii
-from cadastre_fr.tools    import print_flush
-from cadastre_fr.tools    import download_cached
-from cadastre_fr.tools    import command_line_error
-from cadastre_fr.tools    import write_stream_to_file
-from cadastre_fr.website  import code_insee
-from cadastre_fr.overpass import open_osm_overpass
+from .osm      import Osm, Node, Way, Relation, OsmParser, OsmWriter
+from .tools    import to_ascii
+from .tools    import print_flush
+from .tools    import download_cached
+from .tools    import command_line_error
+from .tools    import write_stream_to_file
+from .tools    import iteritems, itervalues, iterkeys
+from .website  import code_insee
+from .overpass import open_osm_overpass
 
 ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "associatedStreet")
 
@@ -217,10 +218,10 @@ def get_osm_buildings_and_barrier_ways(code_departement, code_commune):
         open_osm_ways_commune(code_departement, code_commune, "barrier", nodes=True),
     ]
     for osm in input_osms:
-      for id,node in osm.nodes.iteritems():
+      for id,node in iteritems(osm.nodes):
           if not id in merge_osm.nodes:
             merge_osm.add_node(node)
-      for id, way in osm.ways.iteritems():
+      for id, way in iteritems(osm.ways):
           if any([nid not in osm.nodes for nid in way.nodes]):
               # Il manque des nodes à ce way, ça arrive parfois
               # dans les résultats d'overpass, je ne sais pas pourquoi
@@ -229,7 +230,7 @@ def get_osm_buildings_and_barrier_ways(code_departement, code_commune):
               continue
           if not id in merge_osm.ways:
             merge_osm.add_way(way)
-      for id, rel in osm.ways.iteritems():
+      for id, rel in iteritems(osm.ways):
           if not id in merge_osm.relations:
             merge_osm.add_relation(rel)
     return merge_osm
@@ -244,7 +245,7 @@ def get_dict_osm_ways(osm):
            nom normalizé là.
     """
     dict_ways_osm = {}
-    for way in osm.ways.itervalues():
+    for way in itervalues(osm.ways):
         name = way.tags['name']
         name_norm = normalize(name)
         if name and name_norm:
@@ -293,7 +294,7 @@ def get_dict_abrev_type_voie():
         utilisée par le Fantoir en sa version non abrégée.
     """
     dict_abrev_type_voie = {}
-    for nom, abrev in addr_fantoir_building.dicts.abrev_type_voie.iteritems():
+    for nom, abrev in iteritems(addr_fantoir_building.dicts.abrev_type_voie):
         nom = nom.title()
         abrev = to_ascii(abrev).upper()
         if not abrev in dict_abrev_type_voie:
@@ -320,7 +321,7 @@ def get_dict_accents_mots(osm_noms):
         liste_mots_a_effacer_du_dict = ["DE", "LA", "ET"]
         # On essaye de parser l'ensemble des noms extraits du cadastre pour
         # en faire un dictionaire de remplacement a appliquer
-        for node in osm_noms.nodes.itervalues():
+        for node in itervalues(osm_noms.nodes):
           if ('name' in node.tags): #and not ('place' in node.tags): # on évite les nœuds place=* qui sont écrit en majuscule sans accents
             for mot in node.tags['name'].replace("_"," ").replace("-"," ").replace("'"," ").split():
                 if len(mot) > 1:
@@ -396,11 +397,11 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
     # Compte le nombre d'occurence de chaque nom normalizé
     # afin de détecter les conflits
     conflits_normalization = collections.Counter([
-        normalize(r.tags['name']) for r in osm.relations.itervalues() 
+        normalize(r.tags['name']) for r in itervalues(osm.relations) 
         if r.tags.get('type') == 'associatedStreet'])
   
 
-    for relation in osm.relations.itervalues():
+    for relation in itervalues(osm.relations):
         if relation.tags['type'] == 'associatedStreet':
             nb_associatedStreet += 1
             name = relation.tags['name']
@@ -435,7 +436,7 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
       print_flush("     avec rapprochement OSM : "+str(nb_voies_osm)+" ("+str(int(nb_voies_osm*100/nb_associatedStreet))+"%)")
 
     # Humanise aussi les noms de lieux-dits:
-    for node in osm.nodes.itervalues():
+    for node in itervalues(osm.nodes):
         if node.tags.has_key("place"):
             name = node.tags["name"]
             name_norm = normalize(name)

@@ -25,16 +25,17 @@ from shapely.geometry.polygon import Polygon
 
 
 
-from cadastre_fr.osm         import Osm, Node, Way, OsmWriter
-from cadastre_fr.osm_tools   import osm_add_polygon
-from cadastre_fr.transform   import CadastreToOSMTransform
-from cadastre_fr.recognizer  import ParcelPathRecognizer
-from cadastre_fr.parser      import CadastreParser
-from cadastre_fr.tools       import print_flush
-from cadastre_fr.tools       import download_cached
-from cadastre_fr.tools       import named_chunks
-from cadastre_fr.housenumber import RE_NUMERO_CADASTRE
-from cadastre_fr.globals import SOURCE_TAG
+from .osm         import Osm, Node, Way, OsmWriter
+from .osm_tools   import osm_add_polygon
+from .transform   import CadastreToOSMTransform
+from .recognizer  import ParcelPathRecognizer
+from .parser      import CadastreParser
+from .tools       import print_flush
+from .tools       import download_cached
+from .tools       import named_chunks
+from .tools       import iteritems, itervalues, iterkeys
+from .housenumber import RE_NUMERO_CADASTRE
+from .globals     import SOURCE_TAG
 
 
 WAIT_BETWEEN_DOWNLOADS = 2
@@ -260,7 +261,7 @@ def parse_addresses_of_parcels_info_pdfs(pdfs, code_commune):
     #    1 RUE DE LA NEUVILLE
     #    3 RUE DE LA NEUVILLE
     NUM_1_A_NUM_2_RE = re.compile("^(" + RE_NUMERO_CADASTRE.pattern + u") \xe0 (" + RE_NUMERO_CADASTRE.pattern[1:] + ")\s(.*)$")
-    for id_parcel, addresses in parcels_addresses.iteritems():
+    for id_parcel, addresses in iteritems(parcels_addresses):
         addresses_set = set()
         for address in addresses:
             match_code_postal = code_postal_re.match(address)
@@ -296,7 +297,7 @@ def match_parcels_and_limits(parcels, limits, limits_index):
     """
     #max_diff_bounds = 0
     #max_diff_area = 0
-    for parcel in parcels.itervalues():
+    for parcel in itervalues(parcels):
         best_diff = float("inf")
         best_limit = None
         center = parcel.box.centroid.coords[0]
@@ -327,7 +328,7 @@ def match_parcels_and_limits(parcels, limits, limits_index):
     #        way.tags["bounds"] = str(limit.bounds)
     #        way.tags["area"] = str(limit.area)
     #        way.tags["index"] = str(i)
-    #for parcel in parcels.itervalues():
+    #for parcel in itervalues(parcels):
     #    if not parcel.ok:
     #        way = osm_add_polygon(osm, parcel.limit, transform)
     #        way.tags["bounds"] = str(parcel.bounds)
@@ -348,7 +349,7 @@ def match_parcels_and_housenumbers(parcels, numbers):
         numbers_index.insert(i, position.coords[0])
     # Cherche la liste des numeros contenus dans les adresses de la parcelle:
     parcels_of_addresses = {}
-    for parcel in parcels.itervalues():
+    for parcel in itervalues(parcels):
 
         # Liste d'adresses de la parcelle, indexé par leur numéro:
         parcel.addrs_numbers = {}
@@ -361,13 +362,13 @@ def match_parcels_and_housenumbers(parcels, numbers):
             parcel.addresses = []
         else:
             for addr in parcel.addresses:
-                if not parcels_of_addresses.has_key(addr):
+                if not (addr in parcels_of_addresses):
                     parcels_of_addresses[addr] = []
                 parcels_of_addresses[addr].append(parcel)
                 number_match = RE_NUMERO_CADASTRE.match(addr)
                 if number_match:
                     number = number_match.group(0)
-                    if not parcel.positions_numbers.has_key(number):
+                    if not (number in parcel.positions_numbers):
                         parcel.positions_numbers[number] = []
                         parcel.addrs_numbers[number] = []
                     parcel.addrs_numbers[number].append(addr)
@@ -376,7 +377,7 @@ def match_parcels_and_housenumbers(parcels, numbers):
         nb_found_with_limit = 0
         nb_found_with_bbox = 0
         # cherche la position des numeros contenus ou à proximité des parcelles
-        for parcel in parcels.itervalues():
+        for parcel in itervalues(parcels):
             if parcel.num_to_find > 0:
                 if hasattr(parcel, 'limit') and parcel.limit != None:
                     if distance == 0:
@@ -414,7 +415,7 @@ def match_parcels_and_housenumbers(parcels, numbers):
                               else:
                                   num_possibilities = [num,]
                               for num in num_possibilities:
-                                if parcel.positions_numbers.has_key(num) and \
+                                if (num in parcel.positions_numbers) and \
                                         (len(parcel.positions_numbers[num]) < len(parcel.addrs_numbers[num])):
                                         # on a vérifie qu'il faut encore trouver ce numéro pour une des adresses
                                         # de cette parcel:
@@ -455,7 +456,7 @@ def match_parcels_and_housenumbers(parcels, numbers):
     else:
         print_flush(u"Tous les numéros ont trouvé une parcelle !")
     count_not_found = 0
-    for parcel in parcels.itervalues():
+    for parcel in itervalues(parcels):
       count_not_found += parcel.num_to_find
     if count_not_found == 1:
         print_flush("ATTENTION: " + str(count_not_found) + u" adresse n'a pas trouvé son numéro !")
@@ -467,7 +468,7 @@ def match_parcels_and_housenumbers(parcels, numbers):
 
 def generate_osm_parcels(parcels, transform):
     osm = Osm({'upload':'false'})
-    for parcel in parcels.itervalues():
+    for parcel in itervalues(parcels):
         if hasattr(parcel,"limit") and parcel.limit != None:
             limit = parcel.limit
         else:

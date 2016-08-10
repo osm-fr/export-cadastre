@@ -26,6 +26,7 @@ import xml.sax.saxutils
 import xml.parsers.expat
 import itertools
 
+from .tools         import iteritems, itervalues, iterkeys
 
 class Osm(object):
     min_id = 0
@@ -36,13 +37,13 @@ class Osm(object):
         self.ways = {}
         self.relations = {}
         self.bounds = []
-        if not self.attrs.has_key('version'):
+        if not ('version' in self.attrs):
           self.attrs['version'] = '0.6'
-        if not self.attrs.has_key('generator'):
+        if not ('generator' in self.attrs):
           self.attrs['generator'] = os.path.basename(sys.argv[0])
     def add_node(self, node):
         id = node.id()
-        assert(not self.nodes.has_key(id))
+        assert(not (id in self.nodes))
         self.nodes[id] = node
     def create_node(self, attrs,tags=None):
         node = Node(attrs, tags)
@@ -50,7 +51,7 @@ class Osm(object):
         return node
     def add_way(self, way):
         id = way.id()
-        assert(not self.ways.has_key(id))
+        assert(not (id in self.ways))
         self.ways[id] = way
     def create_way(self, attrs,tags=None):
         way = Way(attrs, tags)
@@ -58,7 +59,7 @@ class Osm(object):
         return way
     def add_relation(self, relation):
         id = relation.id()
-        assert(not self.relations.has_key(id))
+        assert(not (id in self.relations))
         self.relations[id] = relation
     def create_relation(self, attrs,tags=None):
         relation = Relation(attrs, tags)
@@ -75,10 +76,10 @@ class Osm(object):
             maxlat = max([float(b["maxlat"]) for b in self.bounds])
             return minlon,minlat,maxlon,maxlat
         elif len(self.nodes):
-            minlon = min([n.lon() for n in self.nodes.itervalues()])
-            minlat = min([n.lat() for n in self.nodes.itervalues()])
-            maxlon = max([n.lon() for n in self.nodes.itervalues()])
-            maxlat = max([n.lat() for n in self.nodes.itervalues()])
+            minlon = min([n.lon() for n in itervalues(self.nodes)])
+            minlat = min([n.lat() for n in itervalues(self.nodes)])
+            maxlon = max([n.lon() for n in itervalues(self.nodes)])
+            maxlat = max([n.lat() for n in itervalues(self.nodes)])
             return minlon,minlat,maxlon,maxlat
         else:
             return None
@@ -96,9 +97,9 @@ class Osm(object):
         self.set_bbox(self.bbox())
     def iteritems(self):
         return itertools.chain.from_iterable(
-                [self.nodes.itervalues(), 
-                 self.ways.itervalues(), 
-                 self.relations.itervalues()])
+                [itervalues(self.nodes), 
+                 itervalues(self.ways), 
+                 itervalues(self.relations)])
     def get(self, item_type_or_textid, item_id=None):
         if item_type_or_textid in ("n", "node"):
             return self.nodes.get(item_id)
@@ -145,7 +146,7 @@ class Item(object):
     def __init__(self, attrs,tags=None):
         self.attrs = attrs
         self.tags = tags or {}
-        if (attrs.has_key("id")):
+        if 'id' in attrs:
             id = int(attrs["id"])
         else:
             id = Osm.min_id - 1
@@ -187,10 +188,10 @@ class Way(Item):
     def type(self):
         return "way"
     def add_node(self, node):
-        if (type(node) == str) or (type(node) == unicode) or (type(node) == int):
-            self.nodes.append(int(node))
-        else:
+        if isinstance(node, Node):
             self.nodes.append(node.id())
+        else:
+            self.nodes.append(int(node))
         
 
 class Relation(Item):
@@ -292,20 +293,20 @@ class OsmWriter(object):
         output.write("<osm" + self.attrs_str(osm.attrs) + ">\n");
         for bounds in osm.bounds:
             output.write("\t<bounds" + self.attrs_str(bounds) + "/>\n");
-        for node in osm.nodes.itervalues():
+        for node in itervalues(osm.nodes):
             if len(node.tags):
                 output.write("\t<node" + self.attrs_str(node.attrs) + ">\n");
                 self.write_tags(node.tags)
                 output.write("\t</node>\n");
             else:    
                 output.write("\t<node" + self.attrs_str(node.attrs) + "/>\n");
-        for way in osm.ways.itervalues():
+        for way in itervalues(osm.ways):
             output.write("\t<way" + self.attrs_str(way.attrs) + ">\n");
             for ref_node in way.nodes:
                 output.write('\t\t<nd ref="' + str(ref_node) + '"/>\n');
             self.write_tags(way.tags)
             output.write("\t</way>\n");
-        for relation in osm.relations.itervalues():
+        for relation in itervalues(osm.relations):
             output.write("\t<relation" 
                 + self.attrs_str(relation.attrs) + ">\n");
             self.write_tags(relation.tags)
@@ -315,9 +316,9 @@ class OsmWriter(object):
         output.write("</osm>\n");
     def attrs_str(self, attrs):
         return ("".join([' ' + key + '=' + xml.sax.saxutils.quoteattr(value)
-            for key,value in attrs.iteritems()])).encode("utf-8")
+            for key,value in iteritems(attrs)])).encode("utf-8")
     def write_tags(self, tags):
-        for key,value in tags.iteritems():
+        for key,value in iteritems(tags):
             value = xml.sax.saxutils.quoteattr(value)
             self.output.write(('\t\t<tag k="' + key + '" v=' + value +'/>\n').encode("utf-8"))
 

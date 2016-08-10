@@ -31,6 +31,7 @@ import os.path
 import operator
 import traceback
 import rtree.index
+from functools import reduce
 from shapely.ops import polygonize
 from shapely.geometry import Point as ShapelyPoint
 from shapely.geometry.polygon import Polygon
@@ -38,15 +39,16 @@ from shapely.geometry.polygon import LinearRing
 from shapely.geometry.polygon import LineString
 from shapely.geometry.multipolygon import MultiPolygon
 
-from cadastre_fr.osm       import Osm, Node, Way, Relation, OsmParser, OsmWriter
-from cadastre_fr.geometry  import Point
-from cadastre_fr.geometry  import BoundingBox
-from cadastre_fr.transform import LinearTransform
-from cadastre_fr.geometry  import orthoprojection_on_segment_ab_of_point_c
-from cadastre_fr.tools     import Timer
-from cadastre_fr.globals   import VERBOSE
-from cadastre_fr.globals   import EARTH_RADIUS_IN_METTER
-from cadastre_fr.globals   import EARTH_CIRCUMFERENCE_IN_METTER
+from .osm       import Osm, Node, Way, Relation, OsmParser, OsmWriter
+from .tools     import iteritems, itervalues, iterkeys
+from .tools     import Timer
+from .geometry  import Point
+from .geometry  import BoundingBox
+from .transform import LinearTransform
+from .geometry  import orthoprojection_on_segment_ab_of_point_c
+from .globals   import VERBOSE
+from .globals   import EARTH_RADIUS_IN_METTER
+from .globals   import EARTH_CIRCUMFERENCE_IN_METTER
 
 
 
@@ -527,7 +529,7 @@ def remove_duplicated_nodes_in_ways(osm_data):
             osm_data.delete_way(way)
 
 def copy_tags(src,dst):
-    for tag,val in src.tags.iteritems():
+    for tag,val in iteritems(src.tags):
         # in case of tag confict keep the longest value
         if (not tag in dst.tags) or (len(dst.tags[tag]) < len(val)):
             if VERBOSE: print "  copy tag ", tag, " => ", val

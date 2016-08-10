@@ -50,6 +50,7 @@ HELP_MESSAGE = "USAGE: {0} buildins-with-tag-segmented.osm".format(sys.argv[0])
 
 def main(argv):
     global VERBOSE
+    VERBOSE = True
     osm_args = [f for f in argv[1:] if os.path.splitext(f)[1] in (".zip", ".osm")]
     other_args = [f for f in argv[1:] if os.path.splitext(f)[1] not in (".zip", ".osm")]
     if len(other_args) != 0:

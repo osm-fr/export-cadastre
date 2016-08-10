@@ -19,9 +19,9 @@ import sys
 import os.path
 import subprocess
 
-from cadastre_fr.geometry  import Path
-from cadastre_fr.geometry  import BoundingBox
-from cadastre_fr.transform import PDFToCadastreTransform
+from .geometry  import Path
+from .geometry  import BoundingBox
+from .transform import PDFToCadastreTransform
 
 THIS_DIR = os.path.dirname(__file__)
 PDFPARSER = os.path.join(THIS_DIR, "..", "pdfparser", "pdfparser")

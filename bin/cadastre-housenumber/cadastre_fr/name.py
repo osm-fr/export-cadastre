@@ -17,15 +17,15 @@ import math
 import zipfile
 from cStringIO import StringIO
 
-from cadastre_fr.osm        import Osm, Node, Way, OsmWriter
-from cadastre_fr.osm_tools  import osm_add_point
-from cadastre_fr.osm_tools  import osm_add_way_direction
-from cadastre_fr.tools      import command_line_error
-from cadastre_fr.parser     import CadastreParser
-from cadastre_fr.transform  import CadastreToOSMTransform
-from cadastre_fr.recognizer import TextPathRecognizer
-from cadastre_fr.recognizer import NamePathRecognizer
-from cadastre_fr.globals import SOURCE_TAG
+from .osm        import Osm, Node, Way, OsmWriter
+from .osm_tools  import osm_add_point
+from .osm_tools  import osm_add_way_direction
+from .tools      import command_line_error
+from .parser     import CadastreParser
+from .transform  import CadastreToOSMTransform
+from .recognizer import TextPathRecognizer
+from .recognizer import NamePathRecognizer
+from .globals import SOURCE_TAG
 
 
 
@@ -129,7 +129,7 @@ def zip_osm_names(osm_lieuxdits_names, osm_street_names, osm_small_names, zip_fi
     filename_osm_map[subdir + "mots_rues_-_NE_PAS_ENVOYER_SUR_OSM.osm"] = osm_street_names
     filename_osm_map[subdir + "petits_mots_-_NE_PAS_ENVOYER_TEL_QUEL_SUR_OSM.osm"] = osm_small_names
     zip_output = zipfile.ZipFile(zip_filename,"w", zipfile.ZIP_DEFLATED)
-    for filename, osm in filename_osm_map.iteritems():
+    for filename, osm in iteritems(filename_osm_map):
         s = StringIO()
         OsmWriter(osm).write_to_stream(s)
         zip_output.writestr(filename, s.getvalue())

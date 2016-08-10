@@ -73,10 +73,7 @@ from cadastre_fr.tools      import open_zip_and_files_with_extension
 from cadastre_fr.transform  import get_centered_metric_equirectangular_transformation_from_osm
 from cadastre_fr.segmented  import compute_transformed_position_and_annotate
 from cadastre_fr.segmented  import get_segmented_buildings_data
-from cadastre_fr.segmented  import train_kneighbors
-from cadastre_fr.segmented  import train_svm
-from cadastre_fr.segmented  import train_tree
-from cadastre_fr.segmented  import train_sgd
+from cadastre_fr.segmented  import train, pickle_extension
 
 HELP_MESSAGE = "USAGE: {0} buildins-with-segmented-tag.osm".format(sys.argv[0])
 
@@ -92,24 +89,22 @@ def main(argv):
     all_result = []
 
     for name, stream in open_zip_and_files_with_extension(osm_args, ".osm"):
-        print "load " + name
+        print("load " + name)
         osm = OsmParser().parse_stream(stream)
         inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(osm)
         compute_transformed_position_and_annotate(osm, inputTransform)
 
         data, result = get_segmented_buildings_data(osm)
 
-        print " ->", len(result), "cas", result.count(1), " positif"
+        print(" -> {0} cas, dont {1} positifs".format(len(result), result.count(1)))
         all_data.extend(data)
         all_result.extend(result)
 
-    scaler, classifier = train_kneighbors(all_data, all_result)
-    #scaler, classifier = train_svm(all_data, all_result)
-    #scaler, classifier = train_tree(all_data, all_result)
-    #scaler, classifier = train_sgd(all_data, all_result)
-    with open("classifier.pickle", "w") as f:
+    scaler, classifier = train(all_data, all_result)
+    ext = pickle_extension()
+    with open("classifier" + ext, "wb") as f:
         pickle.dump(classifier, f)
-    with open("scaler.pickle", "w") as f:
+    with open("scaler" + ext, "wb") as f:
         pickle.dump(scaler, f)
 
     #for positive_weight in 1,2,5:

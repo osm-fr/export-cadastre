@@ -22,16 +22,16 @@ from shapely.geometry.polygon import Polygon
 from shapely.geometry.polygon import LineString
 
 
-from cadastre_fr.osm        import Osm, Node, Way, Relation, OsmParser, OsmWriter
-from cadastre_fr.osm_tools  import osm_add_polygon_or_multipolygon
-from cadastre_fr.osm_tools  import osm_add_line_way
-from cadastre_fr.parser     import CadastreParser
-from cadastre_fr.globals    import SOURCE_TAG
-from cadastre_fr.geometry   import SimilarGeometryDetector
-from cadastre_fr.transform  import CadastreToOSMTransform
-from cadastre_fr.recognizer import BuildingPathRecognizer
-from cadastre_fr.recognizer import WaterPathRecognizer
-from cadastre_fr.recognizer import StandardPathRecognizer
+from .osm        import Osm, Node, Way, Relation, OsmParser, OsmWriter
+from .osm_tools  import osm_add_polygon_or_multipolygon
+from .osm_tools  import osm_add_line_way
+from .parser     import CadastreParser
+from .globals    import SOURCE_TAG
+from .geometry   import SimilarGeometryDetector
+from .transform  import CadastreToOSMTransform
+from .recognizer import BuildingPathRecognizer
+from .recognizer import WaterPathRecognizer
+from .recognizer import StandardPathRecognizer
 
 def pdf_2_osm_buildings_water_and_limit(pdf_filename_list):
     projection, buildings, light_buildings, waters, riverbanks, limit  = \

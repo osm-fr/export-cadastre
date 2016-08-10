@@ -1,3 +1,21 @@
+//
+// This script is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// It is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with it. If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * C python module to quickly generate statistic fix-sized vector
+ * from two polygons representing two contiguous buildings.
+ * The objectif is to use this vector with a classifier to predict
+ * if the two buildings may have been segmented by the French cadastre.
+ */
 
 #include <Python.h>
 #include <math.h>
@@ -136,6 +154,26 @@ parse_wkt_coords(const char* s, Coords* coords, const int size)
     s = find(s, ',');
   }
   return size;
+}
+
+/**
+ * Parse maximmum 'size' coordinates frow list of float couple (tuple)
+ * storing it in the 'coords' array.
+ */
+static int
+parse_list_coords(PyObject* list, Coords* coords, const int size)
+{
+    int i;
+    for(i=0;i<size;i++) {
+        PyObject* item = PyList_GetItem(list, i);
+        if (item == NULL) return i;
+        if (!PyTuple_Check(item)) return i;
+        if (PyTuple_GET_SIZE(item) < 2) return i;
+        coords[i].x = PyFloat_AsDouble(PyTuple_GET_ITEM(item, 0));
+        coords[i].y = PyFloat_AsDouble(PyTuple_GET_ITEM(item, 1));
+    }
+    if(PyErr_Occurred() != NULL) return 0;
+    return size;
 }
 
 static void
@@ -284,6 +322,10 @@ compute_min_max_mean_std(
  * Fill in the calssifier vector 'clsfr_vec' with some statistics
  * two polygons represented by the coordinate coords1 and coords2
  * (of size size1 and size2 respectively).
+ *
+ * The problematic is to obtain a meaningfull fixed size vector, 
+ * from 2 poylgon of variable length.
+ *
  * @return 1 for success, 0 for failure.
  */
 static int
@@ -555,7 +597,11 @@ double_array_to_python_list(const double* double_array, int size) {
 static PyObject *
 get_vector_length(PyObject *self, PyObject *args)
 {
+#if PY_MAJOR_VERSION >= 3
+  return PyLong_FromLong(CLASSIFIER_VECTOR_SIZE);
+#else
   return PyInt_FromLong(CLASSIFIER_VECTOR_SIZE);
+#endif
 }
 
 static PyObject *
@@ -579,7 +625,7 @@ set_vector_mean_and_scale(PyObject *self, PyObject *args)
 }
 
 static PyObject *
-get_classifier_vector(PyObject *self, PyObject *args)
+get_classifier_vector_from_wkt(PyObject *self, PyObject *args)
 {
   const char *wkt1; // arg1
   const char *wkt2; // arg2
@@ -602,9 +648,35 @@ get_classifier_vector(PyObject *self, PyObject *args)
           classifier_vector, CLASSIFIER_VECTOR_SIZE);
 }
 
+static PyObject *
+get_classifier_vector_from_coords(PyObject *self, PyObject *args)
+{
+  PyObject* list1;// arg1
+  PyObject* list2;// arg2
+  if (!PyArg_ParseTuple(args, "OO", &list1, &list2)) {
+    return NULL;
+  }
+  if (! (PyList_Check(list1) && PyList_Check(list2))) return NULL;
+  int size1 = PyList_Size(list1);
+  int size2 = PyList_Size(list2);
+  Coords poly1[size1], poly2[size2];
+  if (parse_list_coords(list1, poly1, size1) != size1) return NULL;
+  if (parse_list_coords(list2, poly2, size2) != size2) return NULL;
+
+  double classifier_vector[CLASSIFIER_VECTOR_SIZE];
+  if (!fill_classifier_vector(classifier_vector, poly1, size1, poly2, size2))
+  {
+    Py_RETURN_NONE;
+  }
+  return double_array_to_python_list(
+          classifier_vector, CLASSIFIER_VECTOR_SIZE);
+}
+
 static PyMethodDef cMethods[] = {
-  {"get_classifier_vector", get_classifier_vector, METH_VARARGS,
+  {"get_classifier_vector_from_wkt", get_classifier_vector_from_wkt, METH_VARARGS,
    "Get statistic vector from 2 WKT Polygons representing 2 contiguous buildings potentially wrongly segmented"},
+  {"get_classifier_vector_from_coords", get_classifier_vector_from_coords, METH_VARARGS,
+   "Get statistic vector from 2 Node list representing 2 contiguous buildings Polygon potentially wrongly segmented"},
   {"set_vector_mean_and_scale", set_vector_mean_and_scale, METH_VARARGS,
    "Set 2 vectors representing min and max values so that subsequent call to get_classifier_vector will return values in the range [0 .. 1]"},
   {"get_vector_length", get_vector_length, METH_VARARGS,
@@ -612,9 +684,29 @@ static PyMethodDef cMethods[] = {
   {NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC
-initcadastre_fr_segmented(void)
+
+#if PY_MAJOR_VERSION >= 3
+    #define MOD_INIT(name) PyMODINIT_FUNC PyInit_##name(void)
+    #define MOD_DEF(ob, name, doc, methods) \
+        PyObject* ob; \
+        static struct PyModuleDef moduledef = { \
+            PyModuleDef_HEAD_INIT, name, doc, -1, methods, NULL, NULL, NULL, NULL}; \
+        ob = PyModule_Create(&moduledef);
+    #define MOD_RETURN(ob) return ob;
+#else
+    #define MOD_INIT(name) PyMODINIT_FUNC init##name(void)
+    #define MOD_DEF(ob, name, doc, methods) \
+        __attribute__((unused)) PyObject* ob; \
+        ob = Py_InitModule3(name, methods, doc);
+    #define MOD_RETURN(ob) return;
+#endif
+
+MOD_INIT(cadastre_fr_segmented)
 {
-  (void) Py_InitModule("cadastre_fr_segmented", cMethods);
+    MOD_DEF(module, 
+            "cadastre_fr_segmented",
+            "polygon fix-size vectorisation for segmented building classification",
+            cMethods)
+    MOD_RETURN(module);
 }
 

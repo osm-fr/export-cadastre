@@ -395,8 +395,8 @@ def command_line_open_cadastre_website(argv):
       code_departement = argv[1].decode("utf8")
       cadastreWebsite = CadastreWebsite()
       departements = cadastreWebsite.get_departements()
-      if not departements.has_key(code_departement):
-          if departements.has_key("0" + code_departement):
+      if not (code_departement in departements):
+          if ("0" + code_departement) in departements:
               code_departement = "0" + code_departement
           else:
               # cherche le département par son nom
@@ -419,7 +419,7 @@ def command_line_open_cadastre_website(argv):
               sys.stdout.write(("%s : %s\n" % (code, nom)).encode("utf-8"))
       else:
           code_commune = argv[2].decode("utf8")
-          if not communes.has_key(code_commune):
+          if not (code_commune in communes):
               # cherche de la commune par son nom
               recherche = code_commune.upper()
               communes_possibles = [code for code,nom in communes.items() 

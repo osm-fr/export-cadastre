@@ -34,7 +34,7 @@ deux bâtiments fractionnés.
 
 Les valeurs (features) d'un couple de bâtiment doivent être obtenus
 en appelant la fonction
-    fr_cadastre_segmented.get_classifier_vector(wkt1, wkt2)
+    fr_cadastre_segmented.get_classifier_vector_from_wkt(wkt1, wkt2)
 
 
 Plusieurs classifiers ont été expérimentés.
@@ -73,18 +73,22 @@ import numpy as np
 import os.path
 import operator
 import itertools
+#import tensorflow
 import rtree.index
 from sklearn import svm
 from sklearn import tree
 from sklearn import neighbors
 from sklearn import grid_search
 from sklearn import preprocessing
+from functools import reduce
 from shapely.geometry.polygon import Polygon
 
-from cadastre_fr.osm        import Osm,Node,Way,Relation,OsmParser,OsmWriter
-from cadastre_fr.transform  import get_centered_metric_equirectangular_transformation_from_osm
-from cadastre_fr.simplify   import simplify
-from cadastre_fr_segmented  import get_classifier_vector
+from .osm        import Osm,Node,Way,Relation,OsmParser,OsmWriter
+from .transform  import get_centered_metric_equirectangular_transformation_from_osm
+from .simplify   import simplify
+from .tools      import iteritems, itervalues, iterkeys
+from cadastre_fr_segmented import  get_classifier_vector_from_wkt
+from cadastre_fr_segmented import  get_classifier_vector_from_coords
 
 
 SEGMENTED_DATA_DIR =  os.path.join(
@@ -92,10 +96,19 @@ SEGMENTED_DATA_DIR =  os.path.join(
         "data", "segmented_building")
 
 
+def pickle_extension():
+    if sys.version_info > (3, 0):
+        ext = ".pickle3"
+    else:
+        ext = ".pickle2"
+    return ext
+
+
 def load_classifier_and_scaler():
     os.system("cd " + SEGMENTED_DATA_DIR  +"; make -s")
-    classifier = pickle.load(open(os.path.join(SEGMENTED_DATA_DIR, "classifier.pickle")))
-    scaler = pickle.load(open(os.path.join(SEGMENTED_DATA_DIR, "scaler.pickle")))
+    ext = pickle_extension()
+    classifier = pickle.load(open(os.path.join(SEGMENTED_DATA_DIR, "classifier" + ext), "rb"))
+    scaler = pickle.load(open(os.path.join(SEGMENTED_DATA_DIR, "scaler" + ext), "rb"))
     return classifier, scaler
 
 
@@ -151,13 +164,16 @@ def test_classifier(classifier, scaler, osm_data):
                 incertain = (building.tags.get("segmented") == "?") or (way.tags.get("segmented") == "?")
                 if predict_segmented(classifier, scaler, osm_data, building, way):
                     if areSegmented:
+                        #sys.stdout.write("o");sys.stdout.flush()
                         nb_ok = nb_ok + 1
                     elif not incertain:
+                        #sys.stdout.write("F");sys.stdout.flush()
                         nb_false = nb_false + 1
                         add_way_to_other_osm(osm_data, building, false_osm) 
                         add_way_to_other_osm(osm_data, way, false_osm) 
                 else:
                     if areSegmented:
+                        #sys.stdout.write("M");sys.stdout.flush()
                         nb_missed = nb_missed + 1
                         add_way_to_other_osm(osm_data, building, missed_osm) 
                         add_way_to_other_osm(osm_data, way, missed_osm) 
@@ -176,12 +192,12 @@ def add_way_to_other_osm(source_osm, way, other_osm):
 
 def get_buildings_ways(osm_data):
     result = []
-    for way in osm_data.ways.itervalues():
+    for way in itervalues(osm_data.ways):
         if way.isBuilding:
             way.isSegmented = way.tags.get("segmented") not in (None, "?", "no")
             way.hasWall = way.tags.get("wall") != "no" # default (None) is yes
             result.append(way)
-    for rel in osm_data.relations.itervalues():
+    for rel in itervalues(osm_data.relations):
         if rel.isBuilding:
             rel.isSegmented = rel.tags.get("segmented") not in (None, "?", "no")
             rel.hasWall = rel.tags.get("wall") != "no" # default (None) is yes
@@ -219,7 +235,7 @@ def find_joined_and_unmodified_buildings(segmented_osm, corrected_osm, tolerance
             "no" or "?", or the id in corrected_osm in which they are joined.
        Return the list of joined and unmodified buildings.
     """
-    for cadastre_way in itertools.chain(segmented_osm.ways.itervalues(), segmented_osm.relations.itervalues()):
+    for cadastre_way in itertools.chain(itervalues(segmented_osm.ways), itervalues(segmented_osm.relations)):
         cadastre_way.isSegmented = False
     inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(segmented_osm)
     compute_transformed_position_and_annotate(segmented_osm, inputTransform)
@@ -230,7 +246,7 @@ def find_joined_and_unmodified_buildings(segmented_osm, corrected_osm, tolerance
     corrected_rtree = corrected_osm.buildings_rtree
     joined_buildings = []
     unmodified_buildings = []
-    for segmented_way in itertools.chain(segmented_osm.ways.itervalues(), segmented_osm.relations.itervalues()):
+    for segmented_way in itertools.chain(itervalues(segmented_osm.ways), itervalues(segmented_osm.relations)):
         if segmented_way.isBuilding and ("segmented" not in segmented_way.tags):
             segmented_way.tags["segmented"] = "?"
             for corrected_way in [corrected_osm.get(e.object) for e in corrected_rtree.intersection(segmented_way.bbox, objects=True)]:
@@ -255,16 +271,16 @@ def find_joined_and_unmodified_buildings(segmented_osm, corrected_osm, tolerance
 
 
 def compute_transformed_position_and_annotate(osm_data, transform):
-    for node in osm_data.nodes.itervalues():
+    for node in itervalues(osm_data.nodes):
         node.ways = set()
         node.relations = set()
         node.position = transform.transform_point(
             (node.lon(), node.lat()))
-    for way in osm_data.ways.itervalues():
+    for way in itervalues(osm_data.ways):
         way.relations = set()
-    for rel in osm_data.relations.itervalues():
+    for rel in itervalues(osm_data.relations):
         rel.relations = set()
-    for rel in osm_data.relations.itervalues():
+    for rel in itervalues(osm_data.relations):
        for rtype,rref,rrole in rel.itermembers():
           if rtype == "way":
               if rref in osm_data.ways:
@@ -275,14 +291,14 @@ def compute_transformed_position_and_annotate(osm_data, transform):
           if rtype == "relation":
               if rref in osm_data.relations:
                 osm_data.relations[rref].relations.add(rel.id())
-    for way in osm_data.ways.itervalues():
+    for way in itervalues(osm_data.ways):
         for node_id in way.nodes:
             node = osm_data.nodes[node_id]
             node.ways.add(way.id())
         way.isBuilding = way.tags.get("building") not in (None, "no")
         if way.isBuilding:
             way.hasWall = way.tags.get("wall") != "no" # default (None) is yes
-    for rel in osm_data.relations.itervalues():
+    for rel in itervalues(osm_data.relations):
         rel.isBuilding = (rel.tags.get("type") == "multipolygon") and (rel.tags.get("building") not in (None, "no"))
         if rel.isBuilding:
             rel.hasWall = rel.tags.get("wall") != "no" # default (None) is yes
@@ -290,7 +306,7 @@ def compute_transformed_position_and_annotate(osm_data, transform):
 def compute_buildings_polygons_and_rtree(osm_data, tolerance):
     buildings_rtree = rtree.index.Index()
     osm_data.buildings_rtree = buildings_rtree 
-    for way in osm_data.ways.itervalues():
+    for way in itervalues(osm_data.ways):
         if way.isBuilding:
             if len(way.nodes) >= 3:
                way.polygon = Polygon([osm_data.nodes[i].position for i in way.nodes])
@@ -299,7 +315,7 @@ def compute_buildings_polygons_and_rtree(osm_data, tolerance):
             way.bbox = way.polygon.bounds
             way.tolerance_polygon = way.polygon.buffer(tolerance)
             buildings_rtree.insert(way.id(), way.bbox, way.textid())
-    for rel in osm_data.relations.itervalues():
+    for rel in itervalues(osm_data.relations):
         if rel.isBuilding:
             exterior = None
             interiors = []
@@ -323,17 +339,25 @@ def ways_equals(way1, way2, tolerance):
         way2.tolerance_polygon.contains(way1.polygon)
 
 
+def train(data, result, scoring=None):
+    #scaler, classifier = train_svm(all_data, all_result, scoring)
+    #scaler, classifier = train_tree(all_data, all_result, scoring)
+    #scaler, classifier = train_sgd(all_data, all_result, scoring)
+    scaler, classifier = train_kneighbors(data, result, scoring)
+    return scaler, classifier
 
 
 def train_kneighbors(data, result, scoring=None):
+    print("train KNeighborsClassifier {}".format(len(data)))
     #scaler = None
     scaler = preprocessing.MinMaxScaler()
-    print "Scale: ", type(scaler)
+    print("Scale: {}".format(type(scaler)))
     if scaler != None:
         data = scaler.fit_transform(data)
 
     classifier = neighbors.KNeighborsClassifier(weights = 'distance', n_neighbors=8)
     classifier.fit(data, result)
+    
 
     # GridSearchCV says best is with n_neighbors=4, but my observations show that n_neighbors=8 is way better.
 
@@ -343,19 +367,20 @@ def train_kneighbors(data, result, scoring=None):
     #    'weights': ('uniform', 'distance'),
     #    'n_neighbors': (8,) #range(3,11)
     #}
-    #print parameters
+    #print(parameters)
     #search = grid_search.GridSearchCV(neighbors.KNeighborsClassifier(), parameters, scoring=scoring, n_jobs=1)
     #search.fit(data, result)
-    #print "best params:", search.best_params_
-    #print "best score:", search.best_score_
+    #print("best params: {}".format(search.best_params_))
+    #print("best score: {}".format(search.best_score_))
     ##print
     #return scaler, search.best_estimator_.fit(data,result)
 
 
 def train_tree(data, result, scoring=None):
+    print("train DecisionTreeClassifier {}".format(len(data)))
     scaler = None
     scaler = preprocessing.MinMaxScaler()
-    print "Scale: ", type(scaler)
+    print("Scale: {}".format(type(scaler)))
     if scaler != None:
         data = scaler.fit_transform(data)
 
@@ -367,16 +392,17 @@ def train_tree(data, result, scoring=None):
             'criterion':('gini', 'entropy'),
             'splitter':('best','random'),
     }
-    print parameters
+    print(parameters)
     search = grid_search.GridSearchCV(tree.DecisionTreeClassifier(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print "best params:", search.best_params_
-    print "best score:", search.best_score_
+    print("best params: {}".format(search.best_params_))
+    print("best score: {}".format(search.best_score_))
     print
     return scaler, search.best_estimator_.fit(data,result)
 
 
 def train_svm(data, result, scoring=None):
+    print("train SVC {}".format(len(data)))
     data = np.array(data)
     result = np.array(result)
 
@@ -386,23 +412,23 @@ def train_svm(data, result, scoring=None):
 
     #classifier = svm.SVC(kernel='rbf')
     #classifier.fit(data, result)
-    #print "initial score rbf: ", classifier.score(data, result), "custom=", scoring(classifier, data, result)
+    #print("initial score rbf: {}, custom={}".format(classifier.score(data, result), scoring(classifier, data, result))
 
     #classifier = svm.SVC(kernel="linear")
     #classifier.fit(data, result)
-    #print "initial score linear: ", classifier.score(data, result)
+    #print("initial score linear: {}".format(classifier.score(data, result)))
 
     #scaler = preprocessing.StandardScaler()
     scaler = preprocessing.MinMaxScaler()
     #scaler = preprocessing.RobustScaler()
 
-    print "Scale: ", type(scaler)
+    print("Scale: {}".format(type(scaler)))
     if scaler != None:
         data = scaler.fit_transform(data)
 
     #classifier = svm.SVC()
     #classifier.fit(data, result)
-    #print "initial score: ", classifier.score(data, result), "custom=", scoring(classifier, data, result)
+    #print("initial score: {}, custom={}".format(classifier.score(data, result), scoring(classifier, data, result)))
 
     parameters = {
         #'kernel':('linear', 'rbf'),
@@ -414,11 +440,11 @@ def train_svm(data, result, scoring=None):
         #'C': [10**x for x in xrange(-5,5)]
         'C': [10**x for x in xrange(0,5)]
     }
-    print parameters
+    print(parameters)
     search = grid_search.GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print "best params:", search.best_params_
-    print "best score:", search.best_score_
+    print("best params: {}".format(search.best_params_))
+    print("best score: {}".format(search.best_score_))
     print
 
 
@@ -432,20 +458,21 @@ def train_svm(data, result, scoring=None):
         'C': [C/10.0 + C/10.0*i for i in range(1,10)]
              + [C + C*i for i in range(1,9)]
     }
-    print parameters
+    print(parameters)
     search = grid_search.GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print "best params:", search.best_params_
-    print "best score:", search.best_score_
+    print("best params: {}".format(search.best_params_))
+    print("best score: {}".format(search.best_score_))
     print
 
     return scaler, search.best_estimator_.fit(data,result)
 
 
 def train_sgd(data, result, scoring=None):
+    print("train SGDClassifier {}".format(len(data)))
     #scaler = None
     #scaler = preprocessing.MinMaxScaler()
-    print "Scale: ", type(scaler)
+    print("Scale: {}".format(type(scaler)))
     if scaler != None:
         data = scaler.fit_transform(data)
 
@@ -459,11 +486,11 @@ def train_sgd(data, result, scoring=None):
                  'squared_epsilon_insensitive'),
         'penalty': ('none', 'l2', 'l1', 'elasticnet')
     }
-    print parameters
+    print(parameters)
     search = grid_search.GridSearchCV(SGDClassifier(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print "best params:", search.best_params_
-    print "best score:", search.best_score_
+    print("best params: {}".format(search.best_params_))
+    print("best score: {}".format(search.best_score_))
     print
     return scaler, search.best_estimator_.fit(data,result)
 
@@ -484,11 +511,11 @@ def weighted_scoring(y_weights):
 
 def get_segmented_buildings_data(osm_data):
     buildings = []
-    for way in osm_data.ways.itervalues():
+    for way in itervalues(osm_data.ways):
         if way.isBuilding:
             way.isSegmented = way.tags.get("segmented") not in (None, "?", "no")
             buildings.append(way)
-    for rel in osm_data.relations.itervalues():
+    for rel in itervalues(osm_data.relations):
         if rel.isBuilding:
             rel.isSegmented = rel.tags.get("segmented") not in (None, "?", "no")
             for item, role in osm_data.iter_relation_members(rel):
@@ -526,7 +553,7 @@ def get_segmented_buildings_data(osm_data):
 def get_segmented_analysis_vector_from_polygons(p1, p2):
     assert(len(p1.interiors) == 0)
     assert(len(p2.interiors) == 0)
-    return get_classifier_vector(p1.wkt, p2.wkt)
+    return get_classifier_vector_from_wkt(p1.wkt, p2.wkt)
 
 
 def osm_way_polygon_wkt(osm_data, way):
@@ -535,11 +562,14 @@ def osm_way_polygon_wkt(osm_data, way):
                     [osm_data.nodes[i].position for i in way.nodes])
             ) + "))"
 
+def osm_way_coords(osm_data, way):
+    return [(osm_data.nodes[i].position.x, osm_data.nodes[i].position.y) for i in way.nodes]
+
 
 def get_segmented_analysis_vector_from_osm(osm_data, way1, way2):
-    way1_wkt = osm_way_polygon_wkt(osm_data, way1)
-    way2_wkt = osm_way_polygon_wkt(osm_data, way2)
-    vector = get_classifier_vector(way1_wkt, way2_wkt)
+    vector = get_classifier_vector_from_coords(
+            osm_way_coords(osm_data, way1),
+            osm_way_coords(osm_data, way2))
     return vector
 
 
@@ -686,7 +716,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #    compute_transformed_position_and_annotate(osm, inputTransform)
 #    compute_buildings_polygons_and_rtree(osm, TOLERANCE)
 #
-#    for way in osm.ways.itervalues():
+#    for way in itervalues(osm.ways):
 #        if way.isBuilding:
 #            img = draw_buildings_around(osm, way)
 #            cv2.imwrite("x-%d.png" % way.id(), img)
@@ -798,7 +828,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #    # The aim was to use opencv image classification but training for
 #    # big images need too much processing power
 #    rtree=osm_data.buildings_rtree
-#    for building in itertools.chain(osm_data.ways.itervalues(), osm_data.relations.itervalues()):
+#    for building in itertools.chain(itervalues(osm_data.ways), itervalues(osm_data.relations)):
 #        if building.isBuilding:
 #            search_bbox = search_bbox_for_drawing(building.polygon)
 #            other_buildings = [osm_data.get(e.object) for e in rtree.intersection(search_bbox, objects=True)]
@@ -812,7 +842,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #                else:
 #                    filename = "negative/%s-%d.png" % (prefix, building.id())
 #            if filename:
-#                print filename
+#                print(filename)
 #                img, joined_pos_list = draw_buildings_around(osm_data, building)
 #                cv2.imwrite(filename, img)
 #                info = open(filename[:-4] + ".txt", "w")
