@@ -20,6 +20,7 @@ import time
 import zipfile
 import os.path
 import itertools
+import subprocess
 import unicodedata
 import timeit
 from functools import reduce
@@ -163,7 +164,7 @@ def command_line_error(error_message, help_message=""):
     else:
         output = sys.stdout
     if help_message: 
-        output.write(help_message.encode("utf-8") + "\n")
+        output.write((str(help_message) + "\n").encode("utf-8"))
     if error_message:
         output.write(("ERREUR: " + error_message + "\n").encode("utf-8"))
         sys.exit(-1)
@@ -198,9 +199,12 @@ def open_zip_and_files_with_extension(file_list, extension):
             f.close()
 
 
+def get_git_describe():
+    return subprocess.check_output(["git","describe","--always"], cwd=os.path.dirname(os.path.realpath(__file__))).decode("utf8").strip()
+
 
 def test(argv):
-    # toppsort
+    version = get_git_describe()
     assert( [x for x in toposort({
            2: set([11,9]),
            9: set([11,8]),

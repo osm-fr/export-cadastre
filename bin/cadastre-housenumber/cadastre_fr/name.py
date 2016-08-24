@@ -21,11 +21,12 @@ from .osm        import Osm, Node, Way, OsmWriter
 from .osm_tools  import osm_add_point
 from .osm_tools  import osm_add_way_direction
 from .tools      import command_line_error
+from .tools      import iteritems
 from .parser     import CadastreParser
 from .transform  import CadastreToOSMTransform
 from .recognizer import TextPathRecognizer
 from .recognizer import NamePathRecognizer
-from .globals import SOURCE_TAG
+from .globals    import SOURCE_TAG
 
 
 

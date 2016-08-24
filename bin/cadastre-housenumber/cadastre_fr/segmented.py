@@ -355,7 +355,8 @@ def train_kneighbors(data, result, scoring=None):
     if scaler != None:
         data = scaler.fit_transform(data)
 
-    classifier = neighbors.KNeighborsClassifier(weights = 'distance', n_neighbors=8)
+    #classifier = neighbors.KNeighborsClassifier(weights = 'distance', n_neighbors=8)
+    classifier = neighbors.KNeighborsClassifier(weights = 'distance', n_neighbors=6)
     classifier.fit(data, result)
     
 
@@ -550,26 +551,26 @@ def get_segmented_buildings_data(osm_data):
 
 
 
-def get_segmented_analysis_vector_from_polygons(p1, p2):
-    assert(len(p1.interiors) == 0)
-    assert(len(p2.interiors) == 0)
-    return get_classifier_vector_from_wkt(p1.wkt, p2.wkt)
+#def get_segmented_analysis_vector_from_polygons(p1, p2):
+#    assert(len(p1.interiors) == 0)
+#    assert(len(p2.interiors) == 0)
+#    return get_classifier_vector_from_wkt(p1.wkt, p2.wkt)
 
 
-def osm_way_polygon_wkt(osm_data, way):
-    return "POLYGON ((" + ", ".join(
-                map(lambda p: str(p[0]) + " " + str(p[1]),
-                    [osm_data.nodes[i].position for i in way.nodes])
-            ) + "))"
+#def osm_way_polygon_wkt(osm_data, way):
+#   return "POLYGON ((" + ", ".join(
+#               map(lambda p: str(p[0]) + " " + str(p[1]),
+#                   [osm_data.nodes[i].position for i in way.nodes])
+#           ) + "))"
 
-def osm_way_coords(osm_data, way):
-    return [(osm_data.nodes[i].position.x, osm_data.nodes[i].position.y) for i in way.nodes]
+def osm_way_coords_and_nbways(osm_data, way):
+    return [(osm_data.nodes[i].position.x, osm_data.nodes[i].position.y, len(osm_data.nodes[i].ways)) for i in way.nodes]
 
 
 def get_segmented_analysis_vector_from_osm(osm_data, way1, way2):
     vector = get_classifier_vector_from_coords(
-            osm_way_coords(osm_data, way1),
-            osm_way_coords(osm_data, way2))
+            osm_way_coords_and_nbways(osm_data, way1),
+            osm_way_coords_and_nbways(osm_data, way2))
     return vector
 
 

@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*- 
+#
+# This script is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# It is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with it. If not, see <http://www.gnu.org/licenses/>.
+
 
 import sys
 import os.path
@@ -16,13 +29,9 @@ import multiprocessing.dummy
 from collections import namedtuple
 from osgeo import osr    # apt-get install python-gdal
 from imposm.parser import OSMParser
-if (sys.version_info > (3, 0)):
-    from urllib.request import urlopen
-else:
-    from urllib2 import urlopen
 import imposm.parser.simple
 if __name__ == '__main__':
-    if (sys.version_info > (3, 4)) and hasattr(imposm.parser.simple, 'process_parse'):
+    if (sys.version_info >= (3, 4)) and hasattr(imposm.parser.simple, 'process_parse'):
         # using forkserver make a huge gain in memory usage
         # due to process created by imposm.parser
         # but this require using a modified version
@@ -34,6 +43,7 @@ from cadastre_fr.globals    import VERBOSE
 from cadastre_fr_segmented  import get_classifier_vector_from_coords
 from cadastre_fr.segmented  import load_classifier_and_scaler
 from cadastre_fr.segmented  import SEGMENTED_DATA_DIR
+from cadastre_fr.tools      import get_git_describe
 
 
 
@@ -79,7 +89,7 @@ class OSMBuildingsParser(object):
 
     def cleanup(self):
         del self.multipolygon_ways_ids
-        gc.collect()
+        gc.collect() # hopping to use less memory in following forked imposm.parser processes
 
     def handle_coords(self, coords):
         for osmid, lon, lat in coords:
@@ -102,7 +112,7 @@ class OSMBuildingsParser(object):
         p2.parse(filename)
         if VERBOSE: sys.stderr.write("cleanup\n")
         self.cleanup()
-        if VERBOSE: sys.stderr.write("parse nodes\n")
+        if VERBOSE: sys.stderr.write("parse coords\n")
         p3 = OSMParser(
             concurrency = self.concurrency, 
             coords_callback = self.handle_coords)
@@ -147,17 +157,20 @@ class OSMTouchingBuildingsParser(OSMBuildingsParser):
                         else:
                             i = node_ways.index(way_id)
                             self.nodes[ref] = node_ways[:i] + node_ways[i+1:]
-        self.nodes = {node_id:None for node_id in self.nodes}
+        # Recreate the nodes hashtable for only the nodes we really need the coordinates:
+        # (this will free a lot of memory as we have deleted many nodes)
+        self.nodes = {node_id:len(self.nodes[node_id]) for node_id in self.nodes}
         if VERBOSE:
             sys.stderr.write("{} ways => {}\n".format(nb_ways, len(self.ways)))
             sys.stderr.write("{} nodes => {}\n".format(nb_nodes, len(self.nodes)))
         OSMBuildingsParser.cleanup(self)
 
     def handle_coords(self, coords):
-        # Only keep lon,lat
+        # Only keep lon,lat, and nb ways
         for node_id, lon, lat in coords:
             if node_id in self.nodes:
-                self.nodes[node_id] = (lon,lat)
+                nb_ways = self.nodes[node_id]
+                self.nodes[node_id] = (lon,lat, nb_ways)
 
 
 def multipolygon_building_tag_filter(tags):
@@ -202,7 +215,7 @@ class SegmentedBuildingsPredictor(object):
         for way_id, way in buildings.ways.items():
             coords = [buildings.nodes[i] for i in way.refs]
             for touching_way_id in way.touching_ways:
-                if touching_way_id > way_id:
+                if touching_way_id > way_id: # avoid considering the symetric case a second times
                     touching_way = buildings.ways[touching_way_id]
                     touching_way_coords = [buildings.nodes[i] for i in touching_way.refs]
                     segmented_cases.append(SegmentedCase(
@@ -243,8 +256,8 @@ def common_coords_barycentre(coords1, coords2):
 
 
 def bbox(coords1):
-    x, y = zip(*coords)
-    return min(x), min(y), max(x), max(y)
+    xs, ys, _ = zip(*coords)
+    return min(xs), min(ys), max(xs), max(y)
 
 
 def process_prediction(scaler, classifier, projection, queue):
@@ -262,15 +275,15 @@ def process_prediction(scaler, classifier, projection, queue):
 def output_header():
     print("""<?xml version="1.0" encoding="UTF-8"?>
 <analysers timestamp="{0}">
-<analyser timestamp="{0}" version="">
-<class item="0" tag="building,geom,fix:chair" id="7" level="3">
-<classtext lang="fr" title="Bâtiment fractionné ? par le Cadastre" />
-<classtext lang="en" title="Building segmented ? by the Cadastre" />
-</class>""".format(datetime.datetime.now().isoformat()))
+<analyser timestamp="{0}" version="{1}">
+<class item="1" tag="building,geom,fix:chair" id="7" level="3">
+<classtext lang="fr" title="Bâtiment fractionné par le Cadastre ? (estimation)" />
+<classtext lang="en" title="Building segmented by the Cadastre ? (estimate)" />
+</class>""".format(datetime.datetime.now().isoformat(), get_git_describe()))
 
 
 def output_error_case(case):
-    lon,lat = common_coords_barycentre(case.coords1, case.coords2)
+    lon,lat,_ = common_coords_barycentre(case.coords1, case.coords2)
     print("""<error class="7">
 <location lat="{}" lon="{}" />
 <way id="{}" />
@@ -319,7 +332,6 @@ def main(args):
     buildings.parse(filename)
     predictor.predict(buildings)
     output_footer()
-
 
 if __name__ == '__main__':
     main(sys.argv[1:])
