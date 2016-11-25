@@ -164,9 +164,9 @@ def command_line_error(error_message, help_message=""):
     else:
         output = sys.stdout
     if help_message: 
-        output.write((str(help_message) + "\n").encode("utf-8"))
+        output.write((unicode(help_message) + "\n").encode("utf-8"))
     if error_message:
-        output.write(("ERREUR: " + error_message + "\n").encode("utf-8"))
+        output.write(("ERREUR: " + unicode(error_message) + "\n").encode("utf-8"))
         sys.exit(-1)
     else:
         sys.exit(0)
