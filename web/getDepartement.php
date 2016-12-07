@@ -17,7 +17,7 @@ if (!isset($dep)) {
   }
 
   $dep = get_parameter('dep', '/^([09][0-9][0-9AB])?$/');
-  $ville = get_parameter('ville', '/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ \'()]*$/');
+  $ville = get_parameter('ville', '/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ \'().]*$/');
 }
 
 // A cause de ce bug sur Internet Explorer

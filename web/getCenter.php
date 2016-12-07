@@ -16,7 +16,7 @@ function get_parameter($name, $format, $default = "") {
 }
 
 $dep = get_parameter('dep', '/^([09][0-9][0-9AB])?$/');
-$ville = get_parameter('ville', '/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ \'()]*$/');
+$ville = get_parameter('ville', '/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ \'().]*$/');
 $ville = substr($ville,0, 5);
 
 if ($ville && $dep) {
