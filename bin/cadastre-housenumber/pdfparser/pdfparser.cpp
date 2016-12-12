@@ -295,16 +295,16 @@ bool parsepdf(const char* filename) {
   do {
     PoDoFo::PdfObject *obj = (*it);
 #if (PODOFO_VERSION_MAJOR > 0) || (PODOFO_VERSION_MINOR > 8) || (PODOFO_VERSION_PATCH >= 3)
-    if (obj->HasStream() && (obj->GetObjectLength(PoDoFo::ePdfWriteMode_Compact) > 10000)) {
+    if (obj->HasStream() && (obj->GetObjectLength(PoDoFo::ePdfWriteMode_Compact) > 2000)) {
 #else
-    if (obj->HasStream() && (obj->GetObjectLength() > 10000)) {
+    if (obj->HasStream() && (obj->GetObjectLength() > 1000)) {
 #endif
         PoDoFo::PdfStream *stream = obj->GetStream();
         char *buffer;
         PoDoFo::pdf_long bufferLen;
         stream->GetFilteredCopy(&buffer, &bufferLen);
         //std::cerr << "Buffer length : " << bufferLen << std::endl;
-        if (bufferLen > 1000)
+        if (bufferLen > 500)
             result = parseStream(buffer, bufferLen);
         free(buffer);
     }
