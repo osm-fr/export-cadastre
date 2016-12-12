@@ -23,7 +23,7 @@ http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisa
 
 """
 
-#import pdb;pdb_set_trace()
+#import pdb;pdb.set_trace()
 
 import re
 import sys
@@ -260,6 +260,8 @@ def generate_osm_limit_lieuxdits(parcels, transform):
         if hasattr(parcel, 'addresses'):
             if hasattr(parcel,"limit") and parcel.limit != None:
                 limit = parcel.limit
+                if not limit.is_valid:
+                    limit = limit.envelope
             else:
                 limit = parcel.box
             for addr in parcel.addresses:

@@ -17,9 +17,12 @@ import math
 from shapely.geometry import Point as ShapelyPoint
 from shapely.geometry.polygon import Polygon
 from shapely.geometry.multipolygon import MultiPolygon
+from shapely.geometry.collection import GeometryCollection
+from shapely.geometry.linestring import LineString
 
 
 from .osm      import Osm,Node,Way,OsmWriter,Relation
+from .tools    import print_flush
 from .geometry import Point
 from .geometry import angle_projection_on_segment_ab_of_point_c
 from .geometry import orthoprojection_on_segment_ab_of_point_c
@@ -74,8 +77,12 @@ def osm_add_multipolygon(osm, polygon, transform, same_nodes_set = None):
         geoms = [polygon]
     elif type(polygon) == MultiPolygon:
         geoms = polygon.geoms
+    elif type(polygon) == GeometryCollection:
+        # Cas rencontré sur la commune de Prudemanche (département 28)
+        geoms = polygon.geoms
     else:
         print_flush("ERROR: unknown polygon type: " + str(type(polygon)))
+        #import pdb;pdb.set_trace()
     #if len(geoms) == 1 and len(geoms[0].interiors) == 0:
     #    return osm_add_polygon(osm, polygon, transform)
     #else:
@@ -83,11 +90,18 @@ def osm_add_multipolygon(osm, polygon, transform, same_nodes_set = None):
     osm.add_relation(r)
     r.tags["type"] = "multipolygon"
     for g in geoms:
-        way = osm_add_line_way(osm, g.exterior, transform, same_nodes_set)
+        if hasattr(g, "exterior"):
+            line = g.exterior
+        else:
+            # In case type(polygon) == GeometryCollection, some
+            # geometry may not be polygons, but LineString
+            line = g
+        way = osm_add_line_way(osm, line, transform, same_nodes_set)
         r.add_member(way, "outer")
-        for ring in g.interiors:
-            way = osm_add_line_way(osm, ring, transform, same_nodes_set)
-            r.add_member(way, "inner")
+        if hasattr(g, "interiors"):
+            for ring in g.interiors:
+                way = osm_add_line_way(osm, ring, transform, same_nodes_set)
+                r.add_member(way, "inner")
     return r
      
 
