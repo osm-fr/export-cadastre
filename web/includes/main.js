@@ -45,6 +45,7 @@ function onDepartementChange() {
 		onDepartementChange_previous_depCode = depCode;
 		document.getElementById("data_link").href = "data/" + depCode + "/";
 		document.getElementById("fantoir_dep_link").href = "fantoir/stats_dept.html#dept=" + (depCode.startsWith("0") ? depCode.substr(1) : depCode);
+		document.getElementById("fantoir_dep_recent_street_link").href = "fantoir/voies_recentes_manquantes.html#dept=" + (depCode.startsWith("0") ? depCode.substr(1) : depCode);
 		downloadVilleForDepartement(depCode);
 	}
 }

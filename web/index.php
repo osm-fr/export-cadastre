@@ -6,7 +6,9 @@ function get_parameter($name, $format, $default_GET = "", $default_POST = null) 
 	if ($default_POST === null) {
 		$default_POST = $default_GET;
 	}
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_SERVER['REQUEST_METHOD']) &&
+            ($_SERVER['REQUEST_METHOD'] == 'POST'))
+        {
 		if (isset($_POST[$name])) {
 			$val = $_POST[$name];
 		} else {
@@ -75,6 +77,9 @@ function already_generated() {
 <div id="conditions-utilisation">
 <p>
 Ce service et les données du cadastre disponibles ici sont exclusivement réservés à l'usage des contributeurs OpenStreetMap. <a href="http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">En savoir plus</a>
+</p>
+<p>
+Le cadastre n'est pas utilisé que pour le bâti, il permet aussi de compléter le nom des voies: <a href="http://wiki.openstreetmap.org/wiki/Contribuer_%C3%A0_la_BANO">Contribuer à la BANO</a>.
 </p>
 </div>
 <div id='information'>
@@ -183,6 +188,8 @@ else
 		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
 		<span class="stats_fantoir">
 		  <a id="fantoir_dep_link" href="fantoir/stats_dept.html">Stats FANTOIR</a>
+		  <br/>
+		  <a id="fantoir_dep_recent_street_link" href="fantoir/voies_recentes_manquantes.html">Voies récentes manquantes</a>
 		</span>
 	</fieldset>
 	<fieldset id='fville'>
@@ -233,7 +240,7 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 		<br/>
 		Pour les <i><u>limites</u></i> de communes, ce n'est pas trivial non plus et la <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Limites_administratives/Tracer_les_limites_administratives'>documentation est ici.</a>
 		<br/>
-		Pour l'intégration des données <i><u>adresses</u></i>, <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses'>il faut lire cette page</a>.
+                Pour l'intégration des données <i><u>adresses</u></i>, <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses'>il faut lire cette page</a>.
 		</p>
 	</fieldset>
 	<input id='force' type='hidden' name='force' value='false'/>

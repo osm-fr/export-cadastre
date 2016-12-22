@@ -27,9 +27,10 @@ if (!isset($dep)) {
 		<select id='ville' name='ville' onchange="javascript:onVilleChange();">
 <?php
 
-if( $villes_file = fopen( $data_path . $dep . '/' . $dep . '-liste.txt','r' ) )
+if( $dep != "" )
 {
-
+    $villes_file = fopen( $data_path . $dep . '/' . $dep . '-liste.txt','r' );
+    if( $villes_file ) {
 	while( $v = fgets( $villes_file ) )
 	{
 		$data = explode( ' ', $v, 3 );
@@ -56,6 +57,7 @@ if( $villes_file = fopen( $data_path . $dep . '/' . $dep . '-liste.txt','r' ) )
 		echo '>' . $v['name'] . '-' . $v['INSEEcode'] . "</option>\n";
 	}
 
+    }
 }
 
 ?>
