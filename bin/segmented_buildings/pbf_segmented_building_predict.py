@@ -12,18 +12,26 @@
 # You should have received a copy of the GNU General Public License
 # along with it. If not, see <http://www.gnu.org/licenses/>.
 
+"""
+Parse a .osm.pbf file given as argument,
+predict building that may be segmented by the cadastre,
+print them
+"""
+
 
 import sys
 import os.path
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "cadastre-housenumber"))
 
 import gc
 import re
+import json
 import time
 import array
 import pickle
 import datetime
+import argparse
 import multiprocessing as mp
 import multiprocessing.dummy
 from collections import namedtuple
@@ -87,7 +95,8 @@ class OSMBuildingsParser(object):
                         if way_id not in node_way_list:
                             self.nodes[ref] = node_way_list + this_way_singleton
 
-    def cleanup(self):
+    def cleanup_before_coords(self):
+        """called after ways parsing, and before coords parsing."""
         del self.multipolygon_ways_ids
         gc.collect() # hopping to use less memory in following forked imposm.parser processes
 
@@ -111,7 +120,7 @@ class OSMBuildingsParser(object):
             ways_callback = self.handle_ways)
         p2.parse(filename)
         if VERBOSE: sys.stderr.write("cleanup\n")
-        self.cleanup()
+        self.cleanup_before_coords()
         if VERBOSE: sys.stderr.write("parse coords\n")
         p3 = OSMParser(
             concurrency = self.concurrency, 
@@ -120,13 +129,15 @@ class OSMBuildingsParser(object):
 
 
 ExtWayInfo  = namedtuple('ExtWayInfo', ['wall', 'refs', 'touching_ways'])
+SimpleNodeInfo = namedtuple('SimpleNodeInfo', ['lon', 'lat', 'nb_ways'])
 
 
 class OSMTouchingBuildingsParser(OSMBuildingsParser):
     """OSM Building Parser that only keep buildings ways that are
        touching others with the same value for the flag 'wall'
     """
-    def cleanup(self):
+    def cleanup_before_coords(self):
+        """called after ways parsing, and before coords parsing."""
         if VERBOSE:
             nb_ways = len(self.ways)
             nb_nodes = len(self.nodes)
@@ -158,19 +169,19 @@ class OSMTouchingBuildingsParser(OSMBuildingsParser):
                             i = node_ways.index(way_id)
                             self.nodes[ref] = node_ways[:i] + node_ways[i+1:]
         # Recreate the nodes hashtable for only the nodes we really need the coordinates:
-        # (this will free a lot of memory as we have deleted many nodes)
+        # (this will free a lot of memory as we have deleted many nodes entry in the hashtable)
         self.nodes = {node_id:len(self.nodes[node_id]) for node_id in self.nodes}
         if VERBOSE:
             sys.stderr.write("{} ways => {}\n".format(nb_ways, len(self.ways)))
             sys.stderr.write("{} nodes => {}\n".format(nb_nodes, len(self.nodes)))
-        OSMBuildingsParser.cleanup(self)
+        OSMBuildingsParser.cleanup_before_coords(self)
 
     def handle_coords(self, coords):
         # Only keep lon,lat, and nb ways
         for node_id, lon, lat in coords:
             if node_id in self.nodes:
                 nb_ways = self.nodes[node_id]
-                self.nodes[node_id] = (lon,lat, nb_ways)
+                self.nodes[node_id] = SimpleNodeInfo(lon,lat, nb_ways)
 
 
 def multipolygon_building_tag_filter(tags):
@@ -193,10 +204,11 @@ SegmentedCase = namedtuple('SegmentedCase', ['id1', 'coords1', 'id2', 'coords2']
 
 
 class SegmentedBuildingsPredictor(object):
-    def __init__(self, concurrency=mp.cpu_count(), projection=2154, chunksize=100):
+    def __init__(self, concurrency=mp.cpu_count(), projection=2154, chunksize=100, printer=None):
         self.concurrency = concurrency
         self.projection=projection
         self.chunksize = chunksize
+        self.printer = printer;
         self.classifier, self.scaler = load_classifier_and_scaler()
         if (sys.version_info > (3, 4)):
             self.mp_context = mp.get_context('fork') 
@@ -231,7 +243,7 @@ class SegmentedBuildingsPredictor(object):
         for i in range(self.concurrency):
             p = self.mp_context.Process(
                     target=process_prediction,
-                    args=(self.scaler, self.classifier, self.projection, self.queue))
+                    args=(self.scaler, self.classifier, self.projection, self.queue, self.printer))
             p.start()
             self.processes.append(p)
 
@@ -260,7 +272,7 @@ def bbox(coords1):
     return min(xs), min(ys), max(xs), max(y)
 
 
-def process_prediction(scaler, classifier, projection, queue):
+def process_prediction(scaler, classifier, projection, queue, printer):
     transform = get_transform_from_osm_to(projection)
     while True:
         segmented_cases = queue.get()
@@ -270,30 +282,47 @@ def process_prediction(scaler, classifier, projection, queue):
             coords1 = transform.TransformPoints(case.coords1)
             coords2 = transform.TransformPoints(case.coords2)
             if predict_segmented(scaler, classifier, coords1, coords2):
-                output_error_case(case)
-
-def output_header():
-    print("""<?xml version="1.0" encoding="UTF-8"?>
-<analysers timestamp="{0}">
-<analyser timestamp="{0}" version="{1}">
-<class item="1" tag="building,geom,fix:chair" id="7" level="3">
-<classtext lang="fr" title="Bâtiment fractionné par le Cadastre ? (estimation)" />
-<classtext lang="en" title="Building segmented by the Cadastre ? (estimate)" />
-</class>""".format(datetime.datetime.now().isoformat(), get_git_describe()))
+                printer(case)
 
 
-def output_error_case(case):
-    lon,lat,_ = common_coords_barycentre(case.coords1, case.coords2)
-    print("""<error class="7">
-<location lat="{}" lon="{}" />
-<way id="{}" />
-<way id="{}" />
-</error>""".format(lat, lon, case.id1, case.id2))
+class ResultPrinter():
+    """Print a SegmentedCase result"""
+    def __init__(self, output=None):
+        # Use unbuffered output to avoid multiprocessing mixup output
+        self.output = output if output!=None else os.fdopen(sys.stdout.fileno(), 'wb', 0)
+
+    def print_header(self):
+        pass
+    def __call__(self, case):
+        self.output.write((json.dumps(
+            [{'id': case.id1, 'latlngs':[(c.lat, c.lon) for c in case.coords1]}, 
+             {'id': case.id2, 'latlngs':[(c.lat, c.lon) for c in case.coords2]}]) + "\n").encode("utf-8"))
+    def print_footer(self):
+        pass
+
+class OsmosePrinter(ResultPrinter):
+    """Print a SegmentedCase result"""
+    def print_header(self):
+        self.output.write(("""<?xml version="1.0" encoding="UTF-8"?>
+    <analysers timestamp="{0}">
+    <analyser timestamp="{0}" version="{1}">
+    <class item="1" tag="building,geom,fix:chair" id="7" level="3">
+    <classtext lang="fr" title="Bâtiment fractionné par le Cadastre ? (estimation)" />
+    <classtext lang="en" title="Building segmented by the Cadastre ? (estimate)" />
+    </class>\n""".format(datetime.datetime.now().isoformat(), get_git_describe())).encode("utf-8"))
 
 
-def output_footer():
-    print("</analyser>")
-    print("</analysers>")
+    def __call__(self,case):
+        lon,lat,_ = common_coords_barycentre(case.coords1, case.coords2)
+        self.output.write(("""<error class="7">
+    <location lat="{}" lon="{}" />
+    <way id="{}" />
+    <way id="{}" />
+    </error>\n""".format(lat, lon, case.id1, case.id2)).encode("utf-8"))
+
+
+    def print_footer(self):
+        self.output.write("</analyser>\n</analysers>\n".encode("utf-8"))
 
 
 def predict_segmented(scaler, classifier, coords1, coords2):
@@ -320,18 +349,21 @@ else:
 
 
 def main(args):
+    parser = argparse.ArgumentParser(description='Predict segmented buildings in .osm.pbf file.')
+    parser.add_argument("--osmose", help="Generate Osmose xml file instead of plain text", action='store_true')
+    parser.add_argument("pbf", help=".osm.pbf file to parse", type=str)
+    parser.add_argument("projection", nargs="?", help="The projection to use when analysing geomerty", default=2154, type=int)
+    args = parser.parse_args(args)
+
     os.system("cd " + SEGMENTED_DATA_DIR  +"; make -s 3")
-    filename = args[0]
-    if len(args) > 1:
-        projection = int(args[1])
-    else:
-        projection = 2154
-    output_header()
-    predictor = SegmentedBuildingsPredictor(projection=projection)
+
+    printer = OsmosePrinter() if args.osmose else ResultPrinter()
+    printer.print_header()
+    predictor = SegmentedBuildingsPredictor(projection=args.projection, printer=printer)
     buildings = OSMTouchingBuildingsParser()
-    buildings.parse(filename)
+    buildings.parse(args.pbf)
     predictor.predict(buildings)
-    output_footer()
+    printer.print_footer()
 
 if __name__ == '__main__':
     main(sys.argv[1:])

@@ -13,15 +13,14 @@
 
 
 # Download all pbf file for France regions
-# apply segmented building detection on them
-# generate osmose xml.
-
+# apply segmented building prediction on them
+# generate raw output or osmose xml if --osmose option is used..
 
 RESULT_DIR=.
-PREDICT=`dirname $0`/pbf_segmented_building_predict.py
+PREDICT=`dirname $0`/pbf_segmented_building_predict.py $1
 OSMOSE_POST=`dirname $0`/osmose_post.py
-SEGMENTED_DATA_DIR=`dirname $0`/../data/segmented_building/
-OSMOSE_CONF=`dirname $0`/../data/osmose.conf
+SEGMENTED_DATA_DIR=`dirname $0`/../cadastre-housenumber/data/segmented_building/
+OSMOSE_CONF=`dirname $0`/osmose.conf
 if [ -z "$TMP" ] ; then
     TMP=/tmp
 fi
@@ -113,7 +112,7 @@ function download_pbfs {
 
 function predict {
     while read region pbf projection ; do
-       result="$RESULT_DIR/segmented_building_predict-france_$region.xml.bz2"
+       result="$RESULT_DIR/segmented_building_predict-france_$region.bz2"
        echo "==========================================================>" 1>&2
        echo "| $region $projection" 1>&2
        echo "| $pbf => $result" 1>&2
@@ -133,6 +132,11 @@ function post_osmose {
 
 echo "Start download..." 1>&2
 
-#list_regions | download_pbfs | predict | post_osmose
-list_regions | download_pbfs | predict 
+if [ "$1" == "--osmose" ] ; then
+    PREDICT=$PREDICT --osmose
+    list_regions | download_pbfs | predict | post_osmose
+else
+    list_regions | download_pbfs | predict 
+fi
+
 

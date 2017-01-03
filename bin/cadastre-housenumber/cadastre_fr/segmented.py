@@ -75,10 +75,15 @@ import operator
 import itertools
 #import tensorflow
 import rtree.index
+import sklearn
 from sklearn import svm
 from sklearn import tree
 from sklearn import neighbors
-from sklearn import grid_search
+sklearn_version = tuple(map(int, sklearn.__version__.split(".")[0:2]))
+if sklearn_version  >= (0, 18):
+    from sklearn.model_selection import GridSearchCV
+else:
+    from sklearn.grid_search import GridSearchCV
 from sklearn import preprocessing
 from functools import reduce
 from shapely.geometry.polygon import Polygon
@@ -369,7 +374,7 @@ def train_kneighbors(data, result, scoring=None):
     #    'n_neighbors': (8,) #range(3,11)
     #}
     #print(parameters)
-    #search = grid_search.GridSearchCV(neighbors.KNeighborsClassifier(), parameters, scoring=scoring, n_jobs=1)
+    #search = GridSearchCV(neighbors.KNeighborsClassifier(), parameters, scoring=scoring, n_jobs=1)
     #search.fit(data, result)
     #print("best params: {}".format(search.best_params_))
     #print("best score: {}".format(search.best_score_))
@@ -394,7 +399,7 @@ def train_tree(data, result, scoring=None):
             'splitter':('best','random'),
     }
     print(parameters)
-    search = grid_search.GridSearchCV(tree.DecisionTreeClassifier(), parameters, scoring=scoring, n_jobs=1)
+    search = GridSearchCV(tree.DecisionTreeClassifier(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
     print("best params: {}".format(search.best_params_))
     print("best score: {}".format(search.best_score_))
@@ -442,7 +447,7 @@ def train_svm(data, result, scoring=None):
         'C': [10**x for x in xrange(0,5)]
     }
     print(parameters)
-    search = grid_search.GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
+    search = GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
     print("best params: {}".format(search.best_params_))
     print("best score: {}".format(search.best_score_))
@@ -460,7 +465,7 @@ def train_svm(data, result, scoring=None):
              + [C + C*i for i in range(1,9)]
     }
     print(parameters)
-    search = grid_search.GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
+    search = GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
     print("best params: {}".format(search.best_params_))
     print("best score: {}".format(search.best_score_))
@@ -488,7 +493,7 @@ def train_sgd(data, result, scoring=None):
         'penalty': ('none', 'l2', 'l1', 'elasticnet')
     }
     print(parameters)
-    search = grid_search.GridSearchCV(SGDClassifier(), parameters, scoring=scoring, n_jobs=1)
+    search = GridSearchCV(SGDClassifier(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
     print("best params: {}".format(search.best_params_))
     print("best score: {}".format(search.best_score_))

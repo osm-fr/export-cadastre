@@ -1,0 +1,4 @@
+/.database-connection-string
+/osmose.conf
+/*.osm.pbf
+/*.bz2
