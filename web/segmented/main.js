@@ -246,10 +246,10 @@ function josm_url(bounds, ways_id) {
 
 let cases = [];
 let cases_ids = new Set();
-let case_ids = [];
 let cur_index = -1;
 let request_send = false;
 let need_display = false;
+let got_connection_error = false;
 
 function set_next_case_the_nearest() {
     const center = map1.getCenter();
@@ -287,6 +287,7 @@ function check_ok(fetch_response) {
 }
 
 function connection_problem(err) {
+    got_connection_error = true;
     alert("Problème de connection au serveur: " + err);
 }
 
@@ -328,6 +329,7 @@ function next(findNearest) {
                 }
             }
         }).catch(connection_problem);
+        fetch_stats();
     }
 }
 
@@ -345,6 +347,7 @@ function choose(choice, animate) {
         url = "set.php?id=" + cases[cur_index].id + "&choice=" + choice + "&session=" + session;
         //console.log(url);
         fetch(url, { method: 'POST' }).then(r => check_ok(r)).catch(connection_problem);
+        increment_stats(+1);
         next(true);
     }
 }
@@ -357,8 +360,49 @@ function go_back(animate) {
         //console.log(url);
         fetch(url, { method: 'POST' }).then(r => check_ok(r)).catch(connection_problem);
         cur_index = cur_index - 2;
+        increment_stats(-1);
         next(false);
     }
+}
+
+let stats = {
+    contributions_distinct_ips: null,
+    cases: null,
+    contributions: null,
+    contributions_distinct_cases: null,
+    contributions_from_ip: 0,
+}
+
+function fetch_stats() {
+    fetch("stats.php").then((response => check_ok(response).json())).then(function(json) {
+        Object.keys(json).forEach(function (key) { stats[key] = json[key]; });
+        show_stats();
+    });
+}
+
+function increment_stats(value) {
+    stats.contributions_from_ip += value;
+    stats.contributions_distinct_cases += value;
+    if (value > 0) {
+        const plusone = document.getElementById("plusone")
+        plusone.style.display = "block";
+        setTimeout(function() {
+            plusone.classList.add("plusone-zoom");
+            setTimeout(function() {
+                plusone.classList.remove("plusone-zoom");
+                plusone.style.display = "none";
+            }, 1000);
+        }, 50);
+        
+    }
+    show_stats();
+}
+
+function show_stats() {
+    document.getElementById("count_users").innerHTML = stats.contributions_distinct_ips;
+    document.getElementById("count_cases").innerHTML = 
+        stats.contributions_distinct_cases + " / " + stats.cases;
+    document.getElementById("count_ip").innerHTML = stats.contributions_from_ip;
 }
 
 next(false);

@@ -75,7 +75,7 @@ def get_cases(ip, limit, lat, lon):
         cur.execute(query)
         limit = limit - cur.rowcount
         rows.extend(cur.fetchall())
-    return dict(count=len(rows), type="Featurecollection", features=[json.loads(r[0]) for r in rows])
+    return dict(count=len(rows), type="FeatureCollection", features=[json.loads(r[0]) for r in rows])
 
 def main(args):
     parser = argparse.ArgumentParser(description='Get next segmente building cases to consider.')

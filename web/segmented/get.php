@@ -90,6 +90,6 @@ EOT;
     while ($row = pg_fetch_row($result)) array_push($items, json_decode($row[0]));
 }
 
-echo json_encode(array('type' => 'Featurecollection', 'count' => count($items), 'features' => $items)); 
+echo json_encode(array('type' => 'FeatureCollection', 'count' => count($items), 'features' => $items)); 
 */
 ?>

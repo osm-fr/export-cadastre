@@ -1,24 +1,80 @@
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=500px, initial-scale=0.6" />
     <title>Bâtiments fractionnés</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/pure-min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
     <script src="L.Map.Sync.js"></script>
     <style>
-        document body {
+        html,
+        body {
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
         }
         
-        #map1,
-        #map2 {
-            width: 49vw;
-            height: 70vh;
+        #main {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        #title {
+            background: linear-gradient(#dddddd, white);
+            width: 100%;
+            text-align: center;
+            font-size: 18pt;
+            padding: 10px;
+        }
+        
+        #maps {
+            flex-grow: 1;
+            display: flex;
+        }
+        
+        @media all and (orientation:portrait) {
+            #maps {
+                flex-direction: column;
+            }
+            #map1,
+            #map2 {
+                width: 100%;
+                height: 50%;
+            }
+        }
+        
+        @media all and (orientation:landscape) {
+            #maps {
+                flex-wrap: nowrap;
+            }
+            #map1,
+            #map2 {
+                width: 50%;
+                height: 100%;
+            }
+        }
+        
+        #control {
+            padding: 10px;
+            padding-bottom: 15px;
+            background: linear-gradient(white, #999999);
+            display: flex;
+            flex-wrap: nowrap
+        }
+        
+        .control-outer {
+            width: 20%;
+            margin: auto;
+            text-align: center;
+        }
+        
+        .control-middle {
+            width: 60%;
+            margin: auto;
+            text-align: center;
         }
         
         .choice-button {
@@ -28,47 +84,84 @@
             top: 0px;
             left: 0px;
             margin: 5px;
-            box-shadow: 5px 5px 5px #555555;
+            box-shadow: 5px 5px 5px #222222;
         }
         
         .choice-button-active,
         .choice-button:active {
             top: 3px;
             left: 2px;
-            box-shadow: 2px 3px 5px #555555;
+            box-shadow: 2px 3px 5px #222222;
         }
-        #osm-edit-link,
-        #josm-link,
+        
         #button-back {
             font-size: 16pt;
             padding-top: 10px;
             padding-bottom: 10px;
-            display:block;
+        }
+        
+        #osm-edit-link,
+        #josm-link {
+            display: block;
+            font-size: 14pt;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        
+        #social {
+            position: absolute;
+            bottom: 0px;
+            left: 8px;
+            z-index: 10;
+            opacity: 0.8;
+        }
+        
+        #stats {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background-color: white;
+            opacity: 0.8;
+            padding: 10px 10px;
+            transition: width 1s;
+            -webkit-transition: width 2s;
+            z-index: 1000;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        #plusone {
+            position: absolute;
+            right: 200px;
+            top: 130px;
+            z-index: 1000;
+            color: #0f0;
+            font-size: 40px;
+            transition: transform 0.5s, opacity 1s;
+            display: none;
+        }
+        
+        .plusone-zoom {
+            opacity: 0.0;
+            transform: scale(3);
         }
     </style>
 </head>
 
 <body>
-
-    <p id="title">
-        <center>
-            <h2>Bâtiments fractionnés à tort par les limites cadastrales ?</h2>
-        </center>
-    </p>
-
-    <div id="maps" class="pure-g">
-        <div id="map1" class="pure-u-1-2"></div>
-        <div id="map2" class="pure-u-1-2"></div>
-    </div>
-
-    <p />
-
-    <div id="control" class="pure-g">
-        <div class="pure-u-1-6"><br />
-            <center><span class="choice-button" id="button-back">&larr; Annuler</span></center>
+    <div id="main">
+        <div id="title">
+            Bâtiments fractionnés à tort par les limites cadastrales ?
         </div>
-        <div class="pure-u-2-3">
-            <center>
+        <div id="maps">
+            <div id="map1"></div>
+            <div id="map2"></div>
+        </div>
+        <div id="control">
+            <div class="control-outer"><br />
+                <span class="choice-button" id="button-back">&larr; Annuler&nbsp;</span>
+            </div>
+            <div class="control-middle">
                 <span id="button-join" class="choice-button" title="Oui, bâtiments à fusionner (touche 1)">
                     <svg style="display:inline-block;" viewBox="0 0 94 74" 
                         reserveAspectRatio="xMidYMin slice" width="120px">
@@ -94,7 +187,7 @@
                             d="m 39,5 -34,0 0,64 84,0 0,-24 -50,0 0,-40 z" />
                     </svg>
                 </span>
-                <span id="button-unknown" class="choice-button" title="Cas ambigüe ou compliqué (touche 0)">        
+                <span id="button-unknown" class="choice-button" title="Cas ambigü ou compliqué (touche 0)">        
                     <svg style="display:inline-block;"  viewBox="0 0 94 74" 
                         reserveAspectRatio="xMidYMin slice" width="120px">
                         <text font-family="sans-serif" font-size="64px"; x="29" y="61" >?</text>
@@ -106,18 +199,27 @@
                             d="m 5,5 84,64" />
                     </svg>
                 </span>
-            </center>
-        </div>
-        <div class="pure-u-1-6" id="osm-links">
-            <center>
+            </div>
+            <div id="osm-links" class="control-outer">
                 <a id="osm-edit-link" target="osm" href="">OSM-edit</a>
                 <a id="josm-link" target="josm" href="">JOSM</a>
-            </center>
+            </div>
         </div>
     </div>
-
+    <div id="social">
+        <a href="https://github.com/osm-fr/export-cadastre" title="Voir le code source sur GitHub"><img src="img/git.png"></a>&nbsp;
+        <a href="http://trac.openstreetmap.fr/newticket?component=export%20cadastre&owner=tyndare" title="Signaler un Bug"><img src="img/trac.png"></a>&nbsp;
+    </div>
+    <div id="plusone">+1 !</div>
+    <div id="stats">
+        <img src="img/user.png" alt="Vos contributions" title="Vos contributions">
+        <div id="count_ip">----</div>
+        <img src="img/building.png" alt="Cas traités" title="Cas traités">
+        <div id="count_cases">----</div>
+        <img src="img/users.png" alt="Nombre de contributeurs" title="Nombre de contributeurs">
+        <div id="count_users">----</div>
+    </div>
     <script src="main.js"></script>
-
 </body>
 
 </html>
