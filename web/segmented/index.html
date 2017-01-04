@@ -26,8 +26,9 @@
             background: linear-gradient(#dddddd, white);
             width: 100%;
             text-align: center;
-            font-size: 18pt;
-            padding: 10px;
+            font-size: 17pt;
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
         
         #maps {
@@ -66,32 +67,55 @@
         }
         
         .control-outer {
-            width: 20%;
+            width: 15%;
             margin: auto;
             text-align: center;
         }
         
         .control-middle {
-            width: 60%;
+            width: 70%;
             margin: auto;
             text-align: center;
         }
         
         .choice-button {
-            margin: 5px;
             transition: all ease 0.2s;
-            position: relative;
+            position:relative;
             top: 0px;
             left: 0px;
             margin: 5px;
             box-shadow: 5px 5px 5px #222222;
+            display:inline-block;
+            background: linear-gradient(#eeeeee, white);
+            -webkit-touch-callout: none; 
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
         .choice-button-active,
         .choice-button:active {
-            top: 3px;
-            left: 2px;
-            box-shadow: 2px 3px 5px #222222;
+            top: 5px;
+            left: 3px;
+            box-shadow: 0px 2px 5px #222222;
+            background: radial-gradient(white, #eeeeee);
+        }
+
+        #button-join,
+        #button-keep,
+        #button-unknown {
+            font-size: 80px;
+            font-family: sans-serif;
+            font-weight: bold;
+            width:120px;
+        }
+        #button-join {
+            color: red;
+        }
+        #button-keep {
+            color: green;
         }
         
         #button-back {
@@ -119,7 +143,7 @@
         #stats {
             position: absolute;
             right: 8px;
-            top: 8px;
+            top: 50px;
             background-color: white;
             opacity: 0.8;
             padding: 10px 10px;
@@ -130,18 +154,23 @@
             text-align: center;
         }
         
-        #plusone {
+        .reward {
             position: absolute;
             right: 200px;
             top: 130px;
             z-index: 1000;
-            color: #0f0;
             font-size: 40px;
             transition: transform 0.5s, opacity 1s;
             display: none;
         }
+        #plusone {
+            color: red;
+        }
+        #plusok {
+            color: #0f0;
+        }
         
-        .plusone-zoom {
+        .reward-zoom {
             opacity: 0.0;
             transform: scale(3);
         }
@@ -163,41 +192,13 @@
             </div>
             <div class="control-middle">
                 <span id="button-join" class="choice-button" title="Oui, bâtiments à fusionner (touche 1)">
-                    <svg style="display:inline-block;" viewBox="0 0 94 74" 
-                        reserveAspectRatio="xMidYMin slice" width="120px">
-                    <ellipse
-                        style="fill:#e196c0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1"
-                        cx="29" cy="37" ry="32" rx="24" />
-                    <ellipse
-                        style="fill:#e196c0;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1"
-                        cx="65" cy="37" ry="32" rx="24" />
-                    <ellipse
-                        style="fill:#e196c0;fill-opacity:1;stroke:none;"
-                        cx="46" cy="37" rx="12" ry="22" />
-                    </svg>
+                  +
                 </span>
                 <span id="button-keep" class="choice-button" title="Non, garder les bâtiments distincts (touche 2)">
-                    <svg style="display:inline-block;" viewBox="0 0 94 74" 
-                        reserveAspectRatio="xMidYMin slice" width="120px">
-                        <rect
-                            style="fill:#8feb6a;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1"
-                            width="42" height="32" x="47" y="5" />
-                        <path
-                            style="fill:#6291e7;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1"
-                            d="m 39,5 -34,0 0,64 84,0 0,-24 -50,0 0,-40 z" />
-                    </svg>
+                  -
                 </span>
-                <span id="button-unknown" class="choice-button" title="Cas ambigü ou compliqué (touche 0)">        
-                    <svg style="display:inline-block;"  viewBox="0 0 94 74" 
-                        reserveAspectRatio="xMidYMin slice" width="120px">
-                        <text font-family="sans-serif" font-size="64px"; x="29" y="61" >?</text>
-                        <rect
-                            style="fill:none;stroke:#000000;stroke-width:5;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4"
-                            width="84" height="64" x="5" y="5" />
-                        <path
-                            style="fill:none;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:5, 10;stroke-dashoffset:0;stroke-opacity:0.5"
-                            d="m 5,5 84,64" />
-                    </svg>
+                <span id="button-unknown" class="choice-button" style="display:inline-block;" title="Cas ambigü ou compliqué (touche 0)">        
+                  ?
                 </span>
             </div>
             <div id="osm-links" class="control-outer">
@@ -210,7 +211,8 @@
         <a href="https://github.com/osm-fr/export-cadastre" title="Voir le code source sur GitHub"><img src="img/git.png"></a>&nbsp;
         <a href="http://trac.openstreetmap.fr/newticket?component=export%20cadastre&owner=tyndare" title="Signaler un Bug"><img src="img/trac.png"></a>&nbsp;
     </div>
-    <div id="plusone">+1 !</div>
+    <div id="plusone" class="reward">+1 !</div>
+    <div id="plusok" class="reward">OK !</div>
     <div id="stats">
         <img src="img/user.png" alt="Vos contributions" title="Vos contributions">
         <div id="count_ip">----</div>

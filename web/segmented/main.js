@@ -37,11 +37,12 @@ class GeometryError extends Error {
     }
 }
 
-const style_default = { color: 'blue', stroke: true, fill: false };
-const style_keep = { color: 'lightgreen', stroke: true, fill: false };
-const style_join = { color: 'rgb(255,100,255)', stroke: true, fill: false };
-const style_intersect = { color: 'red', stroke: true };
+const style_big = { color: 'blue', stroke: true, fill: false, weight:4 };
+const style_small = { color: 'lightgreen', stroke: true, fill: false , weight:4};
+const style_keep = { color: 'lightgreen', stroke: true, fill: false , weight:7};
+const style_join = { color: 'red', stroke: true, fill: false, weight:6};
 const style_none = { stroke: false };
+const style_unknown = { color: 'yellow', stroke: true, fill: false, weight:3};
 
 /**
  * Leaflet Polylines for 2 polygons to be joined.
@@ -52,14 +53,23 @@ class JoinPolygons {
         this.outer1_polylines = []
         this.outer2_polylines = []
         this.intersect_polylines = []
-        this.blinkOn = true;
+        this.blinkOn = false;
         this.blinkInterval = null;
+        let outer1_size = JoinPolygons.length(this.outer1_latLngs);
+        let outer2_size = JoinPolygons.length(this.outer2_latLngs);
+        if (outer1_size > outer2_size) {
+            this.style_outer1 = style_big;
+            this.style_outer2 = style_small
+        } else {
+            this.style_outer1 = style_small;
+            this.style_outer2 = style_big;
+        }
     }
 
     addTo(map) {
-        this.outer1_polylines.push(L.polyline(this.outer1_latLngs, style_default).addTo(map));
-        this.outer2_polylines.push(L.polyline(this.outer2_latLngs, style_default).addTo(map));
-        this.intersect_polylines.push(L.polyline(this.intersect_latLngs, style_intersect).addTo(map));
+        this.outer1_polylines.push(L.polyline(this.outer1_latLngs, this.style_outer1).addTo(map));
+        this.outer2_polylines.push(L.polyline(this.outer2_latLngs, this.style_outer2).addTo(map));
+        this.intersect_polylines.push(L.polyline(this.intersect_latLngs, style_join).addTo(map));
         return this;
     }
 
@@ -72,14 +82,14 @@ class JoinPolygons {
 
     blink() {
         this.blinkOn = !this.blinkOn;
-        this.outer1_polylines.forEach(p => p.setStyle(this.blinkOn ? style_default : style_none));
-        this.outer2_polylines.forEach(p => p.setStyle(this.blinkOn ? style_default : style_none));
-        this.intersect_polylines.forEach(p => p.setStyle(this.blinkOn ? style_intersect : style_none));
+        this.outer1_polylines.forEach(p => p.setStyle(this.blinkOn ? this.style_outer1 : style_unknown));
+        this.outer2_polylines.forEach(p => p.setStyle(this.blinkOn ? this.style_outer2 : style_unknown));
+        this.intersect_polylines.forEach(p => p.setStyle(this.blinkOn ? style_small : style_none));
     }
 
     showBlinking() {
         clearInterval(this.blinkInterval);
-        this.blinkOn = true;
+        this.blinkOn = false;
         this.blink();
         this.blinkInterval = setInterval(() => this.blink(), 500);
     }
@@ -93,15 +103,8 @@ class JoinPolygons {
 
     showKept() {
         clearInterval(this.blinkInterval);
-        let outer1_size = JoinPolygons.bounds_size(this.outer1_polylines[0].getBounds());
-        let outer2_size = JoinPolygons.bounds_size(this.outer2_polylines[0].getBounds());
-        if (outer1_size > outer2_size) {
-            this.outer1_polylines.forEach(p => p.setStyle(style_default));
-            this.outer2_polylines.forEach(p => p.setStyle(style_keep));
-        } else {
-            this.outer1_polylines.forEach(p => p.setStyle(style_keep));
-            this.outer2_polylines.forEach(p => p.setStyle(style_default));
-        }
+        this.outer1_polylines.forEach(p => p.setStyle(this.style_outer1));
+        this.outer2_polylines.forEach(p => p.setStyle(this.style_outer2));
         this.intersect_polylines.forEach(p => p.setStyle(style_keep));
     }
 
@@ -113,10 +116,13 @@ class JoinPolygons {
         return this.intersect_polylines[0].getCenter();
     }
 
-    static bounds_size(bounds) {
-        const l = bounds.getWest() - bounds.getEast();
-        const h = bounds.getNorth() - bounds.getSouth();
-        return Math.sqrt(l * l + h * h);
+    static length(latLngs) {
+        latLngs = latLngs.map(c => L.latLng(c));
+        let result = 0;
+        for(let i=1;i<latLngs.length;i++) {
+            result = result + latLngs[i].distanceTo(latLngs[i-1]);
+        }
+        return result;
     }
 
     /**
@@ -125,7 +131,7 @@ class JoinPolygons {
      */
     static get_outers_and_intersect_latLngs(way1, way2) {
         function latLng_eq(p1, p2) {
-            return (p1[0] == p2[0]) && (p1[1] == p2[1]);
+            return (p1[0] == p2[0]) && (p1[1] == p2[1])
         }
 
         function is_closed(way) {
@@ -137,6 +143,11 @@ class JoinPolygons {
         }
         way1 = way1.slice(1);
         way2 = way2.slice(1);
+        if (way1.length < way2.length) {
+            let w = way1;
+            way1 = way2;
+            way2 = w;
+        }
         const length1 = way1.length;
         const length2 = way2.length
 
@@ -183,6 +194,27 @@ class JoinPolygons {
 }
 
 
+/**
+ * Increase a LatLngBounds size by the given meters, and then the given factor,
+ * and make it square.
+ * It is intended to be an improovement for our use of the original 
+ * LatLngBounds.pad() method.
+ */
+function betterPad(latLngBounds, meters, factor) {
+    cur_width_meters = latLngBounds.getSouthWest().distanceTo(latLngBounds.getSouthEast());
+    cur_height_meters = latLngBounds.getSouthWest().distanceTo(latLngBounds.getNorthWest());
+    let cur_size_meters = latLngBounds.getSouthWest().distanceTo(latLngBounds.getNorthEast());
+    let new_size_meters = (cur_size_meters + meters) * (1 + factor);
+    let center = latLngBounds.getCenter();
+    new_width_deg = (latLngBounds.getEast()-center.lng) * new_size_meters / cur_width_meters;
+    new_height_deg = (latLngBounds.getNorth()-center.lat) * new_size_meters / cur_height_meters;
+    return L.latLngBounds(
+        L.latLng(center.lat - new_height_deg, center.lng - new_width_deg),
+        L.latLng(center.lat + new_height_deg, center.lng + new_width_deg));
+};
+ 
+
+
 let joinPolygons = null;
 document.getElementById('button-join').addEventListener("mouseenter", function() {
     if (joinPolygons != null) joinPolygons.showJoined();
@@ -219,11 +251,12 @@ document.body.addEventListener("keydown", function(e) {
     }
 });
 
-function display(item) {
+function display_case(item) {
     if (joinPolygons != null) joinPolygons.remove();
+    location.hash = item.id;
     joinPolygons = new JoinPolygons(item.coords1, item.coords2).addTo(map1).addTo(map2);
-    map1.fitBounds(joinPolygons.getBounds().pad(0.5));
-    document.getElementById('josm-link').href = josm_url(joinPolygons.getBounds().pad(1), [item.id1, item.id2]);
+    map1.fitBounds(betterPad(joinPolygons.getBounds(), 5, 0.2));
+    document.getElementById('josm-link').href = josm_url(betterPad(joinPolygons.getBounds(), 30, 0.5), [item.id1, item.id2]);
     document.getElementById('osm-edit-link').href = osm_url(joinPolygons.getCenter(), map1.getZoom());
     joinPolygons.showBlinking();
 }
@@ -262,17 +295,18 @@ function set_next_case_the_nearest() {
     }
 }
 
-function try_display(findNearest) {
+function try_display_next(findNearest) {
     try {
         if (findNearest) set_next_case_the_nearest();
-        display(cases[cur_index]);
+        display_case(cases[cur_index]);
     } catch (err) {
         //console.log(err.name);
         if (err.name == 'GeometryError') {
+            console.log("Invalid geometry: ", cases[cur_index].id);
             // Invalid item
             cases.splice(cur_index, 1);
             cur_index = cur_index - 1;
-            next(findNearest);
+            next(findNearest, null);
         } else {
             throw err;
         }
@@ -291,16 +325,26 @@ function connection_problem(err) {
     alert("Problème de connection au serveur: " + err);
 }
 
-function next(findNearest) {
+function next(findNearest, id) {
+    //console.log("next " + findNearest + ", " + id);
     cur_index = cur_index + 1;
+    if (id !== null) {
+        // Remove all the following items
+        cases.splice(cur_index).forEach(c => cases_ids.delete(c.id));
+    }
     if (cur_index < cases.length) {
-        try_display(findNearest);
+        try_display_next(findNearest);
     } else {
         need_display = true;
     }
-    if (!request_send && ((cur_index + 5) >= cases.length)) {
-        const center = map1.getCenter();
-        const url = "get.php?limit=20&lat=" + center.lat + "&lon=" + center.lng;
+    if ((!request_send && ((cur_index + 5) >= cases.length)) || (id != null))  {
+        let url;
+        if (id  == null) {
+            const center = map1.getCenter();
+            url = "get.php?limit=20&lat=" + center.lat + "&lon=" + center.lng;
+        } else {
+            url = "get.php?id=" + id + "&limit=1";
+        }
         //console.log(url);
         request_send = true;
         fetch(url).then((response => check_ok(response).json())).then(function(json) {
@@ -323,7 +367,7 @@ function next(findNearest) {
             if (need_display) {
                 need_display = false;
                 if (cur_index < cases.length) {
-                    try_display(findNearest);
+                    try_display_next(findNearest);
                 } else {
                     alert("Il ne reste pour le moment plus aucun cas à traiter. Bravo à tous !");
                 }
@@ -340,6 +384,18 @@ function press(button) {
 
 const session = Math.round(Math.random() * 2147483647);
 
+function show_reward(rewardid) {
+    const elem = document.getElementById(rewardid);
+    elem.style.display = "block";
+    setTimeout(function() {
+        elem.classList.add("reward-zoom");
+        setTimeout(function() {
+            elem.classList.remove("reward-zoom");
+            elem.style.display = "none";
+        }, 1000);
+    }, 50);
+}
+
 function choose(choice, animate) {
     //console.log(choice);
     if ((cur_index >= 0) && (cur_index < cases.length)) {
@@ -348,7 +404,8 @@ function choose(choice, animate) {
         //console.log(url);
         fetch(url, { method: 'POST' }).then(r => check_ok(r)).catch(connection_problem);
         increment_stats(+1);
-        next(true);
+        show_reward((choice == "join") ? "plusone" : "plusok");
+        next(true, null);
     }
 }
 
@@ -361,7 +418,7 @@ function go_back(animate) {
         fetch(url, { method: 'POST' }).then(r => check_ok(r)).catch(connection_problem);
         cur_index = cur_index - 2;
         increment_stats(-1);
-        next(false);
+        next(false, null);
     }
 }
 
@@ -383,18 +440,6 @@ function fetch_stats() {
 function increment_stats(value) {
     stats.contributions_from_ip += value;
     stats.contributions_distinct_cases += value;
-    if (value > 0) {
-        const plusone = document.getElementById("plusone")
-        plusone.style.display = "block";
-        setTimeout(function() {
-            plusone.classList.add("plusone-zoom");
-            setTimeout(function() {
-                plusone.classList.remove("plusone-zoom");
-                plusone.style.display = "none";
-            }, 1000);
-        }, 50);
-        
-    }
     show_stats();
 }
 
@@ -405,4 +450,12 @@ function show_stats() {
     document.getElementById("count_ip").innerHTML = stats.contributions_from_ip;
 }
 
-next(false);
+
+window.addEventListener("hashchange", function() { 
+    id = parseInt(location.hash.substring(1));
+    if ((id != parseInt("")) && (cur_index < cases.length) && (id != cases[cur_index].id)) {
+        next(false, id);
+    }
+});
+
+next(false, (location.hash.length > 0) ? parseInt(location.hash.substring(1)) :null);

@@ -2,3 +2,4 @@
 /osmose.conf
 /*.osm.pbf
 /*.bz2
+/dump

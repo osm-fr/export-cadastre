@@ -61,6 +61,7 @@ CREATE INDEX segmented_cases_osm_id2 ON segmented_cases USING btree (way2_osm_id
 CREATE INDEX segmented_cases_osm_ids ON segmented_cases USING btree (way1_osm_id, way2_osm_id);
 CREATE INDEX segmented_cases_geom    ON segmented_cases USING gist(center) WHERE (resolution = 'none');
 
-CREATE INDEX segmented_contributions_case_id ON segmented_contributions USING btree (case_id);
-
+CREATE INDEX segmented_contributions_case_id    ON segmented_contributions USING btree (case_id);
+CREATE INDEX segmented_contributions_case_id_ip ON segmented_contributions USING btree (case_id,ip);
+CREATE INDEX segmented_contributions_ip         ON segmented_contributions USING btree (ip);
 

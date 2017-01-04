@@ -10,6 +10,7 @@ segmented building cases to consider for contributions.
 @param limit max number of cases to return (integer).
 @param lat latitude coordinates of the prefered location to look for new cases.
 @param lon idem for longitude.
+@param id of a particular case to get (optional param)
 
 This file is largely derived from OpenSolarMap backend code from Christan Quest: 
 https://github.com/opensolarmap/solback/blob/master/solback.py 
@@ -26,12 +27,12 @@ import psycopg2
 DEFAULT_LAT=48.3
 DEFAULT_LON=-1.8;
 
-def get_cases(ip, limit, lat, lon):
+def get_cases(ip, limit, lat, lon, id=-1):
     if limit>100: limit=100
     dbstring = file(os.path.join(os.path.dirname(sys.argv[0]), ".database-connection-string")).read()
     db = psycopg2.connect(dbstring)
     cur = db.cursor()
-    results = []
+    rows = []
 
     output_format = """
         '{"type":"Feature","id":'|| id::text
@@ -45,18 +46,28 @@ def get_cases(ip, limit, lat, lon):
           ||st_asgeojson(way2_geom,7) 
           ||']}}'"""
 
-    query =  cur.mogrify("""
-        SELECT """ + output_format + """
-        FROM segmented_contributions_next n
-        LEFT JOIN segmented_contributions co ON (co.case_id=n.case_id and co.ip=%s)
-        JOIN segmented_cases ca ON (ca.id=n.case_id)
-        WHERE n.total<10 AND co.ip is null
-        GROUP BY ca.id, ca.way1_geom, ca.way2_geom, n.nb, n.last, ca.resolution
-        HAVING resolution = 'none'
-        ORDER BY n.nb desc, n.last limit %s;""", (ip, limit))
-    cur.execute(query)
-    rows = cur.fetchall()
-    limit = limit - cur.rowcount
+    if id != -1:
+        query =  cur.mogrify("""
+            SELECT """ + output_format + """
+            FROM segmented_cases
+            WHERE  id=%s;""", (id,))
+        cur.execute(query)
+        rows.extend(cur.fetchall())
+        limit = limit - cur.rowcount
+
+    if (limit > 0):
+        query =  cur.mogrify("""
+            SELECT """ + output_format + """
+            FROM segmented_contributions_next n
+            LEFT JOIN segmented_contributions co ON (co.case_id=n.case_id and co.ip=%s)
+            JOIN segmented_cases ca ON (ca.id=n.case_id)
+            WHERE n.total<10 AND co.ip is null
+            GROUP BY ca.id, ca.way1_geom, ca.way2_geom, n.nb, n.last, ca.resolution
+            HAVING resolution = 'none'
+            ORDER BY n.nb desc, n.last limit %s;""", (ip, limit))
+        cur.execute(query)
+        rows.extend(cur.fetchall())
+        limit = limit - cur.rowcount
 
     if (limit > 0):
         # get cases around our location
@@ -80,11 +91,12 @@ def get_cases(ip, limit, lat, lon):
 def main(args):
     parser = argparse.ArgumentParser(description='Get next segmente building cases to consider.')
     parser.add_argument("--ip", help="client ip address", type=str, default="127.0.0.1");
+    parser.add_argument("--id", help="case id", type=int, default=-1);
     parser.add_argument("--limit", help="max results nb to return", type=int, default=1);
     parser.add_argument("--lat", help="latitude", type=float, default=DEFAULT_LAT);
     parser.add_argument("--lon", help="longitude", type=float, default=DEFAULT_LON);
     args = parser.parse_args(args)
-    print(json.dumps(get_cases(args.ip, args.limit, args.lat, args.lon)));
+    print(json.dumps(get_cases(args.ip, args.limit, args.lat, args.lon, args.id)));
 
 if __name__ == '__main__':
     main(sys.argv[1:])

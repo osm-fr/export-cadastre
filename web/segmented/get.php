@@ -7,6 +7,7 @@
  * @param limit max number of cases to return (integer).
  * @param lat latitude coordinates of the prefered location to look for new cases.
  * @param lon idem for longitude.
+ * @param id of a particular case to get (optional param)
  *
  * This file is largely derived from OpenSolarMap backend code: 
  * https://github.com/opensolarmap/solback/blob/master/solback.py 
@@ -23,8 +24,9 @@ $default_lat = 48.3;
 $default_long = -1.8;
 $lat = isset($_GET['lat']) ? floatval($_GET['lat']) : $default_lat;
 $lon = isset($_GET['lon']) ? floatval($_GET['lon']) : $default_long;
+$id  = isset($_GET['id']) ? intval($_GET['id']) : -1;
 
-passthru(dirname(__FILE__) ."/../../bin/segmented_buildings/get.py --ip $ip --limit $limit --lat $lat --lon $lon", $retval);
+passthru(dirname(__FILE__) ."/../../bin/segmented_buildings/get.py --ip $ip --limit $limit --lat $lat --lon $lon --id $id", $retval);
 if ($retval != 0) {
     fatal("");
 }
