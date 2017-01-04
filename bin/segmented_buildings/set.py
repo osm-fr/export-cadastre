@@ -28,22 +28,20 @@ def set_contribution(ip, id, choice, session):
     db.autocommit = True
     cur = db.cursor()
 
-    if choice in ['join', 'keep', 'unknown']:
-        query = cur.mogrify("""
-            INSERT INTO segmented_contributions 
-            (case_id, ip, "time", choice, session)
-            VALUES (%s, %s, now(), %s, %s);""", (id, ip, choice, session))
-        cur.execute(query)
-    elif choice == "back":
+    if choice in ['back', 'join', 'keep', 'unknown']:
         query = cur.mogrify("""
             DELETE FROM segmented_contributions 
             WHERE case_id=%s AND ip=%s AND session=%s
-            AND (now() - "time") < (interval '10 minute')
-            AND "time"=(
-                SELECT MAX("time") FROM segmented_contributions 
-                WHERE case_id=%s AND ip=%s AND session=%s);""", 
-                (id, ip, session, id, ip, session))
+            AND (now() - "time") < (interval '10 minute')""",
+                (id, ip, session))
         cur.execute(query)
+        if choice != 'back':
+            cur.execute(query)
+            query = cur.mogrify("""
+                INSERT INTO segmented_contributions 
+                (case_id, ip, "time", choice, session)
+                VALUES (%s, %s, now(), %s, %s);""", (id, ip, choice, session))
+            cur.execute(query)
     else:
         sys.exit(-1)
 

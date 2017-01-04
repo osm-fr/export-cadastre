@@ -39,7 +39,7 @@ def get_stats(ip):
         contributions =
             e("SELECT count(*) FROM segmented_contributions;"),
         contributions_distinct_cases =
-            e("SELECT count(*) FROM segmented_contributions;"),
+            e("SELECT count(distinct(case_id)) FROM segmented_contributions;"),
         cases =
             e("SELECT count(*) FROM segmented_cases;"))
 

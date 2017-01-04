@@ -54,38 +54,38 @@ def get_cases(ip, limit, lat, lon, id=-1):
         cur.execute(query)
         rows.extend(cur.fetchall())
         limit = limit - cur.rowcount
+    else:
+        if (limit > 0):
+            query =  cur.mogrify("""
+                SELECT """ + output_format + """
+                FROM segmented_contributions_next n
+                LEFT JOIN segmented_contributions co ON (co.case_id=n.case_id and co.ip=%s)
+                JOIN segmented_cases ca ON (ca.id=n.case_id)
+                WHERE n.total<10 AND co.ip is null
+                GROUP BY ca.id, ca.way1_geom, ca.way2_geom, n.nb, n.last, ca.resolution
+                HAVING resolution = 'none'
+                ORDER BY n.nb desc, n.last limit %s;""", (ip, limit))
+            cur.execute(query)
+            rows.extend(cur.fetchall())
+            limit = limit - cur.rowcount
 
-    if (limit > 0):
-        query =  cur.mogrify("""
-            SELECT """ + output_format + """
-            FROM segmented_contributions_next n
-            LEFT JOIN segmented_contributions co ON (co.case_id=n.case_id and co.ip=%s)
-            JOIN segmented_cases ca ON (ca.id=n.case_id)
-            WHERE n.total<10 AND co.ip is null
-            GROUP BY ca.id, ca.way1_geom, ca.way2_geom, n.nb, n.last, ca.resolution
-            HAVING resolution = 'none'
-            ORDER BY n.nb desc, n.last limit %s;""", (ip, limit))
-        cur.execute(query)
-        rows.extend(cur.fetchall())
-        limit = limit - cur.rowcount
-
-    if (limit > 0):
-        # get cases around our location
-        query =  cur.mogrify("""
-            SELECT """ + output_format + """
-            FROM segmented_cases ca
-            LEFT JOIN segmented_contributions c1 ON (id=c1.case_id and c1.ip=%s)
-            LEFT JOIN segmented_contributions c2 ON (id=c2.case_id)
-            LEFT JOIN segmented_contributions_next n ON (n.case_id=ca.id AND n.nb>=0)
-            WHERE ca.resolution = 'none'
-            AND coalesce(n.total,0)<10 AND c1.ip IS NULL
-            GROUP by id, center, n.nb, n.last
-            HAVING (count(c2.*)<10 or (count(distinct(c2.choice))=1 AND count(c2.*)<=3))
-            ORDER BY ST_Distance(center,ST_SetSRID(ST_MakePoint(%s, %s),4326))/(coalesce(n.nb,0)*10+1)
-            LIMIT %s;""", (ip, lon, lat, limit))
-        cur.execute(query)
-        limit = limit - cur.rowcount
-        rows.extend(cur.fetchall())
+        if (limit > 0):
+            # get cases around our location
+            query =  cur.mogrify("""
+                SELECT """ + output_format + """
+                FROM segmented_cases ca
+                LEFT JOIN segmented_contributions c1 ON (ca.id=c1.case_id and c1.ip=%s)
+                LEFT JOIN segmented_contributions c2 ON (ca.id=c2.case_id)
+                LEFT JOIN segmented_contributions_next n ON (n.case_id=ca.id AND n.nb>=0)
+                WHERE ca.resolution = 'none'
+                AND coalesce(n.total,0)<10 AND c1.ip IS NULL
+                GROUP BY id, center, n.nb, n.last
+                HAVING (count(c2.*)<10 or (count(distinct(c2.choice))=1 AND count(c2.*)<=3))
+                ORDER BY ST_Distance(center,ST_SetSRID(ST_MakePoint(%s, %s),4326))/(coalesce(n.nb,0)*10+1)
+                LIMIT %s;""", (ip, lon, lat, limit))
+            cur.execute(query)
+            limit = limit - cur.rowcount
+            rows.extend(cur.fetchall())
     return dict(count=len(rows), type="FeatureCollection", features=[json.loads(r[0]) for r in rows])
 
 def main(args):

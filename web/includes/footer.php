@@ -1,7 +1,9 @@
 </div>
 <div id="footer">
-	<div style="position:fixed; bottom:5px; right:5px;"><a href='http://www.april.org'><img src='http://www.chtinux.org/images/png/cartouche_april-jadhere.png' alt='Promouvoir et soutenir le logiciel libre' style="border: none;"/></a></div>
-	<div style="position:fixed; bottom:5px; right:90px;"><a href='http://www.openstreetmap.fr'><img src='images/cartouche_osm-fr.png' alt='OpenStreetMap France' style="border: none;"/></a></div>
-</div>
+    <a href="https://github.com/osm-fr/export-cadastre" title="Voir le code source sur GitHub"><img src="images/git.png"></a>&nbsp;
+    <a href="https://trac.openstreetmap.fr/newticket?component=export%20cadastre&amp;owner=vdct&amp;cc=tyndare" title="Signaler un Bug"><img src="images/trac.png"></a>&nbsp;
+    <span style="flex-grow:1;"> </span>
+    <a href='http://www.openstreetmap.fr'><img src='images/cartouche_osm-fr.png' alt='OpenStreetMap France' style="border: none;"/></a>&nbsp;
+<div>
 </body>
 </html>

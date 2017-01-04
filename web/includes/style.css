@@ -137,3 +137,39 @@ span.stats_fantoir {
 	box-shadow: 2px 2px 2px #ccc;
   float:right
 }
+
+#info-button {
+    font-weight bold;
+    font-size:16pt;
+}
+#info-popup {
+    border: solid black 2px;
+    border-radius: 10px;
+    width:50%;
+    position:absolute;
+    top:25%;
+    right:25%;
+    padding:10px;
+    background: linear-gradient(white, #dddddd);
+    box-shadow: 5px 5px 5px #222222;
+    font-size:12pt;
+    z-index:1;
+}
+
+.close-button {
+    float:right;
+    font-family:sans-serif;
+    font-weight bold;
+    font-size:16pt;
+    z-index:2;
+}
+
+#footer {
+    width:99%;
+    display:flex;
+    flex-wrap:nowrap;
+    position: fixed;
+    bottom:5px;
+    opacity: 0.8;
+    z-index: 1;
+}

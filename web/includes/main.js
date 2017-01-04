@@ -159,16 +159,24 @@ function filter_ville() {
   }
 }
 
+function alert_if_not_city_selected() {
+    if ((getSelectedDepCode() == "") || (getSelectedVilleCode() == "")) {
+	if (getSelectedDepCode() == "") {
+		alert("Veuillez commencer par choisir le département et la commune");
+	} else {
+		alert("Veuillez d'abord choisir la commune");
+	}
+        return false;
+    } else {
+        return true;
+    }
+}
+
 function bbox_display() {
-	insee = getSelectedInseeCode();
-	if (insee == "") {
-		if (getSelectedDepCode() == "") {
-			alert("Veuillez commencer par choisir le département et la commune");
-		} else {
-			alert("Veuillez d'abord choisir la commune");
-		}
+	if ( ! alert_if_not_city_selected()) {
 		return bbox_cancel();
 	}
+	insee = getSelectedInseeCode();
 	document.getElementById("bbox_overlay").style.display = 'block';
 	document.getElementById("bbox_frame").style.display = 'block';
 	if (bbox_map == null) {
@@ -253,4 +261,8 @@ function confirmAlreadyGenerated() {
         document.getElementById("force").value = "true";
         document.forms["main_form"].submit();
     }
+}
+
+function display_info_popup() {
+    document.getElementById('info-popup').style.display="block";
 }

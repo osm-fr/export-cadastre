@@ -233,31 +233,39 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 			</tr>
 		</table>
 	</fieldset>
-	<fieldset id='mise_en_garde'>
-		<legend>Mise en garde</legend>
-		<p>
-		L'intégration de données <i><u>bâtiments</u></i> en provenance du cadastre n'est pas triviale, si vous ne venez pas de <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_b%C3%A2timents'>la page suivante</a>, il est vivement recommandé d'aller la lire !
-		<br/>
-		Pour les <i><u>limites</u></i> de communes, ce n'est pas trivial non plus et la <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Limites_administratives/Tracer_les_limites_administratives'>documentation est ici.</a>
-		<br/>
-                Pour l'intégration des données <i><u>adresses</u></i>, <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses'>il faut lire cette page</a>.
-		</p>
-	</fieldset>
 	<input id='force' type='hidden' name='force' value='false'/>
 	<div id="generer">
-		<input type='submit' value='Générer' />
+		<input type='submit' value='Générer' onClick='return alert_if_not_city_selected();'/>&nbsp;&nbsp;
+		<a href="#" id="info-button" onclick="display_info_popup();">?</a>
 	</div>
 </form>
 
-<p>
-Note: Vous pensez avoir trouvé un bug ? <a href='http://trac.openstreetmap.fr/newticket?component=export%20cadastre&amp;owner=vdct&amp;cc=tyndare'>Vous pouvez le signaler ici (composant export cadastre)</a>
-</p>
+<div id="info-popup" style="display:none">
+    <button class="close-button" onclick="this.parentElement.style.display='none';">x</button>
+    <fieldset id='mise_en_garde'>
+	<legend>Mise en garde</legend>
+	<ul>
+	<li>L'intégration de données <i><u>bâtiments</u></i> en provenance du cadastre n'est pas triviale, si vous ne venez pas de <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_b%C3%A2timents' target="_blank">la page suivante</a>, il est vivement recommandé d'aller la lire !</li>
+	<li>Pour les <i><u>limites</u></i> de communes, ce n'est pas trivial non plus et la <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Limites_administratives/Tracer_les_limites_administratives' target="_blank">documentation est ici.</a></li>
+	<li>Pour l'intégration des données <i><u>adresses</u></i>, <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses' target="_blank">il faut lire cette page</a></li>
+	</ul>
+    </fieldset>
+    <fieldset id='temps'>
+	<legend>Pour patienter pendant la génération</legend>
+	<ul>
+	<li>Vous pouvez aider à identifier des bâtiments OSM potentiellement fractionnés par le cadastre: <a href="segmented/" target="_blank">Bâtiments Fractionnés</a>
+	</ul>
+    </fieldset>
+</div>
 <script type='text/javascript'>
 <?php
 if ($ville) {
 	echo "\tdocument.getElementById( 'ville' ).focus();\n";
 } else {
 	echo "\tdocument.getElementById( 'dep' ).focus();\n";
+}
+if ($command) {
+	echo "\tdisplay_info_popup();\n";
 }
 ?>
 </script>
@@ -376,5 +384,8 @@ if ($command) {
     </script>
     <?php
 }
+    ?>
+<p>&nbsp;</p>
+<?php
 require_once( 'includes/footer.php' );
 ?>

@@ -37,6 +37,13 @@ class GeometryError extends Error {
     }
 }
 
+class ConnectionError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'ConnectionError';
+    }
+}
+
 const style_big = { color: 'blue', stroke: true, fill: false, weight:4 };
 const style_small = { color: 'lightgreen', stroke: true, fill: false , weight:4};
 const style_keep = { color: 'lightgreen', stroke: true, fill: false , weight:7};
@@ -70,6 +77,13 @@ class JoinPolygons {
         this.outer1_polylines.push(L.polyline(this.outer1_latLngs, this.style_outer1).addTo(map));
         this.outer2_polylines.push(L.polyline(this.outer2_latLngs, this.style_outer2).addTo(map));
         this.intersect_polylines.push(L.polyline(this.intersect_latLngs, style_join).addTo(map));
+        return this;
+    }
+
+    on(type, func, context) {
+        this.outer1_polylines.forEach(p => p.on(type, func, context));
+        this.outer2_polylines.forEach(p => p.on(type, func, context));
+        this.intersect_polylines.forEach(p => p.on(type, func, context));
         return this;
     }
 
@@ -255,6 +269,9 @@ function display_case(item) {
     if (joinPolygons != null) joinPolygons.remove();
     location.hash = item.id;
     joinPolygons = new JoinPolygons(item.coords1, item.coords2).addTo(map1).addTo(map2);
+    joinPolygons.on("click", function() {
+        window.open("https://www.openstreetmap.org/way/" + item.id1, "_blank");
+        window.open("https://www.openstreetmap.org/way/" + item.id2, "_blank");});
     map1.fitBounds(betterPad(joinPolygons.getBounds(), 5, 0.2));
     document.getElementById('josm-link').href = josm_url(betterPad(joinPolygons.getBounds(), 30, 0.5), [item.id1, item.id2]);
     document.getElementById('osm-edit-link').href = osm_url(joinPolygons.getCenter(), map1.getZoom());
@@ -315,14 +332,18 @@ function try_display_next(findNearest) {
 
 function check_ok(fetch_response) {
     if (!fetch_response.ok) {
-        throw Error(fetch_response.statusText);
+        throw new ConnectionError(fetch_response.statusText);
     }
     return fetch_response;
 }
 
 function connection_problem(err) {
-    got_connection_error = true;
-    alert("Problème de connection au serveur: " + err);
+    if ((err.name == 'ConnectionError') || (err.name == "TypeError")) {
+        got_connection_error = true;
+        alert("Problème de connection au serveur: " + err);
+    } else {
+        throw err;
+    }
 }
 
 function next(findNearest, id) {
@@ -345,12 +366,12 @@ function next(findNearest, id) {
         } else {
             url = "get.php?id=" + id + "&limit=1";
         }
-        //console.log(url);
+        console.log(url);
         request_send = true;
         fetch(url).then((response => check_ok(response).json())).then(function(json) {
             //console.log("got " + json.features.length + " results");
-            new_cases = json.features
-                .filter(feature => !cases_ids.has(feature.id))
+            const new_cases = json.features
+                .filter(feature => (feature.id == id) || (!cases_ids.has(feature.id)))
                 .map(feature => {
                     return {
                         id: feature.id,
@@ -361,6 +382,7 @@ function next(findNearest, id) {
                         coords2: feature.geometry.geometries[1].coordinates[0],
                     };
                 });
+            console.log("new_cases " +  new_cases.length);
             cases = cases.concat(new_cases);
             new_cases.forEach(c => cases_ids.add(c.id));
             request_send = false;
@@ -369,7 +391,12 @@ function next(findNearest, id) {
                 if (cur_index < cases.length) {
                     try_display_next(findNearest);
                 } else {
-                    alert("Il ne reste pour le moment plus aucun cas à traiter. Bravo à tous !");
+                    if (id == null) {
+                        alert("Il ne reste pour le moment plus aucun cas à traiter. Bravo à tous !");
+                    } else {
+                        alert("Cas inconnu");
+                        next(findNearest, null);
+                    }
                 }
             }
         }).catch(connection_problem);

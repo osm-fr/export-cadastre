@@ -49,7 +49,7 @@ CREATE VIEW segmented_contributions_next AS
     ((c1.nb)::numeric + COALESCE(sum(c2.nb), (0)::numeric)) AS total
    FROM (segmented_contributions_rank c1
      LEFT JOIN segmented_contributions_rank c2 ON (((c2.case_id = c1.case_id) AND (c2.rank > 1))))
-  WHERE ((c1.rank = 1) AND (c1.nb >= 3))
+  WHERE ((c1.rank = 1))-- AND (c1.nb >= 3))
   GROUP BY c1.case_id, c1.choice, c1.nb, c1.rank, c1.first, c1.last
  HAVING (((c1.nb)::numeric - COALESCE(sum(c2.nb), (0)::numeric)) < (3)::numeric);
 
