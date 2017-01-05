@@ -19,13 +19,13 @@ if (window.location.hostname == 'cadastre.openstreetmap.fr') {
 L.tileLayer(photo_layer, {
     attribution: photo_attrib,
     maxNativeZoom: 19,
-    maxZoom: 24,
+    maxZoom: 21,
     minZoom: 3
 }).addTo(map1);
 L.tileLayer('http://tms.cadastre.openstreetmap.fr/*/tout/{z}/{x}/{y}.png', {
     attribution: '&copy <a href="http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">Direction Générale des Finances Publiques - Cadastre</a>',
     maxNativeZoom: 21,
-    maxZoom: 24,
+    maxZoom: 21,
     minZoom: 3
 }).addTo(map2);
 
@@ -265,9 +265,10 @@ document.body.addEventListener("keydown", function(e) {
     }
 });
 
+
 function display_case(item) {
+    history.replaceState(undefined, undefined, "#" + item.id);
     if (joinPolygons != null) joinPolygons.remove();
-    location.hash = item.id;
     joinPolygons = new JoinPolygons(item.coords1, item.coords2).addTo(map1).addTo(map2);
     joinPolygons.on("click", function() {
         window.open("https://www.openstreetmap.org/way/" + item.id1, "_blank");
@@ -350,8 +351,18 @@ function next(findNearest, id) {
     //console.log("next " + findNearest + ", " + id);
     cur_index = cur_index + 1;
     if (id !== null) {
-        // Remove all the following items
-        cases.splice(cur_index).forEach(c => cases_ids.delete(c.id));
+        if (cases_ids.has(id)) {
+            let i = cases.findIndex(c=> c.id == id);
+            if (i < cur_index) {
+                cases = cases.slice(0, i).concat(cases.slice(i+1, cur_index)).concat([cases[i]]).concat(cases.slice(cur_index));
+                cur_index = cur_index - 1;
+            } else if (i > cur_index) {
+                cases = cases.slice(0, cur_index).concat(cases[i]).concat(cases.slice(cur_index, i)).concat(cases.slice(i+1));
+            }
+        } else {
+            // Remove all the following items, to force fetch
+            cases.splice(cur_index).forEach(c => cases_ids.delete(c.id));
+        }
     }
     if (cur_index < cases.length) {
         try_display_next(findNearest);
@@ -366,12 +377,12 @@ function next(findNearest, id) {
         } else {
             url = "get.php?id=" + id + "&limit=1";
         }
-        console.log(url);
+        //console.log(url);
         request_send = true;
         fetch(url).then((response => check_ok(response).json())).then(function(json) {
             //console.log("got " + json.features.length + " results");
             const new_cases = json.features
-                .filter(feature => (feature.id == id) || (!cases_ids.has(feature.id)))
+                .filter(feature => !cases_ids.has(feature.id))
                 .map(feature => {
                     return {
                         id: feature.id,
@@ -382,7 +393,7 @@ function next(findNearest, id) {
                         coords2: feature.geometry.geometries[1].coordinates[0],
                     };
                 });
-            console.log("new_cases " +  new_cases.length);
+            //console.log("new_cases " +  new_cases.length);
             cases = cases.concat(new_cases);
             new_cases.forEach(c => cases_ids.add(c.id));
             request_send = false;
@@ -466,12 +477,14 @@ function fetch_stats() {
 
 function increment_stats(value) {
     stats.contributions_from_ip += value;
-    stats.contributions_distinct_cases += value;
+    stats.contributions_distinct_cases += value; // not really true...
+    stats.contributions += value;
     show_stats();
 }
 
 function show_stats() {
-    document.getElementById("count_users").innerHTML = stats.contributions_distinct_ips;
+    document.getElementById("count_users").innerHTML = 
+        stats.contributions_distinct_ips + " / " + stats.contributions;
     document.getElementById("count_cases").innerHTML = 
         stats.contributions_distinct_cases + " / " + stats.cases;
     document.getElementById("count_ip").innerHTML = stats.contributions_from_ip;

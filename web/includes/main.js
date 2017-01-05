@@ -266,3 +266,6 @@ function confirmAlreadyGenerated() {
 function display_info_popup() {
     document.getElementById('info-popup').style.display="block";
 }
+function hide_info_popup() {
+    document.getElementById('info-popup').style.display="none";
+}

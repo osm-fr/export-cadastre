@@ -375,6 +375,7 @@ if ($command) {
     ?>
     <script type='text/javascript'>
 	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="/data/<?php echo $dep;?>">aux fichiers</a>';
+        hide_info_popup();
     </script>
     <?php
 } else if ($confirmAlreadyGenerated) {
