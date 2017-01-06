@@ -1,0 +1,22 @@
+{
+  "name": "osm-fr-export-cadastre-segmented",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Segmented Building Validation Interface (copied from OpenSolarMap)",
+  "dependencies": {
+    "leaflet": "^1.0.2",
+    "leaflet.sync": "^0.0.5",
+    "es6-promise": "^4.0.5",
+    "whatwg-fetch": "^2.0.1"
+  },
+  "scripts": {
+    "dist": "browserify -t [ babelify --presets [ es2015 ] ] -t uglifyify src/main.js |uglifyjs  > main.js"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.3.0",
+    "uglifyify": "^3.0.4",
+    "uglifyjs": "^2.4.10"
+  }
+}
