@@ -47,8 +47,8 @@ from .geometry  import BoundingBox
 from .transform import LinearTransform
 from .geometry  import orthoprojection_on_segment_ab_of_point_c
 from .globals   import VERBOSE
-from .globals   import EARTH_RADIUS_IN_METTER
-from .globals   import EARTH_CIRCUMFERENCE_IN_METTER
+from .globals   import EARTH_RADIUS_IN_METER
+from .globals   import EARTH_CIRCUMFERENCE_IN_METER
 
 
 
@@ -114,7 +114,7 @@ def get_centered_metric_equirectangular_transformation(bbox):
   bbox = BoundingBox(*bbox)
   center = bbox.center()
   bb1 = (center.x, center.y, center.x + 360, center.y + 360)
-  bb2 = (0, 0, EARTH_CIRCUMFERENCE_IN_METTER*math.cos(center.y*math.pi/180), EARTH_CIRCUMFERENCE_IN_METTER)
+  bb2 = (0, 0, EARTH_CIRCUMFERENCE_IN_METER*math.cos(center.y*math.pi/180), EARTH_CIRCUMFERENCE_IN_METER)
   inputTransform = LinearTransform(bb1, bb2)
   outputTransform = LinearTransform(bb2, bb1)
   return inputTransform, outputTransform
@@ -447,7 +447,7 @@ def buildSimplifiedNodeSet(nodes, fromIndex, toIndex, threshold):
     xtemax = 0.0
     for i in xrange(fromIndex+1, toIndex):
         n = nodes[i]
-        xte = abs(EARTH_RADIUS_IN_METTER
+        xte = abs(EARTH_RADIUS_IN_METER
                     * xtd(fromN.lat() * math.pi / 180, fromN.lon() * math.pi / 180, toN.lat() * math.pi
                             / 180, toN.lon() * math.pi / 180, n.lat() * math.pi / 180, n.lon() * math.pi
                             / 180))

@@ -217,14 +217,30 @@ shift_to_common_start_and_get_common_size(
         Coords* poly2, int size2)
 
 {
+    if (size1 < size2) {
+        // to find the first common elem between the two polygons
+        // our algo look for an point of poly1 not member of poly2,
+        // but if size1 < size2 there is a ristk that all points
+        // of poly1 be also  members of poly2, so we swap them
+        // for our algo to work.
+        {
+            int tmp = size1;
+            size1 = size2;
+            size2 = tmp;
+        }
+        {
+            Coords* tmp = poly1;
+            poly1 = poly2;
+            poly2 = tmp;
+        }
+    }
     size1 = size1 - 1; // forget the last element identical to the 1st one
     size2 = size2 - 1; // forget the last element identical to the 1st one
     for(int i1=0, prev_i1 = size1-1; i1<size1; i1++) {
         int i2 = find(poly2, size2, poly1[i1]);
         if ((i2 >= 0) && (find(poly2, size2, poly1[prev_i1]) < 0)) {
             //printf("i1 = %d    i2 = %d\n", i1, i2);
-            if ((poly2[(i2+1)%size2] == poly1[prev_i1])
-                    || (poly2[(i2-1+size2)%size2] == poly1[(i1+1)%size1]))
+            if (poly2[(i2-1+size2)%size2] == poly1[(i1+1)%size1])
             {
                 reverse(poly2, size2);
                 //printf("reverse poly2\n");

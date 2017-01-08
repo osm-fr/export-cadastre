@@ -1,5 +1,7 @@
 /.database-connection-string
+/.osm-password
 /osmose.conf
 /*.osm.pbf
 /*.bz2
+/*.osm
 /dump

@@ -1,5 +1,5 @@
 CREATE TYPE segmented_choice_kind AS ENUM ( 'join',  'keep', 'unknown');
-CREATE TYPE segmented_resolution_kind AS ENUM ('none', 'join', 'keep', 'unknown', 'outofdate');
+CREATE TYPE segmented_resolution_kind AS ENUM ('none', 'join', 'keep', 'unknown', 'outofdate', 'undecided');
 
 CREATE TABLE segmented_cases (
     id SERIAL PRIMARY KEY,

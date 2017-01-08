@@ -31,7 +31,7 @@ except:
     sys.stderr.write("    sudo apt-get install python-gdal\n")
     sys.exit(-1)
     
-from .globals import EARTH_CIRCUMFERENCE_IN_METTER
+from .globals import EARTH_CIRCUMFERENCE_IN_METER
 
 
 class Transform(object):
@@ -124,7 +124,7 @@ def get_centered_metric_equirectangular_transformation_from_osm(osm_data):
   bbox = BoundingBox(*osm_data.bbox())
   center = bbox.center()
   bb1 = (center.x, center.y, center.x + 360, center.y + 360)
-  bb2 = (0, 0, EARTH_CIRCUMFERENCE_IN_METTER*math.cos(center.y*math.pi/180), EARTH_CIRCUMFERENCE_IN_METTER)
+  bb2 = (0, 0, EARTH_CIRCUMFERENCE_IN_METER*math.cos(center.y*math.pi/180), EARTH_CIRCUMFERENCE_IN_METER)
   inputTransform = LinearTransform(bb1, bb2)
   outputTransform = LinearTransform(bb2, bb1)
   return inputTransform, outputTransform

@@ -19,6 +19,6 @@ import math
 SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
 VERBOSE = False
 
-EARTH_RADIUS_IN_METTER = 6371000
-EARTH_CIRCUMFERENCE_IN_METTER = 2*math.pi*EARTH_RADIUS_IN_METTER
+EARTH_RADIUS_IN_METER = 6371000
+EARTH_CIRCUMFERENCE_IN_METER = 2*math.pi*EARTH_RADIUS_IN_METER
 

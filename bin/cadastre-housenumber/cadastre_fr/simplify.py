@@ -37,8 +37,8 @@ from .transform import LinearTransform
 from .transform import get_centered_metric_equirectangular_transformation_from_osm
 from .geometry  import orthoprojection_on_segment_ab_of_point_c
 from .globals   import VERBOSE
-from .globals   import EARTH_RADIUS_IN_METTER
-from .globals   import EARTH_CIRCUMFERENCE_IN_METTER
+from .globals   import EARTH_RADIUS_IN_METER
+from .globals   import EARTH_CIRCUMFERENCE_IN_METER
 
 
 def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
@@ -247,7 +247,7 @@ def buildSimplifiedNodeSet(nodes, fromIndex, toIndex, threshold):
     xtemax = 0.0
     for i in xrange(fromIndex+1, toIndex):
         n = nodes[i]
-        xte = abs(EARTH_RADIUS_IN_METTER
+        xte = abs(EARTH_RADIUS_IN_METER
                     * xtd(fromN.lat() * math.pi / 180, fromN.lon() * math.pi / 180, toN.lat() * math.pi
                             / 180, toN.lon() * math.pi / 180, n.lat() * math.pi / 180, n.lon() * math.pi
                             / 180))

@@ -52,7 +52,7 @@ def common_center_wkt(latlngs1, latlngs2):
     center = map(numpy.mean, zip(*commons_points))
     return "POINT(%.7f %.7f)" % tuple(center)
 
-def equals(latlngs1, latlngs2):
+def latlngs_equals(latlngs1, latlngs2):
     if len(latlngs1) == len(latlngs2):
         diff = np.array(latlngs1) - np.array(latlngs2)
         return np.max(np.abs(diff)) < 0.0000001
@@ -74,7 +74,7 @@ def insert(data):
     for id, geom1, geom2, resolution in cur.fetchall():
         geom1 = wkt_polygon_latlngs(geom1)
         geom2 = wkt_polygon_latlngs(geom2)
-        if equals(latlngs1, geom1) and equals(latlngs2, geom2):
+        if latlngs_equals(latlngs1, geom1) and latlngs_equals(latlngs2, geom2):
             already_exists = True
         elif resolution == 'none':
             # The geometry of the building has changed,
