@@ -39,8 +39,8 @@ from cadastre_fr.simplify  import xtd
 VERBOSE=True
 UPLOAD=True
 DEFAULT_SIMPLIFY_THRESHOLD = 0.1
-OSM_USERNAME = u"FR-segmented-buildings2"
-OSM_PASSWORDFILE = os.path.join(os.path.dirname(sys.argv[0]), "./.osm-password")
+OSM_USERNAME = "FR-segmented-buildings"
+OSM_PASSWORDFILE = os.path.join(os.path.dirname(sys.argv[0]), ".osm-password")
 
 JoinCase = namedtuple("JoinCase", ["case_id", "way1_id", "way2_id", "osm_data"])
 dbstring = file(os.path.join(os.path.dirname(sys.argv[0]), ".database-connection-string")).read()
@@ -49,7 +49,6 @@ db.autocommit = True
 cur = db.cursor()
 
 api = OsmApi(username=OSM_USERNAME, passwordfile=OSM_PASSWORDFILE)
-changeset = None
 
 def main(args):
     resolve_undecided()
@@ -108,7 +107,6 @@ def main(args):
                         WHERE id=%s""",(case_id)));
     excludes_cases_with_near_unresolved(join_cases)
     treat_join_cases(join_cases)
-    osm_check_changeset_closed()
 
 
 def try_join(case_id, way1_id, way2_id, osm_data):
@@ -191,7 +189,7 @@ def treat_join_cases(join_cases):
                 if automatic:
                     if UPLOAD:
                         filename = None
-                        osm_upload(osm_data)
+                        osm_upload(osm_data, source="http://cadastre.openstreetmap.fr/segmented/#%d" % (case_id,))
                         cur.execute(cur.mogrify("""UPDATE segmented_cases SET resolution='join', resolution_time=now() WHERE id=%s""", (case_id,)))
                     else:
                         filename = "automatic-%d.osm" % case_id
@@ -228,6 +226,7 @@ def excludes_cases_with_near_unresolved(join_cases):
 
 
 def resolve_undecided():
+    """ mark as undecided cases having at leas 10 contributions but no majority choice. """
     cur.execute("""
         UPDATE segmented_cases
         SET resolution='undecided', resolution_time=now()
@@ -324,35 +323,33 @@ def add_map_set(map_list, key, item):
         map_list[key] = set()
     map_list[key].add(item)
 
-def osm_check_changeset_opened():
-    global changeset
-    if not changeset:
-        #changeset = api.ChangesetCreate({u"comment": u"Merge segmented buildings validated here: http://cadastre.openstreetmap.fr/segmented/"})
-        changeset = api.ChangesetCreate({u"comment": u"Merge segmented buildings"})
-        print"open changeset ", changeset 
+def osm_changeset_open(comment=None, source=None):
+    if comment == None:
+	comment = "Merge segmented building"
+    if source == None:
+        source = "http://cadastre.openstreetmap.fr/segmented/"
+    changeset = api.ChangesetCreate({"comment": comment, "source": source})
+    if VERBOSE: print "opened changeset ", changeset 
+    return changeset
 
-def osm_check_changeset_closed():
-    global changeset
-    if changeset:
-        print"close changeset ", changeset 
-        api.ChangesetClose()
-        api.flush()
-        changeset = None
+def osm_changeset_close():
+    changeset = api.ChangesetClose()
+    print "closed changeset ", changeset 
+    api.flush()
 
-def osm_upload(osm_data):
+def osm_upload(osm_data, source=None):
+    osm_changeset_open(source=source)
     for way in osm_data["way"].values():
         if "action" in way:
             if way["action"] == "modify":
-                osm_check_changeset_opened()
                 api.WayUpdate({k:v for k,v in way.iteritems() if k!="action"})
             if way["action"] == "delete":
-                osm_check_changeset_opened()
                 api.WayDelete({k:v for k,v in way.iteritems() if k!="action"})
     for node in osm_data["node"].values():
         if "action" in node:
             if node["action"] == "delete":
-                osm_check_changeset_opened()
                 api.NodeDelete({k:v for k,v in node.iteritems() if k!="action"})
+    osm_changeset_close()
 
 
 max_id = 0;
