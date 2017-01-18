@@ -4,5 +4,6 @@
 /*.osm.pbf
 /*.bz2
 /*.osm
+/*.log
 /dump
 /resolutions-logs
