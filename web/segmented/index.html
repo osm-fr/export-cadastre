@@ -105,7 +105,8 @@
         #button-join,
         #button-keep,
         #button-unknown {
-            font-size: 80px;
+            font-size: 70px;
+            line-height:70px;
             font-family: sans-serif;
             font-weight: bold;
             width:120px;
@@ -116,11 +117,15 @@
         #button-keep {
             color: green;
         }
-        
+        .button-text {
+          display:block;
+          font-size:20px;
+          line-height:24px;
+        }
         #button-back {
             font-size: 16pt;
-            padding-top: 10px;
-            padding-bottom: 10px;
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
         
         #osm-edit-link,
@@ -190,14 +195,17 @@
                 <span class="choice-button" id="button-back">&larr; Annuler&nbsp;</span>
             </div>
             <div class="control-middle">
-                <span id="button-join" class="choice-button" title="Oui, bâtiments à fusionner (touche 1)">
+                <span id="button-join" class="choice-button" title="Oui, bâtiments à fusionner (touche 1)" >
                   +
+                  <span class="button-text">Fusionner</span>
                 </span>
                 <span id="button-keep" class="choice-button" title="Non, garder les bâtiments distincts (touche 2)">
                   -
+                  <span class="button-text">Non</span>
                 </span>
                 <span id="button-unknown" class="choice-button" style="display:inline-block;" title="Cas ambigu ou compliqué (touche 0)">
                   ?
+                  <span class="button-text"><i>Chépa</i></span>
                 </span>
             </div>
             <div id="osm-links" class="control-outer">
