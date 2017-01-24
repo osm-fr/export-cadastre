@@ -25,6 +25,9 @@ chmod 777 $dep
 dest_dir="$data_dir/$dep"
 download_dir="$hidden_dir/$dep/$code"
 water_dir="$data_dir/eau/"
+mkdir -m 777 -p $download_dir
+chmod 777 $hidden_dir
+chmod 777 $hidden_dir/$dep
 
 if [ "$bbox" = "" ] ; then
   bboxargs=""
@@ -33,14 +36,15 @@ else
   time=`date +"%Y-%m-%d_%Hh%Mm%Ss"`
   name=$name-extrait-$time
   download_dir="$download_dir/$time"
+  mkdir -p -m 777 $download_dir
 fi
 
 
 rm -f "dest_dir/$code-$name.tar.bz2"
 mkdir $water_dir 2>/dev/null
 chmod 777 $water_dir 2>/dev/null
-mkdir -p $download_dir
 cd $download_dir || exit -1
+chmod 777 $download_dir 2>/dev/null
 
 city_limit_top_size=0
 
