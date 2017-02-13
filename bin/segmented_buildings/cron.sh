@@ -9,7 +9,7 @@ cd `dirname $0`
 export LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/
 
 mkdir -p resolutions-logs
-(cd resolutions-logs/ && ../resolve_and_upload_to_osm.py 2>&1 > resolve_and_upload_to_osm-`date +%Y-%m-%d`.log)
+(cd resolutions-logs/ && ../resolve_and_upload_to_osm.py >& resolve_and_upload_to_osm-`date +%Y-%m-%d`.log)
 
 (./dump.sh 2>&1 > dump.log)
 

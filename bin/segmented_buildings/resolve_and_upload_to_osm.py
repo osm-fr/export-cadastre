@@ -94,6 +94,9 @@ def main(args):
             else:
                 way1 = api.WayFull(way1_id)
                 way2 = api.WayFull(way2_id)
+                # api.WayFull is actually not returning relations as doc say, so also get relations:
+                way1 = way1 + [{'type':'relation', 'data': r} for r in api.WayRelations(way1_id)]
+                way2 = way2 + [{'type':'relation', 'data': r} for r in api.WayRelations(way2_id)]
                 osm_data = osm_data_update(osm_data_by_type(way1), osm_data_by_type(way2)) 
                 way1_osm_geom = osm_way_latlngs(osm_data, way1_id)
                 way2_osm_geom = osm_way_latlngs(osm_data, way2_id)
@@ -104,7 +107,7 @@ def main(args):
                     cur.execute(cur.mogrify("""
                         UPDATE segmented_cases 
                         SET resolution='outofdate', resolution_time=now() 
-                        WHERE id=%s""",(case_id)));
+                        WHERE id=%s""", (case_id,)));
     excludes_cases_with_near_unresolved(join_cases)
     treat_join_cases(join_cases)
 
