@@ -255,11 +255,11 @@ function bbox_map_setViewOnCenterResult(response) {
 }
 
 function confirmAlreadyGenerated() {
-    if (confirm("Les fichiers ont déjà été générés, voulez-vous y accéder directement ?")) {
-        window.location="data/" + getSelectedDepCode() + "/";
-    } else {
+    if (confirm("Les fichiers ont déjà été générés. Êtes-vous sûre de vouloir les générer de nouveau ?")) {
         document.getElementById("force").value = "true";
         document.forms["main_form"].submit();
+    } else {
+        window.location="data/" + getSelectedDepCode() + "/";
     }
 }
 
@@ -268,4 +268,12 @@ function display_info_popup() {
 }
 function hide_info_popup() {
     document.getElementById('info-popup').style.display="none";
+}
+function toggle_info_popup() {
+    var popup = document.getElementById('info-popup')
+    if (popup.style.display == "none") {
+        popup.style.display="block";
+    } else {
+        popup.style.display="none";
+    }
 }

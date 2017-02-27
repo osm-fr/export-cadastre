@@ -236,7 +236,7 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 	<input id='force' type='hidden' name='force' value='false'/>
 	<div id="generer">
 		<input type='submit' value='Générer' onClick='return alert_if_not_city_selected();'/>&nbsp;&nbsp;
-		<a href="#" id="info-button" onclick="display_info_popup();">?</a>
+		<a href="#" id="info-button" onclick="toggle_info_popup();">?</a>
 	</div>
 </form>
 
@@ -274,7 +274,6 @@ if ($command) {
     class ProcessLineReader {
       private $resource;
       private $pipes;
-      private $state;
       function __construct($cmd) {
         $descriptorspec    = array(
           0 => array('pipe', 'r'),
@@ -282,34 +281,35 @@ if ($command) {
           2 => array('pipe', 'w')
         );
         $this->resource = proc_open($cmd, $descriptorspec, $this->pipes);
-        $state = 1;
         fclose($this->pipes[0]);
       }
       function readstd() {
         if ($this->resource !== FALSE) {
           return fgets($this->pipes[1]);
         } else {
-          return $FALSE;
+          return FALSE;
         }
       }
       function readerror() {
         if ($this->resource !== FALSE) {
           return fgets($this->pipes[2]);
         } else {
-          return $FALSE;
+          return FALSE;
         }
       }
       function close() {
               fclose($this->pipes[1]);
               fclose($this->pipes[2]);
+              $status = proc_get_status($this->resource);
               proc_close($this->resource);
               $this->resource = FALSE;
+              return $status['exitcode'];
       }
       function print_error_and_close() {
         while($line = $this->readerror()) {
           print "<pre>" . $line . "</pre>";
         }
-        $this->close();
+        return $this->close();
       }
     }
     print "<pre>";
@@ -320,7 +320,7 @@ if ($command) {
       print $line;
       flush();
     }
-    $process->print_error_and_close();
+    $exitcode = $process->print_error_and_close();
 
     if ($type == "adresses") { 
       $associatedStreet_files = array (
@@ -370,12 +370,21 @@ if ($command) {
       echo "</table>\n";
       print "</fieldset>\n";
     } else {
-      echo "Terminé.<br/>";
+      if ($exitcode == 0) {
+        echo "Terminé.<br />";
+      } else {
+        echo "Erreur.<br />";
+      }
     }
     ?>
     <script type='text/javascript'>
 	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="/data/<?php echo $dep;?>">aux fichiers</a>';
         hide_info_popup();
+        <?php if (($type == "adresses") || ($exitcode != 0)) { ?>
+        window.scrollTo(0, document.body.scrollHeight);
+        <?php } else { ?>
+	document.location = "/data/<?php echo $dep;?>";
+	<?php } ?>
     </script>
     <?php
 } else if ($confirmAlreadyGenerated) {
