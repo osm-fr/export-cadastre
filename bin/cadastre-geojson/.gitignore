@@ -1,0 +1,6 @@
+
+.database-connection-string
+*.pdf
+*.pdf.ok
+*.osm
+*.pyc
