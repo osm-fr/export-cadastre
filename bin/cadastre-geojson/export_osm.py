@@ -37,7 +37,6 @@ import db
 from import_json import normalise_numero_departement
 from import_json import normalise_numero_commune
 
-
 SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
 
 
@@ -50,12 +49,13 @@ def normalise_numero_insee(numero_departement, numero_commune):
         assert numero_commune[0] == "0"
         return numero_departement + numero_commune[1:]
 
-def new_ids_generator():
-    node_id=0
+
+def number_generator(start, incr):
+    value=start
     while True:
-        node_id = node_id - 1
-        yield node_id
-new_ids = new_ids_generator()
+        yield value
+        value = value + incr
+ids_osm = number_generator(-1, -1)
 
 
 def lonlat_to_osm_node((lon,lat), osmfile):
@@ -65,39 +65,37 @@ def lonlat_to_osm_node((lon,lat), osmfile):
         osmfile.nodes_by_lonlat = {}
     node = osmfile.nodes_by_lonlat.get((lon,lat))
     if node is None:
-        node = Node({"lon":lon, "lat":lat, "id":new_ids.next()}, {})
+        node = Node({"lon":lon, "lat":lat, "id":ids_osm.next()}, {})
         osmfile.nodes_by_lonlat[(lon,lat)] = node
         osmfile.nodes[node.id] = node
     return node
 
+
 def parse_lonlat_str(lonlat_str):
     return map(float, lonlat_str.split(" "))
+
 
 def lonlat_list_str_to_osm_way(lonlat_list_str, osmfile):
     lonlats = [parse_lonlat_str(p) for p in lonlat_list_str.split(",")]
     nodes = [lonlat_to_osm_node(ll, osmfile) for ll in lonlats]
-    way = Way({"id": new_ids.next()}, {}, [n.id for n in nodes], osmfile)
+    way = Way({"id": ids_osm.next()}, {}, [n.id for n in nodes], osmfile)
     osmfile.ways[way.id] = way
     return way
 
+
 def latlon_polygons_str_to_osm(polygons_str, osmfile):
-    outers = []
-    inners = []
+    outers, inners = [], []
     for polygon in polygons_str:
         linear_rings = [lonlat_list_str_to_osm_way(lll, osmfile) for lll in  polygon.split("),(")]
         outers.append(linear_rings[0])
         inners.extend(linear_rings[1:])
     if len(outers) == 1 and len(inners) == 0:
-        return linear_rings[0]
+        return outers[0]
     else:
-        members = []
-        for way in outers:
-            way.tags["source"] = SOURCE_TAG
-            members.append(("w", way.id, "outer"))
-        for way in inners:
-            way.tags["source"] = SOURCE_TAG
-            members.append(("w", way.id, "inner"))
-        relation = Relation({"id": new_ids.next()}, {"type": "multipolygon"}, members, osmfile)
+        for way in outers + inners: way.tags["source"] = SOURCE_TAG
+        members = [("w", way.id, "outer") for way in outers] + \
+                  [("w", way.id, "inner") for way in inners]
+        relation = Relation({"id": ids_osm.next()}, {"type": "multipolygon"}, members, osmfile)
         osmfile.relations[relation.id] = relation
         return relation
 
@@ -106,6 +104,9 @@ def st_geometry_to_osm_primitive(st_geometry, osmfile):
     if st_geometry.startswith("POINT("):
         assert st_geometry.endswith(")")
         return lonlat_to_osm_node(parse_lonlat_str(st_geometry[6:-1]), osmfile)
+    elif st_geometry.startswith("LINESTRING("):
+        assert st_geometry.endswith(")")
+        return lonlat_list_str_to_osm_way(st_geometry[11:-1], osmfile)
     elif st_geometry.startswith("POLYGON(("):
         assert st_geometry.endswith("))")
         return latlon_polygons_str_to_osm([st_geometry[9:-2]], osmfile)
@@ -123,50 +124,70 @@ def commune_geometry_sql_expression(numero_departement, numero_commune):
     return "(SELECT geometry FROM " + db.TABLE_PREFIX + "commune WHERE departement='%s' AND idu=%d)" % \
         (numero_departement, int(numero_commune))
 
+def liste_numero_communes(numero_departement):
+    numero_departement = normalise_numero_departement(numero_departement)
+    db.execute("SELECT idu FROM " + db.TABLE_PREFIX + "commune WHERE departement=%s", [numero_departement])
+    return [normalise_numero_commune(result[0]) for result in db.cur]
+
+def liste_parcelles_commune(numero_departement, numero_commune, attributs):
+    if not "idu" in attributs: attributs.append("idu")
+    db.execute("SELECT " + ", ".join(attributs) + " FROM " + db.TABLE_PREFIX + "parcelle WHERE ST_Intersects(geometry, {})".format(
+        commune_geometry_sql_expression(numero_departement, numero_commune)))
+    return [result for result in db.cur if result.idu.startswith(numero_commune)]
+
+
 def sql_select_dans_commune(table, params, condition, numero_departement, numero_commune):
     table = db.TABLE_PREFIX + table
     params = ", ".join([""] + params)
     condition = (condition + " AND ") if condition else ""
-    db.execute("""SELECT ST_AsText(geometry), update_date, object_rid, tex{0}
+    db.execute("""SELECT ST_AsText(geometry) AS geometry, update_date, object_rid, tex{0}
                FROM {1}
                WHERE  {2} ST_Intersects(geometry, {3})""".format(
                         params, table, condition,
                         commune_geometry_sql_expression(numero_departement, numero_commune)))
     return db.cur
 
+
 def sql_result_to_osm(result, numero_departement, osmfile):
     numero_departement = normalise_numero_departement(numero_departement)
-    item = st_geometry_to_osm_primitive(result[0], osmfile)
-    item.tags["source:date"] = str(result[1])
+    item = st_geometry_to_osm_primitive(result.geometry, osmfile)
+    item.tags["source:date"] = str(result.update_date)
     item.tags["source"] = SOURCE_TAG
-    item.tags["ref:FR:cadastre"] = numero_departement + ":" + str(result[2])
-    if result[3]:
-        item.tags["name"] = " ".join(result[3]).decode("utf-8").strip()
+    item.tags["ref:FR:cadastre"] = numero_departement + ":" + str(result.object_rid)
+    if result.tex:
+        item.tags["name"] = " ".join(result.tex).decode("utf-8").strip()
     return item
 
-def export_batiment(numero_departement, numero_commune, osmfile):
-    for result in sql_select_dans_commune("batiment", ["creat_date", "dur"], "ST_Area(geometry) > 0", numero_departement, numero_commune):
+
+def export_batiments(numero_departement, numero_commune, osmfile):
+    # Les églises contienent une croix: sym=14 dans la table tline,
+    eglise = "EXISTS (SELECT * FROM """ + db.TABLE_PREFIX + "tline as tline WHERE tline.sym=14 AND ST_Contains(" + db.TABLE_PREFIX + "batiment.geometry, tline.geometry)) AS eglise"
+    for result in sql_select_dans_commune("batiment", ["creat_date", "dur", eglise], "ST_Area(geometry) > 0", numero_departement, numero_commune):
         item = sql_result_to_osm(result, numero_departement, osmfile)
-        item.tags["building"] = "yes"
-        item.tags["start_date"] = str(result[4])
-        if result[5] == 2:
+        if result.eglise:
+            item.tags["building"] = "church"
+            item.tags["religion"] = "christian"
+        else:
+            item.tags["building"] = "yes"
+        item.tags["start_date"] = str(result.creat_date)
+        if result.dur == 2:
             item.tags["wall"] = "no"
 
-def export_cemeteries(numero_departement, numero_commune, osmfile):
+
+def export_cimetieres(numero_departement, numero_commune, osmfile):
     for result in sql_select_dans_commune("tsurf", [], "sym = 51 AND ST_Area(geometry) > 0", numero_departement, numero_commune):
         item = sql_result_to_osm(result, numero_departement, osmfile)
         item.tags["landuse"] = "cemetery"
 
-def export_water(numero_departement, numero_commune, osmfile):
-    # FIXME: il faut transformer le SRID pour que ST_Area() retourne un résultat en m2.
-    for result in sql_select_dans_commune("tsurf", ["sym", "ST_Area(geometry)"], "ST_Area(geometry) > 0", numero_departement, numero_commune):
-        sym = result[4]
-        area = result[5]
-        if sym in [34, 65]:
+
+def export_eau(numero_departement, numero_commune, osmfile):
+    for result in sql_select_dans_commune("tsurf", ["sym", "ST_Area(geometry::geography) AS area"], "ST_Area(geometry) > 0", numero_departement, numero_commune):
+        if result.sym in [34, 65]:
             item = sql_result_to_osm(result, numero_departement, osmfile)
-            if sym == 34 or area > 100:
+            item.tags["area"] = str(result.area)
+            if result.sym == 34 or result.area > 150:
                 item.tags["natural"] = "water"
-            elif sym == 65:
+            else:
                 item.tags["leisure"] = "swimming_pool"
                 item.tags["access"] = "private"
     for result in sql_select_dans_commune("tronfluv", [], "", numero_departement, numero_commune):
@@ -179,124 +200,69 @@ def export_lieudit(numero_departement, numero_commune, osmfile):
         item = sql_result_to_osm(result, numero_departement, osmfile)
         item.tags["place"] = ""
 
+
 def export_petits_noms(numero_departement, numero_commune, osmfile):
+    numero_regex = re.compile("^[0-9]*$")
     for result in sql_select_dans_commune("voiep", [], "", numero_departement, numero_commune):
-        text = " ".join(result[3]).decode("utf-8").strip()
-        if not re.match("^[0-9]*$", text):
+        if not numero_regex.match(result.text):
             item = sql_result_to_osm(result, numero_departement, osmfile)
 
 
-def export_addr(numero_departement, numero_commune, osmfile):
+def export_voies(numero_departement, numero_commune, osmfile):
+    for result in sql_select_dans_commune("zoncommuni", [], "", numero_departement, numero_commune):
+        item = sql_result_to_osm(result, numero_departement, osmfile)
+        item.tags["highway"] = ""
+    for result in sql_select_dans_commune("tronroute", [], "", numero_departement, numero_commune):
+        item = sql_result_to_osm(result, numero_departement, osmfile)
 
-    #SELECT tex FROM numvoie WHERE departement=%s LEFT JOIN parcelle
-    #for result in sql_select_dans_commune("numvoie", [], "", numero_departement, numero_commune):
-    #    item = sql_result_to_osm(result, numero_departement, osmfile)
-    #    item.tags["addr:housenumber"] = item.tags["name"]
-    #    del(item.tags["name"])
 
-    db.execute("""SELECT
-            tex,
-            creat_date,
-            update_date,
-            object_rid,
-            parcelle_idu,
-            adresses,
-            ST_AsText(numvoie_geometry) as original,
-            ST_AsText(nearest) as nearest,
-            ST_Distance_Sphere(numvoie_geometry, nearest) as distance,
-            intersects
-        FROM (
-            SELECT
-                numvoie.tex as  tex,
-                numvoie.creat_date as creat_date,
-                numvoie.update_date as update_date,
-                numvoie.object_rid as object_rid,
-                numvoie.parcelle_idu as parcelle_idu,
-                parcelle.adresses as  adresses,
-                numvoie.geometry as numvoie_geometry,
-                ST_Transform(
-                    ST_ClosestPoint(
-                        ST_Transform(ST_ExteriorRing(ST_GeometryN(parcelle.geometry, 1)), 3857),
-                        ST_Transform(numvoie.geometry, 3857)),
-                    4326) as nearest,
-                St_Intersects(numvoie.geometry, parcelle.geometry) as intersects
-            FROM {0}numvoie as numvoie
-            LEFT JOIN {0}parcelle as parcelle
-            ON numvoie.parcelle_idu = parcelle.idu
-            WHERE numvoie.departement=%s
-                AND parcelle.departement=%s
-                AND ST_Intersects(numvoie.geometry, {1})
-        ) as req;""".format(
-            db.TABLE_PREFIX,
-            commune_geometry_sql_expression(numero_departement, numero_commune)),
-        [numero_departement, numero_departement])
-    for tex, creat_date, update_date, object_rid, parcelle_idu, adresses, original, nearest, distance, intersects in db.cur:
-        geometry = nearest if (((distance < 4) and (not intersects)) or (intersects and distance < 0.5)) else original
-        num = " ".join(tex).decode("utf-8").strip()
-        fixme= []
-        voies = []
-        if num and adresses:
-            for adr in adresses:
-                adr = adr.decode("utf-8").strip()
-                if adr.startswith(num + " "):
-                    voies.append(adr[len(num):].strip())
-        item = st_geometry_to_osm_primitive(geometry, osmfile)
-        item.tags["source:date"] = str(update_date)
-        item.tags["source"] = SOURCE_TAG
-        item.tags["ref:FR:cadastre"] = numero_departement + ":" + str(object_rid)
-        item.tags["addr:housenumber"] = num
-        if len(voies) == 1:
-            item.tags["addr:street"] = voies[0]
-        elif len(voies) > 1:
-            item.tags["addr:street"] = "|".join(voies)
-            fixme.append(u"choisir la bonne rue: " + " ou ".join(voies))
-        if (distance > 10) and (not intersects):
-            num_parcelle = str(int(parcelle_idu[-4:]))
-            fixme.append(str(int(distance)) + u" m de la parcelle n°" + num_parcelle + u": vérifier la position")
-            fixme.reverse()
-        if fixme: item.tags["fixme"] = " et ".join(fixme)
-    #TODO: il faudrait aussi chercher les numéro contenus dans les
-    # adresses des parcelles mais qui n'ont pas de correspondance dans
-    # les points numvoie.
-    corrige_addr_street(numero_departement, numero_commune, osmfile)
+class OSMFile(OSMXMLFile):
+    def is_empty(self):
+        len(self.nodes) + len(self.ways) + len(self.relations) == 0
+    def write_if_not_empty(self, filename):
+        if not self.is_empty(): self.write(filename)
 
-def corrige_addr_street(numero_departement, numero_commune, osmfile):
-    # TODO
-    pass
+def export_osm(departement, commune):
+    departement = normalise_numero_departement(departement)
+    commune = normalise_numero_commune(commune)
+    numero_insee = normalise_numero_insee(departement, commune)
+    prefix = numero_insee  + "-"
+
+    osmfile = OSMFile()
+    export_batiments(departement, commune, osmfile)
+    osmfile.write_if_not_empty(prefix + "batiment.osm")
+
+    osmfile = OSMFile()
+    export_eau(departement, commune, osmfile)
+    osmfile.write_if_not_empty(prefix + "eau.osm")
+
+    osmfile = OSMFile()
+    export_cimetieres(departement, commune, osmfile)
+    osmfile.write_if_not_empty(prefix + "cimetiere.osm")
+
+    osmfile = OSMFile(options={"upload":"false"})
+    export_lieudit(departement, commune, osmfile)
+    osmfile.write_if_not_empty(prefix + "lieudit.osm")
+
+    osmfile = OSMFile(options={"upload":"false"})
+    export_voies(departement, commune, osmfile)
+    osmfile.write_if_not_empty(prefix + "voies-NE_PAS_ENVOYER_SUR_OSM.osm")
+
+    osmfile = OSMFile(options={"upload":"false"})
+    export_petits_noms(departement, commune, osmfile)
+    osmfile.write_if_not_empty(prefix + "petis-noms-NE_PAS_ENVOYER_SUR_OSM.osm")
 
 def main(args):
     parser = argparse.ArgumentParser(description="Export d'une commune au format .osm")
     parser.add_argument("departement", help="code departement", type=str)
-    parser.add_argument("commune", help="code commune", type=int)
+    parser.add_argument("commune", help="code commune", type=str)
     args = parser.parse_args(args)
-    departement  = normalise_numero_departement(args.departement)
-    commune = normalise_numero_commune(args.commune)
-    numero_insee = normalise_numero_insee(departement, commune)
-
-    osmfile = OSMXMLFile()
-    export_water(departement, commune, osmfile)
-    osmfile.write(numero_insee + "-eau.osm")
-
-    osmfile = OSMXMLFile()
-    export_batiment(departement, commune, osmfile)
-    osmfile.write(numero_insee + "-batiment.osm")
-
-    osmfile = OSMXMLFile()
-    export_cemeteries(departement, commune, osmfile)
-    osmfile.write(numero_insee + "-cimetiere.osm")
-
-    osmfile = OSMXMLFile(options={"upload":"false"})
-    export_lieudit(departement, commune, osmfile)
-    osmfile.write(numero_insee + "-lieudit.osm")
-
-    osmfile = OSMXMLFile()
-    export_petits_noms(departement, commune, osmfile)
-    osmfile.write(numero_insee + "-petis-noms.osm")
-
-    osmfile = OSMXMLFile()
-    export_addr(departement, commune, osmfile)
-    osmfile.write(numero_insee + "-adresse.osm")
-
+    if (args.commune.lower() in ["all", "toutes"]):
+        for commune in liste_numero_communes(args.departement):
+            export_osm(args.departement, commune)
+    else:
+        export_osm(args.departement, args.commune)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
+

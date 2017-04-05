@@ -71,8 +71,8 @@ def import_json_to_sql(jsonfile, departement):
             other_values["dur"] = int(properties["DUR"] or 1)
         elif item["layer"] == "commune":
             other_values["idu"] = int(properties["IDU"])
-        elif item["layer"] == "tsurf":
-            other_values["sym"] = int(properties["SYM"])
+        elif item["layer"] in ["tsurf", "tline"]:
+            other_values["sym"] = int(properties["SYM"] or 0)
         elif item["layer"] == "parcelle":
             other_values["idu"] = str(properties["IDU"] or "")
             other_values["indp"] = int(properties["INDP"])

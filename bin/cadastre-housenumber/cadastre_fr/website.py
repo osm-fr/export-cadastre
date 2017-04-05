@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@ Accès au site web du Cadastre (http://cadastre.gouv.fr)
 Permet d'obtenir les export pdf ainsi que les informations sur les parcelles.
 
 ATTENTION: l'utilisation des données du cadastre n'est pas libre, et ce script doit
-donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire 
+donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire
 http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation
 
 Ce script est inspiré du programme Qadastre de Pierre Ducroquet
@@ -67,13 +67,13 @@ MAP_PROJECTION_IGNF_VERS_EPSG_CODE = {
     "MAYO50UTM38S" : "2980",
     "CAD97UTM38S" : "4474",
     "RGM04UTM38S" : "4471",
-  # St-Pierre et Miquelon 
+  # St-Pierre et Miquelon
     "SPM50UTM21" : "2987",
     "RGSPM06U21" : "4467"
 }
 
 CORRECTIONS_PROJECTION_CADASTRE = {
-    # Corrections de projections extraites de 
+    # Corrections de projections extraites de
     # https://github.com/osm-fr/export-cadastre/blob/master/bin/Qadastre2OSM-src/osmgenerator.cpp
     "RGFG95UTM22" : "UTM22RGFG95",
     "RGR92UTM" : "RGR92UTM40S",
@@ -132,7 +132,7 @@ class CadastreWebsite(object):
     csrf_token_index = html.find("CSRF_TOKEN=")
     if csrf_token_index >= 0:
         csrf_token_index  = csrf_token_index + len("CSRF_TOKEN=")
-        end_index = csrf_token_index 
+        end_index = csrf_token_index
         while html[end_index] not in ('"', '&', "'", " "):
             end_index = end_index + 1
         self.CSRF_TOKEN = html[csrf_token_index:end_index]
@@ -148,15 +148,15 @@ class CadastreWebsite(object):
 
   def get_departements(self): return self.departements
 
-  def get_communes(self): 
+  def get_communes(self):
     """retourne la liste des communes du département courant """
     return self.communes
 
-  def get_projection(self): 
+  def get_projection(self):
     """retourne la projection de la commune courante """
     return self.projection
 
-  def get_bbox(self): 
+  def get_bbox(self):
     """retourne la bbox de la commune courante """
     return self.bbox
 
@@ -187,7 +187,7 @@ class CadastreWebsite(object):
           communes[code_commune] = nom_commune
     self.communes = communes
     self.code_departement = code_departement
-  
+
   def set_commune(self, code_commune):
     if code_commune == self.code_commune:
       return
@@ -242,8 +242,8 @@ class CadastreWebsite(object):
     return self.get_parcel(lon, lat, epsg="4326")
 
   def get_parcel(self, x, y, epsg=None):
-    """ retourne l'id de la parcelle situé au coordonées données 
-        (exprimées dans la projection epsg donnée ou à défaut celle 
+    """ retourne l'id de la parcelle situé au coordonées données
+        (exprimées dans la projection epsg donnée ou à défaut celle
          de la commune courante)"""
     self.check_session_timeout()
     if epsg==None:
@@ -293,7 +293,7 @@ class CadastreWebsite(object):
 
   def open_parcels_xml(self, x1, y1, x2, y2, epsg=None):
     self.check_session_timeout()
-    """ retourne la description des parcelles situé dans la bbox données 
+    """ retourne la description des parcelles situé dans la bbox données
         (exprimées dans la projection epsg donnée ou à défaut celle de la
         commune courrante)"""
     if epsg==None:
@@ -343,8 +343,8 @@ class CadastreWebsite(object):
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
-    answer = self.url_opener.open(request).read().decode("utf8")
-    return answer
+    answer = self.url_opener.open(request).read() # not utf-8
+    return answer.decode("latin1")
 
   def get_parcel_address(self, parcel):
     """ retourne une liste d'adresse de la parcelle"""
@@ -377,14 +377,14 @@ class CadastreWebsite(object):
     request.add_header('referer', self.__get_commune_url())
     return self.url_opener.open(request)
 
-    
+
 
 def command_line_open_cadastre_website(argv):
   """Ouvre le cadastre pour le département argv[1] et la commune argv[2]
      retourne soit l'instnace de CadastreWebsite ouverte, soit
-     un message d'erreur sous forme de chaine de caractère 
+     un message d'erreur sous forme de chaine de caractère
   """
-  if len(argv) <= 1: 
+  if len(argv) <= 1:
       # Liste les départements
       departements = CadastreWebsite().get_departements();
       code_departements = departements.keys()
@@ -401,7 +401,7 @@ def command_line_open_cadastre_website(argv):
           else:
               # cherche le département par son nom
               recherche = code_departement.upper()
-              departements_possibles = [code for code,nom in departements.items() 
+              departements_possibles = [code for code,nom in departements.items()
                   if nom.upper().find(recherche) >= 0]
               if len(departements_possibles) == 0:
                   return u"département invalide: " + code_departement
@@ -422,7 +422,7 @@ def command_line_open_cadastre_website(argv):
           if not (code_commune in communes):
               # cherche de la commune par son nom
               recherche = code_commune.upper()
-              communes_possibles = [code for code,nom in communes.items() 
+              communes_possibles = [code for code,nom in communes.items()
                   if nom.upper().find(recherche) >= 0]
               if len(communes_possibles) == 0:
                   return u"commune invalide: " + code_commune

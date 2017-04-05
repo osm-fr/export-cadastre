@@ -29,6 +29,16 @@ CREATE TABLE cadastre_geojson_tsurf (
     sym smallint
 );
 
+CREATE TABLE cadastre_geojson_tline (
+    departement char(3),
+    object_rid integer,
+    creat_date date,
+    update_date date,
+    tex text[],
+    geometry geometry,
+    sym smallint
+);
+
 CREATE TABLE cadastre_geojson_tronfluv (
     departement char(3),
     object_rid integer,
@@ -112,6 +122,11 @@ CREATE INDEX cadastre_geojson_commune_geometry ON cadastre_geojson_commune USING
 CREATE INDEX cadastre_geojson_tsurf_departement ON cadastre_geojson_tsurf USING btree(departement);
 CREATE INDEX cadastre_geojson_tsurf_object_rid ON cadastre_geojson_tsurf USING btree(object_rid);
 CREATE INDEX cadastre_geojson_tsurf_geometry ON cadastre_geojson_tsurf USING gist(geometry);
+
+CREATE INDEX cadastre_geojson_tline_departement ON cadastre_geojson_tline USING btree(departement);
+CREATE INDEX cadastre_geojson_tline_object_rid ON cadastre_geojson_tline USING btree(object_rid);
+CREATE INDEX cadastre_geojson_tline_geometry ON cadastre_geojson_tline USING gist(geometry);
+CREATE INDEX cadastre_geojson_tline_sym ON cadastre_geojson_tline USING btree(sym);
 
 CREATE INDEX cadastre_geojson_tronfluv_departement ON cadastre_geojson_tronfluv USING btree(departement);
 CREATE INDEX cadastre_geojson_tronfluv_object_rid ON cadastre_geojson_tronfluv USING btree(object_rid);
