@@ -49,7 +49,7 @@ CadastreWrapper::CadastreWrapper(QObject *parent) :
     m_departmentsRequest = 0;
 
     // Get a cookie and CSRF_TOKEN
-    QNetworkReply* initialRequest = m_nam->get(QNetworkRequest(QUrl("http://www.cadastre.gouv.fr/scpc/rechercherPlan.do")));
+    QNetworkReply* initialRequest = m_nam->get(QNetworkRequest(QUrl("https://www.cadastre.gouv.fr/scpc/rechercherPlan.do")));
     QEventLoop loop;
     connect(initialRequest, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
@@ -79,7 +79,7 @@ QString CadastreWrapper::parse_token(QNetworkReply* networkReply)
 void CadastreWrapper::requestDepartmentList()
 {
     if ((m_departments.count() == 0) && (!m_departmentsRequest)) {
-        m_departmentsRequest = m_nam->get(QNetworkRequest(QUrl("http://www.cadastre.gouv.fr/scpc/accueil.do")));
+        m_departmentsRequest = m_nam->get(QNetworkRequest(QUrl("https://www.cadastre.gouv.fr/scpc/accueil.do")));
         connect(m_departmentsRequest, SIGNAL(finished()), this, SIGNAL(departmentAvailable()));
     } else if (m_departments.count() > 0)
         emit departmentAvailable();
@@ -106,9 +106,9 @@ QMap<QString, QString> CadastreWrapper::listDepartments()
 
 void CadastreWrapper::requestCities(const QString &department)
 {
-    while (m_nam->cookieJar()->cookiesForUrl(QUrl("http://www.cadastre.gouv.fr/scpc")).count() == 0)
+    while (m_nam->cookieJar()->cookiesForUrl(QUrl("https://www.cadastre.gouv.fr/scpc")).count() == 0)
         qApp->processEvents();
-    QString url = QString("http://www.cadastre.gouv.fr/scpc/listerCommune.do?CSRF_TOKEN=%1&codeDepartement=%2&libelle=&keepVolatileSession=&offset=5000").arg(m_token, department);
+    QString url = QString("https://www.cadastre.gouv.fr/scpc/listerCommune.do?CSRF_TOKEN=%1&codeDepartement=%2&libelle=&keepVolatileSession=&offset=5000").arg(m_token, department);
     QNetworkReply *req = m_nam->get(QNetworkRequest(url));
     m_citiesSignalMapper.setMapping(req, department);
     connect(req, SIGNAL(finished()), &m_citiesSignalMapper, SLOT(map()));
@@ -149,10 +149,10 @@ QMap<QString, QString> CadastreWrapper::listCities(const QString &department)
 
 void CadastreWrapper::requestPDF(const QString &dept, const QString &cityCode, const QString &cityName)
 {
-    while (m_nam->cookieJar()->cookiesForUrl(QUrl("http://www.cadastre.gouv.fr/scpc")).count() == 0)
+    while (m_nam->cookieJar()->cookiesForUrl(QUrl("https://www.cadastre.gouv.fr/scpc")).count() == 0)
         qApp->processEvents();
 
-    QString url = "http://www.cadastre.gouv.fr/scpc/rechercherPlan.do";
+    QString url = "https://www.cadastre.gouv.fr/scpc/rechercherPlan.do";
     QString postData = QString("numeroVoie=&indiceRepetition=&nomVoie=&lieuDit=&ville=%1&codePostal=&codeDepartement=%2&nbResultatParPage=100&x=31&y=11&CSRF_TOKEN=%3").arg(QString::fromLatin1(QUrl::toPercentEncoding(cityName)), dept, m_token);
 
     qDebug() << postData;
@@ -185,7 +185,7 @@ void CadastreWrapper::bboxAvailable(QObject *networkReply)
         QString bbox = QString("%1,%2,%3,%4").arg(bbExtractor.cap(1)).arg(bbExtractor.cap(2)).arg(bbExtractor.cap(3)).arg(bbExtractor.cap(4));
         // Now we have everything needed to request the PDF !
         QString postData = QString("WIDTH=%1&HEIGHT=%2&MAPBBOX=%3&SLD_BODY=&RFV_REF=%4").arg(90000).arg(90000).arg(bbox).arg(cityCode);
-        QString url = QString("http://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do?CSRF_TOKEN=%1").arg(m_token);
+        QString url = QString("https://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do?CSRF_TOKEN=%1").arg(m_token);
         QNetworkRequest request(url);
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
         QNetworkReply *pdfRep = m_nam->post(request, postData.toLocal8Bit());
@@ -243,7 +243,7 @@ void CadastreWrapper::cityFound(QObject *networkReply)
     QString cityName = rep->property("cityName").toString();
     QString dept = rep->property("dept").toString();
 
-    QString url = QString("http://www.cadastre.gouv.fr/scpc/afficherCarteCommune.do?CSRF_TOKEN=%1&c=%2&dontSaveLastForward&keepVolatileSession=").arg(m_token, cityCode);
+    QString url = QString("https://www.cadastre.gouv.fr/scpc/afficherCarteCommune.do?CSRF_TOKEN=%1&c=%2&dontSaveLastForward&keepVolatileSession=").arg(m_token, cityCode);
     QNetworkReply *req = m_nam->get(QNetworkRequest(url));
     req->setProperty("cityCode", cityCode);
     req->setProperty("cityName", cityName);
