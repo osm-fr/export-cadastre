@@ -13,7 +13,7 @@
 # along with it. If not, see <http://www.gnu.org/licenses/>.
 
 """
-Accès au site web du Cadastre (http://cadastre.gouv.fr)
+Accès au site web du Cadastre (https://cadastre.gouv.fr)
 Permet d'obtenir les export pdf ainsi que les informations sur les parcelles.
 
 ATTENTION: l'utilisation des données du cadastre n'est pas libre, et ce script doit
@@ -91,7 +91,7 @@ CORRECTIONS_PROJECTION_CADASTRE_COMMUNE = {
 
 
 class CadastreWebsite(object):
-  """Accèss au site web http://cadastre.gouv.fr"""
+  """Accèss au site web https://cadastre.gouv.fr"""
 
   def __init__(self):
     self.code_departement = None
@@ -106,7 +106,7 @@ class CadastreWebsite(object):
     # Récupération de la liste des départements
     self.departements = self.__parse_departements_list(
         self.url_opener.open(
-            "http://www.cadastre.gouv.fr/scpc/rechercherPlan.do").read())
+            "https://www.cadastre.gouv.fr/scpc/rechercherPlan.do").read())
     code_departement = self.code_departement
     code_commune = self.code_commune
     self.code_departement = None
@@ -169,7 +169,7 @@ class CadastreWebsite(object):
     self.bbox = None
     communes = {}
     self.check_session_timeout()
-    url = "http://www.cadastre.gouv.fr/scpc/listerCommune.do?CSRF_TOKEN=" + self.CSRF_TOKEN + "&codeDepartement=" \
+    url = "https://www.cadastre.gouv.fr/scpc/listerCommune.do?CSRF_TOKEN=" + self.CSRF_TOKEN + "&codeDepartement=" \
         + code_departement \
         + "&libelle=&keepVolatileSession=&offset=5000"
     html = self.url_opener.open(url).read().decode("utf8")
@@ -234,7 +234,7 @@ class CadastreWebsite(object):
           "MAPBBOX" : "%f,%f,%f,%f" % bbox,
           "SLD_BODY" : "",
           "RFV_REF" : self.code_commune}
-    url = "http://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do?CSRF_TOKEN=" + self.CSRF_TOKEN
+    url = "https://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do?CSRF_TOKEN=" + self.CSRF_TOKEN
 
     return self.url_opener.open(url, urllib.urlencode(post_data))
 
@@ -278,7 +278,7 @@ class CadastreWebsite(object):
             '</ogc:Filter>' + \
           '</wfs:Query>' + \
         '</wfs:GetFeature>'
-    url = "http://www.cadastre.gouv.fr/scpc/wfs"
+    url = "https://www.cadastre.gouv.fr/scpc/wfs"
     request = urllib2.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
@@ -327,7 +327,7 @@ class CadastreWebsite(object):
             '</ogc:Filter>' + \
           '</wfs:Query>' + \
         '</wfs:GetFeature>'
-    url = "http://www.cadastre.gouv.fr/scpc/wfs"
+    url = "https://www.cadastre.gouv.fr/scpc/wfs"
     request = urllib2.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
@@ -338,7 +338,7 @@ class CadastreWebsite(object):
   def get_parcel_info(self, parcel):
     """retourne les infos de la parcelle"""
     data = "<PARCELLES><PARCELLE>" + parcel + "</PARCELLE></PARCELLES>"
-    url = "http://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
+    url = "https://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib2.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
@@ -357,14 +357,14 @@ class CadastreWebsite(object):
     return result
 
   def __get_commune_url(self):
-      return 'http://www.cadastre.gouv.fr/scpc/afficherCarteCommune.do?CSRF_TOKEN=' + self.CSRF_TOKEN \
+      return 'https://www.cadastre.gouv.fr/scpc/afficherCarteCommune.do?CSRF_TOKEN=' + self.CSRF_TOKEN \
           + '&c=' + self.code_commune + '&dontSaveLastForward&keepVolatileSession='
 
   def open_parcels_infos_pdf(self, parcels):
     """ouvre le pdf qui contient les infos des parcelles données"""
     self.check_session_timeout()
     data = "<PARCELLES><PARCELLE>" + "</PARCELLE><PARCELLE>".join(parcels) + "</PARCELLE></PARCELLES>"
-    url = "http://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
+    url = "https://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib2.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
@@ -372,7 +372,7 @@ class CadastreWebsite(object):
     answer = self.url_opener.open(request).read()
     # Quand on demande les infos de plusieurs parcelles, il faut ensuite
     # ouvrir le pdf pour avoir les infos:
-    url = "http://www.cadastre.gouv.fr/scpc/editerInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
+    url = "https://www.cadastre.gouv.fr/scpc/editerInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib2.Request(url)
     request.add_header('referer', self.__get_commune_url())
     return self.url_opener.open(request)

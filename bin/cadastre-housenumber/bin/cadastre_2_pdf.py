@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,10 +13,10 @@
 # along with it. If not, see <http://www.gnu.org/licenses/>.
 
 """
-Import des pdf depuis le cadastre (http://cadastre.gouv.fr)
+Import des pdf depuis le cadastre (https://cadastre.gouv.fr)
 
 ATTENTION: l'utilisation des données du cadastre n'est pas libre, et ce script doit
-donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire 
+donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire
 http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation
 
 Ce script est inspiré du programme Qadastre de Pierre Ducroquet
@@ -112,7 +112,7 @@ def cadastre_2_pdfs(argv):
       elif cadastreWebsite != None:
           code_departement = cadastreWebsite.code_departement
           code_commune = cadastreWebsite.code_commune
-          nom_commune = cadastreWebsite.communes[code_commune] 
+          nom_commune = cadastreWebsite.communes[code_commune]
           sys.stderr.write((u"Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n").encode("utf-8"))
           sys.stderr.flush()
           write_string_to_file("", code_commune + "-" + nom_commune + ".txt")
