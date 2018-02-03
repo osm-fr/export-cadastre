@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,11 +13,11 @@
 # along with it. If not, see <http://www.gnu.org/licenses/>.
 
 """
- - try to resolve segmentation_cases from segmentation_contributions 
+ - try to resolve segmentation_cases from segmentation_contributions
    stored in the database.
- - upload to OpenStreetMap the building "join" operations that can be done 
+ - upload to OpenStreetMap the building "join" operations that can be done
    automatically, and mark them as resolved
- - generate .osm files for "join" operations that need to be done manually 
+ - generate .osm files for "join" operations that need to be done manually
    or that are conflicting with other joins.
 """
 
@@ -55,12 +55,12 @@ def main(args):
     cur.execute("""
         SELECT ca.id, co1.choice, way1_osm_id, ST_AsText(way1_geom), way2_osm_id, ST_AsText(way2_geom)
         FROM segmented_cases ca
-        INNER JOIN segmented_contributions_rank co1 
+        INNER JOIN segmented_contributions_rank co1
             ON (co1.case_id=ca.id)
-        LEFT JOIN segmented_contributions_rank co2 
+        LEFT JOIN segmented_contributions_rank co2
             ON (co2.case_id=ca.id AND co2.rank>1)
-        WHERE ca.resolution = 'none' 
-            AND co1.rank=1 
+        WHERE ca.resolution = 'none'
+            AND co1.rank=1
             AND co1.nb>=3
         GROUP BY ca.id, co1.choice, co1.nb, co1.last
         HAVING co1.nb-coalesce(sum(co2.nb),0)>=3
@@ -71,8 +71,8 @@ def main(args):
         print case_id, choice, way1_id, way2_id
         if choice in ["keep", "unknown"]:
             cur.execute(cur.mogrify("""
-                UPDATE segmented_cases 
-                SET resolution=%s, resolution_time=now() 
+                UPDATE segmented_cases
+                SET resolution=%s, resolution_time=now()
                 WHERE id=%s""",(choice, case_id)));
         elif choice == "join":
             way1_geom, way2_geom = map(wkt_polygon_latlngs, (way1_geom, way2_geom))
@@ -82,14 +82,14 @@ def main(args):
                 if not way1:
                     print "way1 ", way1_id, "already deleted"
                     cur.execute(cur.mogrify("""
-                        UPDATE segmented_cases 
-                        SET resolution='outofdate', resolution_time=now() 
+                        UPDATE segmented_cases
+                        SET resolution='outofdate', resolution_time=now()
                         WHERE resolution='none' AND (way1_osm_id=%s OR way2_osm_id=%s)""", (way1_id, way1_id)));
                 if not way2:
                     print "way2 ", way2_id, "already deleted"
                     cur.execute(cur.mogrify("""
-                        UPDATE segmented_cases 
-                        SET resolution='outofdate', resolution_time=now() 
+                        UPDATE segmented_cases
+                        SET resolution='outofdate', resolution_time=now()
                         WHERE resolution='none' AND (way1_osm_id=%s OR way2_osm_id=%s)""", (way2_id, way2_id)));
             else:
                 way1 = api.WayFull(way1_id)
@@ -97,7 +97,7 @@ def main(args):
                 # api.WayFull is actually not returning relations as doc say, so also get relations:
                 way1 = way1 + [{'type':'relation', 'data': r} for r in api.WayRelations(way1_id)]
                 way2 = way2 + [{'type':'relation', 'data': r} for r in api.WayRelations(way2_id)]
-                osm_data = osm_data_update(osm_data_by_type(way1), osm_data_by_type(way2)) 
+                osm_data = osm_data_update(osm_data_by_type(way1), osm_data_by_type(way2))
                 way1_osm_geom = osm_way_latlngs(osm_data, way1_id)
                 way2_osm_geom = osm_way_latlngs(osm_data, way2_id)
                 if latlngs_equals(way1_geom, way1_osm_geom) and latlngs_equals(way2_geom, way2_osm_geom):
@@ -105,8 +105,8 @@ def main(args):
                 else:
                     print "way geometry changed, consider the case outofdate"
                     cur.execute(cur.mogrify("""
-                        UPDATE segmented_cases 
-                        SET resolution='outofdate', resolution_time=now() 
+                        UPDATE segmented_cases
+                        SET resolution='outofdate', resolution_time=now()
                         WHERE id=%s""", (case_id,)));
     excludes_cases_with_near_unresolved(join_cases)
     treat_join_cases(join_cases)
@@ -129,7 +129,7 @@ def try_join(case_id, way1_id, way2_id, osm_data):
     elif way1["tag"] != way2["tag"]:
         automatic_join = False
     else:
-        for nd in deleted_nds:
+        for nd in deleted_nd:
             if not can_delete_node(osm_data, nd, way1_id, way2_id):
                 automatic_join = False
                 break
@@ -169,6 +169,7 @@ def treat_join_cases(join_cases):
     cases_done = set()
     for case_id, join_case in join_cases.iteritems():
         if not case_id in cases_done:
+            print "treat join case ", case_id
             conflict_cases = set([case_id])
             ways_to_add = [join_case.way1_id, join_case.way2_id]
             while len(ways_to_add) > 0:
@@ -192,7 +193,7 @@ def treat_join_cases(join_cases):
                 if automatic:
                     if UPLOAD:
                         filename = None
-                        osm_upload(osm_data, source="http://cadastre.openstreetmap.fr/segmented/#%d" % (case_id,))
+                        osm_upload(osm_data, source="https://cadastre.openstreetmap.fr/segmented/#%d" % (case_id,))
                         cur.execute(cur.mogrify("""UPDATE segmented_cases SET resolution='join', resolution_time=now() WHERE id=%s""", (case_id,)))
                     else:
                         filename = "automatic-%d.osm" % case_id
@@ -203,21 +204,21 @@ def treat_join_cases(join_cases):
                 f = open(filename, "w")
                 write_josm(osm_data, f)
                 f.close()
-    
+
 def excludes_cases_with_near_unresolved(join_cases):
     """Excludes cases that have unresolved case near them
-       as there may exist "join" conflicts between them 
+       as there may exist "join" conflicts between them
        that would not be detected from the join_cases list.
     """
     for join_case in list(join_cases.values()):
         cur.execute(cur.mogrify("""
-            SELECT ca2.id 
-            FROM segmented_cases ca1, segmented_cases ca2 
+            SELECT ca2.id
+            FROM segmented_cases ca1, segmented_cases ca2
             WHERE   ca1.id=%s
                 AND ca2.resolution = 'none'
                 AND ST_Distance(ca1.center::geography, ca2.center::geography) < 200
                 AND ST_Distance(
-                        ST_Union(ca1.way1_geom, ca1.way2_geom)::geography, 
+                        ST_Union(ca1.way1_geom, ca1.way2_geom)::geography,
                         ST_Union(ca2.way1_geom, ca2.way2_geom)::geography
                     ) < 5
             """, (join_case.case_id,)))
@@ -233,8 +234,8 @@ def resolve_undecided():
     cur.execute("""
         UPDATE segmented_cases
         SET resolution='undecided', resolution_time=now()
-        WHERE resolution='none' 
-            AND	id IN (
+        WHERE resolution='none'
+            AND id IN (
                 SELECT c1.case_id
                 FROM (segmented_contributions_rank c1
                 LEFT JOIN segmented_contributions_rank c2 ON (((c2.case_id = c1.case_id) AND (c2.rank > 1))))
@@ -258,7 +259,7 @@ def osm_data_update(data, update):
 
 def osm_way_latlngs(data, id):
     return [(data["node"][nd]["lat"], data["node"][nd]["lon"]) for nd in data["way"][id]["nd"]]
-    
+
 def wkt_polygon_latlngs(wkt):
     assert(wkt.startswith("POLYGON((") and wkt.endswith("))"));
     coords = wkt[len("POLYGON(("): -len("))")];
@@ -300,7 +301,7 @@ def shift_to_common_start_and_get_common_size(l1, l2):
             break;
         prev_i1 = i1;
         i1 = i1+1
-    common_size = 0; 
+    common_size = 0;
     while (common_size < size1) and (common_size < size2) and (l1[common_size] == l2[common_size]):
             common_size = common_size + 1;
     if swaped:
@@ -328,16 +329,16 @@ def add_map_set(map_list, key, item):
 
 def osm_changeset_open(comment=None, source=None):
     if comment == None:
-	comment = "Merge segmented building"
+        comment = "Merge segmented building"
     if source == None:
-        source = "http://cadastre.openstreetmap.fr/segmented/"
+        source = "https://cadastre.openstreetmap.fr/segmented/"
     changeset = api.ChangesetCreate({"comment": comment, "source": source})
-    if VERBOSE: print "opened changeset ", changeset 
+    if VERBOSE: print "opened changeset ", changeset
     return changeset
 
 def osm_changeset_close():
     changeset = api.ChangesetClose()
-    print "closed changeset ", changeset 
+    print "closed changeset ", changeset
     api.flush()
 
 def osm_upload(osm_data, source=None):
@@ -367,7 +368,7 @@ def can_simplify_node(osm_data, nd_first, nd_last, nd_middle):
     coords = map(deg_to_rad, coords)
     xte = abs(EARTH_RADIUS_IN_METER * xtd(*coords))
     if VERBOSE: print "xte = ", xte
-    return xte < DEFAULT_SIMPLIFY_THRESHOLD 
+    return xte < DEFAULT_SIMPLIFY_THRESHOLD
 
 def can_delete_node(osm_data, nd, way1_id, way2_id):
     node_ways = [w for w in api.NodeWays(nd) if w["id"] not in (way1_id, way2_id)]
@@ -399,7 +400,7 @@ def write_josm_tags(item, output):
 
 def write_josm_keys(item, output):
     for key,value in item.iteritems():
-        if not key in ['tag', 'nd', 'member', 'timestamp']: 
+        if not key in ['tag', 'nd', 'member', 'timestamp']:
             output.write((u" %s='%s'" % (key,value)).encode("utf-8"))
 
 def write_josm(osm_data, output):
@@ -422,13 +423,15 @@ def write_josm(osm_data, output):
     for item in osm_data["relation"].itervalues():
         output.write("  <relation ")
         write_josm_keys(item, output)
-        for member in item["member"]:
-            #TODO
-            sys.exit(-1)
         output.write(">\n");
         write_josm_tags(item, output)
+        for member in item["member"]:
+            output.write(u"    <member ")
+            write_josm_keys(member, output)
+            output.write(" />\n")
         output.write("  </relation>\n")
     output.write("</osm>\n");
+    output.flush()
 
 if __name__ == '__main__':
     main(sys.argv[1:])

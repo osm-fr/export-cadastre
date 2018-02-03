@@ -4,9 +4,9 @@
 
 ## Intro
 
-An analysis is done to predict some buildings that may have been 
+An analysis is done to predict some buildings that may have been
 segmented by the French cadastre.
-(see `../cadastre-housenumber/cadastre_fr/segmented_py`)
+(see `../cadastre-housenumber/cadastre_fr/segmented.py`)
 
 The scripts here manage a database used to crowd-source
 the confirmation of the segmented cases.
@@ -38,7 +38,7 @@ https://github.com/opensolarmap/solback/blob/master/solback.sql
 See file `segmented.sql`.
 
 There is one table listing all the predicted segmentation cases.
-And one tables to collect contributions from users that will visually 
+And one tables to collect contributions from users that will visually
 validate the predictions.
 
 
@@ -59,9 +59,10 @@ Exemple:
 
 ## Web Interface
 
-The webinterface located in the web directory allow users to confirm or infirm
-predictions.
-It will call the script `get.py` to obtain segmentation casess, and script `set.py` to record a validation.
+The web interface located in the web directory allow users to validate
+or invalidate predictions.
+It will call the script `get.py` to obtain segmented cases, and script
+`set.py` to record a user choice.
 
 ## Resolution
 
