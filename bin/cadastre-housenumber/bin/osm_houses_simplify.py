@@ -69,7 +69,8 @@ def main(argv):
       output_filename = name + "-simplifie" + ext
 
     osm_data = OsmParser().parse(input_filename)
-    simplify(osm_data, merge_distance, join_distance, simplify_threshold)
+    if osm_data.bbox():
+      simplify(osm_data, merge_distance, join_distance, simplify_threshold)
     OsmWriter(osm_data).write_to_file(output_filename)
     return 0
 
