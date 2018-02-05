@@ -135,7 +135,6 @@ if( $dep && $ville && $type )
 				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 			} else {
 				$command = sprintf( "cd %s && ./import-ville2.sh %s %s \"%s\" $bbox $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
-				//$command = sprintf( "cd %s && ./import-ville.sh %s %s \"%s\" $bbox $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
 				//exec( $command );
 				//echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
 				//$command = '';
