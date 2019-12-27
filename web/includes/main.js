@@ -64,7 +64,7 @@ function downloadVilleForDepartement_handler()
 	if( this.readyState == 4 && this.status == 200 )
 	{
 		// A cause de ce bug sur Internet Explorer 8 et 9
-		// (http://support.microsoft.com/kb/276228/fr)
+		// (https://support.microsoft.com/kb/276228/fr)
 		// on remplace le innerHTML du <span id="ville_container">
 		// au lieu de remplacer celui du <select id="ville">:
 		document.getElementById( "ville_container" ).innerHTML = this.responseText;
@@ -180,8 +180,8 @@ function bbox_display() {
 	document.getElementById("bbox_overlay").style.display = 'block';
 	document.getElementById("bbox_frame").style.display = 'block';
 	if (bbox_map == null) {
-		var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-		var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+		var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 		var osm = new L.TileLayer(osmUrl, {minZoom: 2, maxZoom: 17, attribution: osmAttrib});
 		bbox_map = L.map('bbox_map');
 		bbox_map.addLayer(osm);
