@@ -196,7 +196,7 @@ function bbox_display() {
 		}
 	};
 	// Requête overpass pour chercher la relation avec "ref:INSEE"=insee
-	xmlhttp.open("GET", "http://overpass-api.de/api/interpreter?data=[out:json];relation[boundary%3Dadministrative][%22ref%3AINSEE%22%3D%22" + insee + "%22]%3Bout center%3B");
+	xmlhttp.open("GET", "https://overpass-api.de/api/interpreter?data=[out:json];relation[boundary%3Dadministrative][%22ref%3AINSEE%22%3D%22" + insee + "%22]%3Bout center%3B");
 	xmlhttp.send();
 }
 
