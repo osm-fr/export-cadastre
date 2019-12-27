@@ -2,9 +2,10 @@ Dependencies:
 
   aptitude install qt4-qmake libpodofo-dev libqt4-dev libproj-dev libgeos++-dev
 
+  (libgeos++-dev must be >= 3.3.3-1.1 but < 3.8.0-1)
 
 Building:
 
-  qmake -o Makefile Qadastre2OSM.pro
+  qmake-qt4 -o Makefile Qadastre2OSM.pro
   make
   cp Qadastre2OSM ../

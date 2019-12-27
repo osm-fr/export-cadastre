@@ -32,3 +32,5 @@ HEADERS += \
     qadastresql.h
 
 LIBS += -ljpeg -lz -lpodofo -lproj -lgeos
+
+DEFINES += ACCEPT_USE_OF_DEPRECATED_PROJ_API_H=1
