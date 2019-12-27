@@ -26,7 +26,7 @@ from .tools    import open_cached
 def open_osm_overpass(requete, cache_filename, metropole=False):
     if metropole:
         # oapi-fr.openstreetmap.fr n'a que la métropole, pas l'outre mer
-        overvass_server = "http://api.openstreetmap.fr/oapi/interpreter?"
+        overvass_server = "http://overpass-api.de/api/interpreter?"
     else:
         overvass_server = "http://overpass-api.de/api/interpreter?"
     url = overvass_server + urllib.urlencode({'data':requete})
