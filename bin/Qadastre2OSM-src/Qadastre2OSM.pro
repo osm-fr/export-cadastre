@@ -31,4 +31,6 @@ HEADERS += \
     timeoutthread.h \
     qadastresql.h
 
-LIBS += -lpodofo -lproj -lgeos
+LIBS += -ljpeg -lz -lpodofo -lproj -lgeos
+
+DEFINES += ACCEPT_USE_OF_DEPRECATED_PROJ_API_H=1

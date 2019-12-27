@@ -4,6 +4,10 @@
 
 # Split cadastre pdf export in 200m x 200x square to avoid precision issues.
 
+if [ $# -lt 3 ]; then
+  echo -e "$0 department insee name [bbox(lon1,lat1,lon2,lat2)]\nEx: $0 02A AA142 LEVIE\nEx2: $0 02A AA142 LEVIE 9.12206,41.70100,9.12627,41.69932"
+  exit 1
+fi
 dep="$1"
 code="$2"
 name="$3"

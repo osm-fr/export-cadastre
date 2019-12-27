@@ -66,8 +66,10 @@ def main(argv):
     #simplify(osm, 0.2, 0.2, 0.1)
 
     if VERBOSE: print "transform..."
-    inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(osm)
-    compute_transformed_position_and_annotate(osm, inputTransform)
+
+    if osm.bbox():
+      inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(osm)
+      compute_transformed_position_and_annotate(osm, inputTransform)
 
     if VERBOSE: print "detect..."
     classifier, scaler = load_classifier_and_scaler()

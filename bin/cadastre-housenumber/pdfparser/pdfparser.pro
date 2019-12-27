@@ -6,4 +6,4 @@ CONFIG += release
 
 SOURCES += pdfparser.cpp
 
-LIBS += -lpodofo
+LIBS += -lz -lpodofo -ljpeg
