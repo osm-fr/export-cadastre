@@ -65,7 +65,7 @@ function downloadVilleForDepartement_handler()
 	{
 		// A cause de ce bug sur Internet Explorer 8 et 9
 		// (http://support.microsoft.com/kb/276228/fr)
-		// on remplace le innerHTML du <span id="ville_container"> 
+		// on remplace le innerHTML du <span id="ville_container">
 		// au lieu de remplacer celui du <select id="ville">:
 		document.getElementById( "ville_container" ).innerHTML = this.responseText;
 		ville_filter = new SelectBoxFilter(document.getElementById( "ville" ));
@@ -182,7 +182,7 @@ function bbox_display() {
 	if (bbox_map == null) {
 		var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-		var osm = new L.TileLayer(osmUrl, {minZoom: 2, maxZoom: 17, attribution: osmAttrib});	 
+		var osm = new L.TileLayer(osmUrl, {minZoom: 2, maxZoom: 17, attribution: osmAttrib});
 		bbox_map = L.map('bbox_map');
 		bbox_map.addLayer(osm);
 		bbox_map_areaSelect = L.areaSelect({width:300, height:200});
@@ -195,8 +195,8 @@ function bbox_display() {
 			bbox_map_setViewOnOverpassResult(xmlhttp.responseText);
 		}
 	};
-	// Requête overpass pour chercher un nœeud "place" avec "ref:INSEE"=insee
-	xmlhttp.open("GET", "http://overpass-api.de/api/interpreter?data=[out:json];node[%22ref%3AINSEE%22%3D%22" + insee + "%22][%22place%22]%3Bout%3B");
+	// Requête overpass pour chercher la relation avec "ref:INSEE"=insee
+	xmlhttp.open("GET", "https://overpass-api.de/api/interpreter?data=[out:json];relation[boundary%3Dadministrative][%22ref%3AINSEE%22%3D%22" + insee + "%22]%3Bout center%3B");
 	xmlhttp.send();
 }
 
@@ -227,7 +227,7 @@ function bbox_cancel() {
 function bbox_map_setViewOnOverpassResult(overpass_json_text) {
 	result = JSON.parse(overpass_json_text);
 	if (result.elements.length > 0) {
-		var center = result.elements[0];
+		var center = result.elements[0].center;
 		bbox_map.setView([center.lat, center.lon], 15);
 	} else {
     // call getCenter.php to get cadastre center
