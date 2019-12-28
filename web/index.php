@@ -76,10 +76,10 @@ function already_generated() {
 ?>
 <div id="conditions-utilisation">
 <p>
-Ce service et les données du cadastre disponibles ici sont exclusivement réservés à l'usage des contributeurs OpenStreetMap. <a href="http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">En savoir plus</a>
+Ce service et les données du cadastre disponibles ici sont exclusivement réservés à l'usage des contributeurs OpenStreetMap. <a href="https://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">En savoir plus</a>
 </p>
 <p>
-Le cadastre n'est pas utilisé que pour le bâti, il permet aussi de compléter le nom des voies: <a href="http://wiki.openstreetmap.org/wiki/Contribuer_%C3%A0_la_BANO">Contribuer à la BANO</a>.
+Le cadastre n'est pas utilisé que pour le bâti, il permet aussi de compléter le nom des voies: <a href="https://wiki.openstreetmap.org/wiki/Contribuer_%C3%A0_la_BANO">Contribuer à la BANO</a>.
 </p>
 </div>
 <div id='information'>
@@ -205,7 +205,7 @@ else
 		</span>
 
 		<br />
-		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='http://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
+		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='https://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
 		<p style='font-size:small;'>Seules les communes existant au format vecteur au cadastre sont listées</p>
 	</fieldset>
 	<fieldset id='ftype'>
@@ -244,9 +244,9 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
     <fieldset id='mise_en_garde'>
 	<legend>Mise en garde</legend>
 	<ul>
-	<li>L'intégration de données <i><u>bâtiments</u></i> en provenance du cadastre n'est pas triviale, si vous ne venez pas de <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_b%C3%A2timents' target="_blank">la page suivante</a>, il est vivement recommandé d'aller la lire !</li>
-	<li>Pour les <i><u>limites</u></i> de communes, ce n'est pas trivial non plus et la <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Limites_administratives/Tracer_les_limites_administratives' target="_blank">documentation est ici.</a></li>
-	<li>Pour l'intégration des données <i><u>adresses</u></i>, <a href='http://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses' target="_blank">il faut lire cette page</a></li>
+	<li>L'intégration de données <i><u>bâtiments</u></i> en provenance du cadastre n'est pas triviale, si vous ne venez pas de <a href='https://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_b%C3%A2timents' target="_blank">la page suivante</a>, il est vivement recommandé d'aller la lire !</li>
+	<li>Pour les <i><u>limites</u></i> de communes, ce n'est pas trivial non plus et la <a href='https://wiki.openstreetmap.org/wiki/WikiProject_France/Limites_administratives/Tracer_les_limites_administratives' target="_blank">documentation est ici.</a></li>
+	<li>Pour l'intégration des données <i><u>adresses</u></i>, <a href='https://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses' target="_blank">il faut lire cette page</a></li>
 	</ul>
     </fieldset>
     <fieldset id='temps'>
