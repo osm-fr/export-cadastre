@@ -45,7 +45,7 @@ $dep_array=array(
 	array("id" => "025", "name" => "025 Doubs"),
 	array("id" => "026", "name" => "026 Dr&ocirc;me"),
 	array("id" => "027", "name" => "027 Eure"),
-	array("id" => "028", "name" => "028 Eure-et-Loire"),
+	array("id" => "028", "name" => "028 Eure-et-Loir"),
 	array("id" => "029", "name" => "029 Finist&egrave;re"),
 	array("id" => "030", "name" => "030 Gard"),
 	array("id" => "031", "name" => "031 Haute Garonne"),
