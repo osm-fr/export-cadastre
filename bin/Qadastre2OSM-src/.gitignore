@@ -4,4 +4,4 @@ Qadastre2OSM
 *.pdf
 *.osm
 *.bbox
-Makefile
+Makefile.qt

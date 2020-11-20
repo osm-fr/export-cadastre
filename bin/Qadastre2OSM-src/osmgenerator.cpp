@@ -639,7 +639,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
     }
 
     geos::geom::PrecisionModel precision;
-    geos::geom::GeometryFactory factory(&precision, 4326);
+    geos::geom::GeometryFactory::Ptr factory = geos::geom::GeometryFactory::create(&precision, 4326);
 
     qDebug() << "Done extracting nodes";
 
@@ -668,9 +668,9 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
                 {
                     coords->push_back(geos::geom::Coordinate(pt.x(), pt.y()));
                 }
-                geos::geom::CoordinateSequence *seq = factory.getCoordinateSequenceFactory()->create(coords);
-                geos::geom::LinearRing *ring = factory.createLinearRing(seq);
-                geos::geom::Polygon *poly = factory.createPolygon(ring, 0);
+                geos::geom::CoordinateSequence *seq = factory->getCoordinateSequenceFactory()->create(coords);
+                geos::geom::LinearRing *ring = factory->createLinearRing(seq);
+                geos::geom::Polygon *poly = factory->createPolygon(ring, 0);
                 geoPolygons.push_back(poly);
             } else if (pts.size() > 0) {
                 qDebug() << "Really weird !!!";
@@ -679,7 +679,7 @@ void OSMGenerator::dumpSQL(const QSqlDatabase &db, int cityId, int importId, con
         }
 
         if (geoPolygons.size()) {
-            geos::geom::MultiPolygon *mPoly = factory.createMultiPolygon(geoPolygons);
+            geos::geom::MultiPolygon *mPoly = factory->createMultiPolygon(geoPolygons);
             QString wkt = QString::fromStdString(mPoly->toString());
 
             int houseId;
