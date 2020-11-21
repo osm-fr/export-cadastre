@@ -1,11 +1,11 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 """
 Record a contribution for the validation of segmented building cases.
- 
-Possible choices are 'join' 'keep' 'unknown'. 
-The special choice  'back' allow to delete a previous contribution.  
+
+Possible choices are 'join' 'keep' 'unknown'.
+The special choice  'back' allow to delete a previous contribution.
 
 @param ip the ip adress of the contributor that made the validation
 @param id the id of the segmentation cases validated.
@@ -30,7 +30,7 @@ def set_contribution(ip, id, choice, session):
 
     if choice in ['back', 'join', 'keep', 'unknown']:
         query = cur.mogrify("""
-            DELETE FROM segmented_contributions 
+            DELETE FROM segmented_contributions
             WHERE case_id=%s AND ip=%s AND session=%s
             AND (now() - "time") < (interval '10 minute')""",
                 (id, ip, session))
@@ -38,7 +38,7 @@ def set_contribution(ip, id, choice, session):
         if choice != 'back':
             cur.execute(query)
             query = cur.mogrify("""
-                INSERT INTO segmented_contributions 
+                INSERT INTO segmented_contributions
                 (case_id, ip, "time", choice, session)
                 VALUES (%s, %s, now(), %s, %s);""", (id, ip, choice, session))
             cur.execute(query)

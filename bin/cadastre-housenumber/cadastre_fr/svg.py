@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,11 +43,11 @@ class SvgGroupRemover(object):
         input_file.close()
         output_file.close()
     def handle_start_element(self, name, attrs):
-        if name.lower() != "g": 
+        if name.lower() != "g":
             self.output.write(("\n  ".join(
-                ["\n<" + name] + 
+                ["\n<" + name] +
                 [ n + "=" + xml.sax.saxutils.quoteattr(v)
-                  for n,v in attrs.items()])
+                  for n,v in list(attrs.items())])
             + ">").encode("utf8"))
         if self.INVERT_Y_AXIS and (name.lower() == "svg"):
             # Début du fichier, crée un groupe pour inverser les coordonnées y:

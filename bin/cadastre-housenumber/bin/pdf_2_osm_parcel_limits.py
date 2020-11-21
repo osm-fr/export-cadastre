@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@ from cadastre_fr.parcel import pdf_2_osm_parcels_limits
 HELP_MESSAGE = "USAGE: {0} fichier.svg+ [fichier.osm]\n".format(sys.argv[0])
 
 def main(argv):
-    if (len(argv) < 2): 
-        command_line_error(u"fichier .svg non spécifié", HELP_MESSAGE)
+    if (len(argv) < 2):
+        command_line_error("fichier .svg non spécifié", HELP_MESSAGE)
     pdf_filename_list = sys.argv[1:]
     if pdf_filename_list[-1].endswith(".osm"):
         osm_output = open(pdf_filename_list.pop(),"w")
@@ -33,14 +33,14 @@ def main(argv):
         osm_output = sys.stdout
     for f in pdf_filename_list:
         if (not f.endswith(".svg")) and (not f.endswith(".pdf")):
-            command_line_error(u"l'argument n'est pas un fichier .pdf ou .svg: " + f, HELP_MESSAGE)
+            command_line_error("l'argument n'est pas un fichier .pdf ou .svg: " + f, HELP_MESSAGE)
         if not os.path.exists(f):
-            command_line_error(u"fichier non trouvé: " + f, HELP_MESSAGE)
+            command_line_error("fichier non trouvé: " + f, HELP_MESSAGE)
         bboxfile = f[:-4] + ".bbox"
         if not os.path.exists(bboxfile):
-            command_line_error(u"fichier .bbox correspondant non trouvé: " + bboxfile, HELP_MESSAGE)
+            command_line_error("fichier .bbox correspondant non trouvé: " + bboxfile, HELP_MESSAGE)
     pdf_2_osm_parcels_limits(pdf_filename_list, osm_output)
-    
+
 
 if __name__ == '__main__':
     main(sys.argv)

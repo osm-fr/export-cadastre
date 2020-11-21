@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
 
 
 
-""" 
+"""
     Cherche le code FANTOIR et les highways d'OSM
     correspondants à chaque relation associatedStreet.
 
@@ -27,9 +27,9 @@
 import re
 import sys
 import shutil
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import os.path
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import subprocess
 import collections
 from zipfile import ZipFile
@@ -49,24 +49,27 @@ ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.real
 FANTOIR_URL = "https://www.data.gouv.fr/fr/datasets/fichier-fantoir-des-voies-et-lieux-dits/"
 FANTOIR_ZIP = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "data", "fantoir", "FANTOIR.zip")
 
-HELP_MESSAGE = u"""Récupération des code fantoir et des highway OSM des associatedStreet
+HELP_MESSAGE = """Récupération des code fantoir et des highway OSM des associatedStreet
 USAGE:
 {0}  CODE_DEPARTEMENT CODE_COMUNE input.osm output.osm""".format(sys.argv[0])
 
 if not os.path.exists(os.path.join(ASSOCIATEDSTREET_DIR,"addr_fantoir_building.py")):
-  sys.stderr.write(u"ERREUR: le projet associatedStreet n'as pas été trouvé.\n".encode("utf-8"))
-  sys.stderr.write(u"        Veuillez executer les commandes suivantes et relancer:\n".encode("utf-8"))
-  sys.stderr.write(u"    git submodule init\n".encode("utf-8"))
-  sys.stderr.write(u"    git submodule update\n".encode("utf-8"))
+  sys.stderr.write("ERREUR: le projet associatedStreet n'as pas été trouvé.\n")
+  sys.stderr.write("        Veuillez executer les commandes suivantes et relancer:\n")
+  sys.stderr.write("    git submodule init\n")
+  sys.stderr.write("    git submodule update\n")
   sys.exit(-1)
 
 
 associatedStreet_init = os.path.join(ASSOCIATEDSTREET_DIR,"__init__.py")
 if not os.path.exists(associatedStreet_init):
     open(associatedStreet_init, "a").close()
-associatedStreet_pg_connexion = os.path.join(ASSOCIATEDSTREET_DIR,"pg_connexion.py")
+associatedStreet_pg_connexion = os.path.join(ASSOCIATEDSTREET_DIR, "pg_connexion.py")
 if not os.path.exists(associatedStreet_pg_connexion):
-    shutil.copyfile(associatedStreet_pg_connexion + ".txt", associatedStreet_pg_connexion)
+    try:
+        shutil.copyfile(associatedStreet_pg_connexion + ".txt", associatedStreet_pg_connexion)
+    except:
+        pass
 
 
 import associatedStreet.addr_fantoir_building as addr_fantoir_building
@@ -89,23 +92,23 @@ def normalize(nom):
 
 
 def get_dict_fantoir(code_departement, code_commune):
-    """ Retourne un dictionnaire qui mappe un nom normalizé 
+    """ Retourne un dictionnaire qui mappe un nom normalizé
         du Fantoir (nature + libele de la voie)
-        vers un tuple (string, boolean) représentant le CODE FANTOIR, et 
+        vers un tuple (string, boolean) représentant le CODE FANTOIR, et
         s'il s'agit d'un lieu dit non bâti (place=locality).
     """
     try:
         return get_dict_fantoir_from_database(code_departement, code_commune)
     except:
-        # La connexion avec la base SQL a du échouer, on 
+        # La connexion avec la base SQL a du échouer, on
         # charge les fichiers zip fantoir manuellement:
         return get_dict_fantoir_from_downloaded_zip(code_departement, code_commune)
 
 
 def get_dict_fantoir_from_database(code_departement, code_commune):
-    """ Retourne un dictionnaire qui mappe un nom normalizé 
+    """ Retourne un dictionnaire qui mappe un nom normalizé
         du Fantoir (nature + libele de la voie)
-        vers un tuple (string, boolean) représentant le CODE FANTOIR, et 
+        vers un tuple (string, boolean) représentant le CODE FANTOIR, et
         s'il s'agit d'un lieu dit non bâti (place=locality).
     """
     insee = code_insee(code_departement, code_commune)
@@ -115,7 +118,7 @@ def get_dict_fantoir_from_database(code_departement, code_commune):
                             nature_voie||' '||libelle_voie,
                             type_voie, ld_bati
                     FROM  fantoir_voie
-                    WHERE code_insee = \'''' + insee + '''\' 
+                    WHERE code_insee = \'''' + insee + '''\'
                           AND caractere_annul NOT IN ('O','Q');'''
     db_cursor.execute(sql_query)
     for result in db_cursor:
@@ -129,9 +132,9 @@ def get_dict_fantoir_from_database(code_departement, code_commune):
 
 
 def get_dict_fantoir_from_downloaded_zip(code_departement, code_commune):
-    """ Retourne un dictionnaire qui mappe un nom normalizé 
+    """ Retourne un dictionnaire qui mappe un nom normalizé
         du Fantoir (nature + libele de la voie)
-        vers un tuple (string, boolean) représentant le CODE FANTOIR, et 
+        vers un tuple (string, boolean) représentant le CODE FANTOIR, et
         s'il s'agit d'un lieu dit non bâti (place=locality).
     """
     dict_fantoir = {}
@@ -172,7 +175,7 @@ def get_fantoir_code_departement(code_departement):
 def get_fantoir_zip_file():
     filename = FANTOIR_ZIP
     if not os.path.exists(filename) and os.path.exsits(filename + ".ok"):
-        webpage = urllib2.urlopen(FANTOIR_URL).read()
+        webpage = urllib.request.urlopen(FANTOIR_URL).read()
         zip_url_re = re.compile(' href="([^"]*\\.zip)"')
         zip_url_match = zip_url_re.search(webpage)
         if not zip_url_match:
@@ -180,8 +183,8 @@ def get_fantoir_zip_file():
             print_flush(FANTOIR_URL)
             raise Exception()
         zip_url = zip_url_match.group(1)
-        print_flush(u"Téléchargement du fichier Fantoir " + zip_url)
-        open_function = lambda: urllib2.urlopen(zip_url)
+        print_flush("Téléchargement du fichier Fantoir " + zip_url)
+        open_function = lambda: urllib.request.urlopen(zip_url)
         download_cached(open_function, filename)
     return filename
 
@@ -193,7 +196,7 @@ def open_osm_multipolygon_s_ways_commune(code_departement, code_commune, type_mu
     requete_overpass = 'rel(area:%d)[type=multipolygon]["%s"]%s;way(r);' % (area, type_multipolygon, filtre)
     if nodes: requete_overpass += "(._;>;);"
     requete_overpass += "out meta;"
-    print_flush(u"Récupération des multipolygon " + type_multipolygon + " de la commune")
+    print_flush("Récupération des multipolygon " + type_multipolygon + " de la commune")
     return open_osm_overpass(requete_overpass, cache_filename, metropole=code_departement.startswith("0"))
 
 
@@ -204,12 +207,12 @@ def open_osm_ways_commune(code_departement, code_commune, type_way, filtre="", n
     #requete_overpass = 'way(area:%d)["%s"]%s;%s' % (area, type_way, filtre, "(._;>;);" if node else "")  # Cette version marche moins bien que la suivante équivalente
     requete_overpass = 'node(area:%d);way(bn);(way._["%s"]%s;%s);' % (area, type_way, filtre, "node(w);" if nodes else "")
     requete_overpass += "out meta;"
-    print_flush(u"Récupération des " + type_way + " de la commune")
+    print_flush("Récupération des " + type_way + " de la commune")
     return open_osm_overpass(requete_overpass, cache_filename, metropole=code_departement.startswith("0"))
 
 
 def get_osm_buildings_and_barrier_ways(code_departement, code_commune):
-    """ Retourne un objet Osm contenant tout les ways de la commune correspondant 
+    """ Retourne un objet Osm contenant tout les ways de la commune correspondant
         au buildings et au barrier."""
     merge_osm = Osm({})
     input_osms = [
@@ -236,12 +239,12 @@ def get_osm_buildings_and_barrier_ways(code_departement, code_commune):
     return merge_osm
 
 
-    
+
 def get_dict_osm_ways(osm):
     """ Pour le fichier osm donné, retourne un dictionnaire qui mappe le
         nom normalisé des ways vers un dictionnaire avec:
          - un chanps 'name' avec le nom original
-         - un champ 'ids' avec la liste des id des ways ayant ce 
+         - un champ 'ids' avec la liste des id des ways ayant ce
            nom normalizé là.
     """
     dict_ways_osm = {}
@@ -305,8 +308,8 @@ def get_dict_abrev_type_voie():
                 dict_abrev_type_voie[abrev] = nom
     dict_abrev_type_voie["CHEM"] = "Chemin" # à la place de CHEMINEMENT
     dict_abrev_type_voie["CHE"] = "Chemin" # à la place de CHEM
-    dict_abrev_type_voie["ILE"] = u"Île" # pb d'encodage dans le projet associatedStreet
-    dict_abrev_type_voie["ECA"] = u"Écart" # pb d'encodage dans le projet associatedStreet
+    dict_abrev_type_voie["ILE"] = "Île" # pb d'encodage dans le projet associatedStreet
+    dict_abrev_type_voie["ECA"] = "Écart" # pb d'encodage dans le projet associatedStreet
     return dict_abrev_type_voie
 
 def get_dict_accents_mots(osm_noms):
@@ -317,7 +320,7 @@ def get_dict_accents_mots(osm_noms):
     """
     dict_accents_mots = {}
     if osm_noms:
-        print_flush(u"Recherche l'orthographe accentuée depuis les exports PDF du cadastre.")
+        print_flush("Recherche l'orthographe accentuée depuis les exports PDF du cadastre.")
         liste_mots_a_effacer_du_dict = ["DE", "LA", "ET"]
         # On essaye de parser l'ensemble des noms extraits du cadastre pour
         # en faire un dictionaire de remplacement a appliquer
@@ -353,16 +356,16 @@ def get_dict_accents_mots(osm_noms):
             if mot in dict_accents_mots:
                 del(dict_accents_mots[mot])
     dict_accents_mots.update({
-        "EGLISE": u"Église", 
-        "ECOLE": u"École", 
-        "ECOLES": u"Écoles", 
-        "ALLEE": u"Allée", 
-        "ALLEES": u"Allées",
-        "GENERAL" : u"Général",
+        "EGLISE": "Église",
+        "ECOLE": "École",
+        "ECOLES": "Écoles",
+        "ALLEE": "Allée",
+        "ALLEES": "Allées",
+        "GENERAL" : "Général",
         # Abréviations typiques du Fantoir:
-        "PDT": u"Président",
+        "PDT": "Président",
         "CDT": "Commandant",
-        "REGT" : u"Régiment",
+        "REGT" : "Régiment",
         "DOC" : "Docteur",
         "ST" : "Saint",
         "STE" : "Sainte",
@@ -375,13 +378,13 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
         à partir de la version normalizée de leur nom:
          - positionne le tag ref:FR:FANTOIR avec le code fantoir correspondant
          - cherche depuis les données OSM les highways de la commune ayant le
-           même nom normalizé, et les ajoute en tant que role street de la 
+           même nom normalizé, et les ajoute en tant que role street de la
            relation
-         - change le nom de la relation en celui des highway OSM si trouvé, 
-           ou sinon humanise le nom original en utilisant les accents trouvé 
+         - change le nom de la relation en celui des highway OSM si trouvé,
+           ou sinon humanise le nom original en utilisant les accents trouvé
            dans le fichier osm_noms passé en paramètre.
     """
-    print_flush(u"Rapprochement avec les codes FANTOIR, et les highway OSM")
+    print_flush("Rapprochement avec les codes FANTOIR, et les highway OSM")
     highways_osm = open_osm_ways_commune(code_departement, code_commune, "highway", '["name"]', nodes=False)
     dict_ways_osm = get_dict_osm_ways(highways_osm)
     dict_fantoir = get_dict_fantoir(code_departement, code_commune)
@@ -397,9 +400,9 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
     # Compte le nombre d'occurence de chaque nom normalizé
     # afin de détecter les conflits
     conflits_normalization = collections.Counter([
-        normalize(r.tags['name']) for r in itervalues(osm.relations) 
+        normalize(r.tags['name']) for r in itervalues(osm.relations)
         if r.tags.get('type') == 'associatedStreet'])
-  
+
 
     for relation in itervalues(osm.relations):
         if relation.tags['type'] == 'associatedStreet':
@@ -407,28 +410,28 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
             name = relation.tags['name']
             name_norm = normalize(name)
             if name and name_norm:
-                log.write((name + u" => normalizé[" + name_norm + "]").encode("utf-8"))
+                log.write(name + " => normalizé[" + name_norm + "]")
                 if conflits_normalization[name_norm] > 1:
-                    # Cas rencontré à Dijon (021 B0231), deux rues différentes "Rue la Fontaine" et "Rue de Fontaine" 
+                    # Cas rencontré à Dijon (021 B0231), deux rues différentes "Rue la Fontaine" et "Rue de Fontaine"
                     # ont le même nom normalizé, on ne tente donc pas de raprochement Fantoir ou OSM
                     relation.tags['name'] = humanise_nom_fantoir(name, dict_abrev_type_voie, dict_accents_mots)
-                    log.write((" CONFLIT DE NORMALIZATION, => " + relation.tags['name'] + "\n").encode("utf-8"))
+                    log.write(" CONFLIT DE NORMALIZATION, => " + relation.tags['name'] + "\n")
                 else:
                     if name_norm in dict_fantoir:
                         relation.tags['ref:FR:FANTOIR'] = dict_fantoir[name_norm][0]
                         nb_voies_fantoir += 1
-                        log.write((" ref:FR:FANTOIR[" + dict_fantoir[name_norm][0] + "]").encode("utf-8"))
+                        log.write(" ref:FR:FANTOIR[" + dict_fantoir[name_norm][0] + "]")
                     else:
-                        log.write((" ref:FR:FANTOIR[???]").encode("utf-8"))
+                        log.write(" ref:FR:FANTOIR[???]")
                     if name_norm in dict_ways_osm:
                         nb_voies_osm += 1
                         for id_way in dict_ways_osm[name_norm]['ids']:
                             relation.add_member_type_ref_role('way', id_way, 'street')
                         relation.tags['name'] = dict_ways_osm[name_norm]['name']
-                        log.write((" osm highway[" + relation.tags['name'] + "]\n").encode("utf-8"))
+                        log.write(" osm highway[" + relation.tags['name'] + "]\n")
                     else:
                         relation.tags['name'] = humanise_nom_fantoir(name, dict_abrev_type_voie, dict_accents_mots)
-                        log.write((" osm highway[???] => " + relation.tags['name'] + "\n").encode("utf-8"))
+                        log.write(" osm highway[???] => " + relation.tags['name'] + "\n")
     log.close()
     print_flush("Nombre de rues: "+str(nb_associatedStreet))
     if nb_associatedStreet > 0:
@@ -437,20 +440,20 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
 
     # Humanise aussi les noms de lieux-dits:
     for node in itervalues(osm.nodes):
-        if node.tags.has_key("place"):
+        if "place" in node.tags:
             name = node.tags["name"]
             name_norm = normalize(name)
             highway = False
             if (name_norm in dict_fantoir):
                 node.tags['ref:FR:FANTOIR'] = dict_fantoir[name_norm][0]
                 highway = dict_fantoir[name_norm][1]
-            node.tags["name"] = humanise_nom_fantoir(name, 
+            node.tags["name"] = humanise_nom_fantoir(name,
                 dict_abrev_type_voie if highway else {},
                 dict_accents_mots)
             if highway:
                 del(node.tags["place"])
                 node.tags["highway"] = "road"
-                node.tags["fixme"] = u"à vérifier: nom de rue créé automatiquement à partir des adresses du coin"
+                node.tags["fixme"] = "à vérifier: nom de rue créé automatiquement à partir des adresses du coin"
 
-    
+
 

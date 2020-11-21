@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ class open_cached:
             return False
 
 def print_flush(text):
-    sys.stdout.write((text + "\n").encode("utf-8"))
+    sys.stdout.write(text + "\n")
     sys.stdout.flush()
 
 
@@ -112,7 +112,7 @@ def toposort(data):
     """
     def toposort2(data):
         # Ignore self dependencies.
-        for k, v in data.items():
+        for k, v in list(data.items()):
             v.discard(k)
         # Find all items that don't depend on anything.
         extra_items_in_deps = reduce(set.union, itervalues(data)) - set(iterkeys(data))
@@ -131,22 +131,22 @@ def toposort(data):
 
 if (sys.version_info > (3, 0)):
     def iteritems(dictionary):
-        return dictionary.items()
+        return list(dictionary.items())
     def itervalues(dictionary):
-        return dictionary.values()
+        return list(dictionary.values())
     def iterkeys(dictionary):
-        return dictionary.keys()
+        return list(dictionary.keys())
 else:
     def iteritems(dictionary):
-        return dictionary.iteritems()
+        return iter(list(dictionary.items()))
     def itervalues(dictionary):
-        return dictionary.itervalues()
+        return iter(list(dictionary.values()))
     def iterkeys(dictionary):
-        return dictionary.iterkeys()
+        return iter(list(dictionary.keys()))
 
 
 def to_ascii(utf):
-    return unicodedata.normalize('NFD',unicode(utf)).encode("ascii","ignore")
+    return unicodedata.normalize('NFD',str(utf)).encode("ascii","ignore")
 
 
 def named_chunks(l, n):
@@ -154,7 +154,7 @@ def named_chunks(l, n):
     nb_chunks = (len(l) + n - 1) / n
     name_size = int(math.ceil(math.log10(nb_chunks+1)))
     name_format = "%%0%dd" % name_size
-    for i,j in enumerate(xrange(0, len(l), n)):
+    for i,j in enumerate(range(0, len(l), n)):
         yield name_format % (i+1), l[j:j+n]
 
 
@@ -163,10 +163,10 @@ def command_line_error(error_message, help_message=""):
         output = sys.stderr
     else:
         output = sys.stdout
-    if help_message: 
-        output.write((unicode(help_message) + "\n").encode("utf-8"))
+    if help_message:
+        output.write(str(help_message) + "\n")
     if error_message:
-        output.write(("ERREUR: " + unicode(error_message) + "\n").encode("utf-8"))
+        output.write("ERREUR: " + str(error_message) + "\n")
         sys.exit(-1)
     else:
         sys.exit(0)
@@ -180,7 +180,7 @@ class Timer():
     def __call__(self):
         return timeit.default_timer() - self.start
     def prnt(self):
-        print(self.msg + " => " + str(round(self(), 4)) +  " s")
+        print((self.msg + " => " + str(round(self(), 4)) +  " s"))
 
 
 def open_zip_and_files_with_extension(file_list, extension):

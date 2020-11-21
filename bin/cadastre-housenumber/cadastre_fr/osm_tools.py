@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ def osm_add_point(osm, point, transform, same_nodes_set = None):
     if type(point) == ShapelyPoint:
         point = point.coords[0]
     lon,lat = transform(point)
-    lon,lat = "%.7f" % lon, "%.7f" % lat 
+    lon,lat = "%.7f" % lon, "%.7f" % lat
     key = lon + "," + lat
     if same_nodes_set != None and key in same_nodes_set:
         return same_nodes_set[key]
@@ -51,7 +51,7 @@ def osm_add_nodes_way(osm, nodes):
     for node in nodes:
         way.add_node(node)
     return way
-    
+
 def osm_add_line_way(osm, line, transform, same_nodes_set = None):
     way = Way({})
     osm.add_way(way)
@@ -103,13 +103,13 @@ def osm_add_multipolygon(osm, polygon, transform, same_nodes_set = None):
                 way = osm_add_line_way(osm, ring, transform, same_nodes_set)
                 r.add_member(way, "inner")
     return r
-     
+
 
 def osm_add_way_direction(osm, node, position, angle, taille, transform, same_nodes_set = None):
     """ Ajoute un chemin (way) pour indiquer la direction associé a un noeud)"""
-    pos1 = (position[0] - taille * math.cos(angle), 
+    pos1 = (position[0] - taille * math.cos(angle),
             position[1] - taille * math.sin(angle))
-    #pos2 = (position[0] + taille * math.cos(angle), 
+    #pos2 = (position[0] + taille * math.cos(angle),
     #        position[1] + taille * math.sin(angle))
     p1 = osm_add_point(osm, pos1, transform, same_nodes_set)
     #p2 = osm_add_point(osm, pos2, transform)
@@ -131,7 +131,7 @@ def nearest_intersection(node, ways, osm, angle = None):
     best_pos = (0,0)
     x,y = node.position
     for way in ways:
-        for i in xrange(len(way.nodes)-1):
+        for i in range(len(way.nodes)-1):
             a = osm.nodes[way.nodes[i]]
             b = osm.nodes[way.nodes[i+1]]
             if angle != None:

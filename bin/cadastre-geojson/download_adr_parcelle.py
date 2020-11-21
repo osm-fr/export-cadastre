@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
@@ -29,22 +29,22 @@ import argparse
 
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))),"cadastre-housenumber"))
 
-import db
-from import_json import normalise_numero_commune
-from import_json import normalise_numero_departement
+from . import db
+from .import_json import normalise_numero_commune
+from .import_json import normalise_numero_departement
 from cadastre_fr.website import CadastreWebsite
 from cadastre_fr.parcel import iter_download_parcels_info_pdf
 from cadastre_fr.parcel import parse_addresses_of_parcels_info_pdfs
 from cadastre_fr.tools import iteritems
-from export_osm import commune_geometry_sql_expression
-from export_osm import liste_parcelles_commune
-from export_osm import liste_numero_communes
+from .export_osm import commune_geometry_sql_expression
+from .export_osm import liste_parcelles_commune
+from .export_osm import liste_numero_communes
 
 
 def ouvre_cadastre_website_commune(numero_departement, numero_commune):
     cadastreWebsite = CadastreWebsite()
     cadastreWebsite.set_departement(numero_departement)
-    code_commune = [key for key in cadastreWebsite.get_communes().keys() if key.endswith(numero_commune)]
+    code_commune = [key for key in list(cadastreWebsite.get_communes().keys()) if key.endswith(numero_commune)]
     if len(code_commune) == 1:
         code_commune = code_commune[0]
     elif len(code_commune) == 0:

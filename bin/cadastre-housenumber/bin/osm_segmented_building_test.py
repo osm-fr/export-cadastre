@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ un tag "segmented" contenant des valeurs égales pour les buildings à fusionner
 ou rien ou "segmented"="no" pour ceux à ne pas fusioner,
 et "segmented"="?" pour ceux pour lequel c'est ambigue.
 
-De tels fichiers d'entrée peuvent être générés par le programme 
+De tels fichiers d'entrée peuvent être générés par le programme
 segmented_building_find_joined.py
 
 Ensuite, analyse chaque couple de bâtiment contigues,
@@ -63,27 +63,27 @@ def main(argv):
     score = 0
 
     for name, stream in open_zip_and_files_with_extension(osm_args, ".osm"):
-        if VERBOSE: print "load " + name
+        if VERBOSE: print(("load " + name))
         input_osm = OsmParser().parse_stream(stream)
         inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(input_osm)
         compute_transformed_position_and_annotate(input_osm, inputTransform)
 
         nb_ok, nb_missed, nb_false, missed_osm, false_osm = test_classifier(classifier, scaler, input_osm)
 
-        if VERBOSE: print nb_ok, "correctly found"
+        if VERBOSE: print((nb_ok, "correctly found"))
 
         if len(missed_osm.ways) or nb_missed:
             missed_name = os.path.splitext(name)[0] + "-missed.osm"
-            if VERBOSE: print nb_missed, " missed detections, write file", missed_name
+            if VERBOSE: print((nb_missed, " missed detections, write file", missed_name))
             OsmWriter(missed_osm).write_to_file(missed_name)
         if len(false_osm.ways) or nb_false:
             false_name = os.path.splitext(name)[0] + "-false.osm"
-            if VERBOSE: print nb_false, " false positives, write file", false_name
+            if VERBOSE: print((nb_false, " false positives, write file", false_name))
             OsmWriter(false_osm).write_to_file(false_name)
         score  += nb_ok * 2 - nb_missed - nb_false*10
 
-    if VERBOSE: print "TOTAL SCORE (ok*3 - missed - false*10):"
-    print score
+    if VERBOSE: print("TOTAL SCORE (ok*3 - missed - false*10):")
+    print(score)
     return 0
 
 

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,20 +25,20 @@ from cadastre_fr.tools import command_line_error
 from cadastre_fr.svg   import pdfs_2_svgs
 
 
-HELP_MESSAGE = u"""Conversion pdf en svg
+HELP_MESSAGE = """Conversion pdf en svg
 USAGE: {0} fichier.pdf [fichier2.pdf ...]\n""".format(sys.argv[0])
 
 
 def main(argv):
-    if len(argv) <= 1: 
-        command_line_error(u"pas asser d'argument", HELP_MESSAGE)
+    if len(argv) <= 1:
+        command_line_error("pas asser d'argument", HELP_MESSAGE)
     elif argv[1] in ["-h", "-help","--help"]:
         print_help()
     else:
         pdf_filename_list = sys.argv[1:]
         for f in pdf_filename_list:
             if not f.endswith(".pdf"):
-                command_line_error(u"l'argument n'est pas un fichier .pdf: " + f)
+                command_line_error("l'argument n'est pas un fichier .pdf: " + f)
                 return
         pdfs_2_svgs(pdf_filename_list)
 

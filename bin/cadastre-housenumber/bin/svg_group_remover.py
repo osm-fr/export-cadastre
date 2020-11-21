@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ def main(argv):
 
       SvgGroupRemover().filter(input_file, output_file)
   else:
-      print "USAGE: " + argv[0] + " input_file.svg output_file.svg"
+      print(("USAGE: " + argv[0] + " input_file.svg output_file.svg"))
 
 if __name__ == '__main__':
     main(sys.argv)

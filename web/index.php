@@ -43,8 +43,8 @@ function already_generated() {
   global $type;
   global $dep;
   global $ville;
-  global $data_path;
-  $prefix = $data_path . $dep . "/" . $ville;
+  global $data_dir;
+  $prefix = $data_dir . '/' . $dep . "/" . $ville;
   if ($type == "bati") {
 	$fichiers = array(
 		"-city-limit.osm",
@@ -86,18 +86,25 @@ Le cadastre n'est pas utilisé que pour le bâti, il permet aussi de compléter 
 <?php
 if( $dep && $ville && $type )
 {
-	if( !file_exists( $locks_path . '/' . $dep ) )
+	if( !file_exists( $lock_dir ) )
+        {
+		mkdir( $lock_dir );
+        }
+	if( !file_exists( $lock_dir . '/' . $dep ) )
 	{
-		@mkdir( $locks_path );
-		mkdir( $locks_path . '/' . $dep );
+                #echo($lock_dir . '/' . $dep );
+		mkdir( $lock_dir . '/' . $dep);
 	}
-	if( !file_exists( $logs_path . '/' . $dep ) and $do_we_log )
+	if( !file_exists( $log_dir ) )
+        {
+		mkdir( $log_dir );
+        }
+	if( !file_exists( $log_dir . '/' . $dep ) and $do_we_log )
 	{
-		@mkdir( $logs_path );
-		mkdir( $logs_path . '/' . $dep );
+		mkdir( $log_dir . '/' . $dep);
 	}
-	$log_file = $logs_path . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.log';
-	$lock_file = $locks_path . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.lock';
+	$log_file = $log_dir . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.log';
+	$lock_file = $lock_dir . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.lock';
 	if( file_exists( $lock_file ) && ((time() - filemtime ( $lock_file )) < 2*60*60)) {
 		echo 'Import en cours';
 	} 
@@ -107,13 +114,13 @@ if( $dep && $ville && $type )
 	} 
 	else
 	{
-		register_shutdown_function ( unlink, $lock_file );
+		register_shutdown_function ( function($filepath) {@unlink($filepath);}, $lock_file );
 		if( touch( $lock_file ) )
 		{
 			chmod( $lock_file, 0664);
 			if ($do_we_log)
 			{
-				$log = fopen( $logs_path . '/log.txt', 'a+' );
+				$log = fopen( $log_dir . '/log.txt', 'a+' );
 				fwrite( $log, date( 'd-m-Y H:i:s' ) . ' ' . $_SERVER['REMOTE_ADDR'] . ' : ' . $dep . ' ' . $ville . "" . $type . ";\n" );
 				fclose( $log );
 				if ($type == "adresses") { 
@@ -132,9 +139,9 @@ if( $dep && $ville && $type )
 			}
 			$v = explode( '-', $ville, 2 );
 			if ($type == "adresses") { 
-				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_dir, $dep, $v[0], trim( $v[1] ));
 			} else {
-				$command = sprintf( "cd %s && ./import-ville2.sh %s %s \"%s\" $bbox $log_cmd", $bin_path, $dep, $v[0], trim( $v[1] ));
+				$command = sprintf( "cd %s && ./import-ville2.sh %s %s \"%s\" $bbox $log_cmd", $bin_dir, $dep, $v[0], trim( $v[1] ));
 				//exec( $command );
 				//echo 'Import ok. Acc&egrave;s <a href="data/' . $dep . '">aux fichiers</a> - <a href="data/' . $dep . '/' . $v[0] . '-' . trim( $v[1] ) . '.tar.bz2">&agrave; l\'archive</a>';
 				//$command = '';
@@ -167,7 +174,7 @@ if( $dep && $ville && $type )
 		<select name='dep' id='dep' onchange='javascript:onDepartementChange();'>
 			<option></option>
 <?php
-if( $handle = opendir( $data_path ) )
+if( $handle = opendir( $data_dir ) )
 {
 	foreach( $dep_array as $d )
 	{

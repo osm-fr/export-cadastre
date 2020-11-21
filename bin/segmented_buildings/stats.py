@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 
 """
@@ -7,8 +7,8 @@ Return stats on contributors.
 
 @param ip the ip adress of the contributor.
 
-This file is largely derived from OpenSolarMap backend code from Christan Quest: 
-https://github.com/opensolarmap/solback/blob/master/solback.py 
+This file is largely derived from OpenSolarMap backend code from Christan Quest:
+https://github.com/opensolarmap/solback/blob/master/solback.py
 """
 
 
@@ -47,7 +47,7 @@ def main(args):
     parser = argparse.ArgumentParser(description='Get next segmente building cases to consider.')
     parser.add_argument("--ip", help="client ip address", type=str, default="127.0.0.1");
     args = parser.parse_args(args)
-    print(json.dumps(get_stats(args.ip)));
+    print((json.dumps(get_stats(args.ip))));
 
 if __name__ == '__main__':
     main(sys.argv[1:])

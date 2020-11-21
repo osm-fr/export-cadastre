@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -92,6 +92,9 @@ from .osm        import Osm,Node,Way,Relation,OsmParser,OsmWriter
 from .transform  import get_centered_metric_equirectangular_transformation_from_osm
 from .simplify   import simplify
 from .tools      import iteritems, itervalues, iterkeys
+
+# Import from ../cadastre_fr_segmented native object code
+# which make should install in $HOME/.local/.lib/python3.X/site-package/:
 from cadastre_fr_segmented import  get_classifier_vector_from_wkt
 from cadastre_fr_segmented import  get_classifier_vector_from_coords
 
@@ -174,14 +177,14 @@ def test_classifier(classifier, scaler, osm_data):
                     elif not incertain:
                         #sys.stdout.write("F");sys.stdout.flush()
                         nb_false = nb_false + 1
-                        add_way_to_other_osm(osm_data, building, false_osm) 
-                        add_way_to_other_osm(osm_data, way, false_osm) 
+                        add_way_to_other_osm(osm_data, building, false_osm)
+                        add_way_to_other_osm(osm_data, way, false_osm)
                 else:
                     if areSegmented:
                         #sys.stdout.write("M");sys.stdout.flush()
                         nb_missed = nb_missed + 1
-                        add_way_to_other_osm(osm_data, building, missed_osm) 
-                        add_way_to_other_osm(osm_data, way, missed_osm) 
+                        add_way_to_other_osm(osm_data, building, missed_osm)
+                        add_way_to_other_osm(osm_data, way, missed_osm)
     return nb_ok, nb_missed, nb_false, missed_osm, false_osm
 
 
@@ -223,12 +226,12 @@ def filter_buildings_junction(osm_data, buildings_couples):
         external1, common, external2 = get_external1_common_external2_ways(b1.nodes, b2.nodes)
         for node_id in common:
             node = osm_data.nodes[node_id]
-            node.tags["fixme"] = u"Est-ce que les bâtiments ne sont pas segmentés ici par le cadastre ?"
+            node.tags["fixme"] = "Est-ce que les bâtiments ne sont pas segmentés ici par le cadastre ?"
             if node_id not in osm.nodes:
                 osm.add_node(node)
         way = Way({})
         way.nodes = common
-        way.tags["name"] = u"Est-ce que les bâtiments ne sont pas segmentés ici par le cadastre ?"
+        way.tags["name"] = "Est-ce que les bâtiments ne sont pas segmentés ici par le cadastre ?"
         osm.add_way(way)
     return osm
 
@@ -310,7 +313,7 @@ def compute_transformed_position_and_annotate(osm_data, transform):
 
 def compute_buildings_polygons_and_rtree(osm_data, tolerance):
     buildings_rtree = rtree.index.Index()
-    osm_data.buildings_rtree = buildings_rtree 
+    osm_data.buildings_rtree = buildings_rtree
     for way in itervalues(osm_data.ways):
         if way.isBuilding:
             if len(way.nodes) >= 3:
@@ -338,7 +341,7 @@ def compute_buildings_polygons_and_rtree(osm_data, tolerance):
 
 
 def ways_equals(way1, way2, tolerance):
-    bbox_diff = max(map(abs, map(operator.sub, way1.bbox, way2.bbox)))
+    bbox_diff = max(list(map(abs, list(map(operator.sub, way1.bbox, way2.bbox)))))
     return (bbox_diff < tolerance) and \
         way1.tolerance_polygon.contains(way2.polygon) and \
         way2.tolerance_polygon.contains(way1.polygon)
@@ -353,17 +356,17 @@ def train(data, result, scoring=None):
 
 
 def train_kneighbors(data, result, scoring=None):
-    print("train KNeighborsClassifier {}".format(len(data)))
+    print(("train KNeighborsClassifier {}".format(len(data))))
     #scaler = None
     scaler = preprocessing.MinMaxScaler()
-    print("Scale: {}".format(type(scaler)))
+    print(("Scale: {}".format(type(scaler))))
     if scaler != None:
         data = scaler.fit_transform(data)
 
     #classifier = neighbors.KNeighborsClassifier(weights = 'distance', n_neighbors=8)
     classifier = neighbors.KNeighborsClassifier(weights = 'distance', n_neighbors=6)
     classifier.fit(data, result)
-    
+
 
     # GridSearchCV says best is with n_neighbors=4, but my observations show that n_neighbors=8 is way better.
 
@@ -383,10 +386,10 @@ def train_kneighbors(data, result, scoring=None):
 
 
 def train_tree(data, result, scoring=None):
-    print("train DecisionTreeClassifier {}".format(len(data)))
+    print(("train DecisionTreeClassifier {}".format(len(data))))
     scaler = None
     scaler = preprocessing.MinMaxScaler()
-    print("Scale: {}".format(type(scaler)))
+    print(("Scale: {}".format(type(scaler))))
     if scaler != None:
         data = scaler.fit_transform(data)
 
@@ -401,14 +404,14 @@ def train_tree(data, result, scoring=None):
     print(parameters)
     search = GridSearchCV(tree.DecisionTreeClassifier(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print("best params: {}".format(search.best_params_))
-    print("best score: {}".format(search.best_score_))
-    print
+    print(("best params: {}".format(search.best_params_)))
+    print(("best score: {}".format(search.best_score_)))
+    print()
     return scaler, search.best_estimator_.fit(data,result)
 
 
 def train_svm(data, result, scoring=None):
-    print("train SVC {}".format(len(data)))
+    print(("train SVC {}".format(len(data))))
     data = np.array(data)
     result = np.array(result)
 
@@ -428,7 +431,7 @@ def train_svm(data, result, scoring=None):
     scaler = preprocessing.MinMaxScaler()
     #scaler = preprocessing.RobustScaler()
 
-    print("Scale: {}".format(type(scaler)))
+    print(("Scale: {}".format(type(scaler))))
     if scaler != None:
         data = scaler.fit_transform(data)
 
@@ -441,17 +444,17 @@ def train_svm(data, result, scoring=None):
         'kernel':('rbf',),
         # Attention: ca peux marcher mieux si on laisse sans preciser de valeur
         # pour gamma qui prendra la valeur 'auto'
-        'gamma': [10**x for x in xrange(-4,2)],
+        'gamma': [10**x for x in range(-4,2)],
         #'C': [1]
         #'C': [10**x for x in xrange(-5,5)]
-        'C': [10**x for x in xrange(0,5)]
+        'C': [10**x for x in range(0,5)]
     }
     print(parameters)
     search = GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print("best params: {}".format(search.best_params_))
-    print("best score: {}".format(search.best_score_))
-    print
+    print(("best params: {}".format(search.best_params_)))
+    print(("best score: {}".format(search.best_score_)))
+    print()
 
 
     C   = search.best_params_['C']
@@ -467,18 +470,18 @@ def train_svm(data, result, scoring=None):
     print(parameters)
     search = GridSearchCV(svm.SVC(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print("best params: {}".format(search.best_params_))
-    print("best score: {}".format(search.best_score_))
-    print
+    print(("best params: {}".format(search.best_params_)))
+    print(("best score: {}".format(search.best_score_)))
+    print()
 
     return scaler, search.best_estimator_.fit(data,result)
 
 
 def train_sgd(data, result, scoring=None):
-    print("train SGDClassifier {}".format(len(data)))
+    print(("train SGDClassifier {}".format(len(data))))
     #scaler = None
     #scaler = preprocessing.MinMaxScaler()
-    print("Scale: {}".format(type(scaler)))
+    print(("Scale: {}".format(type(scaler))))
     if scaler != None:
         data = scaler.fit_transform(data)
 
@@ -495,9 +498,9 @@ def train_sgd(data, result, scoring=None):
     print(parameters)
     search = GridSearchCV(SGDClassifier(), parameters, scoring=scoring, n_jobs=1)
     search.fit(data, result)
-    print("best params: {}".format(search.best_params_))
-    print("best score: {}".format(search.best_score_))
-    print
+    print(("best params: {}".format(search.best_params_)))
+    print(("best score: {}".format(search.best_score_)))
+    print()
     return scaler, search.best_estimator_.fit(data,result)
 
 
@@ -506,7 +509,7 @@ def weighted_scoring(y_weights):
     def scoring(estimator, X, y):
         total = 0.0
         ok = 0.0
-        for i in xrange(len(X)):
+        for i in range(len(X)):
             weight = y_weights[y[i]]
             total = total + weight
             if estimator.predict(X[i]) == y[i]:
@@ -586,7 +589,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
     nodes1 = nodes1[:-1]
     nodes2 = nodes2[:-1]
     previous_i = len(nodes1)-1
-    for i in xrange(len(nodes1)):
+    for i in range(len(nodes1)):
         if nodes1[previous_i] not in nodes2 and nodes1[i] in nodes2:
             j = nodes2.index(nodes1[i])
             if (nodes2[(j + 1) % len(nodes2)] == nodes1[previous_i]) or \
@@ -645,7 +648,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #            data = [angle * 180 / math.pi for angle in data]
 #            data.extend([diff_to_90(angle) for angle in data])
 #
-#            # Compare common length ratio 
+#            # Compare common length ratio
 #            common_length = LineString(common).length
 #            external1_length = LineString(external1).length
 #            external2_length = LineString(external2).length
@@ -668,7 +671,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #                [external1_extd_angles.mean(), external1_extd_angles.std(), external1_extd_angles.min(), external1_extd_angles.max(),
 #                 external2_extd_angles.mean(), external2_extd_angles.std(), external2_extd_angles.min(), external2_extd_angles.max(),
 #                 common1_extd_angles.mean() - external1_extd_angles.mean(),
-#                 common1_extd_angles.std(), 
+#                 common1_extd_angles.std(),
 #                 common1_extd_angles.min() - external1_extd_angles.min(),
 #                 common1_extd_angles.max() - external1_extd_angles.max(),
 #                 common2_extd_angles.mean() - external2_extd_angles.mean(),
@@ -677,14 +680,14 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #                 common2_extd_angles.max() - external2_extd_angles.max()])
 #
 #            external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles = \
-#                [numpy.array([diff_to_90(angle) for angle in angles]) for angles in 
+#                [numpy.array([diff_to_90(angle) for angle in angles]) for angles in
 #                    external1_extd_angles, external2_extd_angles, common1_extd_angles, common2_extd_angles ]
 #
 #            data.extend(
 #                [external1_extd_angles.mean(), external1_extd_angles.std(), external1_extd_angles.min(), external1_extd_angles.max(),
 #                 external2_extd_angles.mean(), external2_extd_angles.std(), external2_extd_angles.min(), external2_extd_angles.max(),
 #                 common1_extd_angles.mean() - external1_extd_angles.mean(),
-#                 common1_extd_angles.std(), 
+#                 common1_extd_angles.std(),
 #                 common1_extd_angles.min() - external1_extd_angles.min(),
 #                 common1_extd_angles.max() - external1_extd_angles.max(),
 #                 common2_extd_angles.mean() - external2_extd_angles.mean(),
@@ -693,7 +696,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #                 common2_extd_angles.max() - external2_extd_angles.max()])
 #
 #            result = data
-#    return result 
+#    return result
 #
 #def length(way):
 #    Shapely
@@ -739,7 +742,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #    cos = math.cos(angle)
 #    sin = math.sin(angle)
 #    return [cos*scale, -sin*scale, sin*scale,  cos*scale, tx, ty]
-#        
+#
 #def angle(p1,p2):
 #    return numpy.angle(p2.x-p1.x + 1j*(p2.y-p1.y))
 #
@@ -753,7 +756,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #            max_length = length
 #            max_length_index = i
 #    return max_length_index
-#        
+#
 #def get_rotation_angle_to_put_vertical_the_longest_segment(polygon):
 #    coords = polygon.exterior.coords
 #    i = longest_segment_index(coords)
@@ -779,7 +782,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #    xmin,ymin,xmax,ymax = polygon.bounds
 #    size = max(xmax-xmin, ymax-ymin)
 #    return xmin-size, ymin-size, xmax+size, ymax+size
-#    
+#
 #def draw_polygon(img, polygon, hasWall):
 #    pts = numpy.array(polygon.exterior.coords, numpy.int32)
 #    pts = pts.reshape((-1,1,2))
@@ -828,7 +831,7 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #    for b in other_buildings:
 #        if len(b.polygon.interiors) == 0:
 #            draw_building(img, b, m, joined_pos_list, image_mid_polygon, image_polygon)
-#    return img, joined_pos_list 
+#    return img, joined_pos_list
 #
 #def save_segmented_images(osm_data, prefix):
 #    # The aim was to use opencv image classification but training for
@@ -858,5 +861,5 @@ def get_external1_common_external2_ways(nodes1, nodes2):
 #                info.write("\n")
 #                info.close()
 
-    
+
 

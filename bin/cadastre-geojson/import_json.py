@@ -26,7 +26,7 @@ import os.path
 import datetime
 import argparse
 
-import db
+from . import db
 
 
 def normalise_numero_commune(code):
@@ -39,7 +39,7 @@ def normalise_numero_departement(code):
     return code
 
 def get_tex_properties(properties):
-    tex_ids = sorted([int(key[3:] or 0) for key in properties.keys() if key.startswith("TEX")])
+    tex_ids = sorted([int(key[3:] or 0) for key in list(properties.keys()) if key.startswith("TEX")])
     values = [properties["TEX%d" % i if (i>0) else "TEX"] for i in tex_ids]
     return [v.strip() for v in values if v]
 
@@ -47,9 +47,9 @@ def get_tex_properties(properties):
 def insert_sql(table, primary_values, other_values):
     db.execute("INSERT INTO %s (%s) VALUES (%s)" % (
                 table,
-                ", ".join(primary_values.keys() + other_values.keys()),
-                ", ".join(["ST_SetSRID(ST_GeomFromGeoJSON(%s), 4326)" if k=="geometry" else "%s" for k in primary_values.keys() + other_values.keys()])),
-            primary_values.values() + other_values.values())
+                ", ".join(list(primary_values.keys()) + list(other_values.keys())),
+                ", ".join(["ST_SetSRID(ST_GeomFromGeoJSON(%s), 4326)" if k=="geometry" else "%s" for k in list(primary_values.keys()) + list(other_values.keys())])),
+            list(primary_values.values()) + list(other_values.values()))
 
 def import_json_to_sql(jsonfile, departement):
     data = json.load(jsonfile if type(jsonfile) == file else open(jsonfile))
@@ -60,7 +60,7 @@ def import_json_to_sql(jsonfile, departement):
         primary_values = {}
         other_values = {}
         properties = item["properties"]
-        print properties
+        print(properties)
         primary_values["departement"] = departement
         primary_values["object_rid"] = int(properties["OBJECT_RID"].replace("Objet_",""))
         other_values["geometry"] = json.dumps(item["geometry"])
@@ -86,7 +86,7 @@ def import_json_to_sql(jsonfile, departement):
         elif item["layer"] in ["tronfluv", "lieudit", "voiep", "zoncommuni"]:
             pass # pas d'attributs suppl«mentaire
         else:
-            print "ERROR: unsupported layer kind:", item["layer"]
+            print(("ERROR: unsupported layer kind:", item["layer"]))
             return False
         # TODO: update existing rather than delete all
         if needDelete:

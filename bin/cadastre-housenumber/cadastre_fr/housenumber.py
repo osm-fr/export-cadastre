@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@ def determine_osm_parcels_bis_ter_quater(osm):
         for rue, lettres_numeros in iteritems(series)
     }
     for item in itervalues(osm.ways):
-        for tag, value in item.tags.items():
+        for tag, value in list(item.tags.items()):
             if tag.startswith("addr") and tag.endswith(":street"):
                 street = value
                 housenumber = item.tags.get(tag.split(":")[0] + ":housenumber") or ""
@@ -101,7 +101,7 @@ def determine_osm_addresses_bis_ter_quater(osm):
     series = {} # séries d'adresses ayant [même nom de rue][même numéro], mais des suffix A,B,... différents
     housenumber_index = rtree.index.Index()
     for item in iteritems(osm):
-        if item.tags.has_key("addr:housenumber"):
+        if "addr:housenumber" in item.tags:
             num_match = RE_NUMERO_CADASTRE.match(item.tags["addr:housenumber"])
             if num_match:
                 item.numero = num_match.group(1)
@@ -178,11 +178,11 @@ def generate_osm_housenumbers(housenumbers, transform):
     osm = Osm({'upload':'false'})
     for number, position, angle in housenumbers:
         node = osm_add_point(osm, position, transform)
-        node.tags['fixme'] = u"à vérifier et associer à la bonne rue"
+        node.tags['fixme'] = "à vérifier et associer à la bonne rue"
         node.tags['addr:housenumber'] = number
         node.tags['source'] = SOURCE_TAG
         angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
-        node.tags['angle'] = str(angle_deg) + u"°"
+        node.tags['angle'] = str(angle_deg) + "°"
         if angle_deg != 0:
             osm_add_way_direction(osm, node, position, angle - (math.pi /2), 1, transform)
     return osm

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ except:
     sys.stderr.write("ERROR: osgeo.osr python lib not found; do \n")
     sys.stderr.write("    sudo apt-get install python-gdal\n")
     sys.exit(-1)
-    
+
 from .globals import EARTH_CIRCUMFERENCE_IN_METER
 
 
@@ -65,7 +65,7 @@ class CadastreToOSMTransform(Transform):
 
 
 class OSMToCadastreTransform(Transform):
-    """Transformation from cordinates used by OSM 
+    """Transformation from cordinates used by OSM
        to IGNF coordinates used by the cadastre"""
     def __init__(self, cadastre_IGNF_code):
         Transform.__init__(self)

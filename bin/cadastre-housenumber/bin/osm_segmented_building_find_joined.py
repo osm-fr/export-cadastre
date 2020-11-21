@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@ Compare deux fichiers .osm pour trouver les buildings du premier
 qui sont fusionés dans le deuxième.
 Génère un trosième fichier, copie du premier avec un nouveau tag
 "segmented" contenant l'id de building fusionné dans le deuxième.
-(ou "no" si non fusioné ou "?" si building pas clairement trouvé 
+(ou "no" si non fusioné ou "?" si building pas clairement trouvé
 dans le deuxième fichier)
 """
 
@@ -54,7 +54,7 @@ def main(argv):
     else:
         osm_args = [f for f in argv[1:] if os.path.splitext(f)[1] == ".osm"]
         if len(osm_args) == 2:
-            segmented_osm_file,  corrected_osm_file  = osm_args 
+            segmented_osm_file,  corrected_osm_file  = osm_args
         elif len(osm_args) < 2:
             command_line_error("not enough .osm arguments", HELP_MESSAGE)
         else:
@@ -63,25 +63,25 @@ def main(argv):
         if len(other_args) != 0:
             command_line_error("invalid argument: " + other_args[0], HELP_MESSAGE)
         prefix = os.path.commonprefix(osm_args)
-    print "load " + segmented_osm_file
+    print(("load " + segmented_osm_file))
     segmented_osm = OsmParser().parse(segmented_osm_file)
-    print "load " + corrected_osm_file
+    print(("load " + corrected_osm_file))
     corrected_osm = OsmParser().parse(corrected_osm_file)
-    print "find joined buildings"
+    print("find joined buildings")
     joined, unmodified = find_joined_and_unmodified_buildings(segmented_osm, corrected_osm, TOLERANCE)
     #joined_osm     = osm_filter_items(segmented_osm, itertools.chain(*joined))
     #unmodified_osm = osm_filter_items(segmented_osm, unmodified)
     #OsmWriter(joined_osm).write_to_file(os.path.splitext(corrected_osm_file)[0] + "-joined.osm")
     #OsmWriter(unmodified_osm).write_to_file(os.path.splitext(corrected_osm_file)[0] + "-unmodified.osm")
     output_file = os.path.splitext(segmented_osm_file)[0] + "-joined.osm"
-    print "save " + output_file
+    print(("save " + output_file))
     OsmWriter(segmented_osm).write_to_file(output_file)
     return 0
 
 
 
 
-    
+
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
 

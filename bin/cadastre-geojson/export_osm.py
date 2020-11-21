@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
@@ -33,11 +33,11 @@ except:
     sys.stderr.write("PLEASE INSTALL https://github.com/werner2101/python-osm");
     sys.exit(-1)
 
-import db
-from import_json import normalise_numero_departement
-from import_json import normalise_numero_commune
+from . import db
+from .import_json import normalise_numero_departement
+from .import_json import normalise_numero_commune
 
-SOURCE_TAG = u"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
+SOURCE_TAG = "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : " + time.strftime("%Y")
 
 
 def normalise_numero_insee(numero_departement, numero_commune):
@@ -58,27 +58,28 @@ def number_generator(start, incr):
 ids_osm = number_generator(-1, -1)
 
 
-def lonlat_to_osm_node((lon,lat), osmfile):
+def lonlat_to_osm_node(xxx_todo_changeme, osmfile):
+    (lon,lat) = xxx_todo_changeme
     lon=float("%.7f" % lon)
     lat=float("%.7f" % lat)
     if not hasattr(osmfile, "nodes_by_lonlat"):
         osmfile.nodes_by_lonlat = {}
     node = osmfile.nodes_by_lonlat.get((lon,lat))
     if node is None:
-        node = Node({"lon":lon, "lat":lat, "id":ids_osm.next()}, {})
+        node = Node({"lon":lon, "lat":lat, "id":next(ids_osm)}, {})
         osmfile.nodes_by_lonlat[(lon,lat)] = node
         osmfile.nodes[node.id] = node
     return node
 
 
 def parse_lonlat_str(lonlat_str):
-    return map(float, lonlat_str.split(" "))
+    return list(map(float, lonlat_str.split(" ")))
 
 
 def lonlat_list_str_to_osm_way(lonlat_list_str, osmfile):
     lonlats = [parse_lonlat_str(p) for p in lonlat_list_str.split(",")]
     nodes = [lonlat_to_osm_node(ll, osmfile) for ll in lonlats]
-    way = Way({"id": ids_osm.next()}, {}, [n.id for n in nodes], osmfile)
+    way = Way({"id": next(ids_osm)}, {}, [n.id for n in nodes], osmfile)
     osmfile.ways[way.id] = way
     return way
 
@@ -95,7 +96,7 @@ def latlon_polygons_str_to_osm(polygons_str, osmfile):
         for way in outers + inners: way.tags["source"] = SOURCE_TAG
         members = [("w", way.id, "outer") for way in outers] + \
                   [("w", way.id, "inner") for way in inners]
-        relation = Relation({"id": ids_osm.next()}, {"type": "multipolygon"}, members, osmfile)
+        relation = Relation({"id": next(ids_osm)}, {"type": "multipolygon"}, members, osmfile)
         osmfile.relations[relation.id] = relation
         return relation
 
@@ -114,7 +115,7 @@ def st_geometry_to_osm_primitive(st_geometry, osmfile):
         assert st_geometry.endswith(")))")
         return latlon_polygons_str_to_osm(st_geometry[15:-3].split(")),(("), osmfile)
     else:
-        print st_geometry
+        print(st_geometry)
         raise Exception("geomtry kind not supported yet:" + st_geometry.split("(")[0])
 
 

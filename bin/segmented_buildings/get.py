@@ -1,9 +1,9 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 
 """
-Return a geoJSON file representing the next 
+Return a geoJSON file representing the next
 segmented building cases to consider for contributions.
 
 @param ip the ip adress of the contributor.
@@ -12,8 +12,8 @@ segmented building cases to consider for contributions.
 @param lon idem for longitude.
 @param id of a particular case to get (optional param)
 
-This file is largely derived from OpenSolarMap backend code from Christan Quest: 
-https://github.com/opensolarmap/solback/blob/master/solback.py 
+This file is largely derived from OpenSolarMap backend code from Christan Quest:
+https://github.com/opensolarmap/solback/blob/master/solback.py
 """
 
 
@@ -39,11 +39,11 @@ def get_cases(ip, limit, lat, lon, id=-1):
           ||',"properties":{'
           ||'"lat":'|| round(st_y(center)::numeric,7)::text
           ||',"lon":'|| round(st_x(center)::numeric,7)::text
-          ||',"way1":'|| way1_osm_id::text 
-          ||',"way2":'|| way2_osm_id::text 
+          ||',"way1":'|| way1_osm_id::text
+          ||',"way2":'|| way2_osm_id::text
           ||'},"geometry":{"type":"GeometryCollection","geometries":['
           ||st_asgeojson(way1_geom,7) || ','
-          ||st_asgeojson(way2_geom,7) 
+          ||st_asgeojson(way2_geom,7)
           ||']}}'"""
 
     if id != -1:
@@ -96,7 +96,7 @@ def main(args):
     parser.add_argument("--lat", help="latitude", type=float, default=DEFAULT_LAT);
     parser.add_argument("--lon", help="longitude", type=float, default=DEFAULT_LON);
     args = parser.parse_args(args)
-    print(json.dumps(get_cases(args.ip, args.limit, args.lat, args.lon, args.id)));
+    print((json.dumps(get_cases(args.ip, args.limit, args.lat, args.lon, args.id))));
 
 if __name__ == '__main__':
     main(sys.argv[1:])

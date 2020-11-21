@@ -2,3 +2,5 @@
 *.pdf.ok
 *.pdf
 *.txt
+/config
+/work

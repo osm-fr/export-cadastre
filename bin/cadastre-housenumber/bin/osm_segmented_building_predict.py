@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 
 Utilise le classifier généré par osm_segmented_building_train.py
 pour prédire si des bâtiments devraient être plutot fusionnés.
-(cad si il ont été potentiellement fractionnés de manière injustifiée 
+(cad si il ont été potentiellement fractionnés de manière injustifiée
  par le cadastre)
 
 """
@@ -60,34 +60,34 @@ def main(argv):
       name,ext = os.path.splitext(input_filename)
       output_filename = name + "-prediction_segmente" + ext
 
-    if VERBOSE: print "load " + input_filename + " ..."
+    if VERBOSE: print(("load " + input_filename + " ..."))
 
     osm = OsmParser().parse(input_filename)
     #simplify(osm, 0.2, 0.2, 0.1)
 
-    if VERBOSE: print "transform..."
+    if VERBOSE: print("transform...")
 
     if osm.bbox():
       inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(osm)
       compute_transformed_position_and_annotate(osm, inputTransform)
 
-    if VERBOSE: print "detect..."
+    if VERBOSE: print("detect...")
     classifier, scaler = load_classifier_and_scaler()
     buildings = get_predicted_segmented_buildings(classifier, scaler, osm)
-    if VERBOSE: print " -> ", len(buildings), "cas"
+    if VERBOSE: print((" -> ", len(buildings), "cas"))
 
     output_osm = filter_buildings_junction(osm, buildings)
-    
+
     if len(output_osm.nodes) > 0:
-        if VERBOSE: print "save ", output_filename 
+        if VERBOSE: print(("save ", output_filename))
         OsmWriter(output_osm).write_to_file(output_filename)
     else:
-        print "Nothing detected"
+        print("Nothing detected")
 
     return 0
 
 
-    
+
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
 

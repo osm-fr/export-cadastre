@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ except:
     traceback.print_exc()
     sys.stderr.write("Please install Shapely (pip install shapely)\n")
     sys.exit(-1)
-    
+
 
 def orthoprojection_on_segment_ab_of_point_c(a,b,c):
     """ Retourne la projection orthogonale du point c sur le segment [a,b],
@@ -52,9 +52,9 @@ def orthoprojection_on_segment_ab_of_point_c(a,b,c):
 
 def angle_projection_on_segment_ab_of_point_c(a,b,c,angle):
     """ Retourne la projection du point c sur le segment [a,b]
-        en suivant la direction angle, ou None si le segment 
+        en suivant la direction angle, ou None si le segment
         n'est pas en face."""
-    if a == b: 
+    if a == b:
         return None
     #http://scalion.free.fr/getinter.htm#paulbourke
     x1,y1 = a
@@ -156,7 +156,7 @@ def maxdiff(points1, points2):
     return max(
         [ max((abs(points1[i][0] - points2[i][0]),
                abs(points1[i][1] - points2[i][1])))
-          for i in xrange(len(points1))])
+          for i in range(len(points1))])
 
 
 class SimilarGeometryDetector(object):
@@ -236,7 +236,7 @@ class Path(object):
     Nous représentons avec deux champs:
      - une chaîne représentant une liste de commandes
      - une liste de points (x,y) (positions absolues)
-    Les commandes peuvent être: 
+    Les commandes peuvent être:
          M : move (1 argument)
          L : line (1 argument)
          C : curve  (3 arguments)
@@ -275,9 +275,9 @@ class Path(object):
         return math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
     def get_angle_and_points_for_path_recognition(self, i):
         """
-            Move, rotate and scale the list of points in order to facilitate 
+            Move, rotate and scale the list of points in order to facilitate
             recognition.
-    
+
             The following transformations are applied:
             - We first move the points so that the first one be in (0,0),
             i.e. we move everypoints by (-x1,-y1)
@@ -287,7 +287,7 @@ class Path(object):
         if i not in self.angle_and_points_for_path_recognition:
             x1,y1 = self.points[0] # le premier point
             x2, y2 = self.points[i] # le second point
-            # le rayon = 
+            # le rayon =
             r = math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
             if (r == 0.0):
                 self.points_for_path_recognition[i] = 0, self.points
@@ -318,12 +318,12 @@ class Path(object):
                     max_i = i
             self.most_distant_point_index = max_i
         return self.most_distant_point_index
-            
-        
+
+
     #def almost_equals(self, other, tolerance = 0.05):
     #    i = self.get_p0_most_distant_point_index()
     #    return self.commands == other.commands and \
-    #        maxdiff(self.get_points_for_path_recognition(i), 
+    #        maxdiff(self.get_points_for_path_recognition(i),
     #                other.get_points_for_path_recognition(i)) \
     #            <= tolerance
 
@@ -359,7 +359,7 @@ class Path(object):
             if t in ['M','L']:
                 while True:
                     points.append(Point(tokens.pop(), tokens.pop()))
-                    commands.append(t) 
+                    commands.append(t)
                     current_point = points[-1]
                     if type(peek(tokens)) != float: break
                     t = 'L' # M subsequent values becomes L
@@ -427,7 +427,7 @@ class Path(object):
                     for i in range(2):
                         points.append(Point(tokens.pop(), tokens.pop()))
                     commands.append('Q')
-                    #Path.__convert_last_quadratic_command_to_cubic(commands,points) 
+                    #Path.__convert_last_quadratic_command_to_cubic(commands,points)
                     current_point = points[-1]
                     if type(peek(tokens)) != float: break
             elif t == 'q':
@@ -438,7 +438,7 @@ class Path(object):
                             current_point.x + tokens.pop(),
                             current_point.y + tokens.pop()))
                     commands.append('Q')
-                    #Path.__convert_last_quadratic_command_to_cubic(commands,points) 
+                    #Path.__convert_last_quadratic_command_to_cubic(commands,points)
                     current_point = points[-1]
                     if type(peek(tokens)) != float: break
             elif t in ['T', 't']:
@@ -460,7 +460,7 @@ class Path(object):
                             current_point.x + tokens.pop(),
                             current_point.y + tokens.pop()))
                     commands.append('Q')
-                    #Path.__convert_last_quadratic_command_to_cubic(commands,points) 
+                    #Path.__convert_last_quadratic_command_to_cubic(commands,points)
                     current_point = points[-1]
                     if type(peek(tokens)) != float: break
             elif t in ['A','a']:
@@ -487,7 +487,7 @@ class Path(object):
     #    QP2 = points[-1]
     #    CP0 = QP0
     #    CP1 = Point(QP0[0] + (QP1[0] - QP0[0]) * 2 / 3, QP0[1] + (QP1[1] - QP0[1]) * 2 / 3) # QP0 + 2/3 *(QP1-QP0)
-    #    CP2 = Point(QP2[0] + (QP1[0] - QP2[0]) * 2 / 3, QP2[1] + (QP1[1] - QP2[1]) * 2 / 3) # QP2 + 2/3 *(QP1-QP2) 
+    #    CP2 = Point(QP2[0] + (QP1[0] - QP2[0]) * 2 / 3, QP2[1] + (QP1[1] - QP2[1]) * 2 / 3) # QP2 + 2/3 *(QP1-QP2)
     #    CP3 = QP2
     #    #points[-3] = CP0
     #    points[-2] = CP1
@@ -506,7 +506,7 @@ class Path(object):
                 j = i+1
                 while j < len(d):
                     oj = ord(d[j])
-                    if ((oj < 45) or (oj > 57)) and (oj != ord('e')): 
+                    if ((oj < 45) or (oj > 57)) and (oj != ord('e')):
                         break
                     j = j + 1
                 yield float(d[i:j])
@@ -515,7 +515,7 @@ class Path(object):
                 yield c
                 i = i + 1
             else:
-                raise Exception("invalid character in path data: chr(" 
+                raise Exception("invalid character in path data: chr("
                     + str(ord(d[i])) + ") = '" + d[i] + "' :  " + d)
 
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os.path
@@ -14,7 +14,7 @@ cur = db.cursor(cursor_factory = psycopg2.extras.NamedTupleCursor)
 TABLE_PREFIX="cadastre_geojson_"
 
 def execute(query, args = tuple()):
-    print cur.mogrify(query, args)
+    print((cur.mogrify(query, args)))
     return cur.execute(query, args)
 
 def fetchall():

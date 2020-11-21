@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from fr_cadastre_segmented import get_classifier_vector
 
@@ -17,17 +17,17 @@ p3=[f,g,d, c, e, f]
 
 
 def wkt(p):
-    return "((" + ",".join(map(lambda c: " ".join(map(str, c)), p)) + "))"
+    return "((" + ",".join([" ".join(map(str, c)) for c in p]) + "))"
 
 
 p1 = wkt(p1)
 p2 = wkt(p2)
 p3 = wkt(p3)
 
-print get_classifier_vector(p1, p2);
-print
-print
-print get_classifier_vector(p1, p3);
+print((get_classifier_vector(p1, p2)));
+print()
+print()
+print((get_classifier_vector(p1, p3)));
 
 #print status
 

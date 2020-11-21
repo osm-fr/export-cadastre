@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,17 +38,17 @@ def write_osm_for_housenumbers(output, osm_bbox, housenumbers):
     id = 0;
     for number, position, angle in housenumbers:
         id = id-1;
-        output.write("  <node id='%d' lon='%f' lat='%f'>\n" % 
+        output.write("  <node id='%d' lon='%f' lat='%f'>\n" %
                      (id, position.x, position.y))
-        output.write("    <tag k='addr:housenumber' v='%s' />\n" 
+        output.write("    <tag k='addr:housenumber' v='%s' />\n"
                      % (number,))
-        output.write((u"    <tag k='source' v='" + SOURCE_TAG + "' />\n").encode("utf-8"))
-        output.write(u"    <tag k='fixme' v='À vérifier et associer à la bonne rue' />\n".encode("utf-8"))
+        output.write(("    <tag k='source' v='" + SOURCE_TAG + "' />\n").encode("utf-8"))
+        output.write("    <tag k='fixme' v='À vérifier et associer à la bonne rue' />\n".encode("utf-8"))
         output.write("  </node>\n")
     output.write("</osm>\n")
 
 
-       
+
 
 def pdf_2_projection_and_housenumbers(pdf_filename_list):
     housenumber_recognizer = HousenumberPathRecognizer()
@@ -70,8 +70,8 @@ def pdf_2_osm_housenumbers(pdf_filename_list, osm_output):
 HELP_MESSAGE = "USAGE: {0} fichier.pdf+ [fichier.osm]".format(sys.argv[0])
 
 def main(argv):
-    if (len(argv) < 2): 
-        command_line_error(u"fichier .pdf non spécifié", HELP_MESSAGE)
+    if (len(argv) < 2):
+        command_line_error("fichier .pdf non spécifié", HELP_MESSAGE)
     pdf_filename_list = sys.argv[1:]
     if pdf_filename_list[-1].endswith(".osm"):
         osm_output = open(pdf_filename_list.pop(),"w")
@@ -79,14 +79,14 @@ def main(argv):
         osm_output = sys.stdout
     for f in pdf_filename_list:
         if (not f.endswith(".svg")) and (not f.endswith(".pdf")):
-            command_line_error(u"l'argument n'est pas un fichier .pdf ou .svg: " + f)
+            command_line_error("l'argument n'est pas un fichier .pdf ou .svg: " + f)
         if not os.path.exists(f):
             command_line_error("fichier non trouvé: " + f)
         bboxfile = f[:-4] + ".bbox"
         if not os.path.exists(bboxfile):
-            command_line_error(u"fichier .bbox correspondant non trouvé: " + bboxfile)
+            command_line_error("fichier .bbox correspondant non trouvé: " + bboxfile)
     pdf_2_osm_housenumbers(pdf_filename_list, osm_output)
-    
+
 
 if __name__ == '__main__':
     main(sys.argv)

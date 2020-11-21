@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 
 import math
 import zipfile
-from cStringIO import StringIO
+from io import StringIO
 
 from .osm        import Osm, Node, Way, OsmWriter
 from .osm_tools  import osm_add_point
@@ -62,7 +62,7 @@ def generate_osm_names(lieuxdits_names, street_names, small_names, transform):
         node.tags['name'] = name
         node.tags['source'] = SOURCE_TAG
         angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
-        node.tags['angle'] = str(angle_deg) + u"°"
+        node.tags['angle'] = str(angle_deg) + "°"
         if angle_deg != 0:
             osm_add_way_direction(osm, node, position, angle, len(name), transform)
     for name, position, angle in small_names:
@@ -71,7 +71,7 @@ def generate_osm_names(lieuxdits_names, street_names, small_names, transform):
         node.tags['small'] = "yes"
         node.tags['source'] = SOURCE_TAG
         angle_deg = int(round(angle * 180 / math.pi)) # rad -> deg arrondi
-        node.tags['angle'] = str(angle_deg) + u"°"
+        node.tags['angle'] = str(angle_deg) + "°"
         if angle_deg != 0:
             osm_add_way_direction(osm, node, position, angle, len(name), transform)
     return osm
@@ -100,9 +100,9 @@ def generate_osm_street_names(names, transform):
             node.tags['source'] = SOURCE_TAG
             if angle_deg != 0:
                 osm_add_way_direction(osm, node, position, angle, len(name), transform)
-            #pos1 = (position[0] - len(name) * math.cos(angle), 
+            #pos1 = (position[0] - len(name) * math.cos(angle),
             #        position[1] - len(name) * math.sin(angle))
-            #pos2 = (position[0] + len(name) * math.cos(angle), 
+            #pos2 = (position[0] + len(name) * math.cos(angle),
             #        position[1] + len(name) * math.sin(angle))
             #p1 = osm_add_point(osm, pos1, transform)
             #p2 = osm_add_point(osm, pos2, transform)
@@ -134,6 +134,6 @@ def zip_osm_names(osm_lieuxdits_names, osm_street_names, osm_small_names, zip_fi
         s = StringIO()
         OsmWriter(osm).write_to_stream(s)
         zip_output.writestr(filename, s.getvalue())
-    zip_output.writestr(subdir + "LISEZ-MOI.txt", """Ces fichiers contiennent des mots positionnes a l'endroit\r\nou ils sont dessines sur le cadastre.\r\nIls peuvent etre utilises comme sources d'information pour\r\ncompleter OpenStreetMap, mais ils ne doivent surtout\r\npas etre envoyes tels quels vers OSM.""") 
+    zip_output.writestr(subdir + "LISEZ-MOI.txt", """Ces fichiers contiennent des mots positionnes a l'endroit\r\nou ils sont dessines sur le cadastre.\r\nIls peuvent etre utilises comme sources d'information pour\r\ncompleter OpenStreetMap, mais ils ne doivent surtout\r\npas etre envoyes tels quels vers OSM.""")
     zip_output.close()
 

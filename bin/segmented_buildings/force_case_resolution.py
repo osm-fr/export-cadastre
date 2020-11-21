@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,8 +32,8 @@ def main(args):
     parser.add_argument("resolution", choices=['join', 'keep', 'unknown', 'outofdate'])
     args = parser.parse_args(args)
     cur.execute(cur.mogrify("""
-        UPDATE segmented_cases 
-        SET resolution=%s, resolution_time=now() 
+        UPDATE segmented_cases
+        SET resolution=%s, resolution_time=now()
         WHERE id=%s""", (args.resolution, args.id)));
 
 if __name__ == '__main__':

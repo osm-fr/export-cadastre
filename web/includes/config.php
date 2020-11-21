@@ -1,10 +1,24 @@
 <?php
-$temporary_dir = "/data/work/cadastre.openstreetmap.fr";
-$project_dir = "/data/project/cadastre.openstreetmap.fr";
-$data_path = "$temporary_dir/data/";
-$bin_path = "$project_dir/bin/";
-$logs_path = "$temporary_dir/logs/";
-$locks_path = "$temporary_dir/locks";
+//$temporary_dir = "/home/osm/export-cadastre/";
+//$project_dir = "/home/osm/export-cadastre/";
+//$data_path = "$temporary_dir/data/";
+//$bin_path = "$project_dir/bin/";
+//$logs_path = "$temporary_dir/logs/";
+//$locks_path = "$temporary_dir/locks";
+//
+$config_handle=  fopen("../config", "r");
+if ($config_handle) {
+    while (($line = fgets($config_handle)) !== false) {
+        $args = explode('=', $line, 2);
+        $var_name = trim($args[0]);
+        $$var_name = trim($args[1]);
+    }
+    fclose($config_handle);
+} else {
+    print("config file not found");
+    exit(0);
+}
+umask(002);
 
 // Set it to true when you have a doubt about Qadastre output
 $do_we_log=false;

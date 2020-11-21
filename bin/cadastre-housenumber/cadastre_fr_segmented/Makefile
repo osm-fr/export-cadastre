@@ -1,7 +1,7 @@
 
 
 
-all: 2 3
+all: 3
 
 2:
 	rm -rf build
@@ -11,7 +11,8 @@ all: 2 3
 3:
 	rm -rf build
 	python3 setup.py build
-	python3 setup.py install --user
+	python3 setup.py install --install-lib lib
+	#python3 setup.py install --user
 
 clean:
-	rm -rf build
+	rm -rf build lis

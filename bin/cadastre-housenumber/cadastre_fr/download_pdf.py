@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ PDF_DOWNALOD_WAIT_SECONDS = 2
 # Nombre de pixels / unite projection cadastre des PDF exportés
 PDF_DOWNLOAD_PIXELS_RATIO = 4.5
 # Mode de découpage des pdf: "NB": pour nombre fixe, "SIZE": pour taille fixe:
-PDF_DOWNLOAD_SPLIT_MODE = "SIZE" 
+PDF_DOWNLOAD_SPLIT_MODE = "SIZE"
 # Si MODE="SIZE", Taille dans la projection cadastrale (~ mètres) des PDF exportés:
 PDF_DOWNLOAD_SPLIT_SIZE = 200
 # Si MODE="NB", nombre par lequelle la taille du pdf sera découpée (en
@@ -89,14 +89,14 @@ def download_pdfs_filter(cadastreWebsite, code_departement, code_commune, ratio,
         yield pdf_filename
 
 def decoupage_bbox_cadastre_forced(bbox, nb_x, x_bbox_size, x_pixels_ratio, nb_y, y_bbox_size, y_pixels_ratio):
-  sys.stderr.write((u"Découpe la bbox en %d * %d [%d pdfs]\n" % (nb_x,nb_y,nb_x*nb_y)).encode("utf-8"))
+  sys.stderr.write("Découpe la bbox en %d * %d [%d pdfs]\n" % (nb_x,nb_y,nb_x*nb_y))
   sys.stderr.flush()
   xmin, ymin, xmax, ymax = bbox
-  for i in xrange(nb_x):
+  for i in range(nb_x):
     x1 = xmin + i * x_bbox_size
     x2 = min(x1 + x_bbox_size, xmax)
     largeur_px = int((x2-x1) * x_pixels_ratio)
-    for j in xrange(nb_y):
+    for j in range(nb_y):
       y1 = ymin + j * y_bbox_size
       y2 = min(y1 + y_bbox_size, ymax)
       hauteur_px = int((y2-y1) * y_pixels_ratio)
@@ -107,8 +107,8 @@ def decoupage_bbox_cadastre_forced(bbox, nb_x, x_bbox_size, x_pixels_ratio, nb_y
 def decoupage_bbox_cadastre_size(bbox, max_size, pixels_ratio):
   """Génère un découpage de la bbox en m*n sous bbox, de taille maximale
      (max_size, max_size)
-     Retourne des tuples ( (i,j), sous_bbox, (largeur_px,hauteur_px) ) 
-     correspondant à la sous bbox d'indice i,j dans le découpage m*n. 
+     Retourne des tuples ( (i,j), sous_bbox, (largeur_px,hauteur_px) )
+     correspondant à la sous bbox d'indice i,j dans le découpage m*n.
      Cette sous bbox ayant une taille en pixels size*pixels_ratio
   """
   xmin,ymin,xmax,ymax = bbox
@@ -124,8 +124,8 @@ def decoupage_bbox_cadastre_size(bbox, max_size, pixels_ratio):
 
 def decoupage_bbox_cadastre_nb(bbox, nb, pixels_ratio):
   """Génère un découpage de la bbox en nb*nb sous bbox, de taille moindre.
-     Retourne des tuples ( (i,j), sous_bbox, (largeur_px,hauteur_px) ) 
-     correspondant à la sous bbox d'indice i,j dans le découpage nb*nb. 
+     Retourne des tuples ( (i,j), sous_bbox, (largeur_px,hauteur_px) )
+     correspondant à la sous bbox d'indice i,j dans le découpage nb*nb.
      Cette sous bbox ayant une taille en pixels size*pixels_ratio
   """
   xmin,ymin,xmax,ymax = bbox
@@ -150,8 +150,8 @@ class LimitBboxFilterFunc():
 
        I will exclude bbox that are out of the city limits.
 
-       As the city limits are initially unknown, this filter need to be fed with 
-       the downloaded PDF so that the limits could be extracted, 
+       As the city limits are initially unknown, this filter need to be fed with
+       the downloaded PDF so that the limits could be extracted,
        and then the filter function updated.
     """
     def __init__(self):
@@ -168,12 +168,12 @@ class LimitBboxFilterFunc():
                 keepBbox = self.limit.intersects(bbox_poly)
             except:
                 traceback.print_exc()
-                sys.stderr.write((u"ATTENTION: problème lors de la vérification des limites\n").encode("utf-8"))
+                sys.stderr.write("ATTENTION: problème lors de la vérification des limites\n")
         return keepBbox
 
 
     def feed_pdf(self, pdf_filename):
-        if self.limit != None: 
+        if self.limit != None:
             pass # Consider only the first PDF with limit data
         else:
             try:
@@ -188,6 +188,6 @@ class LimitBboxFilterFunc():
                                 self.limit = self.limit.union(polygon)
             except:
                 traceback.print_exc()
-                sys.stderr.write((u"ATTENTION: problème lors de la détection des limites\n").encode("utf-8"))
+                sys.stderr.write("ATTENTION: problème lors de la détection des limites\n")
 
 

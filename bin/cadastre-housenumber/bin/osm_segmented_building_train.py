@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -83,20 +83,20 @@ def main(argv):
     if len(other_args) != 0:
         command_line_error("invalid argument: " + str(other_args[0]), HELP_MESSAGE)
     if len(osm_args) == 0:
-        command_line_error(u"not enough file.osm args", HELP_MESSAGE)
+        command_line_error("not enough file.osm args", HELP_MESSAGE)
 
     all_data = []
     all_result = []
 
     for name, stream in open_zip_and_files_with_extension(osm_args, ".osm"):
-        print("load " + name)
+        print(("load " + name))
         osm = OsmParser().parse_stream(stream)
         inputTransform, outputTransform = get_centered_metric_equirectangular_transformation_from_osm(osm)
         compute_transformed_position_and_annotate(osm, inputTransform)
 
         data, result = get_segmented_buildings_data(osm)
 
-        print(" -> {0} cas, dont {1} positifs".format(len(result), result.count(1)))
+        print((" -> {0} cas, dont {1} positifs".format(len(result), result.count(1))))
         all_data.extend(data)
         all_result.extend(result)
 

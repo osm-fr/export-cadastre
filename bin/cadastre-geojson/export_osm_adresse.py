@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
@@ -34,24 +34,24 @@ except:
     sys.stderr.write("PLEASE INSTALL pip install editdistance")
     sys.exit(-1)
 
-import db
-from import_json import normalise_numero_departement
-from import_json import normalise_numero_commune
-from export_osm import normalise_numero_insee
-from export_osm import commune_geometry_sql_expression
-from export_osm import liste_numero_communes
-from export_osm import st_geometry_to_osm_primitive
-from export_osm import liste_parcelles_commune
-from export_osm import sql_result_to_osm
-from export_osm import SOURCE_TAG
-from export_osm import OSMFile
+from . import db
+from .import_json import normalise_numero_departement
+from .import_json import normalise_numero_commune
+from .export_osm import normalise_numero_insee
+from .export_osm import commune_geometry_sql_expression
+from .export_osm import liste_numero_communes
+from .export_osm import st_geometry_to_osm_primitive
+from .export_osm import liste_parcelles_commune
+from .export_osm import sql_result_to_osm
+from .export_osm import SOURCE_TAG
+from .export_osm import OSMFile
 
 
 RE_NUMERO_CADASTRE = re.compile("^([0-9]+)(( bis)|( ter)|( quater)|( quinquies)|([A-Za-z?]*))\\b", re.I)
 
 
 def normalise_mot(mot):
-    return unicodedata.normalize('NFD',unicode(mot)).encode("ascii","ignore").lower()
+    return unicodedata.normalize('NFD',str(mot)).encode("ascii","ignore").lower()
 
 def separe_numero_du_nom_de_voie(adresse):
     num_match = RE_NUMERO_CADASTRE.match(adresse)
@@ -71,7 +71,7 @@ def numeros_des_adresses_parcelles_commune(numero_departement, numero_commune):
             ["idu", "adresses", "ST_AsText(ST_PointOnSurface(ST_MakeValid(geometry))) AS center"]):
             #["idu", "adresses", "ST_AsText(ST_Centroid(ST_MakeValid(geometry))) AS center"]):
         if parcelle.adresses:
-            adresses = map(decode_utf8_strip, list(parcelle.adresses))
+            adresses = list(map(decode_utf8_strip, list(parcelle.adresses)))
             for numero, nom_voie in map(separe_numero_du_nom_de_voie, adresses):
                 if numero: numeros_des_adresses[nom_voie][numero] = parcelle.center
     return numeros_des_adresses
@@ -91,9 +91,9 @@ def distance_levenshtein_zoncommuni(nom_voie, tex_zoncommuni):
     #TODO: rempalcer les abréviation de type de voie dans nom_voie,
     # car elle ne sont pas abréviée dans zoncommuni.
     tex_zoncommuni = " ".join(map(decode_utf8_strip, tex_zoncommuni))
-    tex_zoncommuni = map(normalise_mot, tex_zoncommuni.split(" "))
+    tex_zoncommuni = list(map(normalise_mot, tex_zoncommuni.split(" ")))
     distance_totale = 0
-    for mot in reversed(map(normalise_mot, nom_voie.split(" "))):
+    for mot in reversed(list(map(normalise_mot, nom_voie.split(" ")))):
         if len(tex_zoncommuni):
             # Choisi le mots avec la plus petite distance de levenshtein:
             distance, match = sorted([(editdistance.eval(mot, m), m) for m in tex_zoncommuni])[0]
@@ -124,9 +124,9 @@ def cherche_nom_voie_la_plus_proche(geometry, nom_voies):
     if result:
         tex_zoncommuni = result.tex
         distance_geopraphique = result.distance
-        print tex_zoncommuni, distance_geopraphique
+        print((tex_zoncommuni, distance_geopraphique))
         distance_levenshtein, nom_voie = sorted([(distance_levenshtein_zoncommuni(nom_voie, tex_zoncommuni), nom_voie) for nom_voie in nom_voies])[0]
-        print "distance_levenshtein", distance_levenshtein
+        print(("distance_levenshtein", distance_levenshtein))
         if float(distance_levenshtein) / float(len(nom_voie)) < 0.5:
             return distance_geopraphique, nom_voie
     return float("inf"), None
@@ -156,12 +156,10 @@ class ConfiltsVoies(object):
         """Résoud les conflits, remplace le champs item.tags["addr:street"]
            d'une liste par une valeur unique.
         """
-        cas_triee_par_distance = sorted(map(
-            lambda item: (cherche_nom_voie_la_plus_proche(
+        cas_triee_par_distance = sorted([(cherche_nom_voie_la_plus_proche(
                             "POINT(%f %f)" % (item.lon,item.lat),
                             item.tags["addr:street"]),
-                          item),
-            self.liste))
+                          item) for item in self.liste])
         for (distance, voie), item in cas_triee_par_distance:
             if distance < 50 and voie in item.tags["addr:street"]:
                 self.__resoudre_cas__(item, voie)
@@ -169,7 +167,7 @@ class ConfiltsVoies(object):
             if len(item.tags["addr:street"]) == 1:
                 item.tags["addr:street"] = item.tags["addr:street"][0]
             else:
-                fixme = u"choisir la bonne rue a associer: " + " ou ".join(item.tags["addr:street"])
+                fixme = "choisir la bonne rue a associer: " + " ou ".join(item.tags["addr:street"])
                 item.tags["addr:street"] = "|".join(item.tags["addr:street"])
                 if fixme in item.tags:
                     item.tags["fixme"] = fixme + " ET " + item.tags["fixme"]
@@ -247,7 +245,7 @@ def export_adresses(numero_departement, numero_commune, osmfile):
         fixme= []
         nom_voies = []
         if numero and adresses:
-            adresses = map(decode_utf8_strip, adresses)
+            adresses = list(map(decode_utf8_strip, adresses))
             for adr_numero, nom_voie in map(separe_numero_du_nom_de_voie, adresses):
                 if adr_numero == numero:
                     if numero in autres_adresses[nom_voie]:
@@ -268,15 +266,15 @@ def export_adresses(numero_departement, numero_commune, osmfile):
             item.tags["addr:street"] = nom_voies
             conflits_voies.add(item)
         else:
-            fixme.append(u"associer à la bonne rue, numéro en théorie lié à la parcelle n°" + num_parcelle + u" situé à " + str(int(distance_parcelle)) + " m")
+            fixme.append("associer à la bonne rue, numéro en théorie lié à la parcelle n°" + num_parcelle + " situé à " + str(int(distance_parcelle)) + " m")
         if (distance_parcelle > 10) and (not dans_parcelle):
-            fixme.append(str(int(distance_parcelle)) + u" m de la parcelle n°" + num_parcelle + u": vérifier la position")
+            fixme.append(str(int(distance_parcelle)) + " m de la parcelle n°" + num_parcelle + ": vérifier la position")
             fixme.reverse()
         if fixme: item.tags["fixme"] = " et ".join(fixme)
     conflits_voies.resoudre()
-    for nom_voie, numeros in autres_adresses.items():
+    for nom_voie, numeros in list(autres_adresses.items()):
         # Adresses des parcelles qui n'ont pas trouvé de numéro
-        for numero, geometry in numeros.items():
+        for numero, geometry in list(numeros.items()):
             item = st_geometry_to_osm_primitive(geometry, osmfile)
             item.tags["source"] = SOURCE_TAG
             item.tags["addr:housenumber"] = numero
@@ -306,7 +304,7 @@ def export_numeros_orphelins(numero_departement, numero_commune, osmfile):
     for result in db.cur:
         item = sql_result_to_osm(result, numero_departement, osmfile)
         item.tags["addr:housenumber"] = item.tags["name"]
-        item.tags["fixme"] = u"associer à la bonne rue"
+        item.tags["fixme"] = "associer à la bonne rue"
         del(item.tags["name"])
 
 def export_osm_adresses(departement, commune):

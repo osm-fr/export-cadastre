@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,4 +39,4 @@ for f in glob("/data/work/cadastre.openstreetmap.fr/data/*/*.txt"):
     name = " ".join(items[2:])
     insee = code_insee(dep,com)
     if not insee in insee_set:
-        print "ERREUR: id area manquant pour le code insee %s (%s)" % (insee, name)
+        print(("ERREUR: id area manquant pour le code insee %s (%s)" % (insee, name)))

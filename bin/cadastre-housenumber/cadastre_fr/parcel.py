@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -62,15 +62,15 @@ PARCEL_LIMIT_ALMOST_EQUALS_DECIMAL = 1
 
 
 def polygons_and_index_from_parcels_limits(parcels_limits):
-    """Transforme les limites (liste de liste de coordonées) en polygone 
+    """Transforme les limites (liste de liste de coordonées) en polygone
        Shapely et génère un index spatialisé avec leur bounds
        Retourne les polygons et l'index.
     """
     polygons = []
     index = rtree.index.Index()
-    print_flush(u"Élimine les doublons dans les limites de parcelles")
+    print_flush("Élimine les doublons dans les limites de parcelles")
     def already_present(p):
-        # FIXME: cette recherche vas être quadratique si les intersections 
+        # FIXME: cette recherche vas être quadratique si les intersections
         # sont importantes, comme à Apatou en Guyane:
         center = p.centroid.coords[0]
         for i in index.intersection(center):
@@ -108,10 +108,10 @@ def pdf_2_osm_parcels_limits(pdf_filename_list, osm_output):
     osm = Osm({'upload':'false'})
     for parcel in parcels:
         for linear_ring in parcel:
-            points = map(cadastre_to_osm_transform.transform_point, linear_ring)
+            points = list(map(cadastre_to_osm_transform.transform_point, linear_ring))
             nodes = [Node({'lon':str(p.x), 'lat':str(p.y)}) for p in points]
             way = Way({})
-            for n in nodes: 
+            for n in nodes:
                 osm.add_node(n)
                 way.add_node(n)
             osm.add_way(way)
@@ -125,9 +125,9 @@ def iter_download_parcels_info_xml(cadastreWebsite, parcels_index):
     # et évaluer le nombre de parcelles qui sont dans une zonne donnée, afin de la découper de tel sorte qu'il
     # y ait moins de 2000 résultats par requête.
     for name, bbox in bbox_split_against_index_size(
-            cadastreWebsite.get_bbox(), 
-            parcels_index, 
-            MAX_PARCELS_PER_INFO_XML, 
+            cadastreWebsite.get_bbox(),
+            parcels_index,
+            MAX_PARCELS_PER_INFO_XML,
             cadastreWebsite.code_commune + "-parcelles"):
         filename = name + ".xml"
         print_flush(filename)
@@ -199,7 +199,7 @@ class ParcelInfo(object):
                     # libellex et libelley.
                 fid  = parcel.attrib['fid'][9:]
                 resultmap[fid] = ParcelInfo(
-                    fid  = fid, 
+                    fid  = fid,
                     nature = parcel.iter("NATURE").next().text,
                     **param)
         return resultmap
@@ -216,15 +216,15 @@ def parse_addresses_of_parcels_info_pdfs(pdfs, code_commune):
         mode_address = False
         for line in txt.splitlines():
             line = line.strip()
-            if line.startswith(u"Service de la Documentation Nationale du Cadastre") \
-                    or line.startswith(u"82, rue du Maréchal Lyautey - 78103 Saint-Germain-en-Laye Cedex") \
-                    or line.startswith(u"SIRET 16000001400011") \
-                    or line.startswith(u"Informations sur la feuille éditée par internet le ") \
-                    or line.startswith(u"©201"): # ©2012 Ministère de l'Économie et des Finances
+            if line.startswith("Service de la Documentation Nationale du Cadastre") \
+                    or line.startswith("82, rue du Maréchal Lyautey - 78103 Saint-Germain-en-Laye Cedex") \
+                    or line.startswith("SIRET 16000001400011") \
+                    or line.startswith("Informations sur la feuille éditée par internet le ") \
+                    or line.startswith("©201"): # ©2012 Ministère de l'Économie et des Finances
                 continue
             #print line
-            if line.startswith(u"Références de la parcelle "):
-                ids = line[len(u"Références de la parcelle "):].strip()
+            if line.startswith("Références de la parcelle "):
+                ids = line[len("Références de la parcelle "):].strip()
                 if len(ids.split(" ")) == 2:
                     # Cas rencontré sur la commune de Mauves, Ardèche
                     # Seulement 2 ids, on assume la valeur 0 pour le 3ème:
@@ -239,7 +239,7 @@ def parse_addresses_of_parcels_info_pdfs(pdfs, code_commune):
                 addresses = []
                 parcels_addresses[id_parcel] = addresses
                 mode_address = False
-            elif line == u"Adresse":
+            elif line == "Adresse":
                 addresses.append("")
                 mode_address = True
             elif mode_address and len(line) > 0:
@@ -250,8 +250,8 @@ def parse_addresses_of_parcels_info_pdfs(pdfs, code_commune):
 
     # Supprimme la fin de l'adresse à partir du code postal
     # et remplace les retours à la ligne par un espace:
-    # Enlève aussi les doublons avec un set(), car si une parcelle 
-    # a deux fois exactement la même adresse, cela vas faire planter l'algo 
+    # Enlève aussi les doublons avec un set(), car si une parcelle
+    # a deux fois exactement la même adresse, cela vas faire planter l'algo
     # de la fonction match_parcels_and_numbers
     # comme par exemple à Beauvais (département 60 code commune O0057)
     # Remplace aussi les adresses du type
@@ -260,7 +260,7 @@ def parse_addresses_of_parcels_info_pdfs(pdfs, code_commune):
     # par deux adresses:
     #    1 RUE DE LA NEUVILLE
     #    3 RUE DE LA NEUVILLE
-    NUM_1_A_NUM_2_RE = re.compile("^(" + RE_NUMERO_CADASTRE.pattern + u") \xe0 (" + RE_NUMERO_CADASTRE.pattern[1:] + ")\s(.*)$")
+    NUM_1_A_NUM_2_RE = re.compile("^(" + RE_NUMERO_CADASTRE.pattern + ") \xe0 (" + RE_NUMERO_CADASTRE.pattern[1:] + ")\s(.*)$")
     for id_parcel, addresses in iteritems(parcels_addresses):
         addresses_set = set()
         for address in addresses:
@@ -270,7 +270,7 @@ def parse_addresses_of_parcels_info_pdfs(pdfs, code_commune):
             address = address.replace("\n"," ").strip()
             num_1_a_num_2_match = NUM_1_A_NUM_2_RE.match(address)
             if num_1_a_num_2_match:
-                print_flush(u"ATTENTION: adresse comportant un intervalle: " + address)
+                print_flush("ATTENTION: adresse comportant un intervalle: " + address)
                 # On a une adresse du type "1 à 3 RUE DE LA NEUVILLE"
                 NUM_1_GROUP_INDEX = 1
                 NUM_2_GROUP_INDEX = NUM_1_GROUP_INDEX + RE_NUMERO_CADASTRE.pattern.count("(") + 1
@@ -279,21 +279,21 @@ def parse_addresses_of_parcels_info_pdfs(pdfs, code_commune):
                 num2 = int(num_1_a_num_2_match.group(NUM_2_GROUP_INDEX))
                 rue = num_1_a_num_2_match.group(RUE_GROUP_INDEX)
                 for i in range(num1, num2 + 2, 2):
-                    addr_i = u"%d %s" % (i, rue)
-                    print_flush(u"    ajoute l'adresse: " + adr_i)
+                    addr_i = "%d %s" % (i, rue)
+                    print_flush("    ajoute l'adresse: " + adr_i)
                     addresses_set.add(addr_i)
             else:
                 addresses_set.add(address)
         parcels_addresses[id_parcel] = list(addresses_set)
 
     return parcels_addresses
- 
+
 
 
 def match_parcels_and_limits(parcels, limits, limits_index):
     """Affecte le champs .limit de chaque parcelles avec celle
-    parmis la liste des limites données qui correspond, en 
-    comparant la bounding box (.bounds) et à l'area (.area) 
+    parmis la liste des limites données qui correspond, en
+    comparant la bounding box (.bounds) et à l'area (.area)
     """
     #max_diff_bounds = 0
     #max_diff_area = 0
@@ -315,8 +315,8 @@ def match_parcels_and_limits(parcels, limits, limits_index):
             #max_diff_bounds = max(max_diff_bounds, best_diff)
             #max_diff_area = max(max_diff_area, abs(parcel.area - best_limit.area))
         else:
-            print_flush(u"ATTENTION: limites non trouvée pour la parcelle " + parcel.fid)
-    #print "---"          
+            print_flush("ATTENTION: limites non trouvée pour la parcelle " + parcel.fid)
+    #print "---"
     #print "max diff parcels bounds: " + str(max_diff_bounds)
     #print "max diff parcels area: " + str(max_diff_area)
     #transform = CadastreToOSMTransform(projection).transform_point
@@ -341,7 +341,7 @@ def match_parcels_and_limits(parcels, limits, limits_index):
 
 def match_parcels_and_housenumbers(parcels, numbers):
     numbers_index = rtree.index.Index()
-    print_flush(str(len(numbers)) + u" numéros à trouver")
+    print_flush(str(len(numbers)) + " numéros à trouver")
     # Convertit les positions des numéros en Point et insere les dans l'index:
     for i,(num, position, angle) in enumerate(numbers):
         position = Point(tuple(position))
@@ -373,7 +373,7 @@ def match_parcels_and_housenumbers(parcels, numbers):
                         parcel.addrs_numbers[number] = []
                     parcel.addrs_numbers[number].append(addr)
                     parcel.num_to_find += 1
-    for distance in [0,1,2,3] + range(4,50,2) + range(50,200,5):
+    for distance in [0,1,2,3] + list(range(4,50,2)) + list(range(50,200,5)):
         nb_found_with_limit = 0
         nb_found_with_bbox = 0
         # cherche la position des numeros contenus ou à proximité des parcelles
@@ -442,28 +442,28 @@ def match_parcels_and_housenumbers(parcels, numbers):
                                     break # for num in num_possibilities:
 
         if nb_found_with_limit>0:
-            print_flush(str(nb_found_with_limit) + u" numéros trouvés à moins de " + str(distance) + u"m des limites des parcelles")
+            print_flush(str(nb_found_with_limit) + " numéros trouvés à moins de " + str(distance) + "m des limites des parcelles")
         if nb_found_with_bbox>0:
-            print_flush(str(nb_found_with_bbox) + u" numéros trouvés à moins de " + str(distance-50) + u"m des bbox des parcelles")
+            print_flush(str(nb_found_with_bbox) + " numéros trouvés à moins de " + str(distance-50) + "m des bbox des parcelles")
     nb_numbers_unatached = 0
     for n in numbers:
         if n:
             nb_numbers_unatached +=1
     if nb_numbers_unatached == 1:
-        print_flush("ATTENTION: " + str(nb_numbers_unatached) + u" numéro non rataché à son adresse !")
+        print_flush("ATTENTION: " + str(nb_numbers_unatached) + " numéro non rataché à son adresse !")
     elif nb_numbers_unatached > 1:
-        print_flush("ATTENTION: " + str(nb_numbers_unatached) + u" numéros non ratachés à leur adresse !")
+        print_flush("ATTENTION: " + str(nb_numbers_unatached) + " numéros non ratachés à leur adresse !")
     else:
-        print_flush(u"Tous les numéros ont trouvé une parcelle !")
+        print_flush("Tous les numéros ont trouvé une parcelle !")
     count_not_found = 0
     for parcel in itervalues(parcels):
       count_not_found += parcel.num_to_find
     if count_not_found == 1:
-        print_flush("ATTENTION: " + str(count_not_found) + u" adresse n'a pas trouvé son numéro !")
+        print_flush("ATTENTION: " + str(count_not_found) + " adresse n'a pas trouvé son numéro !")
     elif count_not_found > 1:
-        print_flush("ATTENTION: " + str(count_not_found) + u" adresses n'ont pas trouvé leur numéro !")
+        print_flush("ATTENTION: " + str(count_not_found) + " adresses n'ont pas trouvé leur numéro !")
     else:
-        print_flush(u"Toutes les adresses ont trouvé leur numéro!")
+        print_flush("Toutes les adresses ont trouvé leur numéro!")
 
 
 def generate_osm_parcels(parcels, transform):

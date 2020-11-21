@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,16 +28,16 @@ PDFPARSER = os.path.join(THIS_DIR, "..", "pdfparser", "pdfparser")
 
 
 if not os.path.exists(PDFPARSER):
-  sys.stderr.write(u"ERREUR: le programme pdfparser n'as pas été trouvé.\n".encode("utf-8"))
-  sys.stderr.write(u"        Veuillez executer la commande suivante et relancer:\n".encode("utf-8"))
-  sys.stderr.write(u"    make\n".encode("utf-8"))
+  sys.stderr.write("ERREUR: le programme pdfparser n'as pas été trouvé.\n".encode("utf-8"))
+  sys.stderr.write("        Veuillez executer la commande suivante et relancer:\n".encode("utf-8"))
+  sys.stderr.write("    make\n".encode("utf-8"))
   sys.exit(-1)
 
 
 
 class CadastreParser(object):
     """ Parse un fichier PDF obtenue depuis le cadastre,
-        pour y trouver les <path> 
+        pour y trouver les <path>
         Les path qui nous intéressent sont tous dans le même groupe <g>,
         donc on ignore completement les transformations de
         coordonées (pdf transform).
@@ -59,14 +59,14 @@ class CadastreParser(object):
             parser.StartElementHandler = self.handle_start_element
             parser.ParseFile(open(filename))
         elif ext == ".pdf":
-            pipe = subprocess.Popen([PDFPARSER, filename], 
+            pipe = subprocess.Popen([PDFPARSER, filename],
                     bufsize=128*1024, stdout=subprocess.PIPE).stdout
             while True:
-                line = pipe.readline()
+                line = pipe.readline().decode("utf8")
                 if not line:
                     break
                 path = Path.from_svg(line.rstrip())
-                path.style = pipe.readline().rstrip()
+                path.style = pipe.readline().decode("utf8").rstrip()
                 self.handle_path(path)
         else:
             raise Exception("not a pdf or svg filename: " + filename)
@@ -87,7 +87,7 @@ class CadastreParser(object):
                 self.pdf_bbox = path.bbox()
                 self.pdf_to_cadastre_transform = PDFToCadastreTransform(self.pdf_bbox, self.cadastre_bbox).transform_point
                 #sys.stdout.write("pdf bbox:" + str(self.bbox) + "\n")
-        else:          
+        else:
             for path_handler in self.path_handlers:
                 if path_handler(path, self.pdf_to_cadastre_transform):
                     break

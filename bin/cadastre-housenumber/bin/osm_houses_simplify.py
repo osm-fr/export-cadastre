@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ def main(argv):
       i = i + 1
   if len(args) == 0 or len(args) > 2 or any([arg.startswith("-") for arg in args]):
       print("Simplify -houses.osm file extracted from the cadastre by Qadastre2OSM program")
-      print("USAGE: %s [-m merge_distance] [-j join_distance] [-s simplify_threshold] input-houses.osm [output-houses.osm]" % argv[0])
+      print(("USAGE: %s [-m merge_distance] [-j join_distance] [-s simplify_threshold] input-houses.osm [output-houses.osm]" % argv[0]))
       return -1
   else:
     input_filename = args[0]

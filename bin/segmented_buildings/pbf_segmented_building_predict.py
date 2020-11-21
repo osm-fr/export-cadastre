@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -110,20 +110,20 @@ class OSMBuildingsParser(object):
         self.multipolygon_ways_ids = set()
         if VERBOSE: sys.stderr.write("parse relations\n")
         p1 = OSMParser(
-            concurrency = self.concurrency, 
+            concurrency = self.concurrency,
             relations_callback = self.handle_relations,
             relations_tag_filter = multipolygon_building_tag_filter)
         p1.parse(filename)
         if VERBOSE: sys.stderr.write("parse ways\n")
         p2 = OSMParser(
-            concurrency = self.concurrency, 
+            concurrency = self.concurrency,
             ways_callback = self.handle_ways)
         p2.parse(filename)
         if VERBOSE: sys.stderr.write("cleanup\n")
         self.cleanup_before_coords()
         if VERBOSE: sys.stderr.write("parse coords\n")
         p3 = OSMParser(
-            concurrency = self.concurrency, 
+            concurrency = self.concurrency,
             coords_callback = self.handle_coords)
         p3.parse(filename)
 
@@ -141,7 +141,7 @@ class OSMTouchingBuildingsParser(OSMBuildingsParser):
         if VERBOSE:
             nb_ways = len(self.ways)
             nb_nodes = len(self.nodes)
-        ways_ids = self.ways.keys()
+        ways_ids = list(self.ways.keys())
         if (sys.version_info > (3, 0)):
             ways_ids = tuple(ways_ids)
         for way_id in ways_ids:
@@ -211,20 +211,20 @@ class SegmentedBuildingsPredictor(object):
         self.printer = printer;
         self.classifier, self.scaler = load_classifier_and_scaler()
         if (sys.version_info > (3, 4)):
-            self.mp_context = mp.get_context('fork') 
+            self.mp_context = mp.get_context('fork')
             # 'fork' is significantly faster than 'forkserver' or 'spawn'
-            # it could use more memory but we avoid this by 
+            # it could use more memory but we avoid this by
             # creating the processes at the begining
         else:
             self.mp_context = multiprocessing
         self.queue = self.mp_context.Queue(concurrency * 2)
-        self.start_processes() 
+        self.start_processes()
 
     def predict(self, buildings):
         if VERBOSE: sys.stderr.write("predict\n")
         #self.start_processes()
         segmented_cases = []
-        for way_id, way in buildings.ways.items():
+        for way_id, way in list(buildings.ways.items()):
             coords = [buildings.nodes[i] for i in way.refs]
             for touching_way_id in way.touching_ways:
                 if touching_way_id > way_id: # avoid considering the symetric case a second times
@@ -257,18 +257,18 @@ class SegmentedBuildingsPredictor(object):
 
 
 def barycentre(coords):
-    return tuple(map(mean, zip(*coords)))
+    return tuple(map(mean, list(zip(*coords))))
 
 
 def common_coords_barycentre(coords1, coords2):
-    """return the barycentre of the coords that are both member 
+    """return the barycentre of the coords that are both member
        of the list coords1 and coords2"""
     common_coords = set(coords1) and set(coords2)
     return barycentre(common_coords)
 
 
 def bbox(coords1):
-    xs, ys, _ = zip(*coords)
+    xs, ys, _ = list(zip(*coords))
     return min(xs), min(ys), max(xs), max(y)
 
 
@@ -295,7 +295,7 @@ class ResultPrinter():
         pass
     def __call__(self, case):
         self.output.write((json.dumps(
-            [{'id': case.id1, 'latlngs':[(c.lat, c.lon) for c in case.coords1]}, 
+            [{'id': case.id1, 'latlngs':[(c.lat, c.lon) for c in case.coords1]},
              {'id': case.id2, 'latlngs':[(c.lat, c.lon) for c in case.coords2]}]) + "\n").encode("utf-8"))
     def print_footer(self):
         pass

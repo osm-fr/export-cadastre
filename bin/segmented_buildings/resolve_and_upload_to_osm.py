@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
@@ -68,25 +68,25 @@ def main(args):
     """)
     join_cases = {}
     for case_id, choice, way1_id, way1_geom, way2_id, way2_geom in cur.fetchall():
-        print case_id, choice, way1_id, way2_id
+        print((case_id, choice, way1_id, way2_id))
         if choice in ["keep", "unknown"]:
             cur.execute(cur.mogrify("""
                 UPDATE segmented_cases
                 SET resolution=%s, resolution_time=now()
                 WHERE id=%s""",(choice, case_id)));
         elif choice == "join":
-            way1_geom, way2_geom = map(wkt_polygon_latlngs, (way1_geom, way2_geom))
+            way1_geom, way2_geom = list(map(wkt_polygon_latlngs, (way1_geom, way2_geom)))
             way1 = api.WayGet(way1_id)
             way2 = api.WayGet(way2_id)
             if (not way1) or (not way2):
                 if not way1:
-                    print "way1 ", way1_id, "already deleted"
+                    print(("way1 ", way1_id, "already deleted"))
                     cur.execute(cur.mogrify("""
                         UPDATE segmented_cases
                         SET resolution='outofdate', resolution_time=now()
                         WHERE resolution='none' AND (way1_osm_id=%s OR way2_osm_id=%s)""", (way1_id, way1_id)));
                 if not way2:
-                    print "way2 ", way2_id, "already deleted"
+                    print(("way2 ", way2_id, "already deleted"))
                     cur.execute(cur.mogrify("""
                         UPDATE segmented_cases
                         SET resolution='outofdate', resolution_time=now()
@@ -103,7 +103,7 @@ def main(args):
                 if latlngs_equals(way1_geom, way1_osm_geom) and latlngs_equals(way2_geom, way2_osm_geom):
                     join_cases[case_id] = JoinCase(case_id, way1_id, way2_id, osm_data)
                 else:
-                    print "way geometry changed, consider the case outofdate"
+                    print("way geometry changed, consider the case outofdate")
                     cur.execute(cur.mogrify("""
                         UPDATE segmented_cases
                         SET resolution='outofdate', resolution_time=now()
@@ -115,12 +115,12 @@ def main(args):
 def try_join(case_id, way1_id, way2_id, osm_data):
     way1 = osm_data["way"][way1_id]
     way2 = osm_data["way"][way2_id]
-    if VERBOSE: print "way1 nd", way1["nd"]
-    if VERBOSE: print "way2 nd", way2["nd"]
+    if VERBOSE: print(("way1 nd", way1["nd"]))
+    if VERBOSE: print(("way2 nd", way2["nd"]))
     outer1, common, outer2 = join_node_list(way1["nd"], way2["nd"])
-    if VERBOSE: print "outer1", outer1
-    if VERBOSE: print "common", common
-    if VERBOSE: print "outer2", outer2
+    if VERBOSE: print(("outer1", outer1))
+    if VERBOSE: print(("common", common))
+    if VERBOSE: print(("outer2", outer2))
     joined_nds = [common[0]] + outer1 + [common[-1]] + outer2 + [common[0]]
     deleted_nds = common[1:-1]
     automatic_join = True
@@ -134,16 +134,16 @@ def try_join(case_id, way1_id, way2_id, osm_data):
                 automatic_join = False
                 break
     if automatic_join:
-        if VERBOSE: print "automatic"
+        if VERBOSE: print("automatic")
         # Try also to delete the linking common nodes if it form a flat angle:
         if (len(outer1) > 0) and (len(outer2) > 0):
             if can_simplify_node(osm_data, nd_first=outer1[-1], nd_middle=common[-1], nd_last=outer1[0]) and can_delete_node(osm_data, common[-1], way1_id, way2_id):
-                if VERBOSE: print "delete last common node"
+                if VERBOSE: print("delete last common node")
                 deleted_nds = deleted_nds + [common[-1]]
                 joined_nds = [common[0]] + outer1 + outer2 + [common[0]]
 
             if can_simplify_node(osm_data, nd_first=outer2[-1], nd_middle=common[0], nd_last=outer1[0]) and can_delete_node(osm_data, common[0], way1_id, way2_id):
-                if VERBOSE: print "delete fist common node"
+                if VERBOSE: print("delete fist common node")
                 deleted_nds =  [common[0]] +  deleted_nds
                 joined_nds = joined_nds[1:-1] + [joined_nds[1]]
             pass
@@ -163,13 +163,13 @@ def try_join(case_id, way1_id, way2_id, osm_data):
 def treat_join_cases(join_cases):
     # look for conflict cases (cases sharing the same ways to join)
     way_case_ids = {}
-    for join_case in join_cases.itervalues():
+    for join_case in list(join_cases.values()):
         add_map_set(way_case_ids, join_case.way1_id, join_case.case_id)
         add_map_set(way_case_ids, join_case.way2_id, join_case.case_id)
     cases_done = set()
-    for case_id, join_case in join_cases.iteritems():
+    for case_id, join_case in list(join_cases.items()):
         if not case_id in cases_done:
-            print "treat join case ", case_id
+            print(("treat join case ", case_id))
             conflict_cases = set([case_id])
             ways_to_add = [join_case.way1_id, join_case.way2_id]
             while len(ways_to_add) > 0:
@@ -200,7 +200,7 @@ def treat_join_cases(join_cases):
                 else:
                     filename = "manual-%d.osm" % case_id
             if filename:
-                print filename
+                print(filename)
                 f = open(filename, "w")
                 write_josm(osm_data, f)
                 f.close()
@@ -224,7 +224,7 @@ def excludes_cases_with_near_unresolved(join_cases):
             """, (join_case.case_id,)))
         for (near_case_id,) in cur.fetchall():
             if not near_case_id in join_cases:
-                if VERBOSE: print "exclude case ", join_case.case_id," because of near unresolved case ", near_case_id
+                if VERBOSE: print(("exclude case ", join_case.case_id," because of near unresolved case ", near_case_id))
                 del(join_cases[join_case.case_id])
                 break
 
@@ -253,7 +253,7 @@ def osm_data_by_type(data):
 
 def osm_data_update(data, update):
     if type(update) == list: update = osm_data_by_type(update)
-    for key in data.keys():
+    for key in list(data.keys()):
         data[key].update(update[key])
     return data
 
@@ -263,7 +263,7 @@ def osm_way_latlngs(data, id):
 def wkt_polygon_latlngs(wkt):
     assert(wkt.startswith("POLYGON((") and wkt.endswith("))"));
     coords = wkt[len("POLYGON(("): -len("))")];
-    return [map(float,p.split(" ")) for p in  coords.split(",")]
+    return [list(map(float,p.split(" "))) for p in  coords.split(",")]
 
 def latlngs_equals(latlngs1, latlngs2):
     if len(latlngs1) == len(latlngs2):
@@ -333,26 +333,26 @@ def osm_changeset_open(comment=None, source=None):
     if source == None:
         source = "https://cadastre.openstreetmap.fr/segmented/"
     changeset = api.ChangesetCreate({"comment": comment, "source": source})
-    if VERBOSE: print "opened changeset ", changeset
+    if VERBOSE: print(("opened changeset ", changeset))
     return changeset
 
 def osm_changeset_close():
     changeset = api.ChangesetClose()
-    print "closed changeset ", changeset
+    print(("closed changeset ", changeset))
     api.flush()
 
 def osm_upload(osm_data, source=None):
     osm_changeset_open(source=source)
-    for way in osm_data["way"].values():
+    for way in list(osm_data["way"].values()):
         if "action" in way:
             if way["action"] == "modify":
-                api.WayUpdate({k:v for k,v in way.iteritems() if k!="action"})
+                api.WayUpdate({k:v for k,v in list(way.items()) if k!="action"})
             if way["action"] == "delete":
-                api.WayDelete({k:v for k,v in way.iteritems() if k!="action"})
-    for node in osm_data["node"].values():
+                api.WayDelete({k:v for k,v in list(way.items()) if k!="action"})
+    for node in list(osm_data["node"].values()):
         if "action" in node:
             if node["action"] == "delete":
-                api.NodeDelete({k:v for k,v in node.iteritems() if k!="action"})
+                api.NodeDelete({k:v for k,v in list(node.items()) if k!="action"})
     osm_changeset_close()
 
 
@@ -363,11 +363,11 @@ def new_id():
     return -max_id
 
 def can_simplify_node(osm_data, nd_first, nd_last, nd_middle):
-    nd1, nd2, nd3 = [osm_data["node"][nd] for nd in nd_first, nd_last, nd_middle]
+    nd1, nd2, nd3 = [osm_data["node"][nd] for nd in (nd_first, nd_last, nd_middle)]
     coords = nd1["lat"], nd1["lon"], nd2["lat"], nd2["lon"], nd3["lat"], nd3["lon"]
-    coords = map(deg_to_rad, coords)
+    coords = list(map(deg_to_rad, coords))
     xte = abs(EARTH_RADIUS_IN_METER * xtd(*coords))
-    if VERBOSE: print "xte = ", xte
+    if VERBOSE: print(("xte = ", xte))
     return xte < DEFAULT_SIMPLIFY_THRESHOLD
 
 def can_delete_node(osm_data, nd, way1_id, way2_id):
@@ -375,7 +375,7 @@ def can_delete_node(osm_data, nd, way1_id, way2_id):
     return (len(osm_data["node"][nd]["tag"]) == 0) and (len(node_ways) == 0) and (len(api.NodeRelations(nd)) == 0)
 
 def delete_node(osm_data, node_id):
-    print "delete node", node_id
+    print(("delete node", node_id))
     osm_data["node"][node_id]["action"] = "delete"
 
 def create_node(osm_data, node):
@@ -385,34 +385,34 @@ def create_node(osm_data, node):
     osm_data[node["id"]] = node
 
 def modify_way(osm_data, way_id):
-    if VERBOSE: print "modify way", way_id
+    if VERBOSE: print(("modify way", way_id))
     osm_data["way"][way_id]["action"] = "modify"
 
 def delete_way(osm_data, way_id):
-    if VERBOSE: print "delete way", way_id
+    if VERBOSE: print(("delete way", way_id))
     osm_data["way"][way_id]["action"] = "delete"
     osm_data["way"][way_id]["nd"] = []
 
 
 def write_josm_tags(item, output):
-    for key,value in item["tag"].iteritems():
-        output.write((u"    <tag k='%s' v='%s' />\n" % (key,value)).encode("utf-8"))
+    for key,value in list(item["tag"].items()):
+        output.write(("    <tag k='%s' v='%s' />\n" % (key,value)).encode("utf-8"))
 
 def write_josm_keys(item, output):
-    for key,value in item.iteritems():
+    for key,value in list(item.items()):
         if not key in ['tag', 'nd', 'member', 'timestamp']:
-            output.write((u" %s='%s'" % (key,value)).encode("utf-8"))
+            output.write((" %s='%s'" % (key,value)).encode("utf-8"))
 
 def write_josm(osm_data, output):
     output.write("<?xml version='1.0' encoding='UTF-8'?>\n");
     output.write("<osm version='0.6' upload='true' generater='%s'>\n" % sys.argv[0]);
-    for item in osm_data["node"].itervalues():
+    for item in list(osm_data["node"].values()):
         output.write("  <node ")
         write_josm_keys(item, output)
         output.write(">\n");
         write_josm_tags(item, output)
         output.write("  </node>\n")
-    for item in osm_data["way"].itervalues():
+    for item in list(osm_data["way"].values()):
         output.write("  <way ")
         write_josm_keys(item, output)
         output.write(">\n");
@@ -420,13 +420,13 @@ def write_josm(osm_data, output):
             output.write("    <nd ref='%s' />\n" % nd)
         write_josm_tags(item, output)
         output.write("  </way>\n")
-    for item in osm_data["relation"].itervalues():
+    for item in list(osm_data["relation"].values()):
         output.write("  <relation ")
         write_josm_keys(item, output)
         output.write(">\n");
         write_josm_tags(item, output)
         for member in item["member"]:
-            output.write(u"    <member ")
+            output.write("    <member ")
             write_josm_keys(member, output)
             output.write(" />\n")
         output.write("  </relation>\n")

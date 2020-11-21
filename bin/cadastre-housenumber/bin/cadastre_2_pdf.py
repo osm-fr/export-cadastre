@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ from cadastre_fr.download_pdf import PDF_DOWNALOD_WAIT_SECONDS
 BBOX_OPTION_FORMAT = re.compile("^(-?[0-9]*(\\.[0-9]*)?,){3}-?[0-9]*(\\.[0-9]*)?$")
 
 
-HELP_MESSAGE = u"""Téléchargement de PDF du cadastre
+HELP_MESSAGE = """Téléchargement de PDF du cadastre
 OPTIONS:
     -nb <int>      : découpage par un nombre fixe
     -size <int>    : découpage par une taille fixe (en mètres)
@@ -96,24 +96,24 @@ def cadastre_2_pdfs(argv):
           elif argv[i] in ["-b", "-bbox","--bbox"]:
               bbox = argv[i+1]
               if not BBOX_OPTION_FORMAT.match(bbox):
-                command_line_error(u"paramètre bbox invalide: " + bbox, HELP_MESSAGE)
+                command_line_error("paramètre bbox invalide: " + bbox, HELP_MESSAGE)
                 return
-              bbox = map(float,bbox.split(","))
+              bbox = list(map(float,bbox.split(",")))
               del(argv[i:i+2])
           else:
-              command_line_error(u"option invalide: " + argv[i], HELP_MESSAGE)
+              command_line_error("option invalide: " + argv[i], HELP_MESSAGE)
               return
       else:
           i = i + 1
   else:
       cadastreWebsite = command_line_open_cadastre_website(argv)
-      if type(cadastreWebsite) in [str, unicode]:
+      if type(cadastreWebsite) in [str, str]:
           command_line_error(cadastreWebsite, HELP_MESSAGE)
       elif cadastreWebsite != None:
           code_departement = cadastreWebsite.code_departement
           code_commune = cadastreWebsite.code_commune
           nom_commune = cadastreWebsite.communes[code_commune]
-          sys.stderr.write((u"Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n").encode("utf-8"))
+          sys.stderr.write("Teléchargement des PDFs de la commune " + code_commune + " : " + nom_commune + "\n")
           sys.stderr.flush()
           write_string_to_file("", code_commune + "-" + nom_commune + ".txt")
           result = []

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 import sys
 import zipfile
 import os.path
-from cStringIO import StringIO
+from io import StringIO
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
@@ -31,14 +31,14 @@ from cadastre_fr.osm import Osm, OsmWriter, OsmParser
 from cadastre_fr.tools import command_line_error
 
 
-HELP_MESSAGE = u"""Supprime les relations associatedStreet et positionne le tag addr:street des nœuds 'house' associés avec l'ancien nom de la relation.
+HELP_MESSAGE = """Supprime les relations associatedStreet et positionne le tag addr:street des nœuds 'house' associés avec l'ancien nom de la relation.
 USAGE:
 {0}  input.osm output.osm
 {0}  input.zip output.zip""".format(sys.argv[0])
 
 def osm_remove_associatedstreet(osm):
-    for rid,relation in osm.relations.items():
-        if relation.tags.get('type') == 'associatedStreet' and relation.tags.has_key('name'):
+    for rid,relation in list(osm.relations.items()):
+        if relation.tags.get('type') == 'associatedStreet' and 'name' in relation.tags:
             for member in relation.members:
                 if member.get('role') == 'house':
                     housenumber = None
@@ -46,7 +46,7 @@ def osm_remove_associatedstreet(osm):
                         housenumber = osm.ways[int(member['ref'])]
                     elif member['type'] == 'node':
                         housenumber = osm.nodes[int(member['ref'])]
-                    if housenumber and not housenumber.tags.has_key('addr:street'):
+                    if housenumber and 'addr:street' not in housenumber.tags:
                         housenumber.tags['addr:street'] = relation.tags['name']
             del(osm.relations[rid])
 

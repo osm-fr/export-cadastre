@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ class Osm(object):
         self.add_relation(relation)
         return relation
     def add_bounds(self, bounds_attrs):
-        """bounds_attrs: a hashtabe with keys 'minlon', 'minlat', 'maxlon' and 'maxlat'.""" 
+        """bounds_attrs: a hashtabe with keys 'minlon', 'minlat', 'maxlon' and 'maxlat'."""
         self.bounds.append(bounds_attrs)
     def bbox(self):
         if len(self.bounds):
@@ -97,8 +97,8 @@ class Osm(object):
         self.set_bbox(self.bbox())
     def iteritems(self):
         return itertools.chain.from_iterable(
-                [itervalues(self.nodes), 
-                 itervalues(self.ways), 
+                [itervalues(self.nodes),
+                 itervalues(self.ways),
                  itervalues(self.relations)])
     def get(self, item_type_or_textid, item_id=None):
         if item_type_or_textid in ("n", "node"):
@@ -116,7 +116,7 @@ class Osm(object):
         for mtype, mref, mrole in relation.itermembers():
             yield self.get(mtype, int(mref)), mrole
     def filter(self, items):
-        """ Return a new Osm() file, in which only the listed items 
+        """ Return a new Osm() file, in which only the listed items
             and the dependent ones) are present
         """
         result = Osm({})
@@ -192,7 +192,7 @@ class Way(Item):
             self.nodes.append(node.id())
         else:
             self.nodes.append(int(node))
-        
+
 
 class Relation(Item):
     def __init__(self, attrs,tags=None):
@@ -225,7 +225,7 @@ class OsmParser(object):
     def parse(self, filename):
         self.filename = filename
         self.osm = None
-        self.parser.ParseFile(open(filename))
+        self.parser.ParseFile(open(filename,"rb"))
         return self.osm
     def parse_stream(self, stream, name=""):
         self.filename = name
@@ -269,13 +269,13 @@ class OsmParser(object):
             relation = self.current
             relation.add_member_attrs(attrs)
         else:
-            raise Exception("ERROR: unknown tag <"+name+"> in file " 
+            raise Exception("ERROR: unknown tag <"+name+"> in file "
                     + self.filename + "\n")
     def handle_end_element(self,name):
         pass
     def handle_char_data(self,data):
         pass
- 
+
 class OsmWriter(object):
     def __init__(self, osm):
         self.osm = osm
@@ -298,7 +298,7 @@ class OsmWriter(object):
                 output.write("\t<node" + self.attrs_str(node.attrs) + ">\n");
                 self.write_tags(node.tags)
                 output.write("\t</node>\n");
-            else:    
+            else:
                 output.write("\t<node" + self.attrs_str(node.attrs) + "/>\n");
         for way in itervalues(osm.ways):
             output.write("\t<way" + self.attrs_str(way.attrs) + ">\n");
@@ -307,7 +307,7 @@ class OsmWriter(object):
             self.write_tags(way.tags)
             output.write("\t</way>\n");
         for relation in itervalues(osm.relations):
-            output.write("\t<relation" 
+            output.write("\t<relation"
                 + self.attrs_str(relation.attrs) + ">\n");
             self.write_tags(relation.tags)
             for member in relation.members:
@@ -316,10 +316,10 @@ class OsmWriter(object):
         output.write("</osm>\n");
     def attrs_str(self, attrs):
         return ("".join([' ' + key + '=' + xml.sax.saxutils.quoteattr(value)
-            for key,value in iteritems(attrs)])).encode("utf-8")
+            for key,value in iteritems(attrs)]))
     def write_tags(self, tags):
         for key,value in iteritems(tags):
             value = xml.sax.saxutils.quoteattr(value)
-            self.output.write(('\t\t<tag k="' + key + '" v=' + value +'/>\n').encode("utf-8"))
+            self.output.write('\t\t<tag k="' + key + '" v=' + value +'/>\n')
 
 

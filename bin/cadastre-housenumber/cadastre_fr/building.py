@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -106,17 +106,17 @@ def limit_to_osm(limit, transform):
 def pdf_2_buildings_water_and_limit(pdfs):
     recognizer = StandardPathRecognizer()
     cadastre_parser = CadastreParser([recognizer.handle_path])
-    sys.stdout.write((u"Parse les exports PDF du cadastre:\n").encode("utf-8"))
+    sys.stdout.write("Parse les exports PDF du cadastre:\n")
     sys.stdout.flush()
     nb = [0] * 5
     for filename in pdfs:
         cadastre_parser.parse(filename)
         new_nb = [len(recognizer.buildings), len(recognizer.light_buildings), len(recognizer.waters), len(recognizer.riverbanks), len(recognizer.limit)]
-        diff = map(operator.sub, new_nb, nb)
-        sys.stdout.write((filename + ": " + ", ".join([
-              str(val) + " " + name 
-              for name,val in zip([u"buildings", u"light buildings", u"water", u"riverbank", u"limit"], diff)])
-            + "\n").encode("utf-8"))
+        diff = list(map(operator.sub, new_nb, nb))
+        sys.stdout.write(filename + ": " + ", ".join([
+              str(val) + " " + name
+              for name,val in zip(["buildings", "light buildings", "water", "riverbank", "limit"], diff)])
+            + "\n")
         sys.stdout.flush()
         nb = new_nb
     return cadastre_parser.cadastre_projection, recognizer.buildings, recognizer.light_buildings, recognizer.waters, recognizer.riverbanks, recognizer.limit

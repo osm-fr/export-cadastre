@@ -29,7 +29,7 @@ if (!isset($dep)) {
 
 if( $dep != "" )
 {
-    $villes_file = fopen( $data_path . $dep . '/' . $dep . '-liste.txt','r' );
+    $villes_file = fopen( $data_dir . '/' . $dep . '/' . $dep . '-liste.txt','r' );
     if( $villes_file ) {
 	while( $v = fgets( $villes_file ) )
 	{

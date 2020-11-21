@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
@@ -29,9 +29,9 @@ et du script import-bati.sh
 
 import re
 import sys
-import urllib
-import urllib2
-import cookielib
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
+import http.cookiejar
 import os.path
 import time
 
@@ -101,8 +101,8 @@ class CadastreWebsite(object):
   def reinit_session(self):
     self.session_start_time = time.time()
     # Crée un cookiejar pour maintenir le nouveau sessionid
-    self.url_opener = urllib2.build_opener(
-        urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
+    self.url_opener = urllib.request.build_opener(
+        urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
     # Récupération de la liste des départements
     self.departements = self.__parse_departements_list(
         self.url_opener.open(
@@ -122,7 +122,7 @@ class CadastreWebsite(object):
   def check_session_timeout(self):
     if time.time() > (self.session_start_time +
         CADASTRE_TIMEOUT_SESSION_SECONDES):
-      sys.stderr.write((u"Réinitialise la connexion avec le site du cadastre.\n").encode("utf-8"))
+      sys.stderr.write("Réinitialise la connexion avec le site du cadastre.\n")
       sys.stderr.flush()
       self.reinit_session()
 
@@ -206,16 +206,16 @@ class CadastreWebsite(object):
         "new GeoBox\\(\\s*([0-9.]*),\\s*([0-9.]*),\\s*([0-9.]*),\\s*([0-9.]*)\\),\\s*\"([^\"]*)\",",
         re.S);
     bbox_match = bbox_pattern.search(html)
-    self.projection = bbox_match.group(5).encode("utf-8")
+    self.projection = bbox_match.group(5)
     #print ("projection = " + self.projection)
     if self.projection in CORRECTIONS_PROJECTION_CADASTRE:
-        print ("projection du cadastre corrigée de " + self.projection +
-            " vers " + CORRECTIONS_PROJECTION_CADASTRE[self.projection])
+        print(("projection du cadastre corrigée de " + self.projection +
+            " vers " + CORRECTIONS_PROJECTION_CADASTRE[self.projection]))
         self.projection = CORRECTIONS_PROJECTION_CADASTRE[self.projection]
     nom_commune = self.communes[self.code_commune]
     if nom_commune in CORRECTIONS_PROJECTION_CADASTRE_COMMUNE:
-        print ("projection du cadastre corrigée de " + self.projection +
-            " vers " + CORRECTIONS_PROJECTION_CADASTRE_COMMUNE[nom_commune])
+        print(("projection du cadastre corrigée de " + self.projection +
+            " vers " + CORRECTIONS_PROJECTION_CADASTRE_COMMUNE[nom_commune]))
         self.projection = CORRECTIONS_PROJECTION_CADASTRE_COMMUNE[nom_commune]
     x1 = float(bbox_match.group(1))
     y1 = float(bbox_match.group(2))
@@ -229,14 +229,16 @@ class CadastreWebsite(object):
         avec la taille donnée """
     self.check_session_timeout()
     post_data = {
+        #k.encode("utf8"):v.encode("utf8") for (k,v) in {
           "WIDTH" : "%d" % width,
           "HEIGHT" : "%d" % height,
           "MAPBBOX" : "%f,%f,%f,%f" % bbox,
           "SLD_BODY" : "",
-          "RFV_REF" : self.code_commune}
+          "RFV_REF" : self.code_commune
+        #}.items()
+    }
     url = "https://www.cadastre.gouv.fr/scpc/imprimerExtraitCadastralNonNormalise.do?CSRF_TOKEN=" + self.CSRF_TOKEN
-
-    return self.url_opener.open(url, urllib.urlencode(post_data))
+    return self.url_opener.open(url, urllib.parse.urlencode(post_data).encode("utf8"))
 
   def get_parcel_lon_lat(self, lon, lat):
     return self.get_parcel(lon, lat, epsg="4326")
@@ -279,7 +281,7 @@ class CadastreWebsite(object):
           '</wfs:Query>' + \
         '</wfs:GetFeature>'
     url = "https://www.cadastre.gouv.fr/scpc/wfs"
-    request = urllib2.Request(url)
+    request = urllib.request.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
@@ -328,7 +330,7 @@ class CadastreWebsite(object):
           '</wfs:Query>' + \
         '</wfs:GetFeature>'
     url = "https://www.cadastre.gouv.fr/scpc/wfs"
-    request = urllib2.Request(url)
+    request = urllib.request.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
@@ -339,7 +341,7 @@ class CadastreWebsite(object):
     """retourne les infos de la parcelle"""
     data = "<PARCELLES><PARCELLE>" + parcel + "</PARCELLE></PARCELLES>"
     url = "https://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
-    request = urllib2.Request(url)
+    request = urllib.request.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
@@ -353,7 +355,7 @@ class CadastreWebsite(object):
     for strong_group in info.split("<strong>"):
       address_end = re.search("</strong>\s*Adresse de la parcelle", strong_group)
       if address_end:
-        result.append("\n".join(map(unicode.strip, strong_group[:address_end.start()].split("<br>"))))
+        result.append("\n".join(map(str.strip, strong_group[:address_end.start()].split("<br>"))))
     return result
 
   def __get_commune_url(self):
@@ -365,7 +367,7 @@ class CadastreWebsite(object):
     self.check_session_timeout()
     data = "<PARCELLES><PARCELLE>" + "</PARCELLE><PARCELLE>".join(parcels) + "</PARCELLE></PARCELLES>"
     url = "https://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
-    request = urllib2.Request(url)
+    request = urllib.request.Request(url)
     request.add_data(data)
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
@@ -373,7 +375,7 @@ class CadastreWebsite(object):
     # Quand on demande les infos de plusieurs parcelles, il faut ensuite
     # ouvrir le pdf pour avoir les infos:
     url = "https://www.cadastre.gouv.fr/scpc/editerInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
-    request = urllib2.Request(url)
+    request = urllib.request.Request(url)
     request.add_header('referer', self.__get_commune_url())
     return self.url_opener.open(request)
 
@@ -387,12 +389,12 @@ def command_line_open_cadastre_website(argv):
   if len(argv) <= 1:
       # Liste les départements
       departements = CadastreWebsite().get_departements();
-      code_departements = departements.keys()
+      code_departements = list(departements.keys())
       code_departements.sort()
       for code in code_departements:
-          sys.stdout.write(("%s : %s\n" % (code, departements[code])).encode("utf-8"))
+          sys.stdout.write("%s : %s\n" % (code, departements[code]))
   else:
-      code_departement = argv[1].decode("utf8")
+      code_departement = argv[1]
       cadastreWebsite = CadastreWebsite()
       departements = cadastreWebsite.get_departements()
       if not (code_departement in departements):
@@ -401,35 +403,35 @@ def command_line_open_cadastre_website(argv):
           else:
               # cherche le département par son nom
               recherche = code_departement.upper()
-              departements_possibles = [code for code,nom in departements.items()
+              departements_possibles = [code for code,nom in list(departements.items())
                   if nom.upper().find(recherche) >= 0]
               if len(departements_possibles) == 0:
-                  return u"département invalide: " + code_departement
+                  return "département invalide: " + code_departement
               elif len(departements_possibles) > 1:
-                  return u"département imprécis: " + code_departement
+                  return "département imprécis: " + code_departement
               else:
                   code_departement=departements_possibles[0]
       cadastreWebsite.set_departement(code_departement)
       communes = cadastreWebsite.get_communes()
       if (len(argv) == 2):
           # Liste les communes (triées par nom)
-          communes = [(nom,code) for (code,nom) in communes.items()]
+          communes = [(nom,code) for (code,nom) in list(communes.items())]
           communes.sort()
           for nom,code in communes:
-              sys.stdout.write(("%s : %s\n" % (code, nom)).encode("utf-8"))
+              sys.stdout.write("%s : %s\n" % (code, nom))
       else:
-          code_commune = argv[2].decode("utf8")
+          code_commune = argv[2]
           if not (code_commune in communes):
               # cherche de la commune par son nom
               recherche = code_commune.upper()
-              communes_possibles = [code for code,nom in communes.items()
+              communes_possibles = [code for code,nom in list(communes.items())
                   if nom.upper().find(recherche) >= 0]
               if len(communes_possibles) == 0:
-                  return u"commune invalide: " + code_commune
+                  return "commune invalide: " + code_commune
               elif len(communes_possibles) > 1:
                   for code in communes_possibles:
-                      sys.stdout.write(("%s : %s\n" % (code, communes[code])).encode("utf-8"))
-                  return u"commune imprécise: " + code_commune
+                      sys.stdout.write("%s : %s\n" % (code, communes[code]))
+                  return "commune imprécise: " + code_commune
               else:
                   code_commune=communes_possibles[0]
           nom_commune = communes[code_commune]
@@ -457,13 +459,13 @@ def code_insee(code_departement, code_commune):
 #######################################################$$
 
 def test_cadastre():
-    print "test_cadastre"
+    print("test_cadastre")
     cadastre = CadastreWebsite()
     list_dep = cadastre.get_departements()
     assert(list_dep["081"] == "81 - TARN")
     cadastre.set_departement("081")
     communes = cadastre.get_communes()
-    code_commune = [code for code in communes.keys() if code.endswith("020")][0]
+    code_commune = [code for code in list(communes.keys()) if code.endswith("020")][0]
     assert(communes[code_commune] == "AUSSAC (81600)")
     cadastre.set_commune(code_commune)
     pdf_file = cadastre.open_pdf(cadastre.get_bbox(), 100, 100)

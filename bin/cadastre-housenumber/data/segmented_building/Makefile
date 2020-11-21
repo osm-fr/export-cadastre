@@ -8,7 +8,7 @@ TRAIN=../../bin/osm_segmented_building_train.py
 
 .PHONY:all test clean
 
-all: 2
+all: 3
 	
 2: classifier.pickle2 scaler.pickle2
 

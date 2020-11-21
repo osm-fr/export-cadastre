@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ Tentative de merge des infos d'adresse du cadastre:
  - celles venant des info des parcelles
 
 ATTENTION: l'utilisation des données du cadastre n'est pas libre, et ce script doit
-donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire 
+donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire
 http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation
 
 """
@@ -35,7 +35,7 @@ import os.path
 import operator
 import traceback
 import itertools
-from cStringIO import StringIO
+from io import StringIO
 try:
     import rtree.index
 except:
@@ -93,7 +93,7 @@ from .geometry      import cartesien_2_polaire
 from .osm_tools     import osm_add_point
 from .osm_tools     import osm_add_polygon
 from .osm_tools     import osm_add_multipolygon
-from .osm_tools     import nearest_intersection 
+from .osm_tools     import nearest_intersection
 from .osm_tools     import osm_add_way_direction
 from .transform     import CadastreToOSMTransform
 from .transform     import OSMToCadastreTransform
@@ -110,7 +110,7 @@ from .partitioning  import partition_osm_nodes_filename_map
 
 
 
-FIXME_JOINDRE_NOEUD_AU_WAY = u"Joindre le nœud au bâtiment (J)"
+FIXME_JOINDRE_NOEUD_AU_WAY = "Joindre le nœud au bâtiment (J)"
 MAX_BUILDING_DISTANCE_METERS = 2
 NODE_INSIDE_BUILDING_DISTANCE_MARGIN = 0.1
 
@@ -118,56 +118,56 @@ NODE_INSIDE_BUILDING_DISTANCE_MARGIN = 0.1
 
 def cadastre_2_osm_addresses(cadastreWebsite, code_departement, code_commune,  nom_commune, download, bis, merge_addresses, use_external_data, split_result):
     if download:
-        print_flush(u"Teléchargement des adresses cadastrales de la commune " + code_commune + " : " + nom_commune)
+        print_flush("Teléchargement des adresses cadastrales de la commune " + code_commune + " : " + nom_commune)
         pdfs = download_pdfs(cadastreWebsite, code_departement, code_commune)
     else:
         pdfs = glob.glob(code_commune + "-[0-9]*-[0-9]*.pdf")
         pdfs.sort()
         if len(pdfs) == 0:
-            command_line_error(u"Aucun PDF téléchargé")
+            command_line_error("Aucun PDF téléchargé")
             return
     projection, parcels_limits, housenumbers, lieuxdits_names, street_names, small_names = \
             parse_pdfs_for_parcels_housenumbers_lieuxdits_street_names(pdfs)
     parcels_polygons, parcels_index = polygons_and_index_from_parcels_limits(parcels_limits)
 
-    print_flush(u"Chargement des infos xml (id et position) d'environ %d parcelles:" % len(parcels_polygons))
+    print_flush("Chargement des infos xml (id et position) d'environ %d parcelles:" % len(parcels_polygons))
     if download:
         xmls = iter_download_parcels_info_xml(cadastreWebsite, parcels_index)
     else:
         xmls = glob.glob(code_commune + "-parcelles*.xml")
         if len(xmls) == 0:
-            command_line_error(u"Aucune info XML des parcelles déjà téléchargés")
+            command_line_error("Aucune info XML des parcelles déjà téléchargés")
             return
     parcels = ParcelInfo.parse_xmls(xmls)
 
     info_pdf_count = (len(parcels) + MAX_PARCELS_PER_INFO_PDF - 1) / MAX_PARCELS_PER_INFO_PDF
-    print_flush(u"Chargement des infos pdf (adresses) des %d parcelles trouvées [%d pdfs]:" % (len(parcels), info_pdf_count))
+    print_flush("Chargement des infos pdf (adresses) des %d parcelles trouvées [%d pdfs]:" % (len(parcels), info_pdf_count))
     if download:
-        info_pdfs = iter_download_parcels_info_pdf(cadastreWebsite, parcels.keys())
+        info_pdfs = iter_download_parcels_info_pdf(cadastreWebsite, list(parcels.keys()))
     else:
         info_pdfs = glob.glob(code_commune + "-parcelles-*.pdf")
         if len(info_pdfs) == 0:
-            command_line_error(u"Aucun info PDF des parcelles n'a été téléchargée")
+            command_line_error("Aucun info PDF des parcelles n'a été téléchargée")
             return
     for fid, addresses in iteritems(parse_addresses_of_parcels_info_pdfs(info_pdfs, code_commune)):
         if fid in parcels:
             parcels[fid].addresses = addresses
         else:
             # Problème rencontré sur la ville de Vitry-sur-Seine (94):
-            # Lorsque l'on demande les info pdf de parcelle Z0081000AL00DP 
+            # Lorsque l'on demande les info pdf de parcelle Z0081000AL00DP
             # le fichier pdf résultat remplace l'id par Z0081000AL0000 et il
             # ne contient aucune adresse correspondante.
-            print_flush(u"ERREUR sur un id de parcelle invalide: " + fid)
+            print_flush("ERREUR sur un id de parcelle invalide: " + fid)
 
 
-    print_flush(u"Associe les limites et les parcelles.")
+    print_flush("Associe les limites et les parcelles.")
     match_parcels_and_limits(parcels, parcels_polygons, parcels_index)
 
     transform_to_osm = CadastreToOSMTransform(projection).transform_point
     transform_from_osm = OSMToCadastreTransform(projection).transform_point
 
     # Ecrit un fichier OSM de résultat
-    print_flush(u"Sauve fichiers de numéros, de parcelles et de noms.")
+    print_flush("Sauve fichiers de numéros, de parcelles et de noms.")
     OsmWriter(generate_osm_housenumbers(housenumbers, transform_to_osm)).write_to_file(code_commune + "-housenumbers.osm")
     osm_parcels = generate_osm_parcels(parcels, transform_to_osm)
 
@@ -180,11 +180,11 @@ def cadastre_2_osm_addresses(cadastreWebsite, code_departement, code_commune,  n
       generate_osm_lieuxdits_names(lieuxdits_names, transform_to_osm),
       generate_osm_street_names(street_names, transform_to_osm),
       generate_osm_small_names(small_names, transform_to_osm),
-      code_commune + "-mots.zip", 
+      code_commune + "-mots.zip",
       code_commune + "-mots");
 
     if merge_addresses:
-        print_flush(u"Associe la position des numéros aux parcelles:")
+        print_flush("Associe la position des numéros aux parcelles:")
         match_parcels_and_housenumbers(parcels, housenumbers)
 
         # Ecrit un fichier OSM de résultat
@@ -194,9 +194,9 @@ def cadastre_2_osm_addresses(cadastreWebsite, code_departement, code_commune,  n
         # bis, ter ou quater si:
         # - pour un numéros dans une (ou des) relation(s) rue, il n'y a pas le
         #   meme numéro dans la rue avec une autre lettre que B T ou Q
-        # - pour un numéros sans relation rue, si il n'y a pas dans les 150m? 
+        # - pour un numéros sans relation rue, si il n'y a pas dans les 150m?
         #   le même numéro avec une autre lettre que B T ou Q
-        #   pour ça ont doit pouvoir réutiliser l'index spatial utilise 
+        #   pour ça ont doit pouvoir réutiliser l'index spatial utilise
         #   dans la fonction match_parcels_and_housenumbers()
         if bis: determine_osm_addresses_bis_ter_quater(osm)
 
@@ -220,9 +220,9 @@ def cadastre_2_osm_addresses(cadastreWebsite, code_departement, code_commune,  n
                     partition_osm_associatedStreet_zip(osm, code_commune + "-adresses_buildings_proches.zip", code_commune + "-adresses")
             except:
                 traceback.print_exc()
-    
+
     try:
-        print_flush(u"Génère fichiers de lieux-dits")
+        print_flush("Génère fichiers de lieux-dits")
         osm_lieuxdits = generate_osm_limit_lieuxdits(parcels, transform_to_osm)
         OsmWriter(osm_lieuxdits).write_to_file(code_commune + "-lieux-dits.osm")
         if split_result:
@@ -239,12 +239,12 @@ def parse_pdfs_for_parcels_housenumbers_lieuxdits_street_names(pdfs):
     name_recognizer = NamePathRecognizer()
     housenumber_recognizer = HousenumberPathRecognizer()
     cadastre_parser = CadastreParser([parcel_recognizer.handle_path, name_recognizer.handle_path, housenumber_recognizer.handle_path])
-    print_flush(u"Parse les exports PDF du cadastre:")
+    print_flush("Parse les exports PDF du cadastre:")
     for filename in pdfs:
         cadastre_parser.parse(filename)
         new_nb = [len(parcel_recognizer.parcels), len(housenumber_recognizer.housenumbers), len(name_recognizer.lieuxdits), len(name_recognizer.street_names), len(name_recognizer.small_names)]
-        diff = map(operator.sub, new_nb, nb)
-        print_flush(filename + ": " + ", ".join([str(val) + " " + name for name,val in zip(["parcelles", u"numéros","lieux-dits", "noms", "petits noms"], diff)]))
+        diff = list(map(operator.sub, new_nb, nb))
+        print_flush(filename + ": " + ", ".join([str(val) + " " + name for name,val in zip(["parcelles", "numéros","lieux-dits", "noms", "petits noms"], diff)]))
         nb = new_nb
     return cadastre_parser.cadastre_projection, parcel_recognizer.parcels, housenumber_recognizer.housenumbers, name_recognizer.lieuxdits, name_recognizer.street_names, name_recognizer.small_names
 
@@ -287,10 +287,10 @@ def generate_osm_addresses(parcels, numbers_left, transform):
         if n:
             num, position, angle = n
             node = osm_add_point(osm, position, transform)
-            node.tags['fixme'] = u"à vérifier et associer à la bonne rue"
+            node.tags['fixme'] = "à vérifier et associer à la bonne rue"
             if num == "6" or num == "9":
                 num = "6 ou 9"
-                node.tags['fixme'] = u"ATTENTION: 6 peut être confondu avec 9, vérifier sur le cadastre."
+                node.tags['fixme'] = "ATTENTION: 6 peut être confondu avec 9, vérifier sur le cadastre."
             node.tags['addr:housenumber'] = num
             node.tags['source'] = SOURCE_TAG
             node.angle = angle
@@ -298,13 +298,13 @@ def generate_osm_addresses(parcels, numbers_left, transform):
     associatedStreets = {}
     # Adresse des parcelles:
     for parcel in itervalues(parcels):
-        for num in parcel.positions_numbers.keys():
+        for num in list(parcel.positions_numbers.keys()):
             for i in range(len(parcel.addrs_numbers[num])):
                 #nom_parcele = parcel.fid[5:10].lstrip('0') + " " + parcel.fid[10:].lstrip('0')
                 num_parcel = parcel.fid[10:].lstrip('0')
                 fixme = []
                 if len(parcel.positions_numbers[num]) > i:
-                    position, angle = parcel.positions_numbers[num][i] 
+                    position, angle = parcel.positions_numbers[num][i]
                     # le numéro est souvent dessiné en dehors des limites
                     # de la parcelle, si c'est le cas et qu'il est proche des limites,
                     # on le déplace sur la limite:
@@ -319,12 +319,12 @@ def generate_osm_addresses(parcels, numbers_left, transform):
                     # de cette adresse de la parcelle.
                     # on la fixe sur le label de la parcelle:
                     position = Point(parcel.libellex, parcel.libelley)
-                    # Pour les petites parcelles, le label est parfois en dehors 
+                    # Pour les petites parcelles, le label est parfois en dehors
                     # de la parcelle, si c'est le cas on le déplace
                     # au centre de la parcelle:
                     if not position.within(parcel.box):
                       position = parcel.box.centroid
-                    fixme.append(u"position à preciser, parcelle associée: n°" + num_parcel)
+                    fixme.append("position à preciser, parcelle associée: n°" + num_parcel)
                     angle = None
                 node = osm_add_point(osm, position, transform)
                 node.angle = angle
@@ -344,7 +344,7 @@ def generate_osm_addresses(parcels, numbers_left, transform):
                         associatedStreets[rue] = rel
                     associatedStreets[rue].add_member(node, 'house')
                 if len(rues) > 1:
-                    fixme.append(u"choisir la bonne rue: " +
+                    fixme.append("choisir la bonne rue: " +
                         " ou ".join(rues))
                 if hasattr(parcel,'limit') and parcel.limit != None:
                     limit = parcel.limit
@@ -352,7 +352,7 @@ def generate_osm_addresses(parcels, numbers_left, transform):
                     limit = parcel.box
                 distance = position.distance(limit)
                 if distance > 10:
-                    fixme.append(str(int(distance)) + u" m de la parcelle n°" + num_parcel + u": vérifier la position et/ou la rue associée")
+                    fixme.append(str(int(distance)) + " m de la parcelle n°" + num_parcel + ": vérifier la position et/ou la rue associée")
                     fixme.reverse()
                 if fixme:
                     node.tags['fixme'] = " et ".join(fixme)
@@ -396,7 +396,7 @@ def transform_place_into_highway(osm):
             if "name" in n.tags and n.tags["name"].split()[0].lower() in ["rue","impasse","chemin","passage","route","avenue","boulevard"]:
                 del(n.tags["place"])
                 n.tags["highway"] = "road"
-                n.tags["fixme"] = u"à vérifier: nom créé automatiquement à partir des adresses du coin"
+                n.tags["fixme"] = "à vérifier: nom créé automatiquement à partir des adresses du coin"
     return
 
 
@@ -429,7 +429,7 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             # le code actuel ne sait partitionner que des neuds addr:housenumber que l'on a
             # créé nous même (id<0)
             # les autres on vas les zapper donc on vérifie qu'il
-            # s'agit bien d'un noeuds déjà existant dans OSM (id >=0) et 
+            # s'agit bien d'un noeuds déjà existant dans OSM (id >=0) et
             # non modifié (pas d'attribut action)
             assert(n.id() >= 0 and "action" not in n.attrs)
     for r in itervalues(osm.relations):
@@ -441,7 +441,7 @@ def partition_osm_associatedStreet_zip(osm, zip_filename, subdir=""):
             # le code actuel ne sait partitionner que les relation
             # associatedStreet que l'on a créé nous même (id<0)
             # les autres on vas les zapper donc on vérifie qu'il
-            # s'agit bien de relation déjà existantt dans OSM (id >=0) et 
+            # s'agit bien de relation déjà existantt dans OSM (id >=0) et
             # non modifié (pas d'attribut action)
             assert(r.id() >= 0 and "action" not in r.attrs)
 
@@ -536,7 +536,7 @@ def partition_osm_lieuxdits_zip(osm_addresses, osm_lieuxdits, zip_filename, subd
     filename_osm_map.update(osms_lieuxdits)
 
     # Partitionne les noeuds de rue (highway=):
-    noeuds_rues = [n for n in itervalues(osm_addresses.nodes) 
+    noeuds_rues = [n for n in itervalues(osm_addresses.nodes)
         if (n.id()<0) and ("highway" in n.tags)]
     osms_rues = partition_osm_nodes_filename_map(noeuds_rues,
         subdir + "lieux_ressemblants_noms_de_rues_-_NE_PAS_ENVOYER_SUR_OSM")
@@ -551,21 +551,21 @@ def partition_osm_lieuxdits_zip(osm_addresses, osm_lieuxdits, zip_filename, subd
         s = StringIO()
         OsmWriter(osm).write_to_stream(s)
         zip_output.writestr(filename, s.getvalue())
-    zip_output.writestr(subdir + "LISEZ-MOI.txt", """Bien verifier le nom et la position des lieux-dits.\r\nRemplir le tag place= en s'aidant des limites (nombre de maisons).\r\nAttention: les maisons avec numero d'adresse sont exclues des limites a tort et devraient souvent etre comptabilisees.\r\nhttp://wiki.openstreetmap.org/wiki/FR:Key:place\r\n""") 
+    zip_output.writestr(subdir + "LISEZ-MOI.txt", """Bien verifier le nom et la position des lieux-dits.\r\nRemplir le tag place= en s'aidant des limites (nombre de maisons).\r\nAttention: les maisons avec numero d'adresse sont exclues des limites a tort et devraient souvent etre comptabilisees.\r\nhttp://wiki.openstreetmap.org/wiki/FR:Key:place\r\n""")
     zip_output.close()
-    
-            
 
 
-  
-    
+
+
+
+
 
 def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform_to_osm, transform_from_osm):
     """ Cherche a intégrer les nœuds "addr:housenumber" du fichier
         d'entrée osm avec les building extraits de la base OSM.
     """
-    sys.stdout.write((u"Intégration avec les buidings proches présent dans la base OSM.\n").encode("utf-8"))
-    sys.stdout.write((u"Chargement des buidings\n").encode("utf-8"))
+    sys.stdout.write("Intégration avec les buidings proches présent dans la base OSM.\n")
+    sys.stdout.write("Chargement des buidings\n")
     sys.stdout.flush();
     buildings_osm = get_osm_buildings_and_barrier_ways(code_departement, code_commune)
     for node in itertools.chain.from_iterable(
@@ -580,9 +580,9 @@ def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform
         else:
             way.shape = LineString([buildings_osm.nodes[id].position for id in way.nodes])
         ways_index.insert(way.id(), way.shape.bounds, way.id())
-    sys.stdout.write((u"Recherche des buiding proches\n").encode("utf-8"))
+    sys.stdout.write("Recherche des buiding proches\n")
     sys.stdout.flush();
-    for node in osm.nodes.values():
+    for node in list(osm.nodes.values()):
         if "addr:housenumber" in node.tags:
             x,y = node.position
             search_bounds = [x - MAX_BUILDING_DISTANCE_METERS, y - MAX_BUILDING_DISTANCE_METERS,
@@ -590,24 +590,22 @@ def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform
             near_ways = [buildings_osm.ways[e.object] for e in ways_index.intersection(search_bounds, objects=True)]
             if  hasattr(node, 'limite_parcelle') and node.limite_parcelle != None:
                     #and node.liimite_parcelle.distance(node.position) < MAX_BUILDING_DISTANCE_METERS:
-                # On connais les limites de la parcelle 
+                # On connais les limites de la parcelle
                 # On vas donc filtrer les ways avec ceux qui sont contenus
                 # dans la parcelle.
                 # Pour déterminer les ways qui sont contenus dans la parcelle
                 # avec un peut de marge, on vas faire l'union de deux
                 # tests:
                 # - les way qui sont strictement contenus dans les limites de
-                #   parcelle étendue d'1m (afin de considérer par exemple les  
+                #   parcelle étendue d'1m (afin de considérer par exemple les
                 #   barier qui sont en limite de parcelle)
                 # - les way qui intersect les limites réduite d'1m de la parcelle
-                #   (afin de prendre en comte aussi les buidings à cheval sur 
+                #   (afin de prendre en comte aussi les buidings à cheval sur
                 #    une autre parcelle).
                 limite_etendue = node.limite_parcelle.buffer(1)
                 limite_reduite = node.limite_parcelle.buffer(-1)
-                near_ways = filter(lambda way:
-                    limite_reduite.intersects(way.shape) or
-                        limite_etendue.contains(way.shape),
-                    near_ways)
+                near_ways = [way for way in near_ways if limite_reduite.intersects(way.shape) or
+                        limite_etendue.contains(way.shape)]
 
             # Les numéros déssinés sur le cadastre sont souvent orientés
             # vers la parcelle ou le building auquel il font référence
@@ -637,7 +635,7 @@ def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform
                 best_indexes = []
                 node_inside_building = False
                 for way in near_ways:
-                    for i in xrange(len(way.nodes)-1):
+                    for i in range(len(way.nodes)-1):
                         if (way.nodes[i] == a and way.nodes[i+1] == b) \
                                 or (way.nodes[i] == b and way.nodes[i+1] == a):
                             best_ways.append(way)
@@ -647,7 +645,7 @@ def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform
                                     and way.shape.boundary.distance(p) > NODE_INSIDE_BUILDING_DISTANCE_MARGIN:
                                 node_inside_building = True
 
-                # Si on a projeté selon l'angle du numéro, on vérifie qu'il n'y a pas trop d'incidence 
+                # Si on a projeté selon l'angle du numéro, on vérifie qu'il n'y a pas trop d'incidence
                 # pour la projection, l'idéal étant bien sure une projection
                 # orthogonale cad avec une incidence nulle. On autorise jusqu'à 30°(pi/6):
                 a_xy = buildings_osm.nodes[a].position
@@ -657,7 +655,7 @@ def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform
                 # On intègre pas le numéro si il est à l'intérieur d'un building,
                 # car sur le cadastre un numéro dessiné dans un building est forcément mal placé
                 if (not node_inside_building) and (not trop_d_incidence):
-                    # Comme on vas ajouter node a un way provenant du fichier buildings_osm, 
+                    # Comme on vas ajouter node a un way provenant du fichier buildings_osm,
                     # pour garder buildings_osm cohérent, on ajoute aussi node à buildings_osm:
                     buildings_osm.add_node(node)
                     for best_way,best_index in zip(best_ways, best_indexes):
@@ -672,7 +670,7 @@ def cherche_osm_buildings_proches(code_departement, code_commune, osm, transform
                         best_way.nodes.insert(best_index, node.id())
                     # On déplace node à la position best_pos:
                     node.position = best_pos
-                    node.attrs["lon"], node.attrs["lat"] = map(str, transform_to_osm(best_pos))
+                    node.attrs["lon"], node.attrs["lat"] = list(map(str, transform_to_osm(best_pos)))
 
 
 

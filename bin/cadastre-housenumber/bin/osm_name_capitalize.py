@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 
 
@@ -15,7 +15,7 @@ def capitalize(a):
 
 if len(sys.argv) == 2:
     o = OsmParser().parse(sys.argv[1])
-    for n in o.nodes.itervalues():
+    for n in list(o.nodes.values()):
       if "name" in n.tags:
           n.tags["name"] = capitalize(n.tags["name"])
     OsmWriter(o).write_to_stream(sys.stdout)

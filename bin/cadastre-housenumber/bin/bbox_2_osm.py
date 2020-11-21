@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,17 +35,17 @@ def write_osm_for_boxes(output, osm_bbox, osm_boxes):
     output.write("<?xml version='1.0' encoding='UTF-8'?>\n")
     output.write("<osm version='0.6' generator='%s'>\n" % (sys.argv[0],))
     if osm_bbox:
-        output.write("<bounds minlon='%f' minlat='%f' maxlon='%f' maxlat='%f' />\n" % 
+        output.write("<bounds minlon='%f' minlat='%f' maxlon='%f' maxlat='%f' />\n" %
                      (osm_bbox.x1, osm_bbox.y1, osm_bbox.x2,osm_bbox.y2))
     id = 0;
-    for name, box in osm_boxes.iteritems():
-        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" % 
+    for name, box in list(osm_boxes.items()):
+        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" %
 		(id-1, box.x1, box.y1))
-        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" % 
+        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" %
 		(id-2, box.x2, box.y1))
-        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" % 
+        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" %
 		(id-3, box.x2, box.y2))
-        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" % 
+        output.write("  <node id='%d' lon='%f' lat='%f'/>\n" %
 		(id-4, box.x1, box.y2))
         output.write("  <way id='%d'>\n" % (id-5))
         output.write("    <nd ref='%d'/>\n" % (id-1))
@@ -64,7 +64,7 @@ def bbox_2_osm_box(bbox_filename_list, osm_output):
     osm_result_bbox = None
     osm_boxes = {}
     for bbox_filename in bbox_filename_list:
-        cadastre_code_IGNF_projection, cadastre_bbox = open(bbox_filename).read().split(":") 
+        cadastre_code_IGNF_projection, cadastre_bbox = open(bbox_filename).read().split(":")
         cadastre_bbox = BoundingBox(*[float(v) for v in cadastre_bbox.split(",")])
         cadastre_to_osm_transform = CadastreToOSMTransform(cadastre_code_IGNF_projection)
         osm_box = cadastre_to_osm_transform.transform_bbox(cadastre_bbox)
@@ -80,8 +80,8 @@ def bbox_2_osm_box(bbox_filename_list, osm_output):
 HELP_MESSAGE = "USAGE: {} fichier.bbox+ [fichier.osm]".format(sys.argv[0])
 
 def main(argv):
-    if (len(argv) < 2): 
-        command_line_error(u"fichier .bbox non spécifié", HELP_MESSAGE)
+    if (len(argv) < 2):
+        command_line_error("fichier .bbox non spécifié", HELP_MESSAGE)
     bbox_filename_list = sys.argv[1:]
     if bbox_filename_list[-1].endswith(".osm"):
         osm_output = open(bbox_filename_list.pop(),"w")
@@ -93,7 +93,7 @@ def main(argv):
         if not os.path.exists(f):
             args_fatal_error("fichier non trouvé: " + f)
     bbox_2_osm_box(bbox_filename_list, osm_output)
-    
+
 
 if __name__ == '__main__':
     main(sys.argv)

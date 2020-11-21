@@ -2,13 +2,15 @@
 # ©Cléo 2010
 # GPL v3 or higher — http://www.gnu.org/licenses/gpl-3.0.html
 
-temp_file=/dev/shm/tempo.txt
-. ./config
+. `dirname $0`/../config || exit -1
 cd $data_dir || exit -1
 
+umask 002
+
+temp_file=`mktemp --suffix=.txt`
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
 
-rm -f eau/* 2>/dev/null
+rm -f $water_dir/* 2>/dev/null
 rm -f $log_dir/*/* 2>/dev/null
 rm -rf $hidden_dir
 
@@ -17,7 +19,7 @@ do
 	[ -d $i ] || mkdir $i
 	cd $i
 	#Parfois, Qadastre2OSM plante et ce fichier est vidé, on va le garder de coté et le reprendre si l'autre est vide
-	mv *-liste.txt $temp_file
+	mv -f *-liste.txt $temp_file
 
 	# Ajouter par sly (sylvain@letuffe.org) pour éviter que des gens se retrouvent avec une trop vielle version des fichiers à importer
 	rm -f * 2>/dev/null
@@ -30,7 +32,9 @@ do
 	if ! test -s $i-liste.txt ; then
 		cp $temp_file $i-liste.txt
 	fi
-	rm $temp_file
+	echo "" > $temp_file
 	
 	cd ..
 done
+
+rm $temp_file

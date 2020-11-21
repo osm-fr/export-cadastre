@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@ TAILLE_PARTITIONEMENT_NOEUDS = 20
 
 
 def partition_points(points, nb_partitions):
-  """ Partitionnement de l'ensemble des points  
+  """ Partitionnement de l'ensemble des points
       en utilisant K-means de la bibliothèque scipy
       retourne un tableau qui donne l'index de la partition de chaque point
   """
   # Génère une matrice à partire des points:
-  data = vstack((points,)) 
+  data = vstack((points,))
   # Calcule des partitions K-means avec K=nb_clusters
   centroids,_ = kmeans(data, nb_partitions)
   # Affecte chaque points dans une partition:
@@ -52,13 +52,13 @@ def partition_osm_nodes(osm_nodes, taille_partitions):
       positions = [(float(n.attrs["lon"]), float(n.attrs["lat"])) for n in osm_nodes]
   nb_partitions = len(osm_nodes) / taille_partitions
   idx = partition_points(positions , nb_partitions)
-  partitions = [[] for p in xrange(nb_partitions)]
-  bboxes = [(float("inf"),float("inf"),float("-inf"),float("-inf")) for p in xrange(nb_partitions)]
-  for n in xrange(len(osm_nodes)):
+  partitions = [[] for p in range(nb_partitions)]
+  bboxes = [(float("inf"),float("inf"),float("-inf"),float("-inf")) for p in range(nb_partitions)]
+  for n in range(len(osm_nodes)):
     p = idx[n]
     partitions[p].append(osm_nodes[n])
     bboxes[p] = tuple(min(*m) for m in zip(bboxes[p][:2],positions[n])) + tuple(max(*m) for m in zip(bboxes[p][2:],positions[n]))
-  return zip(partitions, bboxes)
+  return list(zip(partitions, bboxes))
 
 
 def partition_osm_nodes_filename_map(node_list, filenameprefix):
@@ -73,7 +73,7 @@ def partition_osm_nodes_filename_map(node_list, filenameprefix):
         partitions = [node_list]
     if len(partitions) > 1:
         taille_index = int(math.ceil(math.log10(len(partitions)+1)))
-        for i in xrange(len(partitions)):
+        for i in range(len(partitions)):
             osm = Osm({})
             for n in partitions[i]:
                 osm.add_node(n)

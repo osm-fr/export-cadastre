@@ -1,13 +1,15 @@
 
 
 
-all:
+all:associatedStreet/__init__.py
 	cd pdfparser && qmake && make
 	cd cadastre_fr_segmented && make
 	cd data/segmented_building && make
  
+associatedStreet/__init__.py:
+	touch associatedStreet/__init__.py
 
-clean:
+clean distclean:
 	rm -f *.pyc
 	rm -f cadastre_fr/*.pyc
 	rm -f *-*.txt

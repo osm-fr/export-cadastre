@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. config || exit -1
+. `dirname $0`/../config || exit -1
+umask 002
 
 export MPLCONFIGDIR="$work_dir/tmp"
 

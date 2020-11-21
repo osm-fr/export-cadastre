@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,8 +14,8 @@
 
 
 import os
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import os.path
 
 from .osm      import OsmParser
@@ -29,10 +29,10 @@ def open_osm_overpass(requete, cache_filename, metropole=False):
         overvass_server = "http://overpass-api.de/api/interpreter?"
     else:
         overvass_server = "http://overpass-api.de/api/interpreter?"
-    url = overvass_server + urllib.urlencode({'data':requete})
-    print_flush(urllib.unquote(url))
+    url = overvass_server + urllib.parse.urlencode({'data':requete})
+    print_flush(urllib.parse.unquote(url))
     try:
-        with open_cached(lambda: urllib2.urlopen(url), cache_filename) as f:
+        with open_cached(lambda: urllib.request.urlopen(url), cache_filename) as f:
             result = OsmParser().parse_stream(f)
     except Exception as ex:
         if metropole:

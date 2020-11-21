@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,11 +58,11 @@ def simplify(osm_data, merge_distance, join_distance, simplify_threshold):
         if rtype == "way":
             osm_data.ways[rref].relations.add(rel.id())
 
-  for node in osm_data.nodes.values():
+  for node in list(osm_data.nodes.values()):
     node.position = inputTransform.transform_point(
         (node.lon(), node.lat()))
 
-  for node in osm_data.nodes.values():
+  for node in list(osm_data.nodes.values()):
     node.min_angle = min_node_angle(osm_data, node)
 
   merge_close_nodes(osm_data, merge_distance, False)
@@ -91,7 +91,7 @@ def merge_close_nodes(osm_data, max_distance, can_merge_same_way):
      We assume that the ways are closed
   """
   nodes_index = rtree.index.Index()
-  for node in osm_data.nodes.values():
+  for node in list(osm_data.nodes.values()):
       p = node.position
       search_bounds = p.x - max_distance, p.y - max_distance, \
                       p.x + max_distance, p.y + max_distance
@@ -130,7 +130,7 @@ def can_merge_nodes(osm_data, n1, n2, can_merge_same_way):
 
 def join_close_nodes_and_remove_inside_ways(osm_data, join_distance):
     ways_index = rtree.index.Index()
-    for way in osm_data.ways.values():
+    for way in list(osm_data.ways.values()):
         bbox = BoundingBox.of_points([osm_data.nodes[node_id].position for node_id in way.nodes])
         way.bbox = [bbox.x1,bbox.y1,bbox.x2, bbox.y2]
         ways_index.insert(way.id(), way.bbox, way.id())
@@ -140,7 +140,7 @@ def join_close_nodes_and_remove_inside_ways(osm_data, join_distance):
 
 def join_close_nodes(osm_data, ways_index, distance):
     """Join nodes to close ways."""
-    for node in osm_data.nodes.values():
+    for node in list(osm_data.nodes.values()):
         node_id = node.id()
         position = node.position
         search_bounds = position.x-distance, position.y - distance, \
@@ -154,7 +154,7 @@ def join_close_nodes(osm_data, ways_index, distance):
           if can_join_node_to_way(node, way):
             node = osm_data.nodes[node_id]
             i = 0
-            for i in xrange(len(way.nodes) - 1):
+            for i in range(len(way.nodes) - 1):
               n1 = osm_data.nodes[way.nodes[i]]
               n2 = osm_data.nodes[way.nodes[i+1]]
               if can_join_node_to_segment(osm_data, node, n1, n2):
@@ -167,12 +167,12 @@ def join_close_nodes(osm_data, ways_index, distance):
                     closest_index = i+1
                     closest_position = Point(p[0],p[1])
         if closest_way:
-          if VERBOSE: print("Join node  {} to way {}".format(node_id, closest_way.id()))
+          if VERBOSE: print(("Join node  {} to way {}".format(node_id, closest_way.id())))
           closest_way.nodes.insert(closest_index, node_id)
           node.ways.add(closest_way.id())
           node.position = closest_position
           # It is possible that the segment we join (n1,n2) is part
-          # of more than one other way, so in theory we should insert 
+          # of more than one other way, so in theory we should insert
           # the node in all of them, but we do not as this is necessariy
           # an invaid situation that will raise an error in JOSM.
 
@@ -191,7 +191,7 @@ def can_join_node_to_segment(osm_data, node, n1, n2):
         if n2.id() == n1_previous or n2.id() == n1_next:
             # the segment n1, n2 is directly part of 'way' (without making a longer path)
             if way_id in node.ways:
-                # node is member of the same way as the segment 
+                # node is member of the same way as the segment
                 result = False
                 break
             if len(node_ways_relations & way.relations) != 0:
@@ -201,7 +201,7 @@ def can_join_node_to_segment(osm_data, node, n1, n2):
     return result
 
 def remove_inside_ways(osm_data, ways_index):
-    for way1 in osm_data.ways.values():
+    for way1 in list(osm_data.ways.values()):
         if len(way1.relations) == 0:
             polygon1 =  polygon_of_way(osm_data, way1)
             for way2_id in [e.object for e in ways_index.intersection(way1.bbox, objects=True)]:
@@ -210,12 +210,12 @@ def remove_inside_ways(osm_data, ways_index):
                     polygon2 =  polygon_of_way(osm_data, way2)
                     try:
                       if polygon2.contains(polygon1):
-                        if VERBOSE: print("way  {} inside {}".format(way1.id(), way2_id))
+                        if VERBOSE: print(("way  {} inside {}".format(way1.id(), way2_id)))
                         ways_index.delete(way1.id(), way1.bbox)
                         delete_way(osm_data, way1)
                         break
                     except:
-                        # polygon2.contains(polygon1) will fail if either polygon1 or 2 
+                        # polygon2.contains(polygon1) will fail if either polygon1 or 2
                         # are invalid, but it is faster to catch exceptions than
                         # to check for .is_valid
                         pass
@@ -226,7 +226,7 @@ def polygon_of_way(osm_data, way):
 
 
 def simplify_ways(osm_data, threshold):
-    for way in osm_data.ways.values():
+    for way in list(osm_data.ways.values()):
         nodes = [osm_data.nodes[node_id] for node_id in way.nodes]
         for node_sublist in split_node_list_at_required_nodes(osm_data, nodes):
             keeped_nodes = buildSimplifiedNodeSet(node_sublist, 0, len(node_sublist)-1, threshold)
@@ -245,7 +245,7 @@ def buildSimplifiedNodeSet(nodes, fromIndex, toIndex, threshold):
     # Get max xte
     imax = -1
     xtemax = 0.0
-    for i in xrange(fromIndex+1, toIndex):
+    for i in range(fromIndex+1, toIndex):
         n = nodes[i]
         xte = abs(EARTH_RADIUS_IN_METER
                     * xtd(fromN.lat() * math.pi / 180, fromN.lon() * math.pi / 180, toN.lat() * math.pi
@@ -316,7 +316,7 @@ def split_node_list_at_required_nodes(osm_data, nodes):
 
 
 def remove_duplicated_nodes_in_ways(osm_data):
-    for way in osm_data.ways.values():
+    for way in list(osm_data.ways.values()):
         i = 1
         previous = way.nodes[0]
         while i < len(way.nodes):
@@ -334,7 +334,7 @@ def replace_node(osm_data, src_node, dst_node):
   # We assume that the ways are closed
   src_id = src_node.id()
   dst_id = dst_node.id()
-  if VERBOSE: print("replace node {} by {}".format(src_id, dst_id))
+  if VERBOSE: print(("replace node {} by {}".format(src_id, dst_id)))
   for way_id in src_node.ways:
     way = osm_data.ways[way_id]
     if dst_id in way.nodes:
@@ -348,7 +348,7 @@ def replace_node(osm_data, src_node, dst_node):
               way.nodes.remove(src_id)
     else:
       dst_node.ways.add(way_id)
-      for i in xrange(len(way.nodes)):
+      for i in range(len(way.nodes)):
         if way.nodes[i] == src_id:
           way.nodes[i] = dst_id
   copy_tags(src_node, dst_node)
@@ -358,7 +358,7 @@ def copy_tags(src,dst):
     for tag,val in iteritems(src.tags):
         # in case of tag confict keep the longest value
         if (not tag in dst.tags) or (len(dst.tags[tag]) < len(val)):
-            if VERBOSE: print("  copy tag {} => {}".format(tag, val))
+            if VERBOSE: print(("  copy tag {} => {}".format(tag, val)))
             dst.tags[tag] = val
 
 def delete_node(osm_data, node):
@@ -366,9 +366,9 @@ def delete_node(osm_data, node):
   # and that nodes are part of the ways which ids are listed in node's .ways set attribute
   # We assume that the ways are closed
   node_id = node.id()
-  if VERBOSE: print("delete node  {}".format(node_id))
+  if VERBOSE: print(("delete node  {}".format(node_id)))
   for way_id in node.ways:
-    if VERBOSE: print("  from way  {}".format(way_id))
+    if VERBOSE: print(("  from way  {}".format(way_id)))
     way = osm_data.ways[way_id]
     if (way.nodes[0] == node_id) and (way.nodes[-1] == node_id):
         del(way.nodes[0])
@@ -380,7 +380,7 @@ def delete_node(osm_data, node):
 def suppress_identical_ways(osm_data):
     # We assume that the ways are all closed and reversable
     ways_hashed_by_sorted_node_list = {}
-    for way in osm_data.ways.values():
+    for way in list(osm_data.ways.values()):
         nodes_ids = way.nodes[:-1] # remove the last one that should be the same as first one (closed way)
         min_id = min(nodes_ids)
         min_index = nodes_ids.index(min_id)
@@ -393,15 +393,15 @@ def suppress_identical_ways(osm_data):
                 tail.reverse()
                 nodes_ids = [nodes_ids[0]] + tail
         else:
-            if VERBOSE: print("ERROR: way {} has only one 1 node ???".format(way.id()))
+            if VERBOSE: print(("ERROR: way {} has only one 1 node ???".format(way.id())))
         nodes_ids = tuple(nodes_ids) # to be hashable
         if nodes_ids in ways_hashed_by_sorted_node_list:
             keeped_way = ways_hashed_by_sorted_node_list[nodes_ids]
-            if VERBOSE: print("suppress way  {} keeping identical way {}".format(way.id(), keeped_way.id()))
+            if VERBOSE: print(("suppress way  {} keeping identical way {}".format(way.id(), keeped_way.id())))
             copy_tags(way, keeped_way)
             # Replace in relations
             for rel_id in way.relations:
-                if VERBOSE: print("   replace in relation  {}".format(rel_id))
+                if VERBOSE: print(("   replace in relation  {}".format(rel_id)))
                 rel = osm_data.relations[rel_id]
                 for member in rel.members:
                     if (member.get("type") == "way") and (member.get("ref") == str(way.id())):
@@ -411,7 +411,7 @@ def suppress_identical_ways(osm_data):
             ways_hashed_by_sorted_node_list[nodes_ids] = way
 
 def delete_way(osm_data, way):
-    if VERBOSE: print("delete way {}".format(way.id()))
+    if VERBOSE: print(("delete way {}".format(way.id())))
     del(osm_data.ways[way.id()])
     for node_id in way.nodes:
         if node_id in osm_data.nodes:

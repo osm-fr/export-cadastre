@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,12 +40,12 @@ def main(argv):
         other_args = [f for f in argv[1:] if os.path.splitext(f)[1] not in (".pdf", ".osm")]
         prefix = os.path.commonprefix(pdf_args)
     if len(other_args) != 0:
-        print "ERROR: invalid argument ", other_args[0]
+        print(("ERROR: invalid argument ", other_args[0]))
         return -1
     elif len(pdf_args) == 0:
-        print "ERROR: not enough .pdf arguments"
+        print("ERROR: not enough .pdf arguments")
     elif len(osm_args) > 1:
-        print "ERROR: too many .osm arguments"
+        print("ERROR: too many .osm arguments")
         return -1
     else:
         osm_buildings, osm_water, osm_limit = pdf_2_osm_buildings_water_and_limit(pdf_args)

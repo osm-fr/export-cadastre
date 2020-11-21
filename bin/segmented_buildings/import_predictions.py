@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ db.autocommit = True
 cur = db.cursor()
 
 def execute(query):
-    print query
+    print(query)
     return cur.execute(query)
 
 def polygon_wkt(latlngs):
@@ -44,12 +44,12 @@ def polygon_wkt(latlngs):
 def wkt_polygon_latlngs(wkt):
     assert(wkt.startswith("POLYGON((") and wkt.endswith("))"));
     coords = wkt[len("POLYGON(("): -len("))")];
-    return [map(float,p.split(" ")) for p in  coords.split(",")]
+    return [list(map(float,p.split(" "))) for p in  coords.split(",")]
 
 
 def common_center_wkt(latlngs1, latlngs2):
     commons_points = set(map(tuple, latlngs1)).intersection(set(map(tuple, latlngs2)))
-    center = map(numpy.mean, zip(*commons_points))
+    center = list(map(numpy.mean, list(zip(*commons_points))))
     return "POINT(%.7f %.7f)" % tuple(center)
 
 def latlngs_equals(latlngs1, latlngs2):
@@ -68,7 +68,7 @@ def insert(data):
     already_exists = False
     execute("""
         SELECT id, ST_AsText(way1_geom), ST_AsText(way2_geom), resolution
-        FROM segmented_cases 
+        FROM segmented_cases
         WHERE way1_osm_id = %s AND way2_osm_id = %s;
         """ % (id1, id2));
     for id, geom1, geom2, resolution in cur.fetchall():
@@ -80,16 +80,16 @@ def insert(data):
             # The geometry of the building has changed,
             # mark the previous case as 'outofdate':
             execute("""
-                UPDATE segmented_cases 
+                UPDATE segmented_cases
                 SET resolution='outofdate', resolution_time=now()
                 WHERE id=%s""" % id);
     if not already_exists:
         execute("""
-            INSERT INTO segmented_cases 
-                (way1_osm_id, way1_geom, way2_osm_id, way2_geom, center, creation_time) 
+            INSERT INTO segmented_cases
+                (way1_osm_id, way1_geom, way2_osm_id, way2_geom, center, creation_time)
                 VALUES (%d, ST_GeomFromText('%s', 4326), %d, ST_GeomFromText('%s', 4326), ST_GeomFromText('%s', 4326), now());
             """ % (id1, polygon_wkt(latlngs1), id2, polygon_wkt(latlngs2), common_center_wkt(latlngs1, latlngs2)))
-    
+
 
 def main(args):
     for line in sys.stdin.readlines():

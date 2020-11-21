@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -51,14 +51,14 @@ class LinesPathRecognizer(PathRecognizer):
     commands_re = re.compile("^(MLLLL*Z)+$")
     def __init__(self, name_closed_styletest_list):
         self.name_closed_styletest_list = name_closed_styletest_list
-        for name, foo, bar in name_closed_styletest_list: 
+        for name, foo, bar in name_closed_styletest_list:
             setattr(self, name, [])
     def handle_path(self, path, transform):
         if LinesPathRecognizer.commands_re.match(path.commands) and path.style:
             style = dict([v.split(':') for v in path.style.split(';')])
             for name, closed, styletest in self.name_closed_styletest_list:
                 if styletest(style):
-                    points = map(transform, path.points)
+                    points = list(map(transform, path.points))
                     linear_rings = []
                     for commands_ring in path.commands[:-1].split('Z'):
                         first = points[0]
@@ -75,13 +75,13 @@ class LinesPathRecognizer(PathRecognizer):
 
 
 PARCEL_LINE_PATH_RECOGNIZER = [
-        ['parcels', True, lambda style: 
-            style.has_key('stroke-width') and
+        ['parcels', True, lambda style:
+            'stroke-width' in style and
             (float(style["stroke-width"]) > 0.7) and
             (float(style["stroke-width"]) < 0.8) and
-            (style.get('fill') == "none") and 
-            (style.get('stroke') == "#000000") and 
-            (style.get('stroke-opacity') == "1") and 
+            (style.get('fill') == "none") and
+            (style.get('stroke') == "#000000") and
+            (style.get('stroke-opacity') == "1") and
             (style.get('stroke-dasharray') == "none")
         ]
     ]
@@ -96,12 +96,12 @@ WATER_LINE_PATH_RECOGNIZER = [
     ]
 
 LIMIT_LINE_PATH_RECOGNIZER = [
-        ['limit', False, lambda style: 
+        ['limit', False, lambda style:
             (style.get('fill') == "none") and
             (style.get('stroke') == "#ffffff") and
             (style.get('stroke-opacity') == "1") and
             (style.get('stroke-dasharray') == "none") and
-            style.has_key('stroke-width') and
+            'stroke-width' in style and
             (((float(style["stroke-width"]) > 17.8) and (float(style["stroke-width"]) < 17.9))
              or
              ((float(style["stroke-width"]) > 8.4) and (float(style["stroke-width"]) < 8.6)))
@@ -126,7 +126,7 @@ class LimitPathRecognizer(LinesPathRecognizer):
 
 class StandardPathRecognizer(LinesPathRecognizer):
     def __init__(self):
-        LinesPathRecognizer.__init__(self, 
+        LinesPathRecognizer.__init__(self,
                 BUILDING_LINE_PATH_RECOGNIZER + LIMIT_LINE_PATH_RECOGNIZER + WATER_LINE_PATH_RECOGNIZER)
 
 class NamePathRecognizer(PathRecognizer):
@@ -154,9 +154,9 @@ class NamePathRecognizer(PathRecognizer):
                 # On rejette les mots commencant par un chiffre:
                 if not ord(text[0]) in range(ord('0'), ord('9')+1):
                     liste.append((text, transform(position), angle))
-                    if text.find("???") == -1: 
+                    if text.find("???") == -1:
                         return True
-        return False        
+        return False
 
 
 class TextPathRecognizer(PathRecognizer):
@@ -168,10 +168,10 @@ class TextPathRecognizer(PathRecognizer):
         self.max_scale = max_scale
         self.styles = styles
         self.force_horizontal = force_horizontal
-        self.angle_tolerance_deg = angle_tolerance_deg 
+        self.angle_tolerance_deg = angle_tolerance_deg
         self.space_width = None
     def add(self, value, path, alternatives=[]):
-        # On utilise le début de la commande du path comme 
+        # On utilise le début de la commande du path comme
         # index de la database:
         idx = path.commands[:path.commands.index('Z')]
         if not idx in self.database:
@@ -187,7 +187,7 @@ class TextPathRecognizer(PathRecognizer):
           width="1488.75"
           version="1.1">
         """)
-        f.write(u"<!-- inversion de l'axe Y pour remettre à l'endroit:\n<g transform='matrix(1,0,0,-1,0,0)'>-->\n".encode("utf-8"))
+        f.write("<!-- inversion de l'axe Y pour remettre à l'endroit:\n<g transform='matrix(1,0,0,-1,0,0)'>-->\n".encode("utf-8"))
         for elems in itervalues(self.database):
             for value, path, _ in elems:
                 f.write('    <path style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"\n d="')
@@ -228,13 +228,13 @@ class TextPathRecognizer(PathRecognizer):
         # à l'envers ou de p et d.  On ne peut pas trier ces cas là (car
         # c'est une dépendance circulaire) mais on vas les traiter de
         # façon particulière, en enregistrant pour chacun d'eux la liste
-        # des alternatives possibles qu'il faudra potentiellement 
+        # des alternatives possibles qu'il faudra potentiellement
         # considérer si on l'a reconnu.
-        deps = { i:set() for i in xrange(len(elems))} 
-        alternatives = [set() for i in xrange(len(elems))]
-        for i in xrange(len(elems)-1):
+        deps = { i:set() for i in range(len(elems))}
+        alternatives = [set() for i in range(len(elems))]
+        for i in range(len(elems)-1):
           value_i, path_i = elems[i]
-          for j in xrange(i+1,len(elems)):
+          for j in range(i+1,len(elems)):
             value_j, path_j = elems[j]
             if value_i != value_j:
                 i_startswith_j = path_i.startswith(path_j, tolerance = self.tolerance, min_scale=self.min_scale, max_scale=self.max_scale)
@@ -290,11 +290,11 @@ class TextPathRecognizer(PathRecognizer):
                     if startswith:
                         angle = startswith
                         if original_angle != None:
-                            diff_angle = abs(angle - original_angle) 
+                            diff_angle = abs(angle - original_angle)
                             if diff_angle > math.pi:
                                 diff_angle = abs(2*math.pi - diff_angle)
                             if (diff_angle * 180 / math.pi) > self.angle_tolerance_deg:
-                                # Ce caractère est reconu mais pas avec le bon angle, on passe 
+                                # Ce caractère est reconu mais pas avec le bon angle, on passe
                                 continue
                         else:
                             # Le premier caractère du path déterminera l'angle du mot
@@ -309,7 +309,7 @@ class TextPathRecognizer(PathRecognizer):
                                 next_point_position = projection_point(angle, path.points[len(compare_path.points)])
                                 if next_point_position < mean_cur_position:
                                     #print_flush(u"caractère rejeté: " + value + "\n")
-                                    # Le caractère suivant serait dérrière, on a pas du choisir le bon angle, c'est à dire 
+                                    # Le caractère suivant serait dérrière, on a pas du choisir le bon angle, c'est à dire
                                     # le bon caractère à reconnaître, on continue pour en chercher un autre:
                                     continue
                             original_angle = angle
@@ -336,7 +336,7 @@ class TextPathRecognizer(PathRecognizer):
                         #result = result + (" distance(%.2f)" % distance)
                         if distance > self.space_width:
                             result = result + " "
-                        result = result + value 
+                        result = result + value
                         #result = result + ("(%.1f)" % (angle*180/math.pi))
                         # Maintenant on traite la suite du path:
                         path = Path(
@@ -384,10 +384,12 @@ def largeur_path(angle, path):
 
 def rapport_l2_sur_l1(path):
     """ Calcule le rapport entre le premier et le deuxième segment du path.
-        Cela est utilisé en pratique pour distinguer le l minuscule du 
+        Cela est utilisé en pratique pour distinguer le l minuscule du
         I majuscule
     """
-    def distance((x1,y1),(x2,y2)):
+    def distance(xxx_todo_changeme, xxx_todo_changeme1):
+        (x1,y1) = xxx_todo_changeme
+        (x2,y2) = xxx_todo_changeme1
         return math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
     l1 = distance(path.points[0], path.points[1])
     l2 = distance(path.points[1], path.points[2])

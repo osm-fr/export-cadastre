@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@ Tentative de merge des infos d'adresse du cadastre:
  - celles venant des info des parcelles
 
 ATTENTION: l'utilisation des données du cadastre n'est pas libre, et ce script doit
-donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire 
+donc être utilisé exclusivement pour contribuer à OpenStreetMap, voire
 http://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation
 
 """
 
 import sys
 import os.path
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
@@ -35,7 +35,7 @@ from cadastre_fr.website  import CadastreWebsite
 from cadastre_fr.website  import command_line_open_cadastre_website
 from cadastre_fr.address  import cadastre_2_osm_addresses
 
-HELP_MESSAGE = u"""Récupération des adresses depuis le cadaste
+HELP_MESSAGE = """Récupération des adresses depuis le cadaste
 USAGE:
 {0}  [-data] [-nd] [-nobis] CODE_DEPARTEMENT CODE_COMUNE
 OPTIONS:
@@ -73,7 +73,7 @@ def main(argv):
               split_result = False
               del(argv[i:i+1])
           else:
-              command_line_error(u"option invalide: " + argv[i], HELP_MESSAGE)
+              command_line_error("option invalide: " + argv[i], HELP_MESSAGE)
               return
       else:
           i = i + 1
@@ -84,11 +84,11 @@ def main(argv):
       error = command_line_open_cadastre_website(argv)
       if error: command_line_error(error, HELP_MESSAGE)
   elif len(argv) > 3:
-      command_line_error(u"trop d'arguments", HELP_MESSAGE)
+      command_line_error("trop d'arguments", HELP_MESSAGE)
   else:
       try:
           cadastreWebsite = command_line_open_cadastre_website(argv)
-          if type(cadastreWebsite) in [str, unicode]:
+          if type(cadastreWebsite) in [str, str]:
               command_line_error(cadastreWebsite)
               return
           else:
@@ -96,12 +96,12 @@ def main(argv):
               code_commune = cadastreWebsite.code_commune
               nom_commune = cadastreWebsite.communes[code_commune]
               write_string_to_file("", code_commune + "-" + nom_commune + ".txt")
-      except urllib2.URLError:
+      except urllib.error.URLError:
           if download:
-              command_line_error(u"problème de connexion au site du cadastre", HELP_MESSAGE)
+              command_line_error("problème de connexion au site du cadastre", HELP_MESSAGE)
               return
           else:
-              sys.stdout.write(u"problème de connexion au site du cadastre\n".encode("utf-8"));
+              sys.stdout.write("problème de connexion au site du cadastre\n")
               code_departement = argv[1]
               code_commune = argv[2]
               nom_commune = "inconnu"

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,9 +35,9 @@ def getCenter(cadastreWebsite):
     x = (x1+x2)/2
     y = (y1+y2)/2
     return CadastreToOSMTransform(projection).transform_point((x,y))
-  
 
-HELP_MESSAGE = u""""Récupération du centre du cadastre d'une commune
+
+HELP_MESSAGE = """"Récupération du centre du cadastre d'une commune
 USAGE:
 {0}  DEPARTEMENT COMMUNE
     récupère le centre du cadastre d'une commune.
@@ -52,11 +52,11 @@ def cadastre_center(argv):
       print(HELP_MESSAGE)
   else:
       cadastre = command_line_open_cadastre_website(argv)
-      if type(cadastre) in (str,unicode):
+      if type(cadastre) in (str,str):
         command_line_error(website, HELP_MESSAGE)
       elif cadastre != None:
         lon,lat = getCenter(cadastre)
-        print("%f,%f" % (lat, lon))
+        print(("%f,%f" % (lat, lon)))
 
 if __name__ == '__main__':
     cadastre_center(sys.argv)

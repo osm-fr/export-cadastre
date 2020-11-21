@@ -13,25 +13,25 @@ code="$2"
 name="$3"
 bbox="$4"
 
-. `dirname $0`/config
+. `dirname $0`/../config || exit -1
 cd $data_dir || exit -1
+umask 002
 export MPLCONFIGDIR="$work_dir/tmp"
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
-cadastre_2_pdf="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/cadastre_2_pdf.py"
-osm_houses_simplify="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_houses_simplify.py"
-pdf_2_osm_houses="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/pdf_2_osm_houses.py "
-segmented_building_predict="env LD_LIBRARY_PATH=/home/tyndare/.local/lib/ PYTHONPATH=/home/tyndare/.local/lib/python2.7/site-packages/ $bin_dir/cadastre-housenumber/bin/osm_segmented_building_predict.py"
+cadastre_2_pdf="$bin_dir/cadastre-housenumber/bin/cadastre_2_pdf.py"
+osm_houses_simplify="$bin_dir/cadastre-housenumber/bin/osm_houses_simplify.py"
+pdf_2_osm_houses="$bin_dir/cadastre-housenumber/bin/pdf_2_osm_houses.py "
+segmented_building_predict="env  PYTHONPATH=$bin_dir/cadastre-housenumber/cadastre_fr_segmented/lib $bin_dir/cadastre-housenumber/bin/osm_segmented_building_predict.py"
 
 [ -d $dep ] || mkdir $dep
-chmod 777 $dep
+chmod 777 $dep 2>/dev/null
 
 dest_dir="$data_dir/$dep"
 download_dir="$hidden_dir/$dep/$code"
-water_dir="$data_dir/eau/"
 mkdir -m 777 -p $download_dir
-chmod 777 $hidden_dir
-chmod 777 $hidden_dir/$dep
+chmod 777 $hidden_dir 2>/dev/null
+chmod 777 $hidden_dir/$dep 2>/dev/null
 
 if [ "$bbox" = "" ] ; then
   bboxargs=""

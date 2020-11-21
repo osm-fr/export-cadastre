@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@ import os.path
 
 import time
 import socket
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import traceback
 import poster.encode
 import poster.streaminghttp
 poster.streaminghttp.register_openers()
-from cStringIO import StringIO
+from io import StringIO
 
 
 def osmose_frontend_post(updt_url, source, password, content_filepath):
@@ -39,15 +39,15 @@ def osmose_frontend_post(updt_url, source, password, content_filepath):
                     {"content": open(content_filepath, "rb"),
                      "source": source,
                      "code": password})
-            tmp_req = urllib2.Request(updt_url, tmp_dat, tmp_headers)
+            tmp_req = urllib.request.Request(updt_url, tmp_dat, tmp_headers)
             #fd = urllib2.urlopen(tmp_req, timeout=1800)
-            fd = urllib2.urlopen(tmp_req)
+            fd = urllib.request.urlopen(tmp_req)
             dt = fd.read().decode("utf8").strip()
             if dt[-2:] != "OK":
-                sys.stderr.write((u"UPDATE ERROR %s: %s\n"%(content_filepath, dt)).encode("utf8"))
+                sys.stderr.write(("UPDATE ERROR %s: %s\n"%(content_filepath, dt)).encode("utf8"))
                 err_code |= 4
             else:
-                print("POST " + content_filepath + " OK")
+                print(("POST " + content_filepath + " OK"))
             update_finished = True
         except socket.timeout:
             sys.stderr.write("got a timeout\n")
