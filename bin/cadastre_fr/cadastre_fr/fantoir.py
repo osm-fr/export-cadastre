@@ -26,6 +26,7 @@
 
 import re
 import sys
+import time
 import shutil
 import urllib.request, urllib.parse, urllib.error
 import os.path
@@ -44,52 +45,152 @@ from .tools    import iteritems, itervalues, iterkeys
 from .website  import code_insee
 from .overpass import open_osm_overpass
 
-ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "associatedStreet")
+#ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "associatedStreet")
 
-FANTOIR_URL = "https://www.data.gouv.fr/fr/datasets/fichier-fantoir-des-voies-et-lieux-dits/"
 FANTOIR_ZIP = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "data", "fantoir", "FANTOIR.zip")
 
 HELP_MESSAGE = """Récupération des code fantoir et des highway OSM des associatedStreet
 USAGE:
 {0}  CODE_DEPARTEMENT CODE_COMUNE input.osm output.osm""".format(sys.argv[0])
 
-if not os.path.exists(os.path.join(ASSOCIATEDSTREET_DIR,"addr_fantoir_building.py")):
-  sys.stderr.write("ERREUR: le projet associatedStreet n'as pas été trouvé.\n")
-  sys.stderr.write("        Veuillez executer les commandes suivantes et relancer:\n")
-  sys.stderr.write("    git submodule init\n")
-  sys.stderr.write("    git submodule update\n")
-  sys.exit(-1)
+#if not os.path.exists(os.path.join(ASSOCIATEDSTREET_DIR,"addr_fantoir_building.py")):
+#  sys.stderr.write("ERREUR: le projet associatedStreet n'as pas été trouvé.\n")
+#  sys.stderr.write("        Veuillez executer les commandes suivantes et relancer:\n")
+#  sys.stderr.write("    git submodule init\n")
+#  sys.stderr.write("    git submodule update\n")
+#  sys.exit(-1)
 
 
-associatedStreet_init = os.path.join(ASSOCIATEDSTREET_DIR,"__init__.py")
-if not os.path.exists(associatedStreet_init):
-    open(associatedStreet_init, "a").close()
-associatedStreet_pg_connexion = os.path.join(ASSOCIATEDSTREET_DIR, "pg_connexion.py")
-if not os.path.exists(associatedStreet_pg_connexion):
-    try:
-        shutil.copyfile(associatedStreet_pg_connexion + ".txt", associatedStreet_pg_connexion)
-    except:
-        pass
+def get_part_debut(s,nb_parts):
+    resp = ''
+    if len(s.split()) >= nb_parts:
+        resp = ' '.join(s.split()[0:nb_parts])
+    return resp
 
+def replace_type_voie(s,nb):
+    sp = s.split()
+    spd = ' '.join(sp[0:nb])
+    spf = ' '.join(sp[nb:len(sp)])
+    s = dicts.abrev_type_voie[spd]+' '+spf
+    return s
 
-import associatedStreet.addr_fantoir_building as addr_fantoir_building
+def normalize(s):
+    s = to_ascii(s)
+    # s = s.encode('ascii','ignore')
+    s = s.upper()                # tout en majuscules
+    s = s.replace('-',' ')        # separateur espace
+    s = s.replace('\'',' ')        # separateur espace
+    s = s.replace('/',' ')        # separateur espace
+    s = ' '.join(s.split())        # separateur : 1 espace
+    for l in iter(dicts.lettre_a_lettre):
+        for ll in dicts.lettre_a_lettre[l]:
+            s = s.replace(ll,l)
 
-addr_fantoir_building.dicts = addr_fantoir_building.Dicts()
-addr_fantoir_building.dicts.load_lettre_a_lettre()
-addr_fantoir_building.dicts.load_abrev_type_voie()
-addr_fantoir_building.dicts.load_abrev_titres()
-addr_fantoir_building.dicts.load_chiffres()
-addr_fantoir_building.dicts.load_chiffres_romains()
-addr_fantoir_building.dicts.load_mot_a_blanc()
-addr_fantoir_building.dicts.load_osm_insee()
+    # type de voie
+    abrev_trouvee = False
+    p = 0
+    while (not abrev_trouvee) and p < 3:
+        p+= 1
+        if get_part_debut(s,p) in dicts.abrev_type_voie:
+            s = replace_type_voie(s,p)
+            abrev_trouvee = True
 
+    # ordinal
+    s = s.replace(' EME ','EME ')
 
-def normalize(nom):
-    result = addr_fantoir_building.normalize(to_ascii(nom))
-    if result.startswith("GR GRANDE RUE") or result.startswith("GR GRAND RUE"):
-        result = result[3:]
-    return result
+    # chiffres
+    for c in dicts.chiffres:
+        s = s.replace(c[0],c[1])
 
+    # articles
+    for c in dicts.mot_a_blanc:
+        s = s.replace(' '+c+' ',' ')
+
+    # titres, etc.
+    for r in dicts.abrev_titres:
+        s = s.replace(' '+r[0]+' ',' '+r[1]+' ')
+
+    # chiffres romains
+    sp = s.split()
+
+    if sp[-1] in dicts.chiffres_romains:
+        sp[-1] = dicts.chiffres_romains[sp[-1]]
+        s = ' '.join(sp)
+
+    if s.startswith("GR GRANDE RUE") or s.startswith("GR GRAND RUE"):
+        s = s[3:]
+
+    return s
+
+class FantoirDicts:
+    def __init__(self):
+        with open(os.path.join(os.path.dirname(__file__),'osm_id_ref_insee.csv')) as f:
+            self.osm_insee = {key: value
+                for value, key in map(lambda line: line.strip().split(','), f)
+            }
+        with  open(os.path.join(os.path.dirname(__file__), 'fantoir_abrev_type_voie.txt')) as f:
+            self.abrev_type_voie = {key: value
+                for key, value in map(lambda line: line.strip().split('\t'), f)
+            }
+        self.lettre_a_lettre = {'A':[u'Â',u'À'],
+                        'C':[u'Ç'],
+                        'E':[u'È',u'Ê',u'É',u'Ë'],
+                        'I':[u'Ï',u'Î'],
+                        'O':[u'Ö',u'Ô'],
+                        'U':[u'Û',u'Ü']}
+        self.abrev_titres = [['MARECHAL','MAL'],
+                            ['PRESIDENT','PDT'],
+                            ['GENERAL','GAL'],
+                            ['COMMANDANT','CDT'],
+                            ['CAPITAINE','CAP'],
+                            ['REGIMENT','REGT'],
+                            ['SAINTE','STE'],
+                            ['SAINT','ST']]
+        self.chiffres = [    ['0','ZERO'],
+                            ['1','UN'],
+                            ['2','DEUX'],
+                            ['3','TROIS'],
+                            ['4','QUATRE'],
+                            ['5','CINQ'],
+                            ['6','SIX'],
+                            ['7','SEPT'],
+                            ['8','HUIT'],
+                            ['9','NEUF'],
+                            [' DIX ',' UNZERO '],
+                            [' ONZE ',' UNUN '],
+                            [' DOUZE ',' UNDEUX ']]
+        self.chiffres_romains = {    'XXIII':'DEUXTROIS',
+                                    'XXII' :'DEUXDEUX',
+                                    'XXI'  :'DEUXUN',
+                                    'XX'   :'DEUXZERO',
+                                    'XIX'  :'UNNEUF',
+                                    'XVIII':'UNHUIT',
+                                    'XVII' :'UNSEPT',
+                                    'XVI'  :'UNSIX',
+                                    'XV'   :'UNCINQ',
+                                    'XIV'  :'UNQUATRE',
+                                    'XIII' :'UNTROIS',
+                                    'XII'  :'UNDEUX',
+                                    'XI'   :'UNUN',
+                                    'X'    :'UNZERO',
+                                    'IX'   :'NEUF',
+                                    'VIII' :'HUIT',
+                                    'VII'  :'SEPT',
+                                    'VI'   :'SIX',
+                                    'V'    :'CINQ',
+                                    'IV'   :'QUATRE',
+                                    'III'  :'TROIS',
+                                    'II'   :'DEUX',
+                                    'I'    :'UN'}
+        self.mot_a_blanc = ['DE LA',
+                            'DU',
+                            'DES',
+                            'LE',
+                            'LA',
+                            'LES',
+                            'DE',
+                            'D']
+dicts = FantoirDicts()
 
 def get_dict_fantoir(code_departement, code_commune):
     """ Retourne un dictionnaire qui mappe un nom normalizé
@@ -97,38 +198,38 @@ def get_dict_fantoir(code_departement, code_commune):
         vers un tuple (string, boolean) représentant le CODE FANTOIR, et
         s'il s'agit d'un lieu dit non bâti (place=locality).
     """
-    try:
-        return get_dict_fantoir_from_database(code_departement, code_commune)
-    except:
+    #try:
+    #    return get_dict_fantoir_from_database(code_departement, code_commune)
+    #except:
         # La connexion avec la base SQL a du échouer, on
-        # charge les fichiers zip fantoir manuellement:
-        return get_dict_fantoir_from_downloaded_zip(code_departement, code_commune)
+    # charge les fichiers zip fantoir manuellement:
+    return get_dict_fantoir_from_downloaded_zip(code_departement, code_commune)
 
 
-def get_dict_fantoir_from_database(code_departement, code_commune):
-    """ Retourne un dictionnaire qui mappe un nom normalizé
-        du Fantoir (nature + libele de la voie)
-        vers un tuple (string, boolean) représentant le CODE FANTOIR, et
-        s'il s'agit d'un lieu dit non bâti (place=locality).
-    """
-    insee = code_insee(code_departement, code_commune)
-    dict_fantoir = {}
-    db_cursor = addr_fantoir_building.get_pgc().cursor()
-    sql_query = ''' SELECT  code_insee||id_voie||cle_rivoli,
-                            nature_voie||' '||libelle_voie,
-                            type_voie, ld_bati
-                    FROM  fantoir_voie
-                    WHERE code_insee = \'''' + insee + '''\'
-                          AND caractere_annul NOT IN ('O','Q');'''
-    db_cursor.execute(sql_query)
-    for result in db_cursor:
-        code_fantoir = result[0]
-        nom_fantoir = ' '.join(result[1].replace('-',' ').split())
-        #lieu_dit_non_bati = (result[2] == '3') and (result[3] == '0')
-        highway = result[2] in ['1', '4', '5']
-        dict_fantoir[normalize(nom_fantoir)] = (code_fantoir, highway)
-    assert(len(dict_fantoir) > 0)
-    return dict_fantoir
+#def get_dict_fantoir_from_database(code_departement, code_commune):
+#    """ Retourne un dictionnaire qui mappe un nom normalizé
+#        du Fantoir (nature + libele de la voie)
+#        vers un tuple (string, boolean) représentant le CODE FANTOIR, et
+#        s'il s'agit d'un lieu dit non bâti (place=locality).
+#    """
+#    insee = code_insee(code_departement, code_commune)
+#    dict_fantoir = {}
+#    db_cursor = addr_fantoir_building.get_pgc().cursor()
+#    sql_query = """ SELECT  code_insee||id_voie||cle_rivoli,
+#                            nature_voie||' '||libelle_voie,
+#                            type_voie, ld_bati
+#                    FROM  fantoir_voie
+#                    WHERE code_insee = \'''' + insee + '''\'
+#                          AND caractere_annul NOT IN ('O','Q');"""
+#    db_cursor.execute(sql_query)
+#    for result in db_cursor:
+#        code_fantoir = result[0]
+#        nom_fantoir = ' '.join(result[1].replace('-',' ').split())
+#        #lieu_dit_non_bati = (result[2] == '3') and (result[3] == '0')
+#        highway = result[2] in ['1', '4', '5']
+#        dict_fantoir[normalize(nom_fantoir)] = (code_fantoir, highway)
+#    assert(len(dict_fantoir) > 0)
+#    return dict_fantoir
 
 
 def get_dict_fantoir_from_downloaded_zip(code_departement, code_commune):
@@ -138,30 +239,35 @@ def get_dict_fantoir_from_downloaded_zip(code_departement, code_commune):
         s'il s'agit d'un lieu dit non bâti (place=locality).
     """
     dict_fantoir = {}
-    filename = get_fantoir_zip_file()
-    print_flush("Lecture du fichier FANTOIR.zip")
-    insee = code_insee(code_departement, code_commune)
-    num_commune = insee[2:5]
-    debut = get_fantoir_code_departement(code_departement) + num_commune
-    zipfile = ZipFile(filename, "r")
-    for name in zipfile.namelist():
-        for line in zipfile.open(name):
-            if line.startswith(debut):
-               if line[108:109] != ' ':
-                  # C'est un unregistrement de voie
-                  if line[73] == ' ':
-                      # la voie n'est pas annulée
-                      assert(insee == line[0:2] + line[3:6])
-                      id_voie = line[6:10]
-                      cle_rivoli = line[10]
-                      nature_voie = line[11:15].strip()
-                      libele_voie = line[15:41].strip()
-                      code_fantoir = insee + id_voie + cle_rivoli
-                      nom_fantoir = nature_voie + " " + libele_voie
-                      #lieu_dit_non_bati = line[108:110] == '30'
-                      highway = line[108:109] in ['1', '4', '5']
-                      dict_fantoir[normalize(nom_fantoir)] = \
-                          (code_fantoir, highway)
+    try:
+        filename = get_fantoir_zip_file()
+        print_flush("Lecture du fichier FANTOIR.zip")
+        insee = code_insee(code_departement, code_commune)
+        num_commune = insee[2:5]
+        debut = get_fantoir_code_departement(code_departement) + num_commune
+        zipfile = ZipFile(filename, "r")
+        for name in zipfile.namelist():
+            for line in zipfile.open(name):
+                line = line.decode("utf8")
+                if line.startswith(debut):
+                    if line[108:109] != ' ':
+                        # C'est un unregistrement de voie
+                        if line[73] == ' ':
+                            # la voie n'est pas annulée
+                            assert(insee == line[0:2] + line[3:6])
+                            id_voie = line[6:10]
+                            cle_rivoli = line[10]
+                            nature_voie = line[11:15].strip()
+                            libele_voie = line[15:41].strip()
+                            code_fantoir = insee + id_voie + cle_rivoli
+                            nom_fantoir = nature_voie + " " + libele_voie
+                            #lieu_dit_non_bati = line[108:110] == '30'
+                            highway = line[108:109] in ['1', '4', '5']
+                            dict_fantoir[normalize(nom_fantoir)] = \
+                                (code_fantoir, highway)
+    except:
+        traceback.print_exc()
+        sys.stderr.write("ERREUR: impossible de lire le fichier FANTOIR")
     return dict_fantoir
 
 
@@ -173,26 +279,24 @@ def get_fantoir_code_departement(code_departement):
 
 
 def get_fantoir_zip_file():
-    filename = FANTOIR_ZIP
-    if not os.path.exists(filename) and os.path.exsits(filename + ".ok"):
-        webpage = urllib.request.urlopen(FANTOIR_URL).read()
-        zip_url_re = re.compile(' href="([^"]*\\.zip)"')
-        zip_url_match = zip_url_re.search(webpage)
-        if not zip_url_match:
-            print_flush("ERROR: no .zip file url found on fantoir web page:")
-            print_flush(FANTOIR_URL)
-            raise Exception()
-        zip_url = zip_url_match.group(1)
-        print_flush("Téléchargement du fichier Fantoir " + zip_url)
-        open_function = lambda: urllib.request.urlopen(zip_url)
-        download_cached(open_function, filename)
-    return filename
+    #filename = FANTOIR_ZIP
+    #if (    (not os.path.exists(filename))
+    #        or
+    #        (not os.path.exsits(filename + ".ok"))
+    #        or
+    #        ((time.time() - os.path.getmtime(filename)) / 86400 > 30)
+    #    ):
+    #    print_flush("Téléchargement du fichier Fantoir " + FANTFOIR_URL)
+    #    open_function = lambda: urllib.request.urlopen(zip_url)
+    #    download_cached(open_function, filename)
+    #return filename
+    return FANTOIR_ZIP
 
 
 def open_osm_multipolygon_s_ways_commune(code_departement, code_commune, type_multipolygon, filtre="", nodes=False):
     cache_filename = code_commune + "-multipolygon_" + type_multipolygon + "s.osm"
     insee = code_insee(code_departement, code_commune)
-    area = 3600000000 + addr_fantoir_building.dicts.osm_insee[insee]
+    area = 3600000000 + int(dicts.osm_insee[insee])
     requete_overpass = 'rel(area:%d)[type=multipolygon]["%s"]%s;way(r);' % (area, type_multipolygon, filtre)
     if nodes: requete_overpass += "(._;>;);"
     requete_overpass += "out meta;"
@@ -203,7 +307,7 @@ def open_osm_multipolygon_s_ways_commune(code_departement, code_commune, type_mu
 def open_osm_ways_commune(code_departement, code_commune, type_way, filtre="", nodes=False):
     cache_filename = code_commune + "-" + type_way + "s.osm"
     insee = code_insee(code_departement, code_commune)
-    area = 3600000000 + addr_fantoir_building.dicts.osm_insee[insee]
+    area = 3600000000 + int(dicts.osm_insee[insee])
     #requete_overpass = 'way(area:%d)["%s"]%s;%s' % (area, type_way, filtre, "(._;>;);" if node else "")  # Cette version marche moins bien que la suivante équivalente
     requete_overpass = 'node(area:%d);way(bn);(way._["%s"]%s;%s);' % (area, type_way, filtre, "node(w);" if nodes else "")
     requete_overpass += "out meta;"
@@ -221,10 +325,10 @@ def get_osm_buildings_and_barrier_ways(code_departement, code_commune):
         open_osm_ways_commune(code_departement, code_commune, "barrier", nodes=True),
     ]
     for osm in input_osms:
-      for id,node in iteritems(osm.nodes):
+      for id,node in osm.nodes.items():
           if not id in merge_osm.nodes:
             merge_osm.add_node(node)
-      for id, way in iteritems(osm.ways):
+      for id, way in osm.ways.items():
           if any([nid not in osm.nodes for nid in way.nodes]):
               # Il manque des nodes à ce way, ça arrive parfois
               # dans les résultats d'overpass, je ne sais pas pourquoi
@@ -233,7 +337,7 @@ def get_osm_buildings_and_barrier_ways(code_departement, code_commune):
               continue
           if not id in merge_osm.ways:
             merge_osm.add_way(way)
-      for id, rel in iteritems(osm.ways):
+      for id, rel in osm.ways.items():
           if not id in merge_osm.relations:
             merge_osm.add_relation(rel)
     return merge_osm
@@ -248,7 +352,7 @@ def get_dict_osm_ways(osm):
            nom normalizé là.
     """
     dict_ways_osm = {}
-    for way in itervalues(osm.ways):
+    for way in osm.ways.values():
         name = way.tags['name']
         name_norm = normalize(name)
         if name and name_norm:
@@ -297,7 +401,7 @@ def get_dict_abrev_type_voie():
         utilisée par le Fantoir en sa version non abrégée.
     """
     dict_abrev_type_voie = {}
-    for nom, abrev in iteritems(addr_fantoir_building.dicts.abrev_type_voie):
+    for nom, abrev in dicts.abrev_type_voie.items():
         nom = nom.title()
         abrev = to_ascii(abrev).upper()
         if not abrev in dict_abrev_type_voie:
@@ -324,7 +428,7 @@ def get_dict_accents_mots(osm_noms):
         liste_mots_a_effacer_du_dict = ["DE", "LA", "ET"]
         # On essaye de parser l'ensemble des noms extraits du cadastre pour
         # en faire un dictionaire de remplacement a appliquer
-        for node in itervalues(osm_noms.nodes):
+        for node in osm_noms.nodes.values():
           if ('name' in node.tags): #and not ('place' in node.tags): # on évite les nœuds place=* qui sont écrit en majuscule sans accents
             for mot in node.tags['name'].replace("_"," ").replace("-"," ").replace("'"," ").split():
                 if len(mot) > 1:
@@ -400,11 +504,11 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
     # Compte le nombre d'occurence de chaque nom normalizé
     # afin de détecter les conflits
     conflits_normalization = collections.Counter([
-        normalize(r.tags['name']) for r in itervalues(osm.relations)
+        normalize(r.tags['name']) for r in osm.relations.values()
         if r.tags.get('type') == 'associatedStreet'])
 
 
-    for relation in itervalues(osm.relations):
+    for relation in osm.relations.values():
         if relation.tags['type'] == 'associatedStreet':
             nb_associatedStreet += 1
             name = relation.tags['name']
@@ -439,7 +543,7 @@ def cherche_fantoir_et_osm_highways(code_departement, code_commune, osm, osm_nom
       print_flush("     avec rapprochement OSM : "+str(nb_voies_osm)+" ("+str(int(nb_voies_osm*100/nb_associatedStreet))+"%)")
 
     # Humanise aussi les noms de lieux-dits:
-    for node in itervalues(osm.nodes):
+    for node in osm.nodes.values():
         if "place" in node.tags:
             name = node.tags["name"]
             name_norm = normalize(name)

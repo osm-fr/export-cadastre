@@ -7,34 +7,22 @@ cd $data_dir || exit -1
 
 umask 002
 
-temp_file=`mktemp --suffix=.txt`
-Qadastre2OSM="$bin_dir/Qadastre2OSM"
+echo "Nettoyage des données"
+test -d "$water_dir"  && rm -rf "$water_dir"/* 2>/dev/null
+test -d "$log_dir"    && rm -rf "$log_dir"/* 2>/dev/null
+test -d "$hidden_dir" && rm -rf "$hidden_dir"/* 2>/dev/null
+test -d "$lock_dir"   && rm -rf "$lock_dir"/* 2>/dev/null
 
-rm -f $water_dir/* 2>/dev/null
-rm -f $log_dir/*/* 2>/dev/null
-rm -rf $hidden_dir
+# rm */* dans $data pour garder les fichier de liste de communes
+# à la racine au cas où leur récupération échoue:
+test -d "$data_dir"   && find "$data_dir" -type f \
+    \! \( -name "*-liste.txt" -or -name ".htpasswd" -or -name ".htaccess" \) \
+    -exec rm -rf {} \
+    2>/dev/null
 
-for i in 976 975 974 973 972 971 007 029 035 041 045 052 053 056 068 070 072 088 089 090 002 014 027 050 051 054 055 057 060 061 067 075 077 078 091 092 093 094 095 008 059 062 076 080 02A 02B 009 011 017 034 064 065 066 083 004 006 012 013 030 032 040 047 048 081 082 084 005 007 015 019 024 026 033 038 043 046 073 001 003 016 017 023 042 063 069 074 087  018 021 025 036 037 039 044 049 058 071 031 070 090 091 034 079 085 086 010 022 028 
-do
-	[ -d $i ] || mkdir $i
-	cd $i
-	#Parfois, Qadastre2OSM plante et ce fichier est vidé, on va le garder de coté et le reprendre si l'autre est vide
-	mv -f *-liste.txt $temp_file
+# Mise à jour Fantoir:
+make -C $bin_dir/cadastre_fr/data/fantoir
 
-	# Ajouter par sly (sylvain@letuffe.org) pour éviter que des gens se retrouvent avec une trop vielle version des fichiers à importer
-	rm -f * 2>/dev/null
-	if [ -n "$hidden_dir" -a -d "$hidden_dir/$i" ] ; then
-		rm -rf "$hidden_dir/$i" 2>/dev/null
-	fi
-	$Qadastre2OSM --list $i > $i-liste.txt
+echo "Récupération de la liste de départements et des communes…"
+cd "$data_dir" && "$bin_dir/cadastre_fr/bin/cadastre_liste.py"
 
-	# Fichier vide, plantage probable, on reprend notre sauvegarde
-	if ! test -s $i-liste.txt ; then
-		cp $temp_file $i-liste.txt
-	fi
-	echo "" > $temp_file
-	
-	cd ..
-done
-
-rm $temp_file

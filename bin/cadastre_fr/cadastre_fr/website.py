@@ -282,7 +282,7 @@ class CadastreWebsite(object):
         '</wfs:GetFeature>'
     url = "https://www.cadastre.gouv.fr/scpc/wfs"
     request = urllib.request.Request(url)
-    request.add_data(data)
+    request.data = data.encode("utf8")
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
     answer = self.url_opener.open(request).read().decode("utf8")
@@ -331,7 +331,7 @@ class CadastreWebsite(object):
         '</wfs:GetFeature>'
     url = "https://www.cadastre.gouv.fr/scpc/wfs"
     request = urllib.request.Request(url)
-    request.add_data(data)
+    request.data = data.encode("utf8")
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
     answer = self.url_opener.open(request)
@@ -342,7 +342,7 @@ class CadastreWebsite(object):
     data = "<PARCELLES><PARCELLE>" + parcel + "</PARCELLE></PARCELLES>"
     url = "https://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib.request.Request(url)
-    request.add_data(data)
+    request.data = data.encode("utf8")
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
     answer = self.url_opener.open(request).read() # not utf-8
@@ -368,7 +368,7 @@ class CadastreWebsite(object):
     data = "<PARCELLES><PARCELLE>" + "</PARCELLE><PARCELLE>".join(parcels) + "</PARCELLE></PARCELLES>"
     url = "https://www.cadastre.gouv.fr/scpc/afficherInfosParcelles.do?CSRF_TOKEN=" + self.CSRF_TOKEN
     request = urllib.request.Request(url)
-    request.add_data(data)
+    request.data = data.encode("utf8")
     request.add_header('content-type', 'application/xml; charset=UTF-8')
     request.add_header('referer', self.__get_commune_url())
     answer = self.url_opener.open(request).read()

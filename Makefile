@@ -38,3 +38,4 @@ clean:
 distclean:
 	make -C bin $@
 	rm -f config
+	rm -rf work

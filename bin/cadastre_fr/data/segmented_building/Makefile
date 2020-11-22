@@ -32,6 +32,8 @@ clean:
 	rm -f *-missed.osm
 	rm -f *-false.osm
 
+distclean:clean
+
 zip:
 	for f in *-segmented.osm; do zip `basename "$$f" .osm`.zip "$$f" && rm -f "$$f"; done
 

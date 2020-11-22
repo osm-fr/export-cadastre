@@ -19,7 +19,7 @@
 RESULT_DIR=.
 PREDICT=`dirname $0`/pbf_segmented_building_predict.py $1
 OSMOSE_POST=`dirname $0`/osmose_post.py
-SEGMENTED_DATA_DIR=`dirname $0`/../cadastre-housenumber/data/segmented_building/
+SEGMENTED_DATA_DIR=`dirname $0`/../../cadastre_fr/data/segmented_building/
 OSMOSE_CONF=`dirname $0`/osmose.conf
 if [ -z "$TMP" ] ; then
     TMP=/tmp

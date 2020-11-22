@@ -35,7 +35,7 @@ function getSelectedInseeCode() {
 
 function updateFantoirVilleLink() {
 	insee = getSelectedInseeCode();
-	document.getElementById("fantoir_ville_link").href = "fantoir/#insee=" + insee;
+	document.getElementById("fantoir_ville_link").href = "https://bano.openstreetmap.fr/fantoir/#insee=" + insee;
 }
 
 var onDepartementChange_previous_depCode = '';
@@ -44,8 +44,8 @@ function onDepartementChange() {
 	if (depCode != onDepartementChange_previous_depCode) {
 		onDepartementChange_previous_depCode = depCode;
 		document.getElementById("data_link").href = "data/" + depCode + "/";
-		document.getElementById("fantoir_dep_link").href = "fantoir/stats_dept.html#dept=" + (depCode.startsWith("0") ? depCode.substr(1) : depCode);
-		document.getElementById("fantoir_dep_recent_street_link").href = "fantoir/voies_recentes_manquantes.html#dept=" + (depCode.startsWith("0") ? depCode.substr(1) : depCode);
+		document.getElementById("fantoir_dep_link").href = "https://bano.openstreetmap.fr/fantoir/stats_dept.html#dept=" + (depCode.startsWith("0") ? depCode.substr(1) : depCode);
+		document.getElementById("fantoir_dep_recent_street_link").href = "https://bano.openstreetmap.fr/fantoir/voies_recentes_manquantes.html#dept=" + (depCode.startsWith("0") ? depCode.substr(1) : depCode);
 		downloadVilleForDepartement(depCode);
 	}
 }

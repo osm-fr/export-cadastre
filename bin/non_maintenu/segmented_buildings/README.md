@@ -6,7 +6,7 @@
 
 An analysis is done to predict some buildings that may have been
 segmented by the French cadastre.
-(see `../cadastre-housenumber/cadastre_fr/segmented.py`)
+(see `../../cadastre_fr/cadastre_fr/segmented.py`)
 
 The scripts here manage a database used to crowd-source
 the confirmation of the segmented cases.

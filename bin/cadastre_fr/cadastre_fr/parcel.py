@@ -135,7 +135,7 @@ def iter_download_parcels_info_xml(cadastreWebsite, parcels_index):
         if download_cached(open_function, filename):
             time.sleep(WAIT_BETWEEN_DOWNLOADS)
         with open(filename) as f:
-            xmlstring = f.read().decode("utf-8")
+            xmlstring = f.read()
         yield filename
 
 
@@ -200,7 +200,7 @@ class ParcelInfo(object):
                 fid  = parcel.attrib['fid'][9:]
                 resultmap[fid] = ParcelInfo(
                     fid  = fid,
-                    nature = parcel.iter("NATURE").next().text,
+                    nature = next(parcel.iter("NATURE")).text,
                     **param)
         return resultmap
 
@@ -450,20 +450,20 @@ def match_parcels_and_housenumbers(parcels, numbers):
         if n:
             nb_numbers_unatached +=1
     if nb_numbers_unatached == 1:
-        print_flush("ATTENTION: " + str(nb_numbers_unatached) + " numéro non rataché à son adresse !")
+        print_flush("ATTENTION: " + str(nb_numbers_unatached) + " numéro non rataché à une adresse de parcelle !")
     elif nb_numbers_unatached > 1:
-        print_flush("ATTENTION: " + str(nb_numbers_unatached) + " numéros non ratachés à leur adresse !")
+        print_flush("ATTENTION: " + str(nb_numbers_unatached) + " numéros non ratachés à une adresse de parcelle !")
     else:
         print_flush("Tous les numéros ont trouvé une parcelle !")
     count_not_found = 0
     for parcel in itervalues(parcels):
       count_not_found += parcel.num_to_find
     if count_not_found == 1:
-        print_flush("ATTENTION: " + str(count_not_found) + " adresse n'a pas trouvé son numéro !")
+        print_flush("ATTENTION: " + str(count_not_found) + " adresse de parcelle n'a pas trouvé son numéro !")
     elif count_not_found > 1:
-        print_flush("ATTENTION: " + str(count_not_found) + " adresses n'ont pas trouvé leur numéro !")
+        print_flush("ATTENTION: " + str(count_not_found) + " adresses de parcelle ns'ont pas trouvé leur numéro !")
     else:
-        print_flush("Toutes les adresses ont trouvé leur numéro!")
+        print_flush("Toutes les parcelles ont trouvé leur numéro!")
 
 
 def generate_osm_parcels(parcels, transform):
@@ -495,7 +495,7 @@ def get_xml_child_text(e, tag, default=None):
         or default if no child has tag exist.
     """
     try:
-        return e.iter(tag).next().text
+        return next(e.iter(tag)).text
     except StopIteration:
         return default
 

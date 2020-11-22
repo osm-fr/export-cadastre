@@ -2,7 +2,7 @@
 # Export du cadastre français vers des données au format OpenStreetMap
 
 Projet historique pour exporter des données du cadastre depuis le site web
-	https://cadastre.gouv.fr
+https://cadastre.gouv.fr
 en analysant les PDF générés.
 
 
@@ -12,7 +12,7 @@ Pour s'exécuter:
 
  * apache2 php libapache2-mod-php
  * python3 python3-rtree python3-shapely python3-gdal python3-distutils python3-sklearn
- * wget
+ * wget poppler-utils
 
 Pour construire les exécutables:
 
@@ -22,9 +22,10 @@ Pour construire les exécutables:
 
 ## Installation:
 
-## Git
+### Git
+```
     git clone --recurse-submodules git@github.com:osm-fr/export-cadastre.git
-
+```
 
 ### work directory
 
@@ -34,22 +35,26 @@ Pour construire les exécutables:
 
 ### www-data group
 
-    L'utilisateur lancant les commandes doit appartenir au groupe "www-data" du serveur appache.
+    L'utilisateur lançant les commandes doit appartenir au groupe "www-data" du serveur appache.
 
 ### make
 
-    Lancer la commande
-        make
-    Cela vas :
-        - cérer un fichier 'config',
-        - initialiser le contenu du réperoire "work"
-        - builder les exécutables
-        - initialiser la liste des villes de chaque département
+Lancer la commande
+```
+    make
+```
+Cela vas:
+
+ - cérer un fichier `config`
+ - initialiser le contenu du réperoire `work`
+ - builder les exécutables
+ - récupérer la liste des villes de chaque département
 
 ### Appache configuration
 
 
 Configurer un VirtualHost Appache avec
+```
     <VirtualHost …>
         …
         DocumentRoot <installation directory>/export-cadastre/web
@@ -57,10 +62,10 @@ Configurer un VirtualHost Appache avec
     </VirtualHost>
     <Directory <installation directory>/export-cadastre/web>
     	Options Indexes FollowSymLinks
-	    AllowOverride None
+	    AllowOverride AuthConfig
 	    Require all granted
     </Directory>
-
+```
 
 ### cron
 

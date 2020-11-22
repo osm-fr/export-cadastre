@@ -22,7 +22,7 @@ print them
 import sys
 import os.path
 
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "cadastre-housenumber"))
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))), "cadastre_fr"))
 
 import gc
 import re

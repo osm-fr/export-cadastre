@@ -74,14 +74,18 @@ function already_generated() {
 }
 
 ?>
-<div id="conditions-utilisation">
-<p>
-Ce service et les données du cadastre disponibles ici sont exclusivement réservés à l'usage des contributeurs OpenStreetMap. <a href="https://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">En savoir plus</a>
-</p>
-<p>
-Le cadastre n'est pas utilisé que pour le bâti, il permet aussi de compléter le nom des voies: <a href="https://wiki.openstreetmap.org/wiki/Contribuer_%C3%A0_la_BANO">Contribuer à la BANO</a>.
-</p>
-</div>
+<fieldset id="conditions-utilisation">
+<legend>Note</legend>
+<font size="-1">
+Ce service et les données du cadastre disponibles ici sont exclusivement réservés à l'usage des contributeurs OpenStreetMap. <a href="https://wiki.openstreetmap.org/wiki/Cadastre_Fran%C3%A7ais/Conditions_d%27utilisation">En savoir plus.</a>
+<br/>
+<img src='images/info.png' alt='!' style='vertical-align:sub;' />
+JOSM permet de télécharger directement les données du cadastre grâce au plug-in <a href="https://wiki.openstreetmap.org/wiki/FR:JOSM/Greffons/Cadastre-fr">Cadastre-fr <img src="https://wiki.openstreetmap.org/w/images/b/b8/Plugin_Cadastre_pour_JOSM.PNG" width="55" height="46" style="vertical-align:middle;"/></a>.
+<br/>
+<img src='images/info.png' alt='!' style='vertical-align:sub;' />
+<a href="https://bano.openstreetmap.fr/fantoir/">L'interface fatoir de BANO</a> permet d'ajouter directement les adresse manquates dans JOSM.
+</font>
+</fieldset>
 <div id='information'>
 <?php
 if( $dep && $ville && $type )
@@ -193,9 +197,9 @@ else
 		</select>
 		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
 		<span class="stats_fantoir">
-		  <a id="fantoir_dep_link" href="fantoir/stats_dept.html">Stats FANTOIR</a>
+		  <a id="fantoir_dep_link" href="https://bano.openstreetmap.fr/fantoir/stats_dept.html">Stats FANTOIR</a>
 		  <br/>
-		  <a id="fantoir_dep_recent_street_link" href="fantoir/voies_recentes_manquantes.html">Voies récentes manquantes</a>
+		  <a id="fantoir_dep_recent_street_link" href="https://bano.openstreetmap.fr/fantoir/voies_recentes_manquantes.html">Voies récentes manquantes</a>
 		</span>
 	</fieldset>
 	<fieldset id='fville'>
@@ -208,11 +212,10 @@ else
 		</span>
 		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
 		<span class="stats_fantoir">
-		  <a id="fantoir_ville_link" href="fantoir">Stats FANTOIR</a>
+		  <a id="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/">Stats FANTOIR BANO</a>
 		</span>
 
 		<br />
-		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='https://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
 		<p style='font-size:small;'>Seules les communes existant au format vecteur au cadastre sont listées</p>
 	</fieldset>
 	<fieldset id='ftype'>
@@ -228,7 +231,7 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 				<td>
 					<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>></input>Adresses
 				</td><td>
-					<small>(<input type="checkbox" name="bis" value="true" title="Transforme les lettres B,T,Q en bis, ter, quater et rajoute un espace pour les autres" <?php echo $bis_checked;?>></input>B,T,Q&rarr; bis, ter, quater &nbsp; A&rarr;&#x2423;A )</small>
+					<small>(<input type="checkbox" name="bis" value="true" title="Transforme les lettres B,T,Q en bis, ter, quater" <?php echo $bis_checked;?>></input>B,T,Q&rarr; bis, ter, quater)</small>
 				</td>
 			</tr><tr>
 				<td>
@@ -256,12 +259,14 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 	<li>Pour l'intégration des données <i><u>adresses</u></i>, <a href='https://wiki.openstreetmap.org/wiki/WikiProject_France/Cadastre/Import_semi-automatique_des_adresses' target="_blank">il faut lire cette page</a></li>
 	</ul>
     </fieldset>
+    <!--
     <fieldset id='temps'>
 	<legend>Pour patienter pendant la génération</legend>
 	<ul>
 	<li>Vous pouvez aider à identifier des bâtiments OSM potentiellement fractionnés par le cadastre: <a href="segmented/" target="_blank">Bâtiments Fractionnés</a>
 	</ul>
     </fieldset>
+    -->
 </div>
 <script type='text/javascript'>
 <?php
@@ -331,8 +336,8 @@ if ($command) {
     if ($type == "adresses") { 
       $associatedStreet_files = array (
           "Mix en façade proche ou point isolé" => "/data/$dep/$ville-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
-          "Toujours en façade de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
-          "Toujours comme attribut de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip",
+          //"Toujours en façade de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
+          //"Toujours comme attribut de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip",
           "Toujours comme point isolés" => "/data/$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
       );
       $addrstreet_files = array();

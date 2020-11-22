@@ -20,7 +20,7 @@ $ville = get_parameter('ville', '/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ \
 $ville = substr($ville,0, 5);
 
 if ($ville && $dep) {
-	$command = sprintf('%s/cadastre-housenumber/bin/cadastre_center.py "%s" "%s"', $bin_dir, $dep, $ville);
+	$command = sprintf('%s/bin/centre_ville.sh "%s" "%s"', $bin_dir, $dep, $ville);
 	passthru($command);
 }
 

@@ -25,14 +25,14 @@ from .tools    import open_cached
 
 def open_osm_overpass(requete, cache_filename, metropole=False):
     if metropole:
-        # oapi-fr.openstreetmap.fr n'a que la métropole, pas l'outre mer
-        overvass_server = "http://overpass-api.de/api/interpreter?"
+        # overpass.openstreetmap.fr n'a que la métropole, pas l'outre mer
+        overvass_server = "https://overpass.openstreetmap.fr/api/interpreter?"
     else:
-        overvass_server = "http://overpass-api.de/api/interpreter?"
+        overvass_server = "https://overpass-api.de/api/interpreter?"
     url = overvass_server + urllib.parse.urlencode({'data':requete})
     print_flush(urllib.parse.unquote(url))
     try:
-        with open_cached(lambda: urllib.request.urlopen(url), cache_filename) as f:
+        with open_cached(lambda: urllib.request.urlopen(url), cache_filename, mode="rb") as f:
             result = OsmParser().parse_stream(f)
     except Exception as ex:
         if metropole:

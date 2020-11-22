@@ -56,17 +56,18 @@ class open_cached:
     """Cache the content of a stream (given with a opening lambda function).
        Return the opening of the cached file.
     """
-    def __init__(self, open_function, cache_filename):
+    def __init__(self, open_function, cache_filename, mode="r"):
         self.open_function = open_function
         self.cache_filename = cache_filename
         self.check_filename = cache_filename + ".ok"
+        self.mode = mode
     def __enter__(self):
         if not (os.path.exists(self.cache_filename) and os.path.exists(self.check_filename)):
             if os.path.exists(self.check_filename):
                 os.unlink(self.check_filename)
             write_stream_to_file(self.open_function(), self.cache_filename)
             open(self.check_filename, "a").close()
-        self.cache_file = open(self.cache_filename)
+        self.cache_file = open(self.cache_filename, self.mode)
         return self.cache_file
     def __exit__(self, type, value, traceback):
         self.cache_file.close()
@@ -146,7 +147,7 @@ else:
 
 
 def to_ascii(utf):
-    return unicodedata.normalize('NFD',str(utf)).encode("ascii","ignore")
+    return unicodedata.normalize('NFD',str(utf)).encode("ascii","ignore").decode("ascii")
 
 
 def named_chunks(l, n):

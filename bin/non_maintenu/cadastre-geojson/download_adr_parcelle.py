@@ -27,7 +27,7 @@ import os.path
 import datetime
 import argparse
 
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))),"cadastre-housenumber"))
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))),"cadastre_fr"))
 
 from . import db
 from .import_json import normalise_numero_commune

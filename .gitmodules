@@ -1,6 +1,6 @@
 [submodule "bin/cadastre-housenumber/associatedStreet"]
-	path = bin/cadastre-housenumber/associatedStreet
+	path = bin/non_maintenu/associatedStreet
 	url = https://github.com/vdct/associatedStreet.git
 [submodule "bin/cadastre-housenumber/imposm-parser"]
-	path = bin/cadastre-housenumber/imposm-parser
+	path = bin/cadastre_fr/imposm-parser
 	url = https://github.com/tyndare/imposm-parser.git

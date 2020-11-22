@@ -31,7 +31,7 @@ import numpy as np
 from osmapi import OsmApi
 from collections import namedtuple
 
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "cadastre-housenumber"))
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))), "cadastre_fr"))
 from cadastre_fr.globals   import EARTH_RADIUS_IN_METER
 from cadastre_fr.simplify  import xtd
 

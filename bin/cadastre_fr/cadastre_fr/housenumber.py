@@ -73,7 +73,9 @@ def determine_osm_parcels_bis_ter_quater(osm):
                     if lettre:
                         if is_bis_ter_quater[street][numero]:
                             lettre = bis_ter_quater[lettre]
-                        item.tags[tag.split(":")[0] + ":housenumber"] = numero + " " + lettre
+                            item.tags[tag.split(":")[0] + ":housenumber"] = numero + " " + lettre
+                        else:
+                            item.tags[tag.split(":")[0] + ":housenumber"] = numero + lettre
 
 def determine_osm_addresses_bis_ter_quater(osm):
     """Remplace, pour les nœuds addr:housenumber,
@@ -100,7 +102,7 @@ def determine_osm_addresses_bis_ter_quater(osm):
 
     series = {} # séries d'adresses ayant [même nom de rue][même numéro], mais des suffix A,B,... différents
     housenumber_index = rtree.index.Index()
-    for item in iteritems(osm):
+    for item in osm.iteritems():
         if "addr:housenumber" in item.tags:
             num_match = RE_NUMERO_CADASTRE.match(item.tags["addr:housenumber"])
             if num_match:
@@ -126,7 +128,7 @@ def determine_osm_addresses_bis_ter_quater(osm):
                         series[member.street][member.numero].add(member.lettre)
 
     SQUARE_DISTANCE = DISTANCE_RECHERCHE_VOSINS_ORPHELINS * DISTANCE_RECHERCHE_VOSINS_ORPHELINS
-    for item in iteritems(osm):
+    for item in osm.iteritems():
         if hasattr(item, "lettre") and item.lettre and not item.street:
             # On a affaire à un numéro avec une lettre, mais orphelin (sans rue associée)
             # on vas essyer de chercher dans le coin si il n'y aurait cas des numéros
@@ -158,13 +160,16 @@ def determine_osm_addresses_bis_ter_quater(osm):
     }
 
     # On corrige les addr:housenumber pour correspondre a nos calculs, et on nettoie les champs qu'on avait ajoutés:
-    for item in iteritems(osm):
+    for item in osm.iteritems():
         if hasattr(item, "lettre"):
             if item.lettre:
                 if item.street and is_bis_ter_quater[item.street][item.numero]:
                     item.lettre = bis_ter_quater[item.lettre]
                 #print item.tags["addr:housenumber"] + " => " + item.numero + " " + item.lettre
-                item.tags["addr:housenumber"] = item.numero + " " + item.lettre
+                if len(item.lettre) > 1:
+                    item.tags["addr:housenumber"] = item.numero + " " + item.lettre
+                else:
+                    item.tags["addr:housenumber"] = item.numero + item.lettre
             delattr(item, "numero")
             delattr(item, "lettre")
             delattr(item, "street")

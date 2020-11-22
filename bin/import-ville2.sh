@@ -19,10 +19,10 @@ umask 002
 export MPLCONFIGDIR="$work_dir/tmp"
 
 Qadastre2OSM="$bin_dir/Qadastre2OSM"
-cadastre_2_pdf="$bin_dir/cadastre-housenumber/bin/cadastre_2_pdf.py"
-osm_houses_simplify="$bin_dir/cadastre-housenumber/bin/osm_houses_simplify.py"
-pdf_2_osm_houses="$bin_dir/cadastre-housenumber/bin/pdf_2_osm_houses.py "
-segmented_building_predict="env  PYTHONPATH=$bin_dir/cadastre-housenumber/cadastre_fr_segmented/lib $bin_dir/cadastre-housenumber/bin/osm_segmented_building_predict.py"
+cadastre_2_pdf="$bin_dir/cadastre_fr/bin/cadastre_2_pdf.py"
+osm_houses_simplify="$bin_dir/cadastre_fr/bin/osm_houses_simplify.py"
+pdf_2_osm_houses="$bin_dir/cadastre_fr/bin/pdf_2_osm_houses.py "
+segmented_building_predict="env  PYTHONPATH=$bin_dir/cadastre_fr/cadastre_fr_segmented/lib $bin_dir/cadastre_fr/bin/osm_segmented_building_predict.py"
 
 [ -d $dep ] || mkdir $dep
 chmod 777 $dep 2>/dev/null
