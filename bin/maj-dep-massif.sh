@@ -22,6 +22,8 @@ test -d "$data_dir"   && find "$data_dir" -type f \
 
 # Mise à jour Fantoir:
 make -C $bin_dir/cadastre_fr/data/fantoir
+# Mise à jour code insee
+make -C $bin_dir/cadastre_fr/data/osm_id_ref_insee
 
 echo "Récupération de la liste de départements et des communes…"
 cd "$data_dir" && "$bin_dir/cadastre_fr/bin/cadastre_liste.py"

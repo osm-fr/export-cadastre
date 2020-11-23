@@ -39,6 +39,9 @@ $force = get_parameter("force","/^(true)|(false)*$/","false");
 $confirmAlreadyGenerated = false;
 $command = "";
 
+$num_dep = (substr($dep, 0, 1) == '0') ? substr($dep, 1) : $dep;
+$insee = (substr($dep, 0, 1) == '0') ? (substr($dep, 1,2) . substr($ville, 2, 3)) : (substr($dep, 0,2) . substr($ville, 2, 3));
+
 function already_generated() {
   global $type;
   global $dep;
@@ -197,9 +200,9 @@ else
 		</select>
 		<input value="Recherche" type="text" id="recherche_dep" name="recherche_dep" maxlength="40" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_dep();" onkeyup="javascript:filter_dep();" onpaste="javascript:filter_dep();" onmouseup="javascript:filter_dep();"/>
 		<span class="stats_fantoir">
-		  <a id="fantoir_dep_link" href="https://bano.openstreetmap.fr/fantoir/stats_dept.html">Stats FANTOIR</a>
+                  <a id="fantoir_dep_link" href="https://bano.openstreetmap.fr/fantoir/stats_dept.html#dept=<?= $num_dep ?>">Stats FANTOIR</a>
 		  <br/>
-		  <a id="fantoir_dep_recent_street_link" href="https://bano.openstreetmap.fr/fantoir/voies_recentes_manquantes.html">Voies récentes manquantes</a>
+                  <a id="fantoir_dep_recent_street_link" href="https://bano.openstreetmap.fr/fantoir/voies_recentes_manquantes.html#dept=<?= $num_dep ?>">Voies récentes manquantes</a>
 		</span>
 	</fieldset>
 	<fieldset id='fville'>
@@ -212,7 +215,7 @@ else
 		</span>
 		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
 		<span class="stats_fantoir">
-		  <a id="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/">Stats FANTOIR BANO</a>
+                <a id="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/#insee=<?= $insee ?>">Stats FANTOIR BANO</a>
 		</span>
 
 		<br />

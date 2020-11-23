@@ -48,6 +48,7 @@ from .overpass import open_osm_overpass
 #ASSOCIATEDSTREET_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "associatedStreet")
 
 FANTOIR_ZIP = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "data", "fantoir", "FANTOIR.zip")
+OSM_ID_REF_INSEE = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "data", "osm_id_ref_insee", "osm_id_ref_insee.csv")
 
 HELP_MESSAGE = """Récupération des code fantoir et des highway OSM des associatedStreet
 USAGE:
@@ -124,7 +125,7 @@ def normalize(s):
 
 class FantoirDicts:
     def __init__(self):
-        with open(os.path.join(os.path.dirname(__file__),'osm_id_ref_insee.csv')) as f:
+        with open(OSM_ID_REF_INSEE ) as f:
             self.osm_insee = {key: value
                 for value, key in map(lambda line: line.strip().split(','), f)
             }
