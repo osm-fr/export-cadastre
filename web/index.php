@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once( 'includes/header.php' );
 require_once( 'includes/config.php' );
 
@@ -40,7 +40,9 @@ $confirmAlreadyGenerated = false;
 $command = "";
 
 $num_dep = (substr($dep, 0, 1) == '0') ? substr($dep, 1) : $dep;
-$insee = (substr($dep, 0, 1) == '0') ? (substr($dep, 1,2) . substr($ville, 2, 3)) : (substr($dep, 0,2) . substr($ville, 2, 3));
+$insee = (substr($dep, 0, 1) == '0') ?
+      (substr($dep, 1,2) . substr($ville, 2, 3))
+    : (substr($dep, 0,2) . substr($ville, 2, 3));
 
 function already_generated() {
   global $type;
@@ -114,11 +116,11 @@ if( $dep && $ville && $type )
 	$lock_file = $lock_dir . '/' . $dep . '/' . $dep . '-' . $ville . '-' . $type . '.lock';
 	if( file_exists( $lock_file ) && ((time() - filemtime ( $lock_file )) < 2*60*60)) {
 		echo 'Import en cours';
-	} 
+	}
 	else if (($force != "true") && $bbox=="" && already_generated())
 	{
 	    $confirmAlreadyGenerated = true;
-	} 
+	}
 	else
 	{
 		register_shutdown_function ( function($filepath) {@unlink($filepath);}, $lock_file );
@@ -130,7 +132,7 @@ if( $dep && $ville && $type )
 				$log = fopen( $log_dir . '/log.txt', 'a+' );
 				fwrite( $log, date( 'd-m-Y H:i:s' ) . ' ' . $_SERVER['REMOTE_ADDR'] . ' : ' . $dep . ' ' . $ville . "" . $type . ";\n" );
 				fclose( $log );
-				if ($type == "adresses") { 
+				if ($type == "adresses") {
 					$log_cmd="2>&1 |tee \"$log_file\"";
 				} else {
 					$log_cmd="> \"$log_file\" 2>&1";
@@ -138,14 +140,14 @@ if( $dep && $ville && $type )
 			}
 			else
 			{
-				//if ($type == "adresses") { 
+				//if ($type == "adresses") {
 					$log_cmd="2>&1";
 				//} else {
 				//	$log_cmd="> /dev/null 2>&1";
 				//}
 			}
 			$v = explode( '-', $ville, 2 );
-			if ($type == "adresses") { 
+			if ($type == "adresses") {
 				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_dir, $dep, $v[0], trim( $v[1] ));
 			} else {
 				$command = sprintf( "cd %s && ./import-ville2.sh %s %s \"%s\" $bbox $log_cmd", $bin_dir, $dep, $v[0], trim( $v[1] ));
@@ -209,7 +211,7 @@ else
 		<legend>Choix de la commune</legend>
 		<img src='images/throbber_16.gif' style='display:none;' alt='pending' id='throbber_ville' />
 		<span id='ville_container'>
-<?php 
+<?php
   include("getDepartement.php");
 ?>
 		</span>
@@ -219,6 +221,7 @@ else
 		</span>
 
 		<br />
+		<p style='font-size:small;'><img src='images/info.png' alt='!' style='vertical-align:sub;' />&nbsp;Le code indiqué à coté du nom de la commune est son <a href='https://fr.wikipedia.org/wiki/Code_Insee#Identification_des_collectivit.C3.A9s_locales_.28et_autres_donn.C3.A9es_g.C3.A9ographiques.29'>code INSEE</a>, pas son code postal</p>
 		<p style='font-size:small;'>Seules les communes existant au format vecteur au cadastre sont listées</p>
 	</fieldset>
 	<fieldset id='ftype'>
@@ -336,7 +339,7 @@ if ($command) {
     }
     $exitcode = $process->print_error_and_close();
 
-    if ($type == "adresses") { 
+    if ($type == "adresses") {
       $associatedStreet_files = array (
           "Mix en façade proche ou point isolé" => "/data/$dep/$ville-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
           //"Toujours en façade de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",

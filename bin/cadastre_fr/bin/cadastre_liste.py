@@ -28,6 +28,8 @@ from cadastre_fr.tools import command_line_error
 from cadastre_fr.website import CadastreWebsite
 from cadastre_fr.download_pdf import PDF_DOWNALOD_WAIT_SECONDS
 
+postal_code_suffix = re.compile(".* \([0-9A-Z]{5}\)$")
+
 def cadastre_liste_dep_com(argv):
     cadastreWebsite = CadastreWebsite()
     departements = cadastreWebsite.get_departements()
@@ -48,6 +50,8 @@ def cadastre_liste_dep_com(argv):
             if len(communes) > 0:
                 with open("{}/{}-liste.txt".format(dep_code, dep_code, dep_code), "w") as com_file:
                     for com_code, com_name in communes.items():
+                        if postal_code_suffix.match(com_name):
+                            com_name = com_name[:-8]
                         #print(dep_code, com_code, com_name)
                         com_file.write('{} {} "{}"\n'.format(dep_code, com_code, com_name))
             else:

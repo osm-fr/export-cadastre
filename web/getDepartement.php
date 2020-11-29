@@ -54,8 +54,7 @@ if( $dep != "" )
 		else
 			$insee_dep = substr( $dep, 0, 2 );
 		$v['INSEEcode'] = $insee_dep . substr( $v['id'], 2, 3 );
-		//echo '>' . $v['name'] . ' / ' . $v['INSEEcode'] . "</option>\n";
-		echo '>' . $v['name'] . "</option>\n";
+		echo '>' . $v['name'] . '-' . $v['INSEEcode'] . "</option>\n";
 	}
 
     }
