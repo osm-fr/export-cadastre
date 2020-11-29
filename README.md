@@ -1,4 +1,4 @@
-
+ 
 # Export du cadastre français vers des données au format OpenStreetMap
 
 Projet historique pour exporter des données du cadastre depuis le site web
@@ -12,11 +12,11 @@ Pour s'exécuter:
 
  * apache2 php libapache2-mod-php
  * python3 python3-rtree python3-shapely python3-gdal python3-distutils python3-sklearn
- * wget poppler-utils
+ * make wget libpodofo0.9.6 poppler-utils libqtgui4 libqt4-network libqt4-sql
 
 Pour construire les exécutables:
 
- * g++ make python3-dev qt4-qmake libpodofo-dev libqt4-dev libproj-dev libgeos++-dev zlib1g-dev libjpeg-dev
+ * git g++ python3-dev qt4-qmake libpodofo-dev libqt4-dev libproj-dev libgeos++-dev zlib1g-dev libjpeg-dev
 
 
 
@@ -29,13 +29,18 @@ Pour construire les exécutables:
 
 ### work directory
 
-    Vous pouvez créer un lien symbolique nommé "work" à la racine
-    vers un répertoire où seront stockées les données de travail.
+Vous pouvez créer un lien symbolique nommé "work" à la racine
+vers un répertoire où seront stockées les données de travail.
 
 
 ### www-data group
 
-    L'utilisateur lançant les commandes doit appartenir au groupe "www-data" du serveur appache.
+L'utilisateur lançant les commandes doit appartenir au groupe "www-data" du serveur appache.
+
+```
+    sudo usermod -a -G www-data $USER
+
+```
 
 ### make
 
@@ -59,18 +64,22 @@ Configurer un VirtualHost Appache avec
         …
         DocumentRoot <installation directory>/export-cadastre/web
         …
+        <Directory <installation directory>/export-cadastre/web>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
     </VirtualHost>
-    <Directory <installation directory>/export-cadastre/web>
-    	Options Indexes FollowSymLinks
-	    AllowOverride AuthConfig
-	    Require all granted
-    </Directory>
 ```
+
+Support de directives Apache Rewrite,Header et AuthGroupFile:
+
+```sudo a2enmod rewrite headers authz_groupfile```
 
 ### cron
 
-Ligne à mettre dans le cron : (ça sert à purger nomber logs, et fichier qui
-sont généré et finalement obsolètes)
+Ligne à mettre dans le cron : (ça sert mettre à jour la liste des communes,
+à purger nombre de logs et fichier qui sont généré et finalement obsolètes)
 ```
 0 3 * * * cd <instalation directory>/export-cadastre/bin/ ; ./maj-dep-massif.sh
 ```

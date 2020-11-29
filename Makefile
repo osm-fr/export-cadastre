@@ -17,7 +17,16 @@ all:config $(WORK_DIRECTORIES)
 	make -C bin $@
 	./bin/maj-dep-massif.sh
 
-$(WORK_DIRECTORIES):
+$(WORK_DIR):
+	if [ -d /data/work/cadastre/ ] ; then \
+		mkdir -p /data/work/cadastre/export-cadastre \
+		&& \
+		ln -s /data/work/cadastre/export-cadastre work ; \
+	else \
+		mkdir work ; \
+	fi
+
+$(WORK_DIRECTORIES): $(WORK_DIR)
 	mkdir -p $@
 	chgrp www-data $@
 	chmod g+rwxs $@
