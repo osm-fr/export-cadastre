@@ -1,5 +1,4 @@
 *.pickle*
-*.zip
 *-false.osm
 *-missed.osm
 *-prediction-segmented.osm

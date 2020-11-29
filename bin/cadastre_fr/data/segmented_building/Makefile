@@ -1,7 +1,7 @@
 
 
-OSM=segmented.osm not_segmented.osm 
-DOWNLOAD_ZIP=BOURG-LES-VALENCE-houses-simplifie-segmented.zip  LORIENT-houses-simplifie-segmented.zip  PORTES-LES-VALENCE-houses-simplifie-segmented.zip  TAIN-houses-simplifie-segmented.zip
+OSM=segmented.osm not_segmented.osm  BOURG-LES-VALENCE-houses-simplifie-segmented.zip  LORIENT-houses-simplifie-segmented.zip  PORTES-LES-VALENCE-houses-simplifie-segmented.zip  TAIN-houses-simplifie-segmented.zip
+DOWNLOAD_ZIP=
 INPUT=$(OSM) $(DOWNLOAD_ZIP)
 
 TRAIN=../../bin/osm_segmented_building_train.py 
