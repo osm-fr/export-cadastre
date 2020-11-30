@@ -34,6 +34,7 @@ $dep = get_parameter("dep", "/^([09][0-9][0-9AB])?$/");
 $ville = get_parameter("ville", "/^[A-Z0-9][A-Z0-9][0-9][0-9][0-9][-a-zA-Z0-9_ '().]*$/");
 $type = get_parameter("type", "/(^bati$)|(^adresses$)/", "bati");
 $bis = get_parameter("bis","/(^true$)|(^false$)/", "true", "false");
+$clean_osm_cache = get_parameter("clean_osm_cache","/(^true$)|(^false$)/", "false");
 $bbox = get_parameter("bbox","/^[-0-9.,]*$/");
 $force = get_parameter("force","/^(true)|(false)*$/","false");
 $confirmAlreadyGenerated = false;
@@ -78,6 +79,20 @@ function already_generated() {
   return true;
 }
 
+
+function echo_data_file_row($name, $file_path) {
+    global $data_dir;
+    echo "<tr><td>$name: </td><td>";
+    $link_path = $data_dir . '/' . $file_path;
+    $link_url= "data" . '/' . $file_path;
+    if (is_file($link_path)) {
+        echo "<a href='data/$file_path'>" . basename($file_path) . "</a>";
+    } else {
+        echo '<font color="red" size="+1">&#x274C;</font> erreur';
+    }
+    echo "</td></tr>\n";
+}
+
 ?>
 <fieldset id="conditions-utilisation">
 <legend>Note</legend>
@@ -88,7 +103,9 @@ Ce service et les données du cadastre disponibles ici sont exclusivement réser
 JOSM permet de télécharger directement les données du cadastre grâce au plug-in <a href="https://wiki.openstreetmap.org/wiki/FR:JOSM/Greffons/Cadastre-fr">Cadastre-fr <img src="https://wiki.openstreetmap.org/w/images/b/b8/Plugin_Cadastre_pour_JOSM.PNG" width="55" height="46" style="vertical-align:middle;"/></a>.
 <br/>
 <img src='images/info.png' alt='!' style='vertical-align:sub;' />
-<a href="https://bano.openstreetmap.fr/fantoir/">L'interface fatoir de BANO</a> permet d'ajouter directement les adresse manquates dans JOSM.
+<a class="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/#insee=<?= $insee ?>">L'interface fatoir de BANO
+<img src="images/bano_fantoir_adresses.png" style="vertical-align:middle;" width="66" height=25" border="1"/></a>
+premet d'ajouter directement les adresses manquantes dans JOSM.
 </font>
 </fieldset>
 <div id='information'>
@@ -148,7 +165,7 @@ if( $dep && $ville && $type )
 			}
 			$v = explode( '-', $ville, 2 );
 			if ($type == "adresses") {
-				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $log_cmd", $bin_dir, $dep, $v[0], trim( $v[1] ));
+				$command = sprintf( "cd %s && ./import-adresses.sh %s %s \"%s\" $bis $clean_osm_cache $log_cmd", $bin_dir, $dep, $v[0], trim( $v[1] ));
 			} else {
 				$command = sprintf( "cd %s && ./import-ville2.sh %s %s \"%s\" $bbox $log_cmd", $bin_dir, $dep, $v[0], trim( $v[1] ));
 				//exec( $command );
@@ -217,7 +234,7 @@ else
 		</span>
 		<input value="Recherche" type="text" id="recherche_ville" name="recherche_ville" maxlength="60" size="20" onfocus="javascript:if(this.value == 'Recherche') this.value='';" onchange="javascript:filter_ville();" onkeyup="javascript:filter_ville();" onpaste="javascript:filter_ville();" onmouseup="javascript:filter_ville();"/>
 		<span class="stats_fantoir">
-                <a id="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/#insee=<?= $insee ?>">Stats FANTOIR BANO</a>
+                <a class="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/#insee=<?= $insee ?>">Stats FANTOIR BANO</a>
 		</span>
 
 		<br />
@@ -230,6 +247,7 @@ else
 $bati_checked = ($type=="bati") ? 'checked="checked"' : '';
 $adresses_checked = ($type=="adresses") ? 'checked="checked"' : '';
 $bis_checked = ($bis=="true") ? 'checked="checked"' : "";
+$clean_osm_cache_checked = ($clean_osm_cache=="true") ? 'checked="checked"' : "";
 $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 ?>
 		<table border="0" cellspacing="0">
@@ -238,6 +256,7 @@ $bbox_checked = ($bbox!="") ? 'checked="checked"' : "";
 					<input type="radio" name="type" value="adresses" <?php echo $adresses_checked;?>></input>Adresses
 				</td><td>
 					<small>(<input type="checkbox" name="bis" value="true" title="Transforme les lettres B,T,Q en bis, ter, quater" <?php echo $bis_checked;?>></input>B,T,Q&rarr; bis, ter, quater)</small>
+					<small>(<input type="checkbox" name="clean_osm_cache" value="true" title="Effacer le cache de données OSM" <?php echo $clean_osm_cache_checked;?>></input>Effacer le cache de données OSM)</small>
 				</td>
 			</tr><tr>
 				<td>
@@ -341,10 +360,10 @@ if ($command) {
 
     if ($type == "adresses") {
       $associatedStreet_files = array (
-          "Mix en façade proche ou point isolé" => "/data/$dep/$ville-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
-          //"Toujours en façade de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
-          //"Toujours comme attribut de bâtiment" => "/data/$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip",
-          "Toujours comme point isolés" => "/data/$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
+          "Mix en façade proche ou point isolé" => "$dep/$ville-adresses-associatedStreet_mix_en_facade_ou_isole.zip",
+          //"Toujours en façade de bâtiment" => "$dep/$ville-adresses-associatedStreet_point_sur_batiment.zip",
+          //"Toujours comme attribut de bâtiment" => "$dep/$ville-adresses-associatedStreet_tag_sur_batiment.zip",
+          "Toujours comme point isolés" => "$dep/$ville-adresses-associatedStreet_sans_batiment.zip",
       );
       $addrstreet_files = array();
       foreach($associatedStreet_files as $key => $val) {
@@ -356,7 +375,7 @@ if ($command) {
       echo "<legend>Résultat avec tag addr:street:</legend>\n";
       echo "<table class=\"result\">\n";
       foreach($addrstreet_files as $key => $val) {
-          echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+        echo_data_file_row($key, $val);
       }
       echo "</table>\n";
       print "</fieldset>\n";
@@ -364,7 +383,7 @@ if ($command) {
       echo "<legend>Résultat avec relation associatedStreet:</legend>\n";
       echo "<table class=\"result\">\n";
       foreach($associatedStreet_files as $key => $val) {
-          echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+        echo_data_file_row($key, $val);
       }
       echo "</table>\n";
       print "</fieldset>\n";
@@ -372,18 +391,14 @@ if ($command) {
       print "<fieldset>\n";
       echo "<legend>Résultat de Lieux-Dits, tag place=...</legend>\n";
       echo "<table class=\"result\">\n";
-      $key = "Lieux-Dits";
-      $val = "/data/$dep/$ville-adresses-lieux-dits.zip";
-      echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+      echo_data_file_row("Lieux-Dits","$dep/$ville-adresses-lieux-dits.zip");
       echo "</table>\n";
       print "</fieldset>\n";
 
       print "<fieldset>\n";
       echo "<legend>Liste de mots dessinés sur le cadastre (noms de rues, de lieux-dits ou autre)</legend>\n";
       echo "<table class=\"result\">\n";
-      $key = "Lieux-Dits";
-      $val = "/data/$dep/$ville-mots.zip";
-      echo "<tr><td>$key: </td><td><a href='$val'>" . basename($val) . "</a></td></tr>\n";
+      echo_data_file_row("Mots","$dep/$ville-mots.zip");
       echo "</table>\n";
       print "</fieldset>\n";
     } else {
@@ -395,12 +410,12 @@ if ($command) {
     }
     ?>
     <script type='text/javascript'>
-	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="/data/<?php echo $dep;?>">aux fichiers</a>';
+	document.getElementById('information').innerHTML = 'Import ok. Acc&egrave;s <a href="data/<?php echo $dep;?>">aux fichiers</a>';
         hide_info_popup();
         <?php if (($type == "adresses") || ($exitcode != 0)) { ?>
         window.scrollTo(0, document.body.scrollHeight);
         <?php } else { ?>
-	document.location = "/data/<?php echo $dep;?>";
+	document.location = "data/<?php echo $dep;?>";
 	<?php } ?>
     </script>
     <?php

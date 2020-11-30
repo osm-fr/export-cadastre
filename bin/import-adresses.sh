@@ -5,14 +5,16 @@ umask 002
 
 export MPLCONFIGDIR="$work_dir/tmp"
 
-if [[ $# != 3 && $# != 4 ]] ; then
+if [[ $# != 3 && $# != 5 ]] ; then
     echo "ERREUR: mauvais nombre d'arguments"
+    echo "USAGE: $0 code_departement code_commune nom_commune [true|false] [true|false]"
     exit -1
 fi
 code_departement=$1
 code_commune=$2
 nom_commune=$3
 bis=$4
+clean_osm_cache=$5
 
 if [ ${#code_departement} != 3 ] ; then
     echo "ERREUR: le code département doit avoir 3 caractères"
@@ -64,9 +66,11 @@ file6="${depdir}/${code_commune}-${nom_commune}-mots.zip"
 
 mkdir -p $communedir
 chmod -R a+rw $communedir 2>/dev/null
-umask 0000
-rm -f $communedir/*building*.osm
-rm -f $communedir/*building*.osm.ok
+
+if [ "$clean_osm_cache" == "true" ] ; then
+    # Clean OSM data downloaded from overpass
+    rm -f $communedir/*.osm.ok
+fi
 
 cd $command1dir && $command1 || exit -1
 mv "$communedir/${code_commune}-adresses.zip" "${file1}"

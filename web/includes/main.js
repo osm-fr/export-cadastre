@@ -21,7 +21,6 @@ function getSelectedVilleCode() {
 function getSelectedInseeCode() {
 	var dep = getSelectedDepCode();
 	var ville = getSelectedVilleCode();
-	var insee;
 	if ((dep.length === 3) && (ville.length >= 5)) {
 		if (dep.charAt(0) == '0') {
 			return dep.substr(1,2) + ville.substr(2,3);
@@ -34,8 +33,13 @@ function getSelectedInseeCode() {
 }
 
 function updateFantoirVilleLink() {
-	insee = getSelectedInseeCode();
-	document.getElementById("fantoir_ville_link").href = "https://bano.openstreetmap.fr/fantoir/#insee=" + insee;
+	var insee = getSelectedInseeCode();
+	var fantoir_url = "https://bano.openstreetmap.fr/fantoir/#insee=" + insee;
+	//document.getElementById("fantoir_ville_link").href = fantoir_url;
+	var fantoir_ville_links = document.getElementsByClassName("fantoir_ville_link");
+	for (var i=0; i<fantoir_ville_links.length; i++) {
+		fantoir_ville_links[i].href = fantoir_url;
+	}
 }
 
 var onDepartementChange_previous_depCode = '';
@@ -83,93 +87,93 @@ function onVilleChange() {
 
 
 function normalize(text) {
-  text = text.toLowerCase();
-  text = text.replace(/[-_']/g,' ');
-  text = text.replace(/[aàÀ]/g,'a');
-  text = text.replace(/[éèêëÉÈÊË]/g,'e');
-  text = text.replace(/[ïîÏÎ]/g,'i');
-  text = text.replace(/[ôÔ]/g,'o');
-  text = text.replace(/[ùÙûÛ]/g,'u');
-  text = text.replace(/\bsaint\b/g,'st');
-  return text;
+	text = text.toLowerCase();
+	text = text.replace(/[-_']/g,' ');
+	text = text.replace(/[aàÀ]/g,'a');
+	text = text.replace(/[éèêëÉÈÊË]/g,'e');
+	text = text.replace(/[ïîÏÎ]/g,'i');
+	text = text.replace(/[ôÔ]/g,'o');
+	text = text.replace(/[ùÙûÛ]/g,'u');
+	text = text.replace(/\bsaint\b/g,'st');
+	return text;
 }
 
 function SelectBoxFilter(selectbox) {
-    this.selectbox = selectbox;
-    this.optionscopy = new Array();
-    for(var i=0; i<selectbox.options.length; i++) {
-        var option = selectbox.options[i];
-        this.optionscopy[i] = new Option(option.text, option.value);
-    }
-    this.previous_filter_reg_exp_source = '';
-    this.filter = function(reg_exp) {
-        if (reg_exp.source != this.previous_filter_reg_exp_source) {
-            this.previous_filter_reg_exp_source = reg_exp.source;
-            var selectedValue = this.selectbox.value;
-            var selectedIndex = 0;
-            this.selectbox.options.length = 0;
-            var nb = 0;
-            var nbvalue = 0;
-            for(var i=0; i<this.optionscopy.length; i++) {
-              option = this.optionscopy[i];
-              if((option.value == "") || (normalize(option.text).search(reg_exp) != -1)) {
-                  if (option.value != "") nbvalue++;
-                  if (option.value == selectedValue) selectedIndex = nb;
-                  this.selectbox.options[nb++] = new Option(option.text, option.value, false);
-              }
-            }
-            this.selectbox.selectedIndex = selectedIndex;
-            if (nbvalue == 1) {
-              this.selectbox.className = "selectboxfilter_found";
-            } else if (nbvalue == 0) {
-              this.selectbox.className = "selectboxfilter_notfound";
-            } else {
-              this.selectbox.className = "";
-            }
-            this.selectbox.onchange();
-        }
-    }
+	this.selectbox = selectbox;
+	this.optionscopy = new Array();
+	for(var i=0; i<selectbox.options.length; i++) {
+		var option = selectbox.options[i];
+		this.optionscopy[i] = new Option(option.text, option.value);
+	}
+	this.previous_filter_reg_exp_source = '';
+	this.filter = function(reg_exp) {
+		if (reg_exp.source != this.previous_filter_reg_exp_source) {
+			this.previous_filter_reg_exp_source = reg_exp.source;
+			var selectedValue = this.selectbox.value;
+			var selectedIndex = 0;
+			this.selectbox.options.length = 0;
+			var nb = 0;
+			var nbvalue = 0;
+			for(var i=0; i<this.optionscopy.length; i++) {
+				option = this.optionscopy[i];
+				if((option.value == "") || (normalize(option.text).search(reg_exp) != -1)) {
+					if (option.value != "") nbvalue++;
+					if (option.value == selectedValue) selectedIndex = nb;
+					this.selectbox.options[nb++] = new Option(option.text, option.value, false);
+				}
+			}
+			this.selectbox.selectedIndex = selectedIndex;
+			if (nbvalue == 1) {
+				this.selectbox.className = "selectboxfilter_found";
+			} else if (nbvalue == 0) {
+				this.selectbox.className = "selectboxfilter_notfound";
+			} else {
+				this.selectbox.className = "";
+			}
+			this.selectbox.onchange();
+		}
+	}
 }
 
 function filter_dep() {
-  var text = document.getElementById("recherche_dep").value
-  if (text != "Recherche") {
-    var dep = document.getElementById("dep");
-    if (typeof dep_filter == 'undefined') {
-      dep_filter = new SelectBoxFilter(dep);
-    }
-    // recherche en début de mot (ou avec un 0 pour les code de département):
-    dep_filter.filter(new RegExp("\\b0?" + normalize(text)));
-    if (dep.options.length == 2) {
-      dep.selectedIndex = 1;
-      onDepartementChange();
-    }
-  }
+	var text = document.getElementById("recherche_dep").value
+	if (text != "Recherche") {
+	var dep = document.getElementById("dep");
+	if (typeof dep_filter == 'undefined') {
+		dep_filter = new SelectBoxFilter(dep);
+	}
+	// recherche en début de mot (ou avec un 0 pour les code de département):
+	dep_filter.filter(new RegExp("\\b0?" + normalize(text)));
+	if (dep.options.length == 2) {
+		dep.selectedIndex = 1;
+		onDepartementChange();
+	}
+	}
 }
 
 function filter_ville() {
-  var text = document.getElementById("recherche_ville").value
-  if (text != "Recherche") {
-    var ville = document.getElementById("ville");
-    if (typeof ville_filter == 'undefined') {
-      ville_filter = new SelectBoxFilter(ville);
-    }
-    // recherche en début de mot:
-    ville_filter.filter(new RegExp("\\b" + normalize(text)));
-  }
+	var text = document.getElementById("recherche_ville").value
+	if (text != "Recherche") {
+		var ville = document.getElementById("ville");
+		if (typeof ville_filter == 'undefined') {
+			ville_filter = new SelectBoxFilter(ville);
+		}
+		// recherche en début de mot:
+		ville_filter.filter(new RegExp("\\b" + normalize(text)));
+	}
 }
 
 function alert_if_not_city_selected() {
-    if ((getSelectedDepCode() == "") || (getSelectedVilleCode() == "")) {
+	if ((getSelectedDepCode() == "") || (getSelectedVilleCode() == "")) {
 	if (getSelectedDepCode() == "") {
 		alert("Veuillez commencer par choisir le département et la commune");
 	} else {
 		alert("Veuillez d'abord choisir la commune");
 	}
-        return false;
-    } else {
-        return true;
-    }
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function bbox_display() {
@@ -203,19 +207,19 @@ function bbox_display() {
 function bbox_confirm() {
 	document.getElementById("bbox_frame").style.display = 'none';
 	document.getElementById("bbox_overlay").style.display = 'none';
-  try {
-    bbox = bbox_map_areaSelect.getBounds().toBBoxString();
-    if (bbox) {
-      document.getElementById("bbox").value = bbox;
-      document.getElementById("bbox").setAttribute("value",bbox);
-      document.getElementById("bbox").setAttribute("checked","checked");
-    } else {
-      document.getElementById("bbox").checked = false;
-    }
-  } catch(err) {
-    alert(err);
-    document.getElementById("bbox").checked = false;
-  }
+	try {
+		bbox = bbox_map_areaSelect.getBounds().toBBoxString();
+		if (bbox) {
+			document.getElementById("bbox").value = bbox;
+			document.getElementById("bbox").setAttribute("value",bbox);
+			document.getElementById("bbox").setAttribute("checked","checked");
+		} else {
+			document.getElementById("bbox").checked = false;
+		}
+	} catch(err) {
+		alert(err);
+		document.getElementById("bbox").checked = false;
+	}
 }
 
 function bbox_cancel() {
@@ -230,50 +234,50 @@ function bbox_map_setViewOnOverpassResult(overpass_json_text) {
 		var center = result.elements[0].center;
 		bbox_map.setView([center.lat, center.lon], 15);
 	} else {
-    // call getCenter.php to get cadastre center
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4) {
-        bbox_map_setViewOnCenterResult(xmlhttp.responseText);
-      }
-    };
-	  var dep = getSelectedDepCode();
-	  var ville = getSelectedVilleCode();
-    xmlhttp.open("GET", "getCenter.php?dep=" + dep + "&ville=" + ville);
-    xmlhttp.send();
+		// call getCenter.php to get cadastre center
+		var xmlhttp=new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4) {
+				bbox_map_setViewOnCenterResult(xmlhttp.responseText);
+			}
+		};
+		var dep = getSelectedDepCode();
+		var ville = getSelectedVilleCode();
+		xmlhttp.open("GET", "getCenter.php?dep=" + dep + "&ville=" + ville);
+		xmlhttp.send();
 	}
 }
 
 function bbox_map_setViewOnCenterResult(response) {
-  if (response.match(/[-0-9.,]*/)) {
-    var values = response.split(",");
-		bbox_map.setView([parseFloat(values[0]), parseFloat(values[1])], 14);
-	} else {
-		// centre sur la France:
-		bbox_map.setView([46.0, 2], 6);
-  }
+	if (response.match(/[-0-9.,]*/)) {
+		var values = response.split(",");
+			bbox_map.setView([parseFloat(values[0]), parseFloat(values[1])], 14);
+		} else {
+			// centre sur la France:
+			bbox_map.setView([46.0, 2], 6);
+	}
 }
 
 function confirmAlreadyGenerated() {
-    if (confirm("Les fichiers ont déjà été générés. Êtes-vous sûre de vouloir les générer de nouveau ?")) {
-        document.getElementById("force").value = "true";
-        document.forms["main_form"].submit();
-    } else {
-        window.location="data/" + getSelectedDepCode() + "/";
-    }
+	if (confirm("Les fichiers ont déjà été générés. Êtes-vous sûre de vouloir les générer de nouveau ?")) {
+		document.getElementById("force").value = "true";
+		document.forms["main_form"].submit();
+	} else {
+		window.location="data/" + getSelectedDepCode() + "/";
+	}
 }
 
 function display_info_popup() {
-    document.getElementById('info-popup').style.display="block";
+	document.getElementById('info-popup').style.display="block";
 }
 function hide_info_popup() {
-    document.getElementById('info-popup').style.display="none";
+	document.getElementById('info-popup').style.display="none";
 }
 function toggle_info_popup() {
-    var popup = document.getElementById('info-popup')
-    if (popup.style.display == "none") {
-        popup.style.display="block";
-    } else {
-        popup.style.display="none";
-    }
+	var popup = document.getElementById('info-popup')
+	if (popup.style.display == "none") {
+		popup.style.display="block";
+	} else {
+		popup.style.display="none";
+	}
 }

@@ -7,17 +7,22 @@ cd $data_dir || exit -1
 
 umask 002
 
+
 echo "Nettoyage des données"
 test -d "$water_dir"  && rm -rf "$water_dir"/* 2>/dev/null
 test -d "$log_dir"    && rm -rf "$log_dir"/* 2>/dev/null
 test -d "$hidden_dir" && rm -rf "$hidden_dir"/* 2>/dev/null
 test -d "$lock_dir"   && rm -rf "$lock_dir"/* 2>/dev/null
 
+for dir in "$data_dir" "$water_dir" "$hidden_dir" "$log_dir" "$lock_dir" ; do
+	find "$dir" -type d -exec chgrp www-data {} \; -exec chmod g+rwxs {} \;
+done
+
 # rm */* dans $data pour garder les fichier de liste de communes
 # à la racine au cas où leur récupération échoue:
-test -d "$data_dir"   && find "$data_dir" -type f \
+test -d "$data_dir" && find "$data_dir" -type f \
     \! \( -name "*-liste.txt" -or -name ".htpasswd" -or -name ".htaccess" \) \
-    -exec rm -rf {} \
+    -exec rm -rf {} \; \
     2>/dev/null
 
 # Mise à jour Fantoir:
@@ -28,3 +33,4 @@ make -C $bin_dir/cadastre_fr/data/osm_id_ref_insee
 echo "Récupération de la liste de départements et des communes…"
 cd "$data_dir" && "$bin_dir/cadastre_fr/bin/cadastre_liste.py"
 
+find "$data_dir" -type d -exec chgrp www-data {} \; -exec chmod g+rwxs {} \;
