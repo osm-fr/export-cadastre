@@ -10,3 +10,8 @@ RewriteBase	/
 
 #RewriteCond %{REQUEST_URI} /adresses [NC]
 #RewriteRule (.*)        http://cadastre.openstreetmap.fr/?type=adresses [L,R=301]
+
+<FilesMatch "\.(?i:osm|pdf|zip|bz2)$">
+  Header set Content-Disposition attachment
+</FilesMatch>
+
