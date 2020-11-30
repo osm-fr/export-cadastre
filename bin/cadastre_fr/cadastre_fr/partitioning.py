@@ -50,7 +50,7 @@ def partition_osm_nodes(osm_nodes, taille_partitions):
   except:
       # sinon on utilise lon,lat:
       positions = [(float(n.attrs["lon"]), float(n.attrs["lat"])) for n in osm_nodes]
-  nb_partitions = len(osm_nodes) / taille_partitions
+  nb_partitions = int(len(osm_nodes) / taille_partitions)
   idx = partition_points(positions , nb_partitions)
   partitions = [[] for p in range(nb_partitions)]
   bboxes = [(float("inf"),float("inf"),float("-inf"),float("-inf")) for p in range(nb_partitions)]
@@ -68,7 +68,7 @@ def partition_osm_nodes_filename_map(node_list, filenameprefix):
     filename_osm_map = {}
     if len(node_list) > TAILLE_PARTITIONEMENT_NOEUDS:
         partitions = partition_osm_nodes(node_list , TAILLE_PARTITIONEMENT_NOEUDS)
-        partitions = zip(*partitions)[0]
+        partitions = list(zip(*partitions))[0]
     else:
         partitions = [node_list]
     if len(partitions) > 1:
