@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<title>Interface de g&eacute;n&eacute;ration des fichiers d'import du cadastre</title>
+		<link rel="icon" href="favicon.ico"></link>
 		<link rel="stylesheet" type="text/css" media="screen" href="includes/style.css" />
 		<script type="text/javascript" src="includes/main.js"></script>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.2/dist/leaflet.css" />
