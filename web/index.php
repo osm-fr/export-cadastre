@@ -103,9 +103,9 @@ Ce service et les données du cadastre disponibles ici sont exclusivement réser
 JOSM permet de télécharger directement les données du cadastre grâce au plug-in <a href="https://wiki.openstreetmap.org/wiki/FR:JOSM/Greffons/Cadastre-fr">Cadastre-fr <img src="https://wiki.openstreetmap.org/w/images/b/b8/Plugin_Cadastre_pour_JOSM.PNG" width="55" height="46" style="vertical-align:middle;"/></a>.
 <br/>
 <img src='images/info.png' alt='!' style='vertical-align:sub;' />
-<a class="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/#insee=<?= $insee ?>">L'interface fatoir de BANO
+<a class="fantoir_ville_link" href="https://bano.openstreetmap.fr/fantoir/#insee=<?= $insee ?>">L'interface fantoir de BANO
 <img src="images/bano_fantoir_adresses.png" style="vertical-align:middle;" width="66" height=25" border="1"/></a>
-premet d'ajouter directement les adresses manquantes dans JOSM.
+permet d'ajouter directement les adresses manquantes dans JOSM.
 </font>
 </fieldset>
 <div id='information'>
